@@ -101,6 +101,17 @@
       <input type="file" id="import-watchlist" accept=".csv">
       <p id="watchlist-import-status" class="import-status"></p>
     </div>
+
+    <div class="import-block">
+      <h3>Sync Across Devices</h3>
+      <p class="import-note">Keeps Your Card, seen list, and skip list in sync everywhere you open this site, using a private GitHub Gist. Make a token at <code>github.com/settings/tokens</code> (classic token, only needs the "gist" scope), paste it below once per device. Connecting will pull whatever's already synced and apply it here, so do this on the device with your existing data first.</p>
+      <input type="password" id="gh-token-input" class="text-input" placeholder="GitHub token (ghp_...)">
+      <div class="sync-actions">
+        <button id="gh-connect-btn">CONNECT &amp; PULL</button>
+        <button id="gh-sync-now-btn" class="secondary">PUSH NOW</button>
+      </div>
+      <p id="sync-status" class="import-status"></p>
+    </div>
   </section>
 
 </main>

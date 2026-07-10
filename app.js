@@ -81,6 +81,7 @@ document.getElementById('import-watched').addEventListener('change', async (e) =
   });
   saveSeenSet();
   document.getElementById('watched-status').textContent = `Loaded ${added} seen titles. New Arrivals will filter them out from now on.`;
+  scheduleSync();
   renderDiscover();
 });
 
@@ -131,6 +132,7 @@ document.getElementById('import-watchlist').addEventListener('change', async (e)
   }
   saveWatchlist();
   statusEl.textContent = `Done. ${matched} added to Your Card (last 12 months only), ${skipped} skipped (too old or unmatched).`;
+  scheduleSync();
   renderWatchlist();
 });
 
@@ -155,6 +157,7 @@ function saveSkipSet() {
 function skipMovie(id) {
   skipSet.add(id);
   saveSkipSet();
+  scheduleSync();
 }
 
 const GENRE_MAP = {
@@ -182,6 +185,131 @@ function affinityScore(genreIds) {
 let watchlistGenreFilter = null;
 let watchlistSort = 'status';
 let watchlistShowAll = false;
+
+// ---------- cross-device sync (github gist) ----------
+
+const GITHUB_API = 'https://api.github.com';
+const GIST_DESC = 'REWIND watchlist sync data (do not delete)';
+const GIST_FILENAME = 'rewind-sync.json';
+const GH_TOKEN_KEY = 'rewind-gh-token';
+const GH_GIST_KEY = 'rewind-gist-id';
+
+let syncTimer;
+
+function ghFetch(path, opts = {}) {
+  const token = localStorage.getItem(GH_TOKEN_KEY);
+  return fetch(GITHUB_API + path, {
+    ...opts,
+    headers: {
+      'Authorization': 'token ' + token,
+      'Accept': 'application/vnd.github+json',
+      ...(opts.headers || {}),
+    },
+  });
+}
+
+function collectSyncData() {
+  return {
+    watchlist,
+    seen: [...seenSet],
+    skipped: [...skipSet],
+    updatedAt: Date.now(),
+  };
+}
+
+function applySyncData(data) {
+  if (!data) return;
+  watchlist = data.watchlist || [];
+  seenSet = new Set(data.seen || []);
+  skipSet = new Set(data.skipped || []);
+  saveWatchlist();
+  saveSeenSet();
+  saveSkipSet();
+}
+
+async function findOrCreateGist() {
+  const existingId = localStorage.getItem(GH_GIST_KEY);
+  if (existingId) {
+    const check = await ghFetch('/gists/' + existingId);
+    if (check.ok) return existingId;
+  }
+  const listRes = await ghFetch('/gists?per_page=100');
+  if (listRes.ok) {
+    const gists = await listRes.json();
+    const found = gists.find(g => g.description === GIST_DESC);
+    if (found) {
+      localStorage.setItem(GH_GIST_KEY, found.id);
+      return found.id;
+    }
+  }
+  const createRes = await ghFetch('/gists', {
+    method: 'POST',
+    body: JSON.stringify({
+      description: GIST_DESC,
+      public: false,
+      files: { [GIST_FILENAME]: { content: JSON.stringify(collectSyncData()) } },
+    }),
+  });
+  const created = await createRes.json();
+  localStorage.setItem(GH_GIST_KEY, created.id);
+  return created.id;
+}
+
+async function pullFromGist() {
+  const gistId = await findOrCreateGist();
+  const res = await ghFetch('/gists/' + gistId);
+  const gist = await res.json();
+  const content = gist.files?.[GIST_FILENAME]?.content;
+  if (content) {
+    try { applySyncData(JSON.parse(content)); } catch (e) { /* ignore malformed */ }
+  }
+}
+
+async function pushToGist() {
+  const gistId = await findOrCreateGist();
+  await ghFetch('/gists/' + gistId, {
+    method: 'PATCH',
+    body: JSON.stringify({ files: { [GIST_FILENAME]: { content: JSON.stringify(collectSyncData()) } } }),
+  });
+  const statusEl = document.getElementById('sync-status');
+  if (statusEl) statusEl.textContent = 'Last synced ' + new Date().toLocaleTimeString();
+}
+
+function scheduleSync() {
+  if (!localStorage.getItem(GH_TOKEN_KEY)) return;
+  clearTimeout(syncTimer);
+  syncTimer = setTimeout(() => pushToGist().catch(() => {}), 1500);
+}
+
+document.getElementById('gh-connect-btn').addEventListener('click', async () => {
+  const token = document.getElementById('gh-token-input').value.trim();
+  const statusEl = document.getElementById('sync-status');
+  if (!token) return;
+  localStorage.setItem(GH_TOKEN_KEY, token);
+  statusEl.textContent = 'Connecting...';
+  try {
+    await pullFromGist();
+    statusEl.textContent = 'Connected. Pulled latest synced data.';
+    renderWatchlist();
+    renderDiscover();
+  } catch (e) {
+    statusEl.textContent = 'Connection failed, check the token has "gist" scope.';
+  }
+});
+
+document.getElementById('gh-sync-now-btn').addEventListener('click', async () => {
+  const statusEl = document.getElementById('sync-status');
+  if (!localStorage.getItem(GH_TOKEN_KEY)) {
+    statusEl.textContent = 'Connect with a token first.';
+    return;
+  }
+  statusEl.textContent = 'Pushing...';
+  try {
+    await pushToGist();
+  } catch (e) {
+    statusEl.textContent = 'Push failed.';
+  }
+});
 
 // ---------- config ----------
 
@@ -441,6 +569,7 @@ function addToWatchlist(movie) {
   });
   saveWatchlist();
   showToast(movie.title + ' — added to your card');
+  scheduleSync();
   // keep it out of Discover/Search's cached lists so re-renders don't bring it back
   lastDiscoverResults = lastDiscoverResults.filter(m => m.id !== movie.id);
   lastSearchResults = lastSearchResults.filter(m => m.id !== movie.id);
@@ -451,12 +580,14 @@ function togglePin(id) {
   if (!entry) return;
   entry.pinned = !entry.pinned;
   saveWatchlist();
+  scheduleSync();
   renderWatchlist();
 }
 
 function removeFromWatchlist(id) {
   watchlist = watchlist.filter(w => w.id !== id);
   saveWatchlist();
+  scheduleSync();
   renderWatchlist();
 }
 
@@ -686,13 +817,28 @@ document.getElementById('prune-btn').addEventListener('click', () => {
   const removed = before - watchlist.length;
   saveWatchlist();
   showToast(`Cleared ${removed} older title${removed === 1 ? '' : 's'} off your card`);
+  scheduleSync();
   renderWatchlist();
 });
 
 // ---------- init ----------
 
-renderWatchlist();
-renderDiscover();
+async function init() {
+  if (localStorage.getItem(GH_TOKEN_KEY)) {
+    const statusEl = document.getElementById('sync-status');
+    if (statusEl) statusEl.textContent = 'Syncing...';
+    try {
+      await pullFromGist();
+      if (statusEl) statusEl.textContent = 'Synced ' + new Date().toLocaleTimeString();
+    } catch (e) {
+      if (statusEl) statusEl.textContent = 'Could not reach sync, showing local data.';
+    }
+  }
+  renderWatchlist();
+  renderDiscover();
+}
+
+init();
 
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('sw.js').catch(() => {});

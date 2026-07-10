@@ -352,6 +352,40 @@ main {
   margin-top: 0.6rem;
 }
 
+.text-input {
+  width: 100%;
+  padding: 0.6rem;
+  border: 1px solid var(--ink);
+  background: var(--paper);
+  font-size: 0.9rem;
+  border-radius: 2px;
+  box-sizing: border-box;
+}
+
+.sync-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.sync-actions button {
+  background: var(--ink);
+  color: var(--paper);
+  border: none;
+  padding: 0.5rem 0.9rem;
+  font-family: 'Special Elite', monospace;
+  font-size: 0.7rem;
+  cursor: pointer;
+  border-radius: 2px;
+}
+
+.sync-actions button.secondary {
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid var(--ink);
+}
+
 .filter-bar {
   display: flex;
   align-items: center;
