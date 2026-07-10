@@ -448,13 +448,22 @@ async function checkWatchmode(tmdbId) {
   if (!key) return null;
   try {
     const searchRes = await fetch(`https://api.watchmode.com/v1/search/?apiKey=${key}&search_field=tmdb_movie_id&search_value=${tmdbId}`);
-    if (!searchRes.ok) return null;
+    if (!searchRes.ok) {
+      console.warn('[Watchmode] search request failed', searchRes.status, await searchRes.text().catch(() => ''));
+      return null;
+    }
     const searchData = await searchRes.json();
     const match = searchData.title_results?.[0];
-    if (!match) return null;
+    if (!match) {
+      console.warn('[Watchmode] no title match for tmdb id', tmdbId, searchData);
+      return null;
+    }
 
     const sourcesRes = await fetch(`https://api.watchmode.com/v1/title/${match.id}/sources/?apiKey=${key}&regions=US`);
-    if (!sourcesRes.ok) return null;
+    if (!sourcesRes.ok) {
+      console.warn('[Watchmode] sources request failed', sourcesRes.status, await sourcesRes.text().catch(() => ''));
+      return null;
+    }
     const sources = await sourcesRes.json();
 
     const free = sources.find(s => s.type === 'free');
@@ -463,6 +472,8 @@ async function checkWatchmode(tmdbId) {
     if (rentOffers.length) {
       const cheapest = rentOffers.reduce((min, s) => (s.price < min.price ? s : min), rentOffers[0]);
       lowestRent = { price: cheapest.price, provider_name: cheapest.name };
+    } else {
+      console.warn('[Watchmode] no priced rent offers in sources for', tmdbId, sources);
     }
 
     return {
@@ -470,6 +481,7 @@ async function checkWatchmode(tmdbId) {
       lowestRent,
     };
   } catch (e) {
+    console.warn('[Watchmode] request threw', e);
     return null;
   }
 }
@@ -531,7 +543,7 @@ async function deriveStatus(movie) {
       if (wm?.lowestRent) {
         return {
           code: 'rent',
-          label: 'RENT FROM $' + wm.lowestRent.price.toFixed(2) + ' ON ' + wm.lowestRent.provider_name.toUpperCase(),
+          label: '$' + wm.lowestRent.price.toFixed(2) + ' ON ' + wm.lowestRent.provider_name.toUpperCase() + ' (CHECK FOR LOWER)',
           providers: providers.rent || providers.buy,
           link,
         };
@@ -553,7 +565,7 @@ async function deriveStatus(movie) {
   const wm = await checkWatchmodeCached(movie);
   if (wm?.free) return { code: 'free', label: 'FREE ON ' + wm.free.provider_name.toUpperCase(), link: wm.free.link };
   if (wm?.lowestRent) {
-    return { code: 'rent', label: 'RENT FROM $' + wm.lowestRent.price.toFixed(2) + ' ON ' + wm.lowestRent.provider_name.toUpperCase() };
+    return { code: 'rent', label: '$' + wm.lowestRent.price.toFixed(2) + ' ON ' + wm.lowestRent.provider_name.toUpperCase() + ' (CHECK FOR LOWER)' };
   }
 
   return { code: 'nodata', label: 'NO DATE YET' };
@@ -607,7 +619,7 @@ function renderCard(movie, opts = {}) {
       priceLink.target = '_blank';
       priceLink.rel = 'noopener';
       priceLink.className = 'price-link';
-      priceLink.textContent = status.code === 'rent' ? 'CHECK PRICE ↗' : 'ALL OPTIONS ↗';
+      priceLink.textContent = status.code === 'rent' ? 'COMPARE ALL PRICES ↗' : 'ALL OPTIONS ↗';
       card.appendChild(priceLink);
     }
   }
