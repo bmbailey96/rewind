@@ -160,13 +160,6 @@ function skipMovie(id) {
   scheduleSync();
 }
 
-const GENRE_MAP = {
-  28: 'Action', 12: 'Adventure', 16: 'Animation', 35: 'Comedy', 80: 'Crime',
-  99: 'Documentary', 18: 'Drama', 10751: 'Family', 14: 'Fantasy', 36: 'History',
-  27: 'Horror', 10402: 'Music', 9648: 'Mystery', 10749: 'Romance',
-  878: 'Science Fiction', 10770: 'TV Movie', 53: 'Thriller', 10752: 'War', 37: 'Western',
-};
-
 // weights derived from analyzing genre frequency across your 4.5-5 star
 // rated Letterboxd titles, higher = shows up more often in what you love
 const GENRE_AFFINITY = {
@@ -181,10 +174,6 @@ function affinityScore(genreIds) {
   const sum = genreIds.reduce((s, g) => s + (GENRE_AFFINITY[g] || 0), 0);
   return sum / genreIds.length;
 }
-
-let watchlistGenreFilter = null;
-let watchlistSort = 'status';
-let watchlistShowAll = false;
 
 // ---------- cross-device sync (github gist) ----------
 
@@ -722,6 +711,8 @@ function renderSearchCached() {
   lastSearchResults.forEach(m => document.getElementById('search-grid').appendChild(renderCard(m, { context: 'search', markSeen: true })));
 }
 
+let notOutYetExpanded = false;
+
 async function renderWatchlist() {
   const grid = document.getElementById('watchlist-grid');
   const pinnedGrid = document.getElementById('pinned-grid');
@@ -730,23 +721,25 @@ async function renderWatchlist() {
   const countEl = document.getElementById('watchlist-count');
   const changedStrip = document.getElementById('changed-strip');
   const changedList = document.getElementById('changed-list');
+  const notOutYetToggle = document.getElementById('not-out-yet-toggle');
+  const notOutYetGrid = document.getElementById('not-out-yet-grid');
 
   grid.innerHTML = '';
   pinnedGrid.innerHTML = '';
   changedList.innerHTML = '';
+  notOutYetGrid.innerHTML = '';
   countEl.textContent = watchlist.length + (watchlist.length === 1 ? ' title' : ' titles');
 
   if (watchlist.length === 0) {
     empty.hidden = false;
     changedStrip.hidden = true;
     pinnedSection.hidden = true;
-    document.getElementById('hidden-count-note').hidden = true;
-    renderGenreChips();
+    notOutYetToggle.hidden = true;
+    notOutYetGrid.hidden = true;
     return;
   }
   empty.hidden = true;
 
-  const statusOrder = { free: 0, notyet: 1, nodata: 2, rent: 3 };
   const results = [];
 
   for (const entry of watchlist) {
@@ -762,47 +755,38 @@ async function renderWatchlist() {
   }
   saveWatchlist();
 
-  renderGenreChips();
+  const byRecommended = (a, b) => affinityScore(b.entry.genre_ids) - affinityScore(a.entry.genre_ids);
 
-  const passesFilter = (r) => !watchlistGenreFilter || (r.entry.genre_ids || []).includes(watchlistGenreFilter);
-  const passesStatusGate = (r) => watchlistShowAll || r.status.code === 'free' || r.status.code === 'rent';
-
-  const pinned = results.filter(r => r.entry.pinned && passesFilter(r));
-  // pinned always shows regardless of status, that's the point of pinning
-  const unpinned = results.filter(r => !r.entry.pinned && passesFilter(r) && passesStatusGate(r));
-  const hiddenCount = results.filter(r => !r.entry.pinned && passesFilter(r) && !passesStatusGate(r)).length;
+  const pinned = results.filter(r => r.entry.pinned);
+  const unpinned = results.filter(r => !r.entry.pinned);
+  const notOutYet = unpinned.filter(r => r.status.code === 'notyet' || r.status.code === 'nodata');
+  const mainList = unpinned.filter(r => r.status.code === 'free' || r.status.code === 'rent');
 
   // pinned row: most recently changed first, so a pinned title that just
   // flipped status jumps to the front of its own row
   pinned.sort((a, b) => (b.entry.statusChangedAt || 0) - (a.entry.statusChangedAt || 0));
-
-  const sorters = {
-    status: (a, b) => {
-      const tierDiff = statusOrder[a.status.code] - statusOrder[b.status.code];
-      if (tierDiff !== 0) return tierDiff;
-      return (b.entry.statusChangedAt || 0) - (a.entry.statusChangedAt || 0);
-    },
-    added: (a, b) => (b.entry.addedAt || 0) - (a.entry.addedAt || 0),
-    release: (a, b) => (b.entry.release_date || '').localeCompare(a.entry.release_date || ''),
-    az: (a, b) => a.entry.title.localeCompare(b.entry.title),
-    recommended: (a, b) => affinityScore(b.entry.genre_ids) - affinityScore(a.entry.genre_ids),
-  };
-  unpinned.sort(sorters[watchlistSort] || sorters.status);
-
-  const hiddenNote = document.getElementById('hidden-count-note');
-  if (hiddenCount > 0 && !watchlistShowAll) {
-    hiddenNote.hidden = false;
-    hiddenNote.textContent = `${hiddenCount} title${hiddenCount === 1 ? '' : 's'} hidden, not confirmed streaming yet — tap to show`;
-  } else {
-    hiddenNote.hidden = true;
-  }
+  notOutYet.sort(byRecommended);
+  mainList.sort(byRecommended);
 
   pinnedSection.hidden = pinned.length === 0;
   pinned.forEach(({ entry, status, changed }) => {
     pinnedGrid.appendChild(renderCard(entry, { context: 'watchlist', status, changed, prevLabel: entry._prevLabel }));
   });
 
-  const changedOnes = results.filter(r => r.changed && passesFilter(r));
+  if (notOutYet.length > 0) {
+    notOutYetToggle.hidden = false;
+    notOutYetToggle.textContent = (notOutYetExpanded ? '▴ ' : '▾ ') +
+      `NOT OUT YET (${notOutYet.length})`;
+    notOutYetGrid.hidden = !notOutYetExpanded;
+    notOutYet.forEach(({ entry, status, changed }) => {
+      notOutYetGrid.appendChild(renderCard(entry, { context: 'watchlist', status, changed, prevLabel: entry._prevLabel }));
+    });
+  } else {
+    notOutYetToggle.hidden = true;
+    notOutYetGrid.hidden = true;
+  }
+
+  const changedOnes = results.filter(r => r.changed);
   if (changedOnes.length) {
     changedStrip.hidden = false;
     changedOnes.forEach(({ entry, status }) => {
@@ -812,59 +796,14 @@ async function renderWatchlist() {
     changedStrip.hidden = true;
   }
 
-  unpinned.forEach(({ entry, status, changed }) => {
+  mainList.forEach(({ entry, status, changed }) => {
     grid.appendChild(renderCard(entry, { context: 'watchlist', status, changed, prevLabel: entry._prevLabel }));
   });
 }
 
-function renderGenreChips() {
-  const wrap = document.getElementById('genre-chips');
-  const present = new Set();
-  watchlist.forEach(w => (w.genre_ids || []).forEach(g => present.add(g)));
-  wrap.innerHTML = '';
-  if (present.size === 0) { wrap.hidden = true; return; }
-  wrap.hidden = false;
-
-  const allChip = document.createElement('button');
-  allChip.className = 'chip' + (watchlistGenreFilter === null ? ' active' : '');
-  allChip.textContent = 'ALL';
-  allChip.onclick = () => { watchlistGenreFilter = null; renderWatchlist(); };
-  wrap.appendChild(allChip);
-
-  [...present].sort((a, b) => (GENRE_MAP[a] || '').localeCompare(GENRE_MAP[b] || '')).forEach(gid => {
-    const chip = document.createElement('button');
-    chip.className = 'chip' + (watchlistGenreFilter === gid ? ' active' : '');
-    chip.textContent = (GENRE_MAP[gid] || 'Other').toUpperCase();
-    chip.onclick = () => { watchlistGenreFilter = gid; renderWatchlist(); };
-    wrap.appendChild(chip);
-  });
-}
-
-document.getElementById('sort-select').addEventListener('change', (e) => {
-  watchlistSort = e.target.value;
+document.getElementById('not-out-yet-toggle').addEventListener('click', () => {
+  notOutYetExpanded = !notOutYetExpanded;
   renderWatchlist();
-});
-
-function setShowAll(value) {
-  watchlistShowAll = value;
-  const toggleBtn = document.getElementById('show-all-toggle');
-  toggleBtn.textContent = watchlistShowAll ? 'SHOWING ALL' : 'SHOW ALL';
-  toggleBtn.classList.toggle('active', watchlistShowAll);
-  renderWatchlist();
-}
-
-document.getElementById('filters-toggle').addEventListener('click', (e) => {
-  const panel = document.getElementById('filters-panel');
-  panel.hidden = !panel.hidden;
-  e.target.textContent = panel.hidden ? 'FILTERS ▾' : 'FILTERS ▴';
-});
-
-document.getElementById('show-all-toggle').addEventListener('click', () => {
-  setShowAll(!watchlistShowAll);
-});
-
-document.getElementById('hidden-count-note').addEventListener('click', () => {
-  setShowAll(true);
 });
 
 // ---------- render: discover ----------

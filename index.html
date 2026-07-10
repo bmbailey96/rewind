@@ -37,26 +37,13 @@
     </div>
     <button id="prune-btn" class="btn-more" style="margin: 0 0 1rem;">CLEAR OUT ANYTHING OLDER THAN 12 MONTHS</button>
 
-    <div class="filter-bar">
-      <button id="filters-toggle" class="chip">FILTERS ▾</button>
-      <button id="show-all-toggle" class="chip">SHOW ALL</button>
-    </div>
-    <div id="filters-panel" hidden>
-      <div id="genre-chips" class="chip-row" hidden></div>
-      <select id="sort-select" class="sort-select">
-        <option value="status">SORT: STATUS</option>
-        <option value="recommended">SORT: RECOMMENDED</option>
-        <option value="added">SORT: RECENTLY ADDED</option>
-        <option value="release">SORT: RELEASE DATE</option>
-        <option value="az">SORT: A-Z</option>
-      </select>
-    </div>
-    <p id="hidden-count-note" class="import-note" hidden></p>
-
     <section id="pinned-section" hidden>
       <p class="changed-label" style="color: var(--tag-yellow);">PINNED TO THE TOP</p>
       <div id="pinned-grid" class="card-row wrap" style="margin-bottom: 1.4rem;"></div>
     </section>
+
+    <button id="not-out-yet-toggle" class="btn-more" style="margin: 0 0 1.4rem;" hidden></button>
+    <div id="not-out-yet-grid" class="card-row wrap" style="margin-bottom: 1.4rem;" hidden></div>
 
     <div id="changed-strip" class="changed-strip" hidden>
       <p class="changed-label">RESTAMPED SINCE LAST VISIT</p>
