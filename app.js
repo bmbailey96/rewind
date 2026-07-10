@@ -442,6 +442,7 @@ function getWatchmodeKey() {
 
 // Best-effort only: if Watchmode's ID-matching format ever changes, this
 // fails silently and the app just falls back to whatever TMDB already found.
+// Returns { free: {provider_name, link} | null, lowestRent: {price, provider_name} | null }
 async function checkWatchmode(tmdbId) {
   const key = getWatchmodeKey();
   if (!key) return null;
@@ -455,9 +456,19 @@ async function checkWatchmode(tmdbId) {
     const sourcesRes = await fetch(`https://api.watchmode.com/v1/title/${match.id}/sources/?apiKey=${key}&regions=US`);
     if (!sourcesRes.ok) return null;
     const sources = await sourcesRes.json();
+
     const free = sources.find(s => s.type === 'free');
-    if (free) return { provider_name: free.name, link: free.web_url };
-    return null;
+    const rentOffers = sources.filter(s => s.type === 'rent' && typeof s.price === 'number');
+    let lowestRent = null;
+    if (rentOffers.length) {
+      const cheapest = rentOffers.reduce((min, s) => (s.price < min.price ? s : min), rentOffers[0]);
+      lowestRent = { price: cheapest.price, provider_name: cheapest.name };
+    }
+
+    return {
+      free: free ? { provider_name: free.name, link: free.web_url } : null,
+      lowestRent,
+    };
   } catch (e) {
     return null;
   }
@@ -508,15 +519,24 @@ async function deriveStatus(movie) {
     // it's streaming, just not on anything you subscribe to
     if (subscriptionLists.length) {
       const p = subscriptionLists[0];
+      const wm = await checkWatchmodeCached(movie);
+      if (wm?.free) return { code: 'free', label: 'FREE ON ' + wm.free.provider_name.toUpperCase(), link: wm.free.link || link };
       return { code: 'rent', label: 'ON ' + baseServiceName(p.provider_name).toUpperCase() + ' (NOT ONE OF YOURS)', providers: subscriptionLists, link };
     }
 
     if (providers.rent?.length || providers.buy?.length) {
       const p = providers.rent?.[0] || providers.buy?.[0];
-      const rentResult = { code: 'rent', label: 'RENT/BUY ON ' + baseServiceName(p.provider_name).toUpperCase(), providers: providers.rent || providers.buy, link };
       const wm = await checkWatchmodeCached(movie);
-      if (wm) return { code: 'free', label: 'FREE ON ' + wm.provider_name.toUpperCase(), link: wm.link || link };
-      return rentResult;
+      if (wm?.free) return { code: 'free', label: 'FREE ON ' + wm.free.provider_name.toUpperCase(), link: wm.free.link || link };
+      if (wm?.lowestRent) {
+        return {
+          code: 'rent',
+          label: 'RENT FROM $' + wm.lowestRent.price.toFixed(2) + ' ON ' + wm.lowestRent.provider_name.toUpperCase(),
+          providers: providers.rent || providers.buy,
+          link,
+        };
+      }
+      return { code: 'rent', label: 'RENT/BUY ON ' + baseServiceName(p.provider_name).toUpperCase(), providers: providers.rent || providers.buy, link };
     }
   }
 
@@ -531,7 +551,10 @@ async function deriveStatus(movie) {
   }
 
   const wm = await checkWatchmodeCached(movie);
-  if (wm) return { code: 'free', label: 'FREE ON ' + wm.provider_name.toUpperCase(), link: wm.link };
+  if (wm?.free) return { code: 'free', label: 'FREE ON ' + wm.free.provider_name.toUpperCase(), link: wm.free.link };
+  if (wm?.lowestRent) {
+    return { code: 'rent', label: 'RENT FROM $' + wm.lowestRent.price.toFixed(2) + ' ON ' + wm.lowestRent.provider_name.toUpperCase() };
+  }
 
   return { code: 'nodata', label: 'NO DATE YET' };
 }
