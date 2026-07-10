@@ -103,6 +103,16 @@
     </div>
 
     <div class="import-block">
+      <h3>Free/Ad-Supported Coverage (Watchmode)</h3>
+      <p class="import-note">TMDB's data (JustWatch) sometimes misses free ad-supported platforms like Tubi and Pluto. Get a free key at <code>api.watchmode.com/requestApiKey</code> (2,500 free requests/month, no card needed) to double-check Your Card against those when TMDB comes up empty. Optional, everything else works fine without it.</p>
+      <input type="password" id="watchmode-key-input" class="text-input" placeholder="Watchmode API key">
+      <div class="sync-actions">
+        <button id="watchmode-save-btn">SAVE KEY</button>
+      </div>
+      <p id="watchmode-status" class="import-status"></p>
+    </div>
+
+    <div class="import-block">
       <h3>Sync Across Devices</h3>
       <p class="import-note">Keeps Your Card, seen list, and skip list in sync everywhere you open this site, using a private GitHub Gist. Make a token at <code>github.com/settings/tokens</code> (classic token, only needs the "gist" scope), paste it below once per device. Connecting will pull whatever's already synced and apply it here, so do this on the device with your existing data first.</p>
       <input type="password" id="gh-token-input" class="text-input" placeholder="GitHub token (ghp_...)">

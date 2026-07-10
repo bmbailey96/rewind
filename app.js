@@ -281,6 +281,19 @@ function scheduleSync() {
   syncTimer = setTimeout(() => pushToGist().catch(() => {}), 1500);
 }
 
+document.getElementById('watchmode-save-btn').addEventListener('click', () => {
+  const key = document.getElementById('watchmode-key-input').value.trim();
+  const statusEl = document.getElementById('watchmode-status');
+  if (!key) {
+    localStorage.removeItem(WATCHMODE_KEY_STORAGE);
+    statusEl.textContent = 'Key cleared, Watchmode check disabled.';
+    return;
+  }
+  localStorage.setItem(WATCHMODE_KEY_STORAGE, key);
+  statusEl.textContent = 'Saved. Your Card will check Watchmode from now on when TMDB comes up short.';
+  renderWatchlist();
+});
+
 document.getElementById('gh-connect-btn').addEventListener('click', async () => {
   const token = document.getElementById('gh-token-input').value.trim();
   const statusEl = document.getElementById('sync-status');
@@ -418,6 +431,48 @@ function isMyService(providerName) {
   return MY_SERVICES.some(s => base === s || base.includes(s));
 }
 
+// ---------- watchmode (secondary check for free ad-supported gaps) ----------
+
+const WATCHMODE_KEY_STORAGE = 'rewind-watchmode-key';
+const WATCHMODE_CACHE_HOURS = 12;
+
+function getWatchmodeKey() {
+  return localStorage.getItem(WATCHMODE_KEY_STORAGE);
+}
+
+// Best-effort only: if Watchmode's ID-matching format ever changes, this
+// fails silently and the app just falls back to whatever TMDB already found.
+async function checkWatchmode(tmdbId) {
+  const key = getWatchmodeKey();
+  if (!key) return null;
+  try {
+    const searchRes = await fetch(`https://api.watchmode.com/v1/search/?apiKey=${key}&search_field=tmdb_movie_id&search_value=${tmdbId}`);
+    if (!searchRes.ok) return null;
+    const searchData = await searchRes.json();
+    const match = searchData.title_results?.[0];
+    if (!match) return null;
+
+    const sourcesRes = await fetch(`https://api.watchmode.com/v1/title/${match.id}/sources/?apiKey=${key}&regions=US`);
+    if (!sourcesRes.ok) return null;
+    const sources = await sourcesRes.json();
+    const free = sources.find(s => s.type === 'free');
+    if (free) return { provider_name: free.name, link: free.web_url };
+    return null;
+  } catch (e) {
+    return null;
+  }
+}
+
+async function checkWatchmodeCached(entry) {
+  if (!getWatchmodeKey()) return null;
+  const cache = entry.watchmodeCache;
+  const fresh = cache && (Date.now() - cache.checkedAt) < WATCHMODE_CACHE_HOURS * 3600 * 1000;
+  if (fresh) return cache.found;
+  const found = await checkWatchmode(entry.id);
+  entry.watchmodeCache = { checkedAt: Date.now(), found };
+  return found;
+}
+
 // ---------- status logic ----------
 
 // returns { code, label, date, link }
@@ -429,26 +484,39 @@ async function deriveStatus(movie) {
 
   if (providers) {
     const link = providers.link || null;
-    const streamingLists = [
-      ...(providers.free || []),
+
+    // "free" means free to anyone, no subscription needed at all (Tubi,
+    // Pluto, Crackle, The Roku Channel, etc.) — this should never require
+    // checking it against your subscribed services, it's free regardless
+    if (providers.free?.length) {
+      const p = providers.free[0];
+      return { code: 'free', label: 'FREE ON ' + baseServiceName(p.provider_name).toUpperCase(), providers: providers.free, link };
+    }
+
+    // flatrate/ads require an actual account or subscription, so these DO
+    // need to be checked against what you actually have
+    const subscriptionLists = [
       ...(providers.flatrate || []),
       ...(providers.ads || []),
     ];
 
-    const mine = streamingLists.find(p => isMyService(p.provider_name));
+    const mine = subscriptionLists.find(p => isMyService(p.provider_name));
     if (mine) {
       return { code: 'free', label: 'STREAMING ON ' + baseServiceName(mine.provider_name).toUpperCase(), providers: [mine], link };
     }
 
     // it's streaming, just not on anything you subscribe to
-    if (streamingLists.length) {
-      const p = streamingLists[0];
-      return { code: 'rent', label: 'ON ' + baseServiceName(p.provider_name).toUpperCase() + ' (NOT ONE OF YOURS)', providers: streamingLists, link };
+    if (subscriptionLists.length) {
+      const p = subscriptionLists[0];
+      return { code: 'rent', label: 'ON ' + baseServiceName(p.provider_name).toUpperCase() + ' (NOT ONE OF YOURS)', providers: subscriptionLists, link };
     }
 
     if (providers.rent?.length || providers.buy?.length) {
       const p = providers.rent?.[0] || providers.buy?.[0];
-      return { code: 'rent', label: 'RENT/BUY ON ' + baseServiceName(p.provider_name).toUpperCase(), providers: providers.rent || providers.buy, link };
+      const rentResult = { code: 'rent', label: 'RENT/BUY ON ' + baseServiceName(p.provider_name).toUpperCase(), providers: providers.rent || providers.buy, link };
+      const wm = await checkWatchmodeCached(movie);
+      if (wm) return { code: 'free', label: 'FREE ON ' + wm.provider_name.toUpperCase(), link: wm.link || link };
+      return rentResult;
     }
   }
 
@@ -461,6 +529,9 @@ async function deriveStatus(movie) {
     }
     return { code: 'rent', label: 'DIGITAL SINCE ' + d.toLocaleDateString('en-US', { month: 'short', year: 'numeric' }) };
   }
+
+  const wm = await checkWatchmodeCached(movie);
+  if (wm) return { code: 'free', label: 'FREE ON ' + wm.provider_name.toUpperCase(), link: wm.link };
 
   return { code: 'nodata', label: 'NO DATE YET' };
 }
