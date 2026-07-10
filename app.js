@@ -712,6 +712,7 @@ function renderSearchCached() {
 }
 
 let notOutYetExpanded = false;
+let watchlistSort = 'recommended';
 
 async function renderWatchlist() {
   const grid = document.getElementById('watchlist-grid');
@@ -735,7 +736,7 @@ async function renderWatchlist() {
     changedStrip.hidden = true;
     pinnedSection.hidden = true;
     notOutYetToggle.hidden = true;
-    notOutYetGrid.hidden = true;
+    notOutYetGrid.style.display = 'none';
     return;
   }
   empty.hidden = true;
@@ -755,18 +756,24 @@ async function renderWatchlist() {
   }
   saveWatchlist();
 
-  const byRecommended = (a, b) => affinityScore(b.entry.genre_ids) - affinityScore(a.entry.genre_ids);
-
   const pinned = results.filter(r => r.entry.pinned);
   const unpinned = results.filter(r => !r.entry.pinned);
   const notOutYet = unpinned.filter(r => r.status.code === 'notyet' || r.status.code === 'nodata');
   const mainList = unpinned.filter(r => r.status.code === 'free' || r.status.code === 'rent');
 
+  const sorters = {
+    recommended: (a, b) => affinityScore(b.entry.genre_ids) - affinityScore(a.entry.genre_ids),
+    added: (a, b) => (b.entry.addedAt || 0) - (a.entry.addedAt || 0),
+    release: (a, b) => (b.entry.release_date || '').localeCompare(a.entry.release_date || ''),
+    az: (a, b) => a.entry.title.localeCompare(b.entry.title),
+  };
+  const sortFn = sorters[watchlistSort] || sorters.recommended;
+
   // pinned row: most recently changed first, so a pinned title that just
   // flipped status jumps to the front of its own row
   pinned.sort((a, b) => (b.entry.statusChangedAt || 0) - (a.entry.statusChangedAt || 0));
-  notOutYet.sort(byRecommended);
-  mainList.sort(byRecommended);
+  notOutYet.sort(sortFn);
+  mainList.sort(sortFn);
 
   pinnedSection.hidden = pinned.length === 0;
   pinned.forEach(({ entry, status, changed }) => {
@@ -777,13 +784,13 @@ async function renderWatchlist() {
     notOutYetToggle.hidden = false;
     notOutYetToggle.textContent = (notOutYetExpanded ? '▴ ' : '▾ ') +
       `NOT OUT YET (${notOutYet.length})`;
-    notOutYetGrid.hidden = !notOutYetExpanded;
+    notOutYetGrid.style.display = notOutYetExpanded ? '' : 'none';
     notOutYet.forEach(({ entry, status, changed }) => {
       notOutYetGrid.appendChild(renderCard(entry, { context: 'watchlist', status, changed, prevLabel: entry._prevLabel }));
     });
   } else {
     notOutYetToggle.hidden = true;
-    notOutYetGrid.hidden = true;
+    notOutYetGrid.style.display = 'none';
   }
 
   const changedOnes = results.filter(r => r.changed);
@@ -800,6 +807,11 @@ async function renderWatchlist() {
     grid.appendChild(renderCard(entry, { context: 'watchlist', status, changed, prevLabel: entry._prevLabel }));
   });
 }
+
+document.getElementById('sort-select').addEventListener('change', (e) => {
+  watchlistSort = e.target.value;
+  renderWatchlist();
+});
 
 document.getElementById('not-out-yet-toggle').addEventListener('click', () => {
   notOutYetExpanded = !notOutYetExpanded;
