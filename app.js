@@ -103,7 +103,9 @@ document.getElementById('import-watchlist').addEventListener('change', async (e)
         const withYear = results.find(m => (m.release_date || '').slice(0, 4) === String(year));
         if (withYear) best = withYear;
       }
-      if (best && !watchlist.some(w => w.id === best.id)) {
+      const releaseDate = best?.release_date;
+      const isRecent = releaseDate && releaseDate >= dateMonthsAgo(12);
+      if (best && isRecent && !watchlist.some(w => w.id === best.id)) {
         watchlist.push({
           id: best.id,
           title: best.title,
@@ -112,10 +114,11 @@ document.getElementById('import-watchlist').addEventListener('change', async (e)
           addedAt: Date.now(),
           lastStatusCode: null,
           lastStatusLabel: null,
+          statusChangedAt: null,
           manualNote: '',
         });
         matched++;
-      } else if (!best) {
+      } else {
         skipped++;
       }
     } catch (err) {
@@ -125,7 +128,7 @@ document.getElementById('import-watchlist').addEventListener('change', async (e)
     await new Promise(res => setTimeout(res, 120));
   }
   saveWatchlist();
-  statusEl.textContent = `Done. ${matched} added to Your Card, ${skipped} couldn't be matched.`;
+  statusEl.textContent = `Done. ${matched} added to Your Card (last 12 months only), ${skipped} skipped (too old or unmatched).`;
   renderWatchlist();
 });
 
@@ -530,6 +533,16 @@ function showToast(msg) {
   clearTimeout(toastTimer);
   toastTimer = setTimeout(() => { el.hidden = true; }, 2400);
 }
+
+document.getElementById('prune-btn').addEventListener('click', () => {
+  const cutoff = dateMonthsAgo(12);
+  const before = watchlist.length;
+  watchlist = watchlist.filter(w => w.release_date && w.release_date >= cutoff);
+  const removed = before - watchlist.length;
+  saveWatchlist();
+  showToast(`Cleared ${removed} older title${removed === 1 ? '' : 's'} off your card`);
+  renderWatchlist();
+});
 
 // ---------- init ----------
 
