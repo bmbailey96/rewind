@@ -1,4 +1,4 @@
-const CACHE = 'rewind-v1';
+const CACHE = 'rewind-v2';
 const SHELL = ['/', 'index.html', 'style.css', 'app.js', 'manifest.json'];
 
 self.addEventListener('install', (e) => {
@@ -13,12 +13,20 @@ self.addEventListener('activate', (e) => {
   self.clients.claim();
 });
 
+// network-first: always try to fetch the latest version, only fall back to
+// the cache if the network is unavailable (offline). Prevents old cached
+// shell files (app.js, style.css) from sticking around after a deploy.
 self.addEventListener('fetch', (e) => {
   const url = new URL(e.request.url);
-  // never cache TMDB API calls, always go live for status data
-  if (url.hostname.includes('themoviedb.org')) return;
+  if (url.hostname.includes('themoviedb.org')) return; // always live, never cached
 
   e.respondWith(
-    caches.match(e.request).then(cached => cached || fetch(e.request))
+    fetch(e.request)
+      .then(res => {
+        const resClone = res.clone();
+        caches.open(CACHE).then(c => c.put(e.request, resClone));
+        return res;
+      })
+      .catch(() => caches.match(e.request))
   );
 });
