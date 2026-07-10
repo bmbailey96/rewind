@@ -238,7 +238,7 @@ async function fetchDiscover(page = 1) {
     with_release_type: '2|3',
     'primary_release_date.gte': twelveMonthsAgo,
     'primary_release_date.lte': today,
-    'vote_count.gte': 20,
+    'vote_count.gte': 50,
     page,
   });
   return data;
@@ -609,16 +609,37 @@ document.getElementById('show-all-toggle').addEventListener('click', (e) => {
 async function renderDiscover(append = false) {
   const grid = document.getElementById('discover-grid');
   if (!append) grid.innerHTML = '';
-  const data = await fetchDiscover(discoverPage);
-  const filtered = data.results.filter(m =>
-    !isSeen(m) && !skipSet.has(m.id) && !watchlist.some(w => w.id === m.id)
-  );
+
+  const MIN_RESULTS = 12;
+  const MAX_PAGES_PER_LOAD = 6; // safety cap so a fully-triaged profile doesn't spam TMDB forever
+
+  let filtered = [];
+  let pagesChecked = 0;
+  let totalPages = Infinity;
+
+  while (filtered.length < MIN_RESULTS && pagesChecked < MAX_PAGES_PER_LOAD && discoverPage <= totalPages) {
+    const data = await fetchDiscover(discoverPage);
+    totalPages = data.total_pages || totalPages;
+    const pageFiltered = data.results.filter(m =>
+      !isSeen(m) && !skipSet.has(m.id) && !watchlist.some(w => w.id === m.id)
+    );
+    filtered = filtered.concat(pageFiltered);
+    pagesChecked++;
+    discoverPage++;
+  }
+
   lastDiscoverResults = append ? lastDiscoverResults.concat(filtered) : filtered;
   filtered.forEach(m => grid.appendChild(renderCard(m, { context: 'discover' })));
+
+  if (filtered.length === 0) {
+    const note = document.createElement('p');
+    note.className = 'empty-note';
+    note.textContent = "Nothing new right now, looks like you've already added, skipped, or seen everything TMDB's currently returning for the last 12 months. Check back later or hit LOAD MORE STOCK to dig further back in the results.";
+    grid.appendChild(note);
+  }
 }
 
 document.getElementById('discover-more').addEventListener('click', async () => {
-  discoverPage += 1;
   await renderDiscover(true);
 });
 
@@ -643,6 +664,7 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
     document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
     btn.classList.add('active');
     document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+    if (btn.dataset.tab === 'watchlist') renderWatchlist();
   });
 });
 
