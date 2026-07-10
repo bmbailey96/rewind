@@ -36,6 +36,22 @@
       <span class="count-stamp" id="watchlist-count">0 titles</span>
     </div>
     <button id="prune-btn" class="btn-more" style="margin: 0 0 1rem;">CLEAR OUT ANYTHING OLDER THAN 12 MONTHS</button>
+
+    <div class="filter-bar">
+      <div id="genre-chips" class="chip-row" hidden></div>
+      <select id="sort-select" class="sort-select">
+        <option value="status">SORT: STATUS</option>
+        <option value="added">SORT: RECENTLY ADDED</option>
+        <option value="release">SORT: RELEASE DATE</option>
+        <option value="az">SORT: A-Z</option>
+      </select>
+    </div>
+
+    <section id="pinned-section" hidden>
+      <p class="changed-label" style="color: var(--tag-yellow);">PINNED TO THE TOP</p>
+      <div id="pinned-grid" class="card-row wrap" style="margin-bottom: 1.4rem;"></div>
+    </section>
+
     <div id="changed-strip" class="changed-strip" hidden>
       <p class="changed-label">RESTAMPED SINCE LAST VISIT</p>
       <div id="changed-list" class="card-row"></div>

@@ -352,6 +352,49 @@ main {
   margin-top: 0.6rem;
 }
 
+.filter-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.2rem;
+}
+
+.chip-row {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.chip {
+  background: transparent;
+  border: 1px solid var(--ink-soft);
+  color: var(--ink-soft);
+  font-family: 'Special Elite', monospace;
+  font-size: 0.65rem;
+  padding: 0.3rem 0.6rem;
+  border-radius: 12px;
+  cursor: pointer;
+  letter-spacing: 0.03em;
+}
+
+.chip.active {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+}
+
+.sort-select {
+  background: var(--paper);
+  border: 1px solid var(--ink);
+  color: var(--ink);
+  font-family: 'Special Elite', monospace;
+  font-size: 0.68rem;
+  padding: 0.35rem 0.5rem;
+  border-radius: 2px;
+}
+
 /* ---------- toast ---------- */
 
 .toast {

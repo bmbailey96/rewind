@@ -111,10 +111,12 @@ document.getElementById('import-watchlist').addEventListener('change', async (e)
           title: best.title,
           poster_path: best.poster_path,
           release_date: best.release_date || '',
+          genre_ids: best.genre_ids || [],
           addedAt: Date.now(),
           lastStatusCode: null,
           lastStatusLabel: null,
           statusChangedAt: null,
+          pinned: false,
           manualNote: '',
         });
         matched++;
@@ -154,6 +156,16 @@ function skipMovie(id) {
   skipSet.add(id);
   saveSkipSet();
 }
+
+const GENRE_MAP = {
+  28: 'Action', 12: 'Adventure', 16: 'Animation', 35: 'Comedy', 80: 'Crime',
+  99: 'Documentary', 18: 'Drama', 10751: 'Family', 14: 'Fantasy', 36: 'History',
+  27: 'Horror', 10402: 'Music', 9648: 'Mystery', 10749: 'Romance',
+  878: 'Science Fiction', 10770: 'TV Movie', 53: 'Thriller', 10752: 'War', 37: 'Western',
+};
+
+let watchlistGenreFilter = null;
+let watchlistSort = 'status';
 
 // ---------- config ----------
 
@@ -232,6 +244,25 @@ async function fetchReleaseDates(id) {
   return entry ? entry.release_dates : [];
 }
 
+// keywords matched against TMDB/JustWatch provider_name (lowercase, substring match)
+const MY_SERVICES = [
+  'hulu',
+  'prime video', 'amazon prime',
+  'apple tv',
+  'hbo max', 'max',
+  'netflix',
+  'eternal family',
+  'peacock',
+  'paramount',
+  'disney plus', 'disney+',
+  'shudder',
+];
+
+function isMyService(providerName) {
+  const n = (providerName || '').toLowerCase();
+  return MY_SERVICES.some(s => n.includes(s));
+}
+
 // ---------- status logic ----------
 
 // returns { code, label, date }
@@ -242,15 +273,23 @@ async function deriveStatus(movie) {
   ]);
 
   if (providers) {
-    if (providers.free?.length) {
-      return { code: 'free', label: 'FREE ON ' + providers.free[0].provider_name.toUpperCase(), providers: providers.free };
+    const streamingLists = [
+      ...(providers.free || []),
+      ...(providers.flatrate || []),
+      ...(providers.ads || []),
+    ];
+
+    const mine = streamingLists.find(p => isMyService(p.provider_name));
+    if (mine) {
+      return { code: 'free', label: 'STREAMING ON ' + mine.provider_name.toUpperCase(), providers: [mine] };
     }
-    if (providers.flatrate?.length) {
-      return { code: 'free', label: 'STREAMING ON ' + providers.flatrate[0].provider_name.toUpperCase(), providers: providers.flatrate };
+
+    // it's streaming, just not on anything you subscribe to
+    if (streamingLists.length) {
+      const p = streamingLists[0];
+      return { code: 'rent', label: 'ON ' + p.provider_name.toUpperCase() + ' (NOT ONE OF YOURS)', providers: streamingLists };
     }
-    if (providers.ads?.length) {
-      return { code: 'free', label: 'FREE (ADS) ON ' + providers.ads[0].provider_name.toUpperCase(), providers: providers.ads };
-    }
+
     if (providers.rent?.length || providers.buy?.length) {
       const p = providers.rent?.[0] || providers.buy?.[0];
       return { code: 'rent', label: 'RENT/BUY ON ' + p.provider_name.toUpperCase(), providers: providers.rent || providers.buy };
@@ -343,6 +382,13 @@ function renderCard(movie, opts = {}) {
   actions.className = 'card-actions';
 
   if (context === 'watchlist') {
+    const pinBtn = document.createElement('button');
+    const isPinned = watchlist.find(w => w.id === movie.id)?.pinned;
+    pinBtn.className = isPinned ? '' : 'secondary';
+    pinBtn.textContent = isPinned ? '★ PINNED' : '☆ PIN';
+    pinBtn.onclick = () => togglePin(movie.id);
+    actions.appendChild(pinBtn);
+
     const noteBtn = document.createElement('button');
     noteBtn.className = 'secondary';
     noteBtn.textContent = 'NOTE';
@@ -382,10 +428,12 @@ function addToWatchlist(movie) {
     title: movie.title,
     poster_path: movie.poster_path,
     release_date: movie.release_date || movie.primary_release_date || '',
+    genre_ids: movie.genre_ids || [],
     addedAt: Date.now(),
     lastStatusCode: null,
     lastStatusLabel: null,
     statusChangedAt: null,
+    pinned: false,
     manualNote: '',
   });
   saveWatchlist();
@@ -393,6 +441,14 @@ function addToWatchlist(movie) {
   // keep it out of Discover/Search's cached lists so re-renders don't bring it back
   lastDiscoverResults = lastDiscoverResults.filter(m => m.id !== movie.id);
   lastSearchResults = lastSearchResults.filter(m => m.id !== movie.id);
+}
+
+function togglePin(id) {
+  const entry = watchlist.find(w => w.id === id);
+  if (!entry) return;
+  entry.pinned = !entry.pinned;
+  saveWatchlist();
+  renderWatchlist();
 }
 
 function removeFromWatchlist(id) {
@@ -427,18 +483,23 @@ function renderSearchCached() {
 
 async function renderWatchlist() {
   const grid = document.getElementById('watchlist-grid');
+  const pinnedGrid = document.getElementById('pinned-grid');
+  const pinnedSection = document.getElementById('pinned-section');
   const empty = document.getElementById('watchlist-empty');
   const countEl = document.getElementById('watchlist-count');
   const changedStrip = document.getElementById('changed-strip');
   const changedList = document.getElementById('changed-list');
 
   grid.innerHTML = '';
+  pinnedGrid.innerHTML = '';
   changedList.innerHTML = '';
   countEl.textContent = watchlist.length + (watchlist.length === 1 ? ' title' : ' titles');
 
   if (watchlist.length === 0) {
     empty.hidden = false;
     changedStrip.hidden = true;
+    pinnedSection.hidden = true;
+    renderGenreChips();
     return;
   }
   empty.hidden = true;
@@ -459,14 +520,35 @@ async function renderWatchlist() {
   }
   saveWatchlist();
 
-  results.sort((a, b) => {
-    const tierDiff = statusOrder[a.status.code] - statusOrder[b.status.code];
-    if (tierDiff !== 0) return tierDiff;
-    // within the same tier, most recently changed first
-    return (b.entry.statusChangedAt || 0) - (a.entry.statusChangedAt || 0);
+  renderGenreChips();
+
+  const passesFilter = (r) => !watchlistGenreFilter || (r.entry.genre_ids || []).includes(watchlistGenreFilter);
+
+  const pinned = results.filter(r => r.entry.pinned && passesFilter(r));
+  const unpinned = results.filter(r => !r.entry.pinned && passesFilter(r));
+
+  // pinned row: most recently changed first, so a pinned title that just
+  // flipped status jumps to the front of its own row
+  pinned.sort((a, b) => (b.entry.statusChangedAt || 0) - (a.entry.statusChangedAt || 0));
+
+  const sorters = {
+    status: (a, b) => {
+      const tierDiff = statusOrder[a.status.code] - statusOrder[b.status.code];
+      if (tierDiff !== 0) return tierDiff;
+      return (b.entry.statusChangedAt || 0) - (a.entry.statusChangedAt || 0);
+    },
+    added: (a, b) => (b.entry.addedAt || 0) - (a.entry.addedAt || 0),
+    release: (a, b) => (b.entry.release_date || '').localeCompare(a.entry.release_date || ''),
+    az: (a, b) => a.entry.title.localeCompare(b.entry.title),
+  };
+  unpinned.sort(sorters[watchlistSort] || sorters.status);
+
+  pinnedSection.hidden = pinned.length === 0;
+  pinned.forEach(({ entry, status, changed }) => {
+    pinnedGrid.appendChild(renderCard(entry, { context: 'watchlist', status, changed, prevLabel: entry._prevLabel }));
   });
 
-  const changedOnes = results.filter(r => r.changed);
+  const changedOnes = results.filter(r => r.changed && passesFilter(r));
   if (changedOnes.length) {
     changedStrip.hidden = false;
     changedOnes.forEach(({ entry, status }) => {
@@ -476,10 +558,38 @@ async function renderWatchlist() {
     changedStrip.hidden = true;
   }
 
-  results.forEach(({ entry, status, changed }) => {
+  unpinned.forEach(({ entry, status, changed }) => {
     grid.appendChild(renderCard(entry, { context: 'watchlist', status, changed, prevLabel: entry._prevLabel }));
   });
 }
+
+function renderGenreChips() {
+  const wrap = document.getElementById('genre-chips');
+  const present = new Set();
+  watchlist.forEach(w => (w.genre_ids || []).forEach(g => present.add(g)));
+  wrap.innerHTML = '';
+  if (present.size === 0) { wrap.hidden = true; return; }
+  wrap.hidden = false;
+
+  const allChip = document.createElement('button');
+  allChip.className = 'chip' + (watchlistGenreFilter === null ? ' active' : '');
+  allChip.textContent = 'ALL';
+  allChip.onclick = () => { watchlistGenreFilter = null; renderWatchlist(); };
+  wrap.appendChild(allChip);
+
+  [...present].sort((a, b) => (GENRE_MAP[a] || '').localeCompare(GENRE_MAP[b] || '')).forEach(gid => {
+    const chip = document.createElement('button');
+    chip.className = 'chip' + (watchlistGenreFilter === gid ? ' active' : '');
+    chip.textContent = (GENRE_MAP[gid] || 'Other').toUpperCase();
+    chip.onclick = () => { watchlistGenreFilter = gid; renderWatchlist(); };
+    wrap.appendChild(chip);
+  });
+}
+
+document.getElementById('sort-select').addEventListener('change', (e) => {
+  watchlistSort = e.target.value;
+  renderWatchlist();
+});
 
 // ---------- render: discover ----------
 
