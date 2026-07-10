@@ -391,25 +391,36 @@ async function fetchReleaseDates(id) {
 // keywords matched against TMDB/JustWatch provider_name (lowercase, substring match)
 const MY_SERVICES = [
   'hulu',
-  'prime video', 'amazon prime',
-  'apple tv',
+  'amazon prime video', 'prime video',
+  'apple tv plus', 'apple tv+',
   'hbo max', 'max',
   'netflix',
   'eternal family',
   'peacock',
-  'paramount',
+  'paramount plus', 'paramount+',
   'disney plus', 'disney+',
   'shudder',
 ];
 
+// JustWatch lists channel add-ons (e.g. "AMC Plus Apple TV Channel", "Max
+// Amazon Channel") as their own provider entries. Naively matching "apple tv"
+// or "amazon" as a substring would wrongly treat ANY channel sold through
+// those storefronts as something you own. Strip the storefront/channel
+// wrapper first to get the actual underlying service name, then compare.
+function baseServiceName(providerName) {
+  return (providerName || '')
+    .replace(/\s*(Amazon Channel|Apple TV Channel|Roku Premium Channel|Roku Channel)\s*$/i, '')
+    .trim();
+}
+
 function isMyService(providerName) {
-  const n = (providerName || '').toLowerCase();
-  return MY_SERVICES.some(s => n.includes(s));
+  const base = baseServiceName(providerName).toLowerCase();
+  return MY_SERVICES.some(s => base === s || base.includes(s));
 }
 
 // ---------- status logic ----------
 
-// returns { code, label, date }
+// returns { code, label, date, link }
 async function deriveStatus(movie) {
   const [providers, releaseDates] = await Promise.all([
     fetchWatchProviders(movie.id).catch(() => null),
@@ -417,6 +428,7 @@ async function deriveStatus(movie) {
   ]);
 
   if (providers) {
+    const link = providers.link || null;
     const streamingLists = [
       ...(providers.free || []),
       ...(providers.flatrate || []),
@@ -425,18 +437,18 @@ async function deriveStatus(movie) {
 
     const mine = streamingLists.find(p => isMyService(p.provider_name));
     if (mine) {
-      return { code: 'free', label: 'STREAMING ON ' + mine.provider_name.toUpperCase(), providers: [mine] };
+      return { code: 'free', label: 'STREAMING ON ' + baseServiceName(mine.provider_name).toUpperCase(), providers: [mine], link };
     }
 
     // it's streaming, just not on anything you subscribe to
     if (streamingLists.length) {
       const p = streamingLists[0];
-      return { code: 'rent', label: 'ON ' + p.provider_name.toUpperCase() + ' (NOT ONE OF YOURS)', providers: streamingLists };
+      return { code: 'rent', label: 'ON ' + baseServiceName(p.provider_name).toUpperCase() + ' (NOT ONE OF YOURS)', providers: streamingLists, link };
     }
 
     if (providers.rent?.length || providers.buy?.length) {
       const p = providers.rent?.[0] || providers.buy?.[0];
-      return { code: 'rent', label: 'RENT/BUY ON ' + p.provider_name.toUpperCase(), providers: providers.rent || providers.buy };
+      return { code: 'rent', label: 'RENT/BUY ON ' + baseServiceName(p.provider_name).toUpperCase(), providers: providers.rent || providers.buy, link };
     }
   }
 
@@ -494,6 +506,16 @@ function renderCard(movie, opts = {}) {
       stampWrap.appendChild(ghost);
     }
     card.appendChild(stampWrap);
+
+    if (status.link && (status.code === 'rent' || status.code === 'free')) {
+      const priceLink = document.createElement('a');
+      priceLink.href = status.link;
+      priceLink.target = '_blank';
+      priceLink.rel = 'noopener';
+      priceLink.className = 'price-link';
+      priceLink.textContent = status.code === 'rent' ? 'CHECK PRICE ↗' : 'ALL OPTIONS ↗';
+      card.appendChild(priceLink);
+    }
   }
 
   const title = document.createElement('p');

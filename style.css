@@ -267,6 +267,19 @@ main {
   padding-top: 0.4rem;
 }
 
+.price-link {
+  display: block;
+  font-family: 'Special Elite', monospace;
+  font-size: 0.62rem;
+  color: var(--stamp-red);
+  text-decoration: none;
+  margin: -0.15rem 0 0.4rem;
+}
+
+.price-link:hover {
+  text-decoration: underline;
+}
+
 .new-tag {
   display: inline-block;
   background: var(--tag-yellow);
