@@ -352,6 +352,17 @@ main {
   margin: 0 0 0.7rem;
 }
 
+#hidden-count-note {
+  cursor: pointer;
+  text-decoration: underline dashed;
+  color: var(--stamp-red);
+}
+
+#filters-panel {
+  margin: -0.4rem 0 1rem;
+  padding-top: 0.6rem;
+}
+
 .import-note code {
   background: rgba(28,25,23,0.08);
   padding: 0.1rem 0.3rem;

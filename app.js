@@ -443,6 +443,9 @@ function getWatchmodeKey() {
 // Best-effort only: if Watchmode's ID-matching format ever changes, this
 // fails silently and the app just falls back to whatever TMDB already found.
 // Returns { free: {provider_name, link} | null, lowestRent: {price, provider_name} | null }
+// Best-effort only: if Watchmode's ID-matching format ever changes, this
+// fails silently and the app just falls back to whatever TMDB already found.
+// Returns { free: {provider_name, link} | null }
 async function checkWatchmode(tmdbId) {
   const key = getWatchmodeKey();
   if (!key) return null;
@@ -465,21 +468,9 @@ async function checkWatchmode(tmdbId) {
       return null;
     }
     const sources = await sourcesRes.json();
-
     const free = sources.find(s => s.type === 'free');
-    const rentOffers = sources.filter(s => s.type === 'rent' && typeof s.price === 'number');
-    let lowestRent = null;
-    if (rentOffers.length) {
-      const cheapest = rentOffers.reduce((min, s) => (s.price < min.price ? s : min), rentOffers[0]);
-      lowestRent = { price: cheapest.price, provider_name: cheapest.name };
-    } else {
-      console.warn('[Watchmode] no priced rent offers in sources for', tmdbId, sources);
-    }
 
-    return {
-      free: free ? { provider_name: free.name, link: free.web_url } : null,
-      lowestRent,
-    };
+    return { free: free ? { provider_name: free.name, link: free.web_url } : null };
   } catch (e) {
     console.warn('[Watchmode] request threw', e);
     return null;
@@ -540,15 +531,7 @@ async function deriveStatus(movie) {
       const p = providers.rent?.[0] || providers.buy?.[0];
       const wm = await checkWatchmodeCached(movie);
       if (wm?.free) return { code: 'free', label: 'FREE ON ' + wm.free.provider_name.toUpperCase(), link: wm.free.link || link };
-      if (wm?.lowestRent) {
-        return {
-          code: 'rent',
-          label: '$' + wm.lowestRent.price.toFixed(2) + ' ON ' + wm.lowestRent.provider_name.toUpperCase() + ' (CHECK FOR LOWER)',
-          providers: providers.rent || providers.buy,
-          link,
-        };
-      }
-      return { code: 'rent', label: 'RENT/BUY ON ' + baseServiceName(p.provider_name).toUpperCase(), providers: providers.rent || providers.buy, link };
+      return { code: 'rent', label: 'AVAILABLE TO RENT ON ' + baseServiceName(p.provider_name).toUpperCase(), providers: providers.rent || providers.buy, link };
     }
   }
 
@@ -564,9 +547,6 @@ async function deriveStatus(movie) {
 
   const wm = await checkWatchmodeCached(movie);
   if (wm?.free) return { code: 'free', label: 'FREE ON ' + wm.free.provider_name.toUpperCase(), link: wm.free.link };
-  if (wm?.lowestRent) {
-    return { code: 'rent', label: '$' + wm.lowestRent.price.toFixed(2) + ' ON ' + wm.lowestRent.provider_name.toUpperCase() + ' (CHECK FOR LOWER)' };
-  }
 
   return { code: 'nodata', label: 'NO DATE YET' };
 }
@@ -619,7 +599,7 @@ function renderCard(movie, opts = {}) {
       priceLink.target = '_blank';
       priceLink.rel = 'noopener';
       priceLink.className = 'price-link';
-      priceLink.textContent = status.code === 'rent' ? 'COMPARE ALL PRICES ↗' : 'ALL OPTIONS ↗';
+      priceLink.textContent = status.code === 'rent' ? 'CHECK PRICE ↗' : 'ALL OPTIONS ↗';
       card.appendChild(priceLink);
     }
   }
@@ -658,7 +638,16 @@ function renderCard(movie, opts = {}) {
     removeBtn.textContent = 'REMOVE';
     removeBtn.onclick = () => removeFromWatchlist(movie.id);
     actions.appendChild(removeBtn);
+  } else if (context === 'search') {
+    // search results persist and just reflect ON CARD state, since re-searching
+    // the same title later should show it's already added, not make it vanish
+    const addBtn = document.createElement('button');
+    addBtn.textContent = inList ? 'ON CARD' : 'ADD TO CARD';
+    addBtn.disabled = inList;
+    addBtn.onclick = () => { addToWatchlist(movie); addBtn.textContent = 'ON CARD'; addBtn.disabled = true; };
+    actions.appendChild(addBtn);
   } else {
+    // discover: a queue to clear, both actions remove the card for good
     const addBtn = document.createElement('button');
     addBtn.textContent = inList ? 'ON CARD' : 'ADD TO CARD';
     addBtn.disabled = inList;
@@ -730,7 +719,7 @@ function renderDiscoverCached() {
 }
 function renderSearchCached() {
   document.getElementById('search-grid').querySelectorAll('.rental-card').forEach(el => el.remove());
-  lastSearchResults.forEach(m => document.getElementById('search-grid').appendChild(renderCard(m, { context: 'discover', markSeen: true })));
+  lastSearchResults.forEach(m => document.getElementById('search-grid').appendChild(renderCard(m, { context: 'search', markSeen: true })));
 }
 
 async function renderWatchlist() {
@@ -803,7 +792,7 @@ async function renderWatchlist() {
   const hiddenNote = document.getElementById('hidden-count-note');
   if (hiddenCount > 0 && !watchlistShowAll) {
     hiddenNote.hidden = false;
-    hiddenNote.textContent = `${hiddenCount} title${hiddenCount === 1 ? '' : 's'} hidden, not confirmed streaming yet`;
+    hiddenNote.textContent = `${hiddenCount} title${hiddenCount === 1 ? '' : 's'} hidden, not confirmed streaming yet — tap to show`;
   } else {
     hiddenNote.hidden = true;
   }
@@ -856,11 +845,26 @@ document.getElementById('sort-select').addEventListener('change', (e) => {
   renderWatchlist();
 });
 
-document.getElementById('show-all-toggle').addEventListener('click', (e) => {
-  watchlistShowAll = !watchlistShowAll;
-  e.target.textContent = watchlistShowAll ? 'SHOWING ALL' : 'SHOW ALL';
-  e.target.classList.toggle('active', watchlistShowAll);
+function setShowAll(value) {
+  watchlistShowAll = value;
+  const toggleBtn = document.getElementById('show-all-toggle');
+  toggleBtn.textContent = watchlistShowAll ? 'SHOWING ALL' : 'SHOW ALL';
+  toggleBtn.classList.toggle('active', watchlistShowAll);
   renderWatchlist();
+}
+
+document.getElementById('filters-toggle').addEventListener('click', (e) => {
+  const panel = document.getElementById('filters-panel');
+  panel.hidden = !panel.hidden;
+  e.target.textContent = panel.hidden ? 'FILTERS ▾' : 'FILTERS ▴';
+});
+
+document.getElementById('show-all-toggle').addEventListener('click', () => {
+  setShowAll(!watchlistShowAll);
+});
+
+document.getElementById('hidden-count-note').addEventListener('click', () => {
+  setShowAll(true);
 });
 
 // ---------- render: discover ----------
@@ -868,6 +872,8 @@ document.getElementById('show-all-toggle').addEventListener('click', (e) => {
 async function renderDiscover(append = false) {
   const grid = document.getElementById('discover-grid');
   if (!append) grid.innerHTML = '';
+  // always clear any previous empty-state message before deciding whether to show a new one
+  grid.querySelectorAll('.empty-note').forEach(el => el.remove());
 
   const MIN_RESULTS = 12;
   const MAX_PAGES_PER_LOAD = 6; // safety cap so a fully-triaged profile doesn't spam TMDB forever
@@ -890,10 +896,17 @@ async function renderDiscover(append = false) {
   lastDiscoverResults = append ? lastDiscoverResults.concat(filtered) : filtered;
   filtered.forEach(m => grid.appendChild(renderCard(m, { context: 'discover' })));
 
+  const loadMoreBtn = document.getElementById('discover-more');
+  const exhausted = discoverPage > totalPages;
+  loadMoreBtn.disabled = exhausted;
+  loadMoreBtn.textContent = exhausted ? 'NOTHING FURTHER BACK' : 'LOAD MORE STOCK';
+
   if (filtered.length === 0) {
     const note = document.createElement('p');
     note.className = 'empty-note';
-    note.textContent = "Nothing new right now, looks like you've already added, skipped, or seen everything TMDB's currently returning for the last 12 months. Check back later or hit LOAD MORE STOCK to dig further back in the results.";
+    note.textContent = exhausted
+      ? "That's everything TMDB has for the last 12 months, you've triaged all of it."
+      : "Nothing new right now, looks like you've already added, skipped, or seen everything TMDB's currently returning for the last 12 months. Check back later or hit LOAD MORE STOCK to dig further back in the results.";
     grid.appendChild(note);
   }
 }
@@ -912,10 +925,12 @@ document.getElementById('search-form').addEventListener('submit', async (e) => {
   grid.innerHTML = '';
   const results = await searchMovies(q);
   lastSearchResults = results;
-  results.forEach(m => grid.appendChild(renderCard(m, { context: 'discover', markSeen: true })));
+  results.forEach(m => grid.appendChild(renderCard(m, { context: 'search', markSeen: true })));
 });
 
 // ---------- tabs ----------
+
+document.getElementById('search-input').addEventListener('focus', (e) => e.target.select());
 
 document.querySelectorAll('.tab-btn').forEach(btn => {
   btn.addEventListener('click', () => {
@@ -924,6 +939,11 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
     btn.classList.add('active');
     document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
     if (btn.dataset.tab === 'watchlist') renderWatchlist();
+    if (btn.dataset.tab === 'search') {
+      document.getElementById('search-input').value = '';
+      document.getElementById('search-grid').innerHTML = '';
+      lastSearchResults = [];
+    }
   });
 });
 

@@ -38,17 +38,18 @@
     <button id="prune-btn" class="btn-more" style="margin: 0 0 1rem;">CLEAR OUT ANYTHING OLDER THAN 12 MONTHS</button>
 
     <div class="filter-bar">
+      <button id="filters-toggle" class="chip">FILTERS ▾</button>
+      <button id="show-all-toggle" class="chip">SHOW ALL</button>
+    </div>
+    <div id="filters-panel" hidden>
       <div id="genre-chips" class="chip-row" hidden></div>
-      <div class="sort-group">
-        <select id="sort-select" class="sort-select">
-          <option value="status">SORT: STATUS</option>
-          <option value="recommended">SORT: RECOMMENDED</option>
-          <option value="added">SORT: RECENTLY ADDED</option>
-          <option value="release">SORT: RELEASE DATE</option>
-          <option value="az">SORT: A-Z</option>
-        </select>
-        <button id="show-all-toggle" class="chip">SHOW ALL</button>
-      </div>
+      <select id="sort-select" class="sort-select">
+        <option value="status">SORT: STATUS</option>
+        <option value="recommended">SORT: RECOMMENDED</option>
+        <option value="added">SORT: RECENTLY ADDED</option>
+        <option value="release">SORT: RELEASE DATE</option>
+        <option value="az">SORT: A-Z</option>
+      </select>
     </div>
     <p id="hidden-count-note" class="import-note" hidden></p>
 
