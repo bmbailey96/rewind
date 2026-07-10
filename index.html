@@ -39,13 +39,18 @@
 
     <div class="filter-bar">
       <div id="genre-chips" class="chip-row" hidden></div>
-      <select id="sort-select" class="sort-select">
-        <option value="status">SORT: STATUS</option>
-        <option value="added">SORT: RECENTLY ADDED</option>
-        <option value="release">SORT: RELEASE DATE</option>
-        <option value="az">SORT: A-Z</option>
-      </select>
+      <div class="sort-group">
+        <select id="sort-select" class="sort-select">
+          <option value="status">SORT: STATUS</option>
+          <option value="recommended">SORT: RECOMMENDED</option>
+          <option value="added">SORT: RECENTLY ADDED</option>
+          <option value="release">SORT: RELEASE DATE</option>
+          <option value="az">SORT: A-Z</option>
+        </select>
+        <button id="show-all-toggle" class="chip">SHOW ALL</button>
+      </div>
     </div>
+    <p id="hidden-count-note" class="import-note" hidden></p>
 
     <section id="pinned-section" hidden>
       <p class="changed-label" style="color: var(--tag-yellow);">PINNED TO THE TOP</p>

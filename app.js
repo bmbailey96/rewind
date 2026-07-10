@@ -164,8 +164,24 @@ const GENRE_MAP = {
   878: 'Science Fiction', 10770: 'TV Movie', 53: 'Thriller', 10752: 'War', 37: 'Western',
 };
 
+// weights derived from analyzing genre frequency across your 4.5-5 star
+// rated Letterboxd titles, higher = shows up more often in what you love
+const GENRE_AFFINITY = {
+  28: 0.0741, 12: 0.0741, 878: 0.0691, 35: 0.1123, 53: 0.0963,
+  18: 0.1679, 80: 0.0667, 9648: 0.0531, 10402: 0.0148, 10749: 0.0333,
+  27: 0.0877, 10752: 0.0123, 14: 0.0481, 37: 0.0074, 16: 0.0309,
+  10751: 0.0346, 36: 0.0123, 99: 0.0049,
+};
+
+function affinityScore(genreIds) {
+  if (!genreIds || !genreIds.length) return 0;
+  const sum = genreIds.reduce((s, g) => s + (GENRE_AFFINITY[g] || 0), 0);
+  return sum / genreIds.length;
+}
+
 let watchlistGenreFilter = null;
 let watchlistSort = 'status';
+let watchlistShowAll = false;
 
 // ---------- config ----------
 
@@ -499,6 +515,7 @@ async function renderWatchlist() {
     empty.hidden = false;
     changedStrip.hidden = true;
     pinnedSection.hidden = true;
+    document.getElementById('hidden-count-note').hidden = true;
     renderGenreChips();
     return;
   }
@@ -523,9 +540,12 @@ async function renderWatchlist() {
   renderGenreChips();
 
   const passesFilter = (r) => !watchlistGenreFilter || (r.entry.genre_ids || []).includes(watchlistGenreFilter);
+  const passesStatusGate = (r) => watchlistShowAll || r.status.code === 'free' || r.status.code === 'rent';
 
   const pinned = results.filter(r => r.entry.pinned && passesFilter(r));
-  const unpinned = results.filter(r => !r.entry.pinned && passesFilter(r));
+  // pinned always shows regardless of status, that's the point of pinning
+  const unpinned = results.filter(r => !r.entry.pinned && passesFilter(r) && passesStatusGate(r));
+  const hiddenCount = results.filter(r => !r.entry.pinned && passesFilter(r) && !passesStatusGate(r)).length;
 
   // pinned row: most recently changed first, so a pinned title that just
   // flipped status jumps to the front of its own row
@@ -540,8 +560,17 @@ async function renderWatchlist() {
     added: (a, b) => (b.entry.addedAt || 0) - (a.entry.addedAt || 0),
     release: (a, b) => (b.entry.release_date || '').localeCompare(a.entry.release_date || ''),
     az: (a, b) => a.entry.title.localeCompare(b.entry.title),
+    recommended: (a, b) => affinityScore(b.entry.genre_ids) - affinityScore(a.entry.genre_ids),
   };
   unpinned.sort(sorters[watchlistSort] || sorters.status);
+
+  const hiddenNote = document.getElementById('hidden-count-note');
+  if (hiddenCount > 0 && !watchlistShowAll) {
+    hiddenNote.hidden = false;
+    hiddenNote.textContent = `${hiddenCount} title${hiddenCount === 1 ? '' : 's'} hidden, not confirmed streaming yet`;
+  } else {
+    hiddenNote.hidden = true;
+  }
 
   pinnedSection.hidden = pinned.length === 0;
   pinned.forEach(({ entry, status, changed }) => {
@@ -588,6 +617,13 @@ function renderGenreChips() {
 
 document.getElementById('sort-select').addEventListener('change', (e) => {
   watchlistSort = e.target.value;
+  renderWatchlist();
+});
+
+document.getElementById('show-all-toggle').addEventListener('click', (e) => {
+  watchlistShowAll = !watchlistShowAll;
+  e.target.textContent = watchlistShowAll ? 'SHOWING ALL' : 'SHOW ALL';
+  e.target.classList.toggle('active', watchlistShowAll);
   renderWatchlist();
 });
 
