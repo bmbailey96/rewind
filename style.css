@@ -319,6 +319,39 @@ main {
   border-radius: 2px;
 }
 
+.import-block {
+  background: var(--paper-dark);
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  padding: 1rem;
+  margin-bottom: 1.2rem;
+}
+
+.import-block h3 {
+  font-family: 'Special Elite', monospace;
+  font-size: 0.85rem;
+  margin: 0 0 0.4rem;
+}
+
+.import-note {
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+  margin: 0 0 0.7rem;
+}
+
+.import-note code {
+  background: rgba(28,25,23,0.08);
+  padding: 0.1rem 0.3rem;
+  border-radius: 2px;
+}
+
+.import-status {
+  font-family: 'Special Elite', monospace;
+  font-size: 0.72rem;
+  color: var(--stamp-teal);
+  margin-top: 0.6rem;
+}
+
 /* ---------- toast ---------- */
 
 .toast {

@@ -1,3 +1,157 @@
+// ---------- letterboxd import ----------
+
+const SEEN_KEY = 'rewind-seen-v1';
+let seenSet = loadSeenSet();
+
+function loadSeenSet() {
+  try {
+    const raw = localStorage.getItem(SEEN_KEY);
+    return raw ? new Set(JSON.parse(raw)) : new Set();
+  } catch (e) {
+    return new Set();
+  }
+}
+
+function saveSeenSet() {
+  localStorage.setItem(SEEN_KEY, JSON.stringify([...seenSet]));
+}
+
+function normalizeTitle(title) {
+  return (title || '')
+    .toLowerCase()
+    .normalize('NFKD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]/g, '');
+}
+
+function seenKey(title, year) {
+  return normalizeTitle(title) + '|' + (year || '');
+}
+
+function isSeen(movie) {
+  const year = (movie.release_date || movie.primary_release_date || '').slice(0, 4);
+  return seenSet.has(seenKey(movie.title, year));
+}
+
+// minimal CSV parser, handles quoted fields with commas/newlines
+function parseCSV(text) {
+  const rows = [];
+  let row = [];
+  let field = '';
+  let inQuotes = false;
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    if (inQuotes) {
+      if (c === '"') {
+        if (text[i + 1] === '"') { field += '"'; i++; }
+        else inQuotes = false;
+      } else field += c;
+    } else {
+      if (c === '"') inQuotes = true;
+      else if (c === ',') { row.push(field); field = ''; }
+      else if (c === '\n' || c === '\r') {
+        if (c === '\r' && text[i + 1] === '\n') i++;
+        row.push(field); field = '';
+        if (row.length > 1 || row[0] !== '') rows.push(row);
+        row = [];
+      } else field += c;
+    }
+  }
+  if (field !== '' || row.length) { row.push(field); rows.push(row); }
+  if (!rows.length) return [];
+  const header = rows[0];
+  return rows.slice(1).map(r => {
+    const obj = {};
+    header.forEach((h, idx) => obj[h.trim()] = r[idx] || '');
+    return obj;
+  });
+}
+
+document.getElementById('import-watched').addEventListener('change', async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const text = await file.text();
+  const rows = parseCSV(text);
+  let added = 0;
+  rows.forEach(r => {
+    const name = r.Name || r.name;
+    const year = r.Year || r.year;
+    if (!name) return;
+    seenSet.add(seenKey(name, year));
+    added++;
+  });
+  saveSeenSet();
+  document.getElementById('watched-status').textContent = `Loaded ${added} seen titles. New Arrivals will filter them out from now on.`;
+  renderDiscover();
+});
+
+document.getElementById('import-watchlist').addEventListener('change', async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const text = await file.text();
+  const rows = parseCSV(text).filter(r => r.Name || r.name);
+  const statusEl = document.getElementById('watchlist-import-status');
+  let matched = 0, skipped = 0;
+
+  for (let i = 0; i < rows.length; i++) {
+    const name = rows[i].Name || rows[i].name;
+    const year = rows[i].Year || rows[i].year;
+    statusEl.textContent = `Matching ${i + 1} / ${rows.length}... (${matched} added so far)`;
+    try {
+      const results = await searchMovies(name);
+      let best = results[0];
+      if (year) {
+        const withYear = results.find(m => (m.release_date || '').slice(0, 4) === String(year));
+        if (withYear) best = withYear;
+      }
+      if (best && !watchlist.some(w => w.id === best.id)) {
+        watchlist.push({
+          id: best.id,
+          title: best.title,
+          poster_path: best.poster_path,
+          release_date: best.release_date || '',
+          addedAt: Date.now(),
+          lastStatusCode: null,
+          lastStatusLabel: null,
+          manualNote: '',
+        });
+        matched++;
+      } else if (!best) {
+        skipped++;
+      }
+    } catch (err) {
+      skipped++;
+    }
+    // gentle pacing so we don't hammer TMDB
+    await new Promise(res => setTimeout(res, 120));
+  }
+  saveWatchlist();
+  statusEl.textContent = `Done. ${matched} added to Your Card, ${skipped} couldn't be matched.`;
+  renderWatchlist();
+});
+
+// ---------- skip list ----------
+
+const SKIP_KEY = 'rewind-skipped-v1';
+let skipSet = loadSkipSet();
+
+function loadSkipSet() {
+  try {
+    const raw = localStorage.getItem(SKIP_KEY);
+    return raw ? new Set(JSON.parse(raw)) : new Set();
+  } catch (e) {
+    return new Set();
+  }
+}
+
+function saveSkipSet() {
+  localStorage.setItem(SKIP_KEY, JSON.stringify([...skipSet]));
+}
+
+function skipMovie(id) {
+  skipSet.add(id);
+  saveSkipSet();
+}
+
 // ---------- config ----------
 
 const TMDB_KEY = '000802da6224e125437187b196cde898';
@@ -49,10 +203,11 @@ async function fetchDiscover(page = 1) {
   const twelveMonthsAgo = dateMonthsAgo(12);
   const data = await tmdbGet('/discover/movie', {
     region: REGION,
-    sort_by: 'primary_release_date.desc',
+    sort_by: 'popularity.desc',
     with_release_type: '2|3',
     'primary_release_date.gte': twelveMonthsAgo,
     'primary_release_date.lte': today,
+    'vote_count.gte': 20,
     page,
   });
   return data;
@@ -160,6 +315,15 @@ function renderCard(movie, opts = {}) {
   title.textContent = movie.title;
   card.appendChild(title);
 
+  if (opts.markSeen && isSeen(movie)) {
+    const seenTag = document.createElement('span');
+    seenTag.className = 'new-tag';
+    seenTag.style.background = 'var(--ink-soft)';
+    seenTag.style.color = 'var(--paper)';
+    seenTag.textContent = 'ALREADY SEEN';
+    card.insertBefore(seenTag, title);
+  }
+
   const meta = document.createElement('p');
   meta.className = 'card-meta';
   meta.textContent = year || 'year unknown';
@@ -190,8 +354,16 @@ function renderCard(movie, opts = {}) {
     const addBtn = document.createElement('button');
     addBtn.textContent = inList ? 'ON CARD' : 'ADD TO CARD';
     addBtn.disabled = inList;
-    addBtn.onclick = () => addToWatchlist(movie);
+    addBtn.onclick = () => { addToWatchlist(movie); card.remove(); };
     actions.appendChild(addBtn);
+
+    if (!inList) {
+      const skipBtn = document.createElement('button');
+      skipBtn.className = 'secondary';
+      skipBtn.textContent = 'SKIP';
+      skipBtn.onclick = () => { skipMovie(movie.id); card.remove(); };
+      actions.appendChild(skipBtn);
+    }
   }
 
   card.appendChild(actions);
@@ -210,12 +382,14 @@ function addToWatchlist(movie) {
     addedAt: Date.now(),
     lastStatusCode: null,
     lastStatusLabel: null,
+    statusChangedAt: null,
     manualNote: '',
   });
   saveWatchlist();
   showToast(movie.title + ' — added to your card');
-  renderDiscoverCached();
-  renderSearchCached();
+  // keep it out of Discover/Search's cached lists so re-renders don't bring it back
+  lastDiscoverResults = lastDiscoverResults.filter(m => m.id !== movie.id);
+  lastSearchResults = lastSearchResults.filter(m => m.id !== movie.id);
 }
 
 function removeFromWatchlist(id) {
@@ -245,7 +419,7 @@ function renderDiscoverCached() {
 }
 function renderSearchCached() {
   document.getElementById('search-grid').querySelectorAll('.rental-card').forEach(el => el.remove());
-  lastSearchResults.forEach(m => document.getElementById('search-grid').appendChild(renderCard(m, { context: 'discover' })));
+  lastSearchResults.forEach(m => document.getElementById('search-grid').appendChild(renderCard(m, { context: 'discover', markSeen: true })));
 }
 
 async function renderWatchlist() {
@@ -272,6 +446,9 @@ async function renderWatchlist() {
   for (const entry of watchlist) {
     const status = await deriveStatus(entry);
     const changed = entry.lastStatusCode !== null && entry.lastStatusCode !== status.code;
+    if (changed || entry.lastStatusCode === null) {
+      entry.statusChangedAt = Date.now();
+    }
     results.push({ entry, status, changed });
     entry._prevLabel = entry.lastStatusLabel;
     entry.lastStatusCode = status.code;
@@ -279,7 +456,12 @@ async function renderWatchlist() {
   }
   saveWatchlist();
 
-  results.sort((a, b) => statusOrder[a.status.code] - statusOrder[b.status.code]);
+  results.sort((a, b) => {
+    const tierDiff = statusOrder[a.status.code] - statusOrder[b.status.code];
+    if (tierDiff !== 0) return tierDiff;
+    // within the same tier, most recently changed first
+    return (b.entry.statusChangedAt || 0) - (a.entry.statusChangedAt || 0);
+  });
 
   const changedOnes = results.filter(r => r.changed);
   if (changedOnes.length) {
@@ -302,8 +484,11 @@ async function renderDiscover(append = false) {
   const grid = document.getElementById('discover-grid');
   if (!append) grid.innerHTML = '';
   const data = await fetchDiscover(discoverPage);
-  lastDiscoverResults = append ? lastDiscoverResults.concat(data.results) : data.results;
-  data.results.forEach(m => grid.appendChild(renderCard(m, { context: 'discover' })));
+  const filtered = data.results.filter(m =>
+    !isSeen(m) && !skipSet.has(m.id) && !watchlist.some(w => w.id === m.id)
+  );
+  lastDiscoverResults = append ? lastDiscoverResults.concat(filtered) : filtered;
+  filtered.forEach(m => grid.appendChild(renderCard(m, { context: 'discover' })));
 }
 
 document.getElementById('discover-more').addEventListener('click', async () => {
@@ -321,7 +506,7 @@ document.getElementById('search-form').addEventListener('submit', async (e) => {
   grid.innerHTML = '';
   const results = await searchMovies(q);
   lastSearchResults = results;
-  results.forEach(m => grid.appendChild(renderCard(m, { context: 'discover' })));
+  results.forEach(m => grid.appendChild(renderCard(m, { context: 'discover', markSeen: true })));
 });
 
 // ---------- tabs ----------

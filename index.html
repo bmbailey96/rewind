@@ -24,6 +24,7 @@
     <button class="tab-btn active" data-tab="watchlist">YOUR CARD</button>
     <button class="tab-btn" data-tab="discover">NEW ARRIVALS</button>
     <button class="tab-btn" data-tab="search">SEARCH THE CATALOG</button>
+    <button class="tab-btn" data-tab="import">IMPORT</button>
   </nav>
 </header>
 
@@ -60,6 +61,24 @@
       <button type="submit">FIND IT</button>
     </form>
     <div id="search-grid" class="card-row wrap"></div>
+  </section>
+
+  <section id="tab-import" class="tab-panel">
+    <div class="panel-head">
+      <h2>Import from Letterboxd</h2>
+    </div>
+    <div class="import-block">
+      <h3>Already Seen</h3>
+      <p class="import-note">Upload <code>watched.csv</code> from your Letterboxd export. New Arrivals will stop showing you anything already on this list.</p>
+      <input type="file" id="import-watched" accept=".csv">
+      <p id="watched-status" class="import-status"></p>
+    </div>
+    <div class="import-block">
+      <h3>Existing Watchlist</h3>
+      <p class="import-note">Upload <code>watchlist.csv</code>. Every title gets matched against TMDB and dropped onto Your Card. Takes a minute for a few hundred titles, don't close the tab.</p>
+      <input type="file" id="import-watchlist" accept=".csv">
+      <p id="watchlist-import-status" class="import-status"></p>
+    </div>
   </section>
 
 </main>
