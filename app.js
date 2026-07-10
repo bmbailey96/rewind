@@ -387,13 +387,6 @@ function renderCard(movie, opts = {}) {
   meta.textContent = year || 'year unknown';
   card.appendChild(meta);
 
-  if (context === 'watchlist' && watchlist.find(w => w.id === movie.id)?.manualNote) {
-    const note = document.createElement('p');
-    note.className = 'card-note';
-    note.textContent = watchlist.find(w => w.id === movie.id).manualNote;
-    card.appendChild(note);
-  }
-
   const actions = document.createElement('div');
   actions.className = 'card-actions';
 
@@ -404,12 +397,6 @@ function renderCard(movie, opts = {}) {
     pinBtn.textContent = isPinned ? '★ PINNED' : '☆ PIN';
     pinBtn.onclick = () => togglePin(movie.id);
     actions.appendChild(pinBtn);
-
-    const noteBtn = document.createElement('button');
-    noteBtn.className = 'secondary';
-    noteBtn.textContent = 'NOTE';
-    noteBtn.onclick = () => promptNote(movie.id);
-    actions.appendChild(noteBtn);
 
     const removeBtn = document.createElement('button');
     removeBtn.textContent = 'REMOVE';
@@ -469,16 +456,6 @@ function togglePin(id) {
 
 function removeFromWatchlist(id) {
   watchlist = watchlist.filter(w => w.id !== id);
-  saveWatchlist();
-  renderWatchlist();
-}
-
-function promptNote(id) {
-  const entry = watchlist.find(w => w.id === id);
-  if (!entry) return;
-  const note = window.prompt('Rumor / note for ' + entry.title, entry.manualNote || '');
-  if (note === null) return;
-  entry.manualNote = note.trim();
   saveWatchlist();
   renderWatchlist();
 }
