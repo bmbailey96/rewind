@@ -340,6 +340,7 @@ function loadWatchlist() {
 
 function saveWatchlist() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(watchlist));
+  scheduleEmailSync();
 }
 
 // ---------- tmdb calls ----------
@@ -361,14 +362,15 @@ function dateMonthsAgo(months) {
 
 async function fetchDiscover(page = 1) {
   const today = new Date().toISOString().slice(0, 10);
-  const twelveMonthsAgo = dateMonthsAgo(12);
+  const month = document.getElementById('release-month').value;
+  const start = month ? month + '-01' : dateMonthsAgo(12);
+  const end = month ? new Date(Date.UTC(Number(month.slice(0,4)), Number(month.slice(5,7)), 0)).toISOString().slice(0,10) : today;
   const data = await tmdbGet('/discover/movie', {
     region: REGION,
-    sort_by: 'popularity.desc',
+    sort_by: document.getElementById('discover-sort').value,
     with_release_type: '2|3',
-    'primary_release_date.gte': twelveMonthsAgo,
-    'primary_release_date.lte': today,
-    'vote_count.gte': 50,
+    'release_date.gte': start,
+    'release_date.lte': end,
     page,
   });
   return data;
@@ -481,8 +483,8 @@ async function checkWatchmodeCached(entry) {
 // returns { code, label, date, link }
 async function deriveStatus(movie) {
   const [providers, releaseDates] = await Promise.all([
-    fetchWatchProviders(movie.id).catch(() => null),
-    fetchReleaseDates(movie.id).catch(() => []),
+    fetchWatchProviders(movie.id),
+    fetchReleaseDates(movie.id),
   ]);
 
   if (providers) {
@@ -524,7 +526,8 @@ async function deriveStatus(movie) {
     }
   }
 
-  const digital = releaseDates.find(r => r.type === RELEASE_TYPE_DIGITAL);
+  const digitalDates = releaseDates.filter(r => r.type === RELEASE_TYPE_DIGITAL).sort((a,b) => a.release_date.localeCompare(b.release_date));
+  const digital = digitalDates.find(r => r.release_date.slice(0,10) <= new Date().toISOString().slice(0,10)) || digitalDates[0];
   if (digital) {
     const d = new Date(digital.release_date);
     const today = new Date();
@@ -537,7 +540,9 @@ async function deriveStatus(movie) {
   const wm = await checkWatchmodeCached(movie);
   if (wm?.free) return { code: 'free', label: 'FREE ON ' + wm.free.provider_name.toUpperCase(), link: wm.free.link };
 
-  return { code: 'nodata', label: 'NO DATE YET' };
+  const theatrical = releaseDates.filter(r => [2,3].includes(r.type)).sort((a,b) => a.release_date.localeCompare(b.release_date)).find(r => new Date(r.release_date) > new Date());
+  if (theatrical) return {code:'notyet',label:'US THEATRICAL ' + new Date(theatrical.release_date).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}),date:theatrical.release_date};
+  return { code: 'nodata', label: 'NO STREAMING DATE YET' };
 }
 
 // ---------- rendering helpers ----------
@@ -744,8 +749,10 @@ async function renderWatchlist() {
   const results = [];
 
   for (const entry of watchlist) {
-    const status = await deriveStatus(entry);
-    const changed = entry.lastStatusCode !== null && entry.lastStatusCode !== status.code;
+    let status;
+    try { status = await deriveStatus(entry); }
+    catch (err) { status = {code:entry.lastStatusCode || 'nodata',label:entry.lastStatusLabel || 'LOOKUP UNAVAILABLE; TRY AGAIN'}; }
+    const changed = entry.lastStatusLabel != null && (entry.lastStatusCode !== status.code || entry.lastStatusLabel !== status.label);
     if (changed || entry.lastStatusCode === null) {
       entry.statusChangedAt = Date.now();
     }
@@ -933,12 +940,63 @@ async function init() {
       if (statusEl) statusEl.textContent = 'Could not reach sync, showing local data.';
     }
   }
-  renderWatchlist();
-  renderDiscover();
+  if (!localStorage.getItem('rewind-coyote-seeded-v1')) {
+    try {
+      if (!watchlist.some(m=>m.id === 1204680)) addToWatchlist(await tmdbGet('/movie/1204680'));
+      localStorage.setItem('rewind-coyote-seeded-v1','1');
+    } catch (err) { showToast('Could not add Coyote vs. Acme. Search the catalog to try again.'); }
+  }
+  renderWatchlist().catch(err=>showToast(err.message));
+  renderDiscover().catch(err=>showToast(err.message));
 }
 
-init();
+// Alert and browse controls are initialized below before the first render.
 
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('sw.js').catch(() => {});
 }
+
+// Reuse Transmission's existing email service. The authenticated request sends
+// only selected film IDs/titles; the GitHub token is verified, never stored.
+const ALERT_API = 'https://transmissionalbum.netlify.app/.netlify/functions/rewind-watchlist';
+let emailEnabled = false;
+let emailTimer;
+async function emailRequest(method, data) {
+  const token = localStorage.getItem(GH_TOKEN_KEY);
+  if (!token) throw Error('Connect GitHub under Import first.');
+  const res = await fetch(ALERT_API,{method,headers:{Authorization:'Bearer ' + token,'Content-Type':'application/json'},...(data ? {body:JSON.stringify(data)} : {})});
+  const result = await res.json();
+  if (!res.ok) throw Error(result.error || 'Could not update email alerts.');
+  return result;
+}
+async function syncEmailCard(enabled = emailEnabled) {
+  const result = await emailRequest('POST',{enabled,movies:watchlist.map(m=>({id:m.id,title:m.title}))});
+  emailEnabled = enabled;
+  document.getElementById('email-alert-status').textContent = enabled ? `Daily email checks enabled for ${result.count} films. The first check reports current availability and future dates; later changes trigger emails.` : 'Email alerts paused.';
+}
+function scheduleEmailSync() {
+  if (!emailEnabled) return;
+  clearTimeout(emailTimer);
+  emailTimer = setTimeout(()=>syncEmailCard().catch(err=>document.getElementById('email-alert-status').textContent=err.message),2000);
+}
+document.getElementById('email-enable-btn').onclick = () => syncEmailCard(true).catch(err=>document.getElementById('email-alert-status').textContent=err.message);
+document.getElementById('email-disable-btn').onclick = () => syncEmailCard(false).catch(err=>document.getElementById('email-alert-status').textContent=err.message);
+const monthSelect = document.getElementById('release-month');
+for (let i=0;i<24;i++) {
+  const date = new Date(); date.setDate(1); date.setMonth(date.getMonth()-i);
+  const option = document.createElement('option');
+  option.value = `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}`;
+  option.textContent = date.toLocaleDateString('en-US',{month:'long',year:'numeric'}).toUpperCase();
+  monthSelect.appendChild(option);
+}
+for (const id of ['release-month','discover-sort']) document.getElementById(id).onchange = () => {discoverPage=1;renderDiscover().catch(err=>showToast(err.message));};
+async function initEmailAlerts() {
+  if (!localStorage.getItem(GH_TOKEN_KEY)) return;
+  try {
+    const state = await emailRequest('GET');
+    emailEnabled = state.enabled;
+    document.getElementById('email-alert-status').textContent = state.enabled ? `Daily email checks enabled for ${state.movies.length} films.` : 'Email alerts paused. Enable to track Your Card.';
+    // Opening a device must not replace the server's card with stale local data.
+  } catch (err) { document.getElementById('email-alert-status').textContent = err.message; }
+}
+init().then(initEmailAlerts);

@@ -56,6 +56,13 @@
       <p class="changed-label">RESTAMPED SINCE LAST VISIT</p>
       <div id="changed-list" class="card-row"></div>
     </div>
+    <div class="import-block">
+      <h3>Email release alerts</h3>
+      <p class="import-note">Your Card is checked daily, even when Rewind is closed. Alerts go to bmbailey96@gmail.com for new streaming services, rentals, purchases, and US theatrical or digital dates. US theatrical dates do not confirm local showtimes.</p>
+      <button id="email-enable-btn">ENABLE EMAIL ALERTS</button>
+      <button id="email-disable-btn" class="secondary">PAUSE EMAIL ALERTS</button>
+      <p id="email-alert-status" class="import-status">Connect GitHub under Import, then enable alerts for Your Card.</p>
+    </div>
     <div id="watchlist-grid" class="card-row wrap"></div>
     <p id="watchlist-empty" class="empty-note" hidden>Card's empty. Walk the new arrivals wall or search the catalog and add something.</p>
   </section>
@@ -63,8 +70,13 @@
   <section id="tab-discover" class="tab-panel">
     <div class="panel-head">
       <h2>New Arrivals</h2>
-      <span class="count-stamp">last 12 months, theatrical</span>
+      <span class="count-stamp">US theatrical releases</span>
     </div>
+    <label for="release-month">Release month</label>
+    <select id="release-month" class="sort-select"><option value="">LAST 12 MONTHS</option></select>
+    <label for="discover-sort">Order</label>
+    <select id="discover-sort" class="sort-select"><option value="release_date.desc">RELEASE DATE</option><option value="popularity.desc">POPULARITY</option></select>
+    <p class="import-note">Browse US theatrical releases, select the films you missed, then check Your Card. Small releases are included without a minimum rating count.</p>
     <div id="discover-grid" class="card-row wrap"></div>
     <button id="discover-more" class="btn-more">LOAD MORE STOCK</button>
   </section>
