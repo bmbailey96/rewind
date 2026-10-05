@@ -2,6 +2,9 @@
   "name": "rewind",
   "private": true,
   "scripts": {
-    "test": "node test/model.cjs && node --check app.js && node --check availability-ui.js && node --check release-model.js"
+    "test": "node test/model.cjs && node test/hub-model.cjs && node test/hub-flow.cjs && node --check app.js && node --check hub.js && node --check availability-ui.js && node --check release-model.js"
+  },
+  "devDependencies": {
+    "jsdom": "24.1.3"
   }
 }

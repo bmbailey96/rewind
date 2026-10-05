@@ -10,6 +10,64 @@
   --rule: rgba(28,25,23,0.18);
 }
 
+/* The screening board keeps the cool, dark cinema palette of Kalispell Showtimes. */
+.hub-mode-buttons,.roulette-presets,.picker-actions,.calendar-controls,.source-links,.film-links {display:flex;gap:.5rem;flex-wrap:wrap;margin:1rem 0;align-items:center}
+[aria-pressed="true"] {box-shadow:inset 0 -3px 0 var(--tag-yellow)}
+.picker-controls {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.8rem;margin:1rem 0}
+.picker-controls label,.calendar-controls label {display:flex;flex-direction:column;gap:.35rem;font-size:.85rem}
+.picker-controls select,.calendar-controls select,.calendar-controls input {padding:.6rem;max-width:100%;font:inherit;border:1px solid var(--rule);background:var(--paper)}
+.hub-lead {color:var(--ink-soft)}
+.cinema-board {background:#0d101b;color:#eef0fa;border:1px solid #30364c;border-radius:14px;box-shadow:0 12px 32px #15182c30;overflow:hidden;margin:1rem 0}
+.board-head {display:flex;justify-content:space-between;align-items:center;gap:.8rem;padding:1rem;background:#141827;border-bottom:1px solid #343b53}
+.board-head h3 {margin:0;font-size:1.2rem}.board-head span{font-size:.8rem;color:#b8bfd5}
+.board-nav {display:flex;gap:.35rem}.board-nav button{border-radius:7px;background:#20283b;border:1px solid #4c5870;color:#edf2ff;min-width:40px;padding:.6rem}
+.calendar-scroll {max-height:620px;overflow:auto;padding-bottom:.8rem;scrollbar-color:#515e78 #141827}
+#calendar-bars {min-width:820px}
+.calendar-day-heads,.calendar-track {display:grid;grid-template-columns:180px 1fr}
+.calendar-day-heads {grid-template-columns:180px repeat(7,minmax(0,1fr));position:sticky;top:0;z-index:5;background:#171d2d}
+.calendar-day-heads>span {padding:.8rem .35rem;border-right:1px solid #30384d;text-align:center;font:11px system-ui,sans-serif;color:#b7c3da}
+.calendar-day-heads .board-label {text-align:left;padding-left:1rem;color:#e7edf9}
+.calendar-track {min-height:57px;border-bottom:1px solid #262e43}
+.calendar-track .board-label {background:#111725;color:#eef0fa;text-align:left;border:0;border-right:1px solid #343b53;border-radius:0;padding:.7rem 1rem;font:12px system-ui,sans-serif;overflow:hidden;text-overflow:ellipsis}
+.calendar-track .board-label,.calendar-day-heads .board-label{position:sticky;left:0;z-index:3}
+.bar-lane {display:grid;grid-template-columns:repeat(7,minmax(0,1fr));grid-template-rows:57px;position:relative}
+.lane-cell {grid-row:1;border-right:1px solid #283248;pointer-events:none}
+.today {background:#35445933!important}
+.run-bar {z-index:1;align-self:center;border-radius:9px;margin:0 3px;min-height:34px;padding:.4rem .5rem;font:10px system-ui,sans-serif;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;box-shadow:0 2px 9px #0004}
+.run-bar.local {background:linear-gradient(100deg,#254a65,#346989);border:1px solid #83c9ed;color:#effaff}
+.run-bar.event {background:linear-gradient(100deg,#69502b,#957246);border:1px solid #e5c784;color:#fff7e5}
+.run-bar.stream {background:linear-gradient(100deg,#354c48,#467565);border:1px solid #96c7ae;color:#f0fff5}
+.run-bar.window {background:repeating-linear-gradient(135deg,#705834,#705834 7px,#594629 7px,#594629 14px);border-style:dashed}
+.calendar-legend {display:flex;flex-wrap:wrap;gap:.7rem;font:10px system-ui,sans-serif;margin-top:1rem;color:#555}
+.legend-local{color:#276588}.legend-event{color:#806227}.legend-stream{color:#346756}
+.board-empty {padding:2rem;color:#bbc6dd}
+.cinema-list-item {padding:1rem;border-bottom:1px solid #333b50}.cinema-list-item p{color:#b7c5db;font-size:.8rem;margin:.4rem 0}
+.cinema-title {background:transparent;color:#eef0fa;border:0;padding:0;font:700 1rem 'Vollkorn',serif;text-align:left}
+.muted {opacity:.45}
+.event-detail {border:1px solid var(--rule);background:var(--paper-dark);padding:1.2rem;margin:1rem 0;overflow:auto;border-radius:10px}
+.event-detail h3 {font-size:1.5rem;margin:.7rem 0}.event-kicker{font-size:.85rem;color:var(--stamp-teal)}
+.event-poster {width:120px;max-height:190px;object-fit:cover;float:right;margin:0 0 1rem 1rem;border-radius:5px}
+.screening-day {display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;margin:.75rem 0}.screening-day strong{width:100%;font-size:.9rem}
+.screening-time {padding:.4rem .6rem;border:1px solid var(--rule);border-radius:5px;font-size:.8rem}
+.event-detail>button,.event-detail>.watch-link {margin:.5rem .5rem .5rem 0}
+.local-card-note{padding:.45rem;font:10px 'Special Elite',monospace;line-height:1.4;color:#2d5a69;border:1px solid #77919a;background:#dae2df;margin:.6rem 0;width:100%}
+.hub-news {margin:1rem 0 1.4rem;padding:.85rem 1rem;border:1px solid var(--rule);border-left:3px solid var(--stamp-teal);background:#e4decf}
+.hub-news h3 {margin:0 0 .6rem;font-size:1rem}.news-ticket {display:block;border:0;background:none;text-align:left;padding:.35rem 0;font-size:.85rem;color:var(--stamp-teal)}
+.hub-news .offer-note {margin:.5rem 0}.hub-news>button:last-child{font-size:.65rem;padding:.35rem}
+.roulette-console {background:#0e1712;color:#e3ecdc;border:1px solid #39513f;border-radius:12px;padding:1rem;margin:1rem 0}
+.roulette-console summary {color:#e3ecdc}.roulette-console button{background:#1b2b20;color:#dae9cc;border:1px solid #62725b;border-radius:6px}
+.roulette-console .picker-controls select {background:#1b2b20;color:#dae9cc;border-color:#62725b}
+.roulette-console .offer-note {color:#abbca6}.roulette-instrument{display:grid;grid-template-columns:200px 1fr;gap:1rem;align-items:center}
+#tone-triangle svg{width:100%;display:block}#tone-triangle text{font:9px monospace;fill:#dae9cc}
+.tone-sliders label{display:flex;gap:.5rem;align-items:center;margin:.6rem 0;font-size:.9rem}.tone-sliders input{width:100%;accent-color:#b4cb8e}
+.content-controls{display:flex;gap:1rem;flex-wrap:wrap;font-size:.8rem}.content-controls input{accent-color:#b4cb8e}
+.oracle-reason {padding:.8rem;margin-top:.6rem;border-top:1px solid var(--rule);color:var(--stamp-teal);font-size:.85rem}.oracle-reason strong{font:10px 'Special Elite',monospace}.oracle-reason p{margin:.4rem 0}
+.taste-record {display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:.5rem 0;border-bottom:1px solid var(--rule)}.taste-record button{font-size:.65rem;padding:.35rem}
+#legacy-links{display:flex;gap:1rem;flex-wrap:wrap;font-size:.8rem}
+#watched-dialog{max-width:420px;width:calc(100% - 2rem);background:var(--paper);color:var(--ink);border:2px solid var(--ink);padding:1.5rem;border-radius:6px}#watched-dialog::backdrop{background:#141211aa}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid #92701a;outline-offset:3px}
+@media(max-width:600px){.picker-controls{grid-template-columns:1fr 1fr}.roulette-instrument{grid-template-columns:140px 1fr}.board-head{align-items:flex-start}.board-head h3{font-size:1rem}.board-nav button{padding:.45rem;min-width:32px}.calendar-controls label{flex:1;min-width:120px}.hub-mode-buttons button{flex:1;font-size:.65rem}.tabs .tab-btn{padding:.6rem .55rem;font-size:.62rem}.tone-sliders label{flex-direction:column;align-items:start}.cinema-board{margin-left:-.3rem;margin-right:-.3rem}.event-poster{width:80px}.calendar-legend{line-height:1.7}}
+
 * { box-sizing: border-box; }
 
 html, body {
