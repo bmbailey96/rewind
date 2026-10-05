@@ -519,3 +519,4 @@ button:focus-visible, input:focus-visible {
 
 .stamp {max-width:100%;overflow-wrap:anywhere;}
 @media(max-width:500px) {.rental-card {width:calc(100% - 10px);max-width:none;} .offer-row {font-size:.85rem;} .watch-options summary {min-height:44px;display:flex;align-items:center;} .card-actions button {min-height:44px;} .card-poster {max-height:360px;object-fit:contain;} }
+[hidden] { display: none !important; }
