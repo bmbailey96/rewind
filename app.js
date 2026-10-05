@@ -525,7 +525,7 @@ function renderCard(movie, opts = {}) {
     }
   };
   if(current)fillDetails();
-  details.addEventListener('toggle',async()=>{if(!details.open||current)return;body.textContent='Checking releases and viewing options…';try{current=await deriveStatus(movie);fillDetails();}catch{body.textContent='Could not load this film. Close and reopen to retry.';}});
+  details.addEventListener('toggle',async()=>{if(!details.open)return;if(current){fillDetails();return;}body.textContent='Checking releases and viewing options…';try{current=await deriveStatus(movie);fillDetails();}catch{body.textContent='Could not load this film. Close and reopen to retry.';}});
   const actions=document.createElement('div');actions.className='card-actions';
   if(context==='watchlist'){
     const watched=document.createElement('button');watched.className='secondary';watched.textContent='WATCHED';watched.onclick=()=>markMovieWatched(movie);actions.appendChild(watched);
@@ -745,10 +745,11 @@ function showToast(msg,undo) {
 document.getElementById('prune-btn').addEventListener('click', () => {
   const cutoff = dateMonthsAgo(12);
   const before = watchlist.length;
-  watchlist = watchlist.filter(w => w.release_date && w.release_date >= cutoff);
+  const removedFilms=watchlist.filter(w=>w.release_date&&w.release_date<cutoff);
+  watchlist=watchlist.filter(w=>!w.release_date||w.release_date>=cutoff);
   const removed = before - watchlist.length;
   saveWatchlist();
-  showToast(`Cleared ${removed} older title${removed === 1 ? '' : 's'} off your card`);
+  showToast(`Cleared ${removed} older title${removed === 1 ? '' : 's'} off your card`,()=>{for(const film of removedFilms)if(!watchlist.some(w=>w.id===film.id))watchlist.push(film);saveWatchlist();scheduleSync();renderWatchlist();});
   scheduleSync();
   renderWatchlist();
 });
