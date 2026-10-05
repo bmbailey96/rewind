@@ -80,7 +80,7 @@ document.getElementById('import-watched').addEventListener('change', async (e) =
     added++;
   });
   saveSeenSet();
-  document.getElementById('watched-status').textContent = `Loaded ${added} seen titles. New Arrivals will filter them out from now on.`;
+  document.getElementById('watched-status').textContent = `Loaded ${added} seen titles. Films You Missed will filter them out from now on.`;
   scheduleSync();
   renderDiscover();
 });
@@ -160,21 +160,6 @@ function skipMovie(id) {
   scheduleSync();
 }
 
-// weights derived from analyzing genre frequency across your 4.5-5 star
-// rated Letterboxd titles, higher = shows up more often in what you love
-const GENRE_AFFINITY = {
-  28: 0.0741, 12: 0.0741, 878: 0.0691, 35: 0.1123, 53: 0.0963,
-  18: 0.1679, 80: 0.0667, 9648: 0.0531, 10402: 0.0148, 10749: 0.0333,
-  27: 0.0877, 10752: 0.0123, 14: 0.0481, 37: 0.0074, 16: 0.0309,
-  10751: 0.0346, 36: 0.0123, 99: 0.0049,
-};
-
-function affinityScore(genreIds) {
-  if (!genreIds || !genreIds.length) return 0;
-  const sum = genreIds.reduce((s, g) => s + (GENRE_AFFINITY[g] || 0), 0);
-  return sum / genreIds.length;
-}
-
 // ---------- cross-device sync (github gist) ----------
 
 const GITHUB_API = 'https://api.github.com';
@@ -203,12 +188,14 @@ function collectSyncData() {
     seen: [...seenSet],
     skipped: [...skipSet],
     services: myServices,
+    rentalBudget,
     updatedAt: Date.now(),
   };
 }
 
 function applySyncData(data) {
   if (!data) return;
+  if(typeof data.rentalBudget==='number'&&data.rentalBudget>=0&&data.rentalBudget<=100){rentalBudget=data.rentalBudget;localStorage.setItem('rewind-rental-budget-v1',String(rentalBudget));document.getElementById('rental-budget').value=rentalBudget;}
   watchlist = data.watchlist || [];
   if (Array.isArray(data.services)) {myServices = data.services;localStorage.setItem('rewind-services-v1',JSON.stringify(myServices));renderServiceSettings();}
   seenSet = new Set(data.seen || []);
@@ -281,6 +268,7 @@ document.getElementById('watchmode-save-btn').addEventListener('click', () => {
     statusEl.textContent = 'Price source disconnected. No cached price quotes will be displayed.';
     watchlist.forEach(m=>delete m.watchmodeCache);renderWatchlist();return;
   }
+  calendarCache=null;calendarFailure=null;
   localStorage.setItem(WATCHMODE_KEY_STORAGE, key);
   watchlist.forEach(m=>delete m.watchmodeCache);
   statusEl.textContent = 'Saved. Checking US provider offers and quoted rental/purchase prices.';
@@ -298,6 +286,7 @@ document.getElementById('gh-connect-btn').addEventListener('click', async () => 
     statusEl.textContent = 'Connected. Pulled latest synced data.';
     renderWatchlist();
     renderDiscover();
+    await initEmailAlerts();
   } catch (e) {
     statusEl.textContent = 'Connection failed, check the token has "gist" scope.';
   }
@@ -371,11 +360,13 @@ function discoveryWindow() {
   return {start,end:monthEnd < today ? monthEnd : today,today};
 }
 const movieDetailCache = new Map();
-async function fetchMovieDetails(id) {
+const observedDetails=new Map();
+async function fetchMovieDetails(id,force=false) {
+  if(force)movieDetailCache.delete(id);
   if (!movieDetailCache.has(id)) {
     movieDetailCache.set(id,tmdbGet(`/movie/${id}`,{append_to_response:'release_dates,credits'}).catch(err=>{movieDetailCache.delete(id);throw err;}));
   }
-  return movieDetailCache.get(id);
+  const detail=await movieDetailCache.get(id);observedDetails.set(id,detail);return detail;
 }
 async function mapLimited(items, concurrency, fn) {
   const results = new Array(items.length);let next = 0;
@@ -392,7 +383,7 @@ async function fetchDiscover(page = 1, filter = null) {
   return tmdbGet('/discover/movie', {
     region:REGION,sort_by:filter?.sort || document.getElementById('discover-sort').value,
     with_release_type:'2|3','release_date.gte':window.start,'release_date.lte':window.end,
-    'vote_count.gte':broad ? 5 : 50,'with_runtime.gte':60,include_video:false,include_adult:false,
+    ...(broad ? {'vote_count.lte':100} : {}),'with_runtime.gte':60,include_video:false,include_adult:false,
     ...(!rereleases ? {'primary_release_date.gte':dateMonthsAgo(24)} : {}),
     ...(genre ? {with_genres:genre} : {}),page,
   });
@@ -412,6 +403,17 @@ async function fetchReleaseDates(id) {
   const data = await tmdbGet(`/movie/${id}/release_dates`);
   const entry = (data.results || []).find(r => r.iso_3166_1 === REGION);
   return entry ? entry.release_dates : [];
+}
+
+let announcementPromise;
+function fetchAnnouncements(){if(!announcementPromise)announcementPromise=fetch('release-announcements.json',{cache:'no-cache'}).then(r=>{if(!r.ok)throw Error('Announcement feed unavailable');return r.json();}).catch(err=>{announcementPromise=null;throw err;});return announcementPromise;}
+let calendarCache=null,calendarPromise=null,calendarFailure=null;
+async function fetchStreamingCalendar(){
+  const key=getWatchmodeKey();if(!key)return [];
+  if(calendarFailure)throw Error(calendarFailure);
+  if(calendarCache&&Date.now()-calendarCache.checkedAt<24*3600000)return calendarCache.releases;
+  if(!calendarPromise){const start=ReleaseModel.addDays(discoveryWindow().today,-30).replaceAll('-',''),end=ReleaseModel.addDays(discoveryWindow().today,90).replaceAll('-','');calendarPromise=fetch(`https://api.watchmode.com/v1/releases/?start_date=${start}&end_date=${end}&limit=250`,{headers:{'X-API-Key':key}}).then(async r=>{if(!r.ok)throw Error('Upcoming calendar is not available with this price connection.');const body=await r.json();const releases=Array.isArray(body.releases)?body.releases:[];calendarCache={checkedAt:Date.now(),releases};return releases;}).catch(err=>{calendarFailure=err.message;throw err;}).finally(()=>calendarPromise=null);}
+  return calendarPromise;
 }
 
 // ---------- availability and service preferences ----------
@@ -439,12 +441,16 @@ async function checkWatchmodeCached(movie, force = false) {
   return found;
 }
 async function deriveStatus(movie, force = false) {
-  const results = await Promise.allSettled([fetchWatchProviders(movie.id),fetchReleaseDates(movie.id)]);
+  const results = await Promise.allSettled([fetchWatchProviders(movie.id),fetchMovieDetails(movie.id,force),fetchAnnouncements(),fetchStreamingCalendar()]);
   const p = results[0];const d = results[1];
-  const releaseDates = d.status === 'fulfilled' ? d.value : [];
+  const fullDetails=d.status==='fulfilled'?d.value:null;
+  const details=fullDetails?{id:fullDetails.id,runtime:fullDetails.runtime,release_dates:fullDetails.release_dates}:movie.detailsSnapshot;
+  if(fullDetails){movie.detailsSnapshot=details;Object.assign(movie,{runtime:fullDetails.runtime,director:(fullDetails.credits?.crew||[]).filter(c=>c.job==='Director').map(c=>c.name).join(', '),overview:fullDetails.overview||movie.overview||''});}
+  const releaseDates = ReleaseModel.datesFor(details);
+  const timeline={details,announcements:ReleaseModel.matchingAnnouncements({...((results[2].status==='fulfilled'?results[2].value:null)||{}),today:discoveryWindow().today},movie.id),calendar:(results[3].status==='fulfilled'?results[3].value:[]).filter(r=>r.tmdb_id===movie.id&&r.tmdb_type==='movie')};
   if (p.status === 'rejected') {
-    if (movie.availabilitySnapshot) return {...movie.availabilitySnapshot,stale:true,priceWarning:'Provider lookup failed. Showing the previous check.'};
-    return {code:'nodata',kind:'unknown',label:'Availability could not be checked',offers:[],stale:true};
+    if (movie.availabilitySnapshot) return {...movie.availabilitySnapshot,...timeline,datesUnavailable:d.status==='rejected',announcementUnavailable:results[2].status==='rejected',stale:true,priceWarning:'Provider lookup failed. Showing the previous check.'};
+    return {code:'nodata',kind:'unknown',label:'Availability could not be checked',offers:[],...timeline,stale:true};
   }
   const providers = p.value || {};
   let quote = null;let priceWarning = '';
@@ -462,7 +468,8 @@ async function deriveStatus(movie, force = false) {
   if (!best && futureTheater) best = {code:'notyet',kind:'theaters',label:'US theatrical release '+formatFilmDate(futureTheater.release_date),date:futureTheater.release_date};
   if (!best && pastDigital) best = {code:'nodata',kind:'unverified',label:'Digital date passed · no current provider listing'};
   if (!best) best = {code:'nodata',kind:'unknown',label:'No US streaming offer listed'};
-  const result = {...best,offers,link:RewindModel.safeLink(providers.link),checkedAt:Date.now(),quoteCheckedAt:quote?.checkedAt || null,priceWarning,datesUnavailable:d.status==='rejected',digitalDate:futureDigital?.release_date || null};
+  movie.priceHistory=ReleaseModel.recordQuotes(movie.priceHistory,offers,quote?.checkedAt);
+  const result = {...best,...timeline,calendarWarning:results[3].status==='rejected'?'Upcoming calendar unavailable. Showing the verified announcement feed.':'',announcementUnavailable:results[2].status==='rejected',offers,link:RewindModel.safeLink(providers.link),checkedAt:Date.now(),quoteCheckedAt:quote?.checkedAt || null,priceWarning,datesUnavailable:d.status==='rejected',digitalDate:futureDigital?.release_date || null};
   movie.availabilitySnapshot = result;
   return result;
 }
@@ -490,123 +497,59 @@ function stampRotation(seed) {
 }
 
 function renderCard(movie, opts = {}) {
-  const { context = 'discover', status = null, changed = false } = opts;
-  const inList = watchlist.some(w => w.id === movie.id);
-  const year = (movie.release_date || movie.primary_release_date || '').slice(0, 4);
+  const {context='discover',status=null,changed=false}=opts;
+  const card=document.createElement('article');card.className='rental-card';card.dataset.movieId=movie.id;
+  const poster=document.createElement('img');poster.className='card-poster';poster.loading='lazy';poster.src=posterUrl(movie.poster_path);poster.alt=movie.title+' poster';card.appendChild(poster);
+  const title=document.createElement('h3');title.className='card-title';title.textContent=movie.title;card.appendChild(title);
+  const meta=document.createElement('p');meta.className='card-meta';meta.textContent=[(movie.release_date||'').slice(0,4),movie.director].filter(Boolean).join(' · ');card.appendChild(meta);
+  if(movie.pinned){const pinned=document.createElement('span');pinned.className='new-tag';pinned.textContent='PINNED';card.appendChild(pinned);}
+  if(changed){const tag=document.createElement('span');tag.className='new-tag';tag.textContent='CHANGED SINCE YOUR LAST VISIT';card.appendChild(tag);}
+  if(opts.markSeen&&isSeen(movie)){const tag=document.createElement('span');tag.className='new-tag';tag.textContent='ALREADY SEEN';card.appendChild(tag);}
+  const costInfo=status?ReleaseModel.cost(status.offers,rentalBudget,status.stale):null;
+  if(costInfo){const block=document.createElement('div');block.className='cost-block cost-'+costInfo.band;const badge=document.createElement('strong');badge.className='cost-badge';badge.textContent=costInfo.badge;block.appendChild(badge);const caption=document.createElement('p');caption.className='cost-caption';caption.textContent=costInfo.caption;block.appendChild(caption);if(costInfo.stale){const old=document.createElement('span');old.className='cost-warning';old.textContent='PREVIOUS CHECK';block.appendChild(old);}if(costInfo.cheaper){const cheaper=document.createElement('p');cheaper.className='cost-alternative';cheaper.textContent='$'+costInfo.cheaper.price.toFixed(2)+' on '+costInfo.cheaper.provider+(costInfo.cheaper.format?' · '+costInfo.cheaper.format:'');block.appendChild(cheaper);}card.appendChild(block);}
 
-  const card = document.createElement('div');
-  card.className = 'rental-card';
-
-  const poster = document.createElement('img');
-  poster.className = 'card-poster';
-  poster.loading = 'lazy';
-  poster.src = posterUrl(movie.poster_path);
-  poster.alt = movie.title + ' poster';
-  card.appendChild(poster);
-
-  if (status) {
-    const stampWrap = document.createElement('div');
-    stampWrap.style.setProperty('--stamp-rot', stampRotation(movie.title || 'x'));
-    const stamp = document.createElement('span');
-    stamp.className = 'stamp status-' + status.code;
-    stamp.textContent = status.label;
-    stampWrap.appendChild(stamp);
-
-    if (changed && opts.prevLabel) {
-      const ghost = document.createElement('div');
-      ghost.className = 'stamp-ghost';
-      ghost.textContent = opts.prevLabel;
-      stampWrap.appendChild(ghost);
+  if(status){const upcoming=(status.announcements||[]).filter(a=>a.kind==='subscription'&&a.date&&a.date>discoveryWindow().today).sort((a,b)=>a.date.localeCompare(b.date))[0];if(upcoming){const note=document.createElement('p');note.className='wait-advice';note.textContent=upcoming.provider+' on '+formatFilmDate(upcoming.date)+' · announced';card.appendChild(note);}else if(costInfo?.band==='premium'){const note=document.createElement('p');note.className='wait-advice';const pref=ReleaseModel.preference(movie.alert);const estimate=ReleaseModel.priceEstimate(movie,status.offers,watchlist,discoveryWindow().today,pref.mode==='rental'?pref.maxPrice:rentalBudget);note.textContent=estimate&&!estimate.overdue?'Cheaper rental estimate: '+formatFilmDate(estimate.start)+' to '+formatFilmDate(estimate.end):'Above your $'+rentalBudget.toFixed(2)+' limit. No drop date announced.';card.appendChild(note);}}
+  else if(movie.overview){const synopsis=document.createElement('p');synopsis.className='card-synopsis';synopsis.textContent=(movie.overview.match(/^[\s\S]*?[.!?](?:\s|$)/)||[movie.overview])[0];card.appendChild(synopsis);}
+  const details=document.createElement('details');details.className='film-details';
+  const summary=document.createElement('summary');summary.textContent='DETAILS & RELEASE TIMELINE';details.appendChild(summary);
+  const body=document.createElement('div');body.className='film-details-body';details.appendChild(body);card.appendChild(details);
+  let current=status;
+  const fillDetails=()=>{
+    body.replaceChildren();if(current)body.appendChild(renderAvailability(movie,{...current,previousLabel:opts.prevLabel},{details:[...observedDetails.values()],movies:watchlist}));
+    if(context==='watchlist')body.appendChild(renderAlertPreference(movie));
+    const extra=document.createElement('p');extra.className='card-meta';extra.textContent=[movie.runtime?movie.runtime+' min':'',movie.director].filter(Boolean).join(' · ');body.appendChild(extra);
+    if(movie.overview){const synopsis=document.createElement('p');synopsis.textContent=movie.overview;body.appendChild(synopsis);}
+    if(context==='watchlist'){
+      const tools=document.createElement('div');tools.className='card-actions';
+      for(const [name,fn] of [[movie.pinned?'UNPIN':'PIN',()=>togglePin(movie.id)],['STOP TRACKING',()=>removeFromWatchlist(movie.id)]]){const btn=document.createElement('button');btn.className='secondary';btn.textContent=name;btn.onclick=fn;tools.appendChild(btn);}body.appendChild(tools);
     }
-    card.appendChild(stampWrap);
-    card.appendChild(renderAvailability(movie,status));
-
-    if (status.link) {
-      const priceLink = document.createElement('a');
-      priceLink.href = status.link;
-      priceLink.target = '_blank';
-      priceLink.rel = 'noopener';
-      priceLink.className = 'price-link';
-      priceLink.textContent = 'VERIFY OFFERS ↗';
-      card.appendChild(priceLink);
-    }
+  };
+  if(current)fillDetails();
+  details.addEventListener('toggle',async()=>{if(!details.open||current)return;body.textContent='Checking releases and viewing options…';try{current=await deriveStatus(movie);fillDetails();}catch{body.textContent='Could not load this film. Close and reopen to retry.';}});
+  const actions=document.createElement('div');actions.className='card-actions';
+  if(context==='watchlist'){
+    const watched=document.createElement('button');watched.className='secondary';watched.textContent='WATCHED';watched.onclick=()=>markMovieWatched(movie);actions.appendChild(watched);
+    const next=!status?.stale?costInfo?.offer:null;
+    if(next?.link){const link=document.createElement('a');link.className='watch-link';link.textContent=next.included||next.kind==='free'?'WATCH':next.kind==='buy'?'BUY OFFER':'RENT OFFER';link.href=next.link;link.target='_blank';link.rel='noopener noreferrer';actions.prepend(link);}
+    if(costInfo?.band==='premium'){const wait=document.createElement('button');wait.className='secondary wait-button';const pref=ReleaseModel.preference(movie.alert);wait.textContent=pref.mode==='rental'?'WAITING FOR $'+pref.maxPrice.toFixed(2):'WAIT FOR $'+rentalBudget.toFixed(2);wait.onclick=()=>{movie.alert={mode:'rental',maxPrice:rentalBudget};saveWatchlist();scheduleSync();showToast('Watching for a rental at $'+rentalBudget.toFixed(2)+' or less');renderWatchlist();};actions.appendChild(wait);}
+  }else{
+    const inList=watchlist.some(w=>w.id===movie.id);const track=document.createElement('button');track.textContent=inList?'TRACKED':'TRACK THIS FILM';track.disabled=inList;
+    track.onclick=()=>{addToWatchlist(movie);if(context==='discover')card.remove();else{track.textContent='TRACKED';track.disabled=true;}};actions.appendChild(track);
+    if(context==='discover'){const skip=document.createElement('button');skip.className='secondary';skip.textContent='SKIP';skip.onclick=()=>{skipMovie(movie.id);card.remove();};actions.appendChild(skip);}
   }
-
-  const title = document.createElement('p');
-  title.className = 'card-title';
-  title.textContent = movie.title;
-  card.appendChild(title);
-
-  if (opts.markSeen && isSeen(movie)) {
-    const seenTag = document.createElement('span');
-    seenTag.className = 'new-tag';
-    seenTag.style.background = 'var(--ink-soft)';
-    seenTag.style.color = 'var(--paper)';
-    seenTag.textContent = 'ALREADY SEEN';
-    card.insertBefore(seenTag, title);
-  }
-
-  const meta = document.createElement('p');
-  meta.className = 'card-meta';
-  meta.textContent = [year,movie.runtime ? movie.runtime+' min' : '',movie.director].filter(Boolean).join(' · ') || 'year unknown';
-  card.appendChild(meta);
-  if (movie.usReleaseDate) {const release=document.createElement('p');release.className='release-note';release.textContent='US theatrical listing · '+formatFilmDate(movie.usReleaseDate);card.appendChild(release);}
-  if (movie.overview) {const synopsis=document.createElement('p');synopsis.className='card-synopsis';synopsis.textContent=movie.overview;card.appendChild(synopsis);}
-
-  const actions = document.createElement('div');
-  actions.className = 'card-actions';
-
-  if (context === 'watchlist') {
-    const pinBtn = document.createElement('button');
-    const isPinned = watchlist.find(w => w.id === movie.id)?.pinned;
-    pinBtn.className = isPinned ? '' : 'secondary';
-    pinBtn.textContent = isPinned ? '★ PINNED' : '☆ PIN';
-    pinBtn.onclick = () => togglePin(movie.id);
-    actions.appendChild(pinBtn);
-
-    const removeBtn = document.createElement('button');
-    removeBtn.textContent = 'REMOVE';
-    removeBtn.onclick = () => removeFromWatchlist(movie.id);
-    actions.appendChild(removeBtn);
-  } else if (context === 'search') {
-    // search results persist and just reflect ON CARD state, since re-searching
-    // the same title later should show it's already added, not make it vanish
-    const addBtn = document.createElement('button');
-    addBtn.textContent = inList ? 'ON CARD' : 'ADD TO CARD';
-    addBtn.disabled = inList;
-    addBtn.onclick = () => { addToWatchlist(movie); addBtn.textContent = 'ON CARD'; addBtn.disabled = true; };
-    actions.appendChild(addBtn);
-  } else {
-    // discover: a queue to clear, both actions remove the card for good
-    const addBtn = document.createElement('button');
-    addBtn.textContent = inList ? 'ON CARD' : 'ADD TO CARD';
-    addBtn.disabled = inList;
-    addBtn.onclick = () => { addToWatchlist(movie); card.remove(); };
-    actions.appendChild(addBtn);
-
-    if (!inList) {
-      const skipBtn = document.createElement('button');
-      skipBtn.className = 'secondary';
-      skipBtn.textContent = 'SKIP';
-      skipBtn.onclick = () => { skipMovie(movie.id); card.remove(); };
-      actions.appendChild(skipBtn);
-    }
-  }
-
-  if (context !== 'watchlist') {
-    const check=document.createElement('button');check.className='secondary';check.textContent='WHERE TO WATCH';
-    const slot=document.createElement('div');slot.className='inline-availability';
-    check.onclick=async()=>{
-      check.disabled=true;check.textContent='CHECKING…';
-      try {const availability=await deriveStatus(movie,true);slot.innerHTML='';const label=document.createElement('p');label.className='inline-status';label.textContent=availability.label;slot.append(label,renderAvailability(movie,availability));check.textContent='REFRESH OPTIONS';}
-      catch {slot.textContent='Could not check availability. Try again.';check.textContent='TRY AGAIN';}
-      finally {check.disabled=false;}
-    };
-    actions.appendChild(check);card.appendChild(slot);
-  }
-  card.appendChild(actions);
-  return card;
+  card.appendChild(actions);return card;
 }
+function renderAlertPreference(movie){
+  const wrap=document.createElement('fieldset');wrap.className='alert-preference';const legend=document.createElement('legend');legend.textContent='Notify me when';wrap.appendChild(legend);
+  const select=document.createElement('select');select.setAttribute('aria-label','Alert preference for '+movie.title);
+  for(const [value,label] of [['mine','Included with my services or free'],['any','Any availability or release news'],['rental','Rental at my price']]){const option=document.createElement('option');option.value=value;option.textContent=label;select.appendChild(option);}
+  const pref=ReleaseModel.preference(movie.alert);select.value=pref.mode;wrap.appendChild(select);
+  const priceLabel=document.createElement('label');priceLabel.textContent='Maximum rental price ($)';priceLabel.hidden=pref.mode!=='rental';const amount=document.createElement('input');amount.type='number';amount.min='0';amount.max='100';amount.step='0.01';amount.value=pref.maxPrice;amount.setAttribute('aria-label','Maximum rental price for '+movie.title);priceLabel.appendChild(amount);wrap.appendChild(priceLabel);
+  const note=document.createElement('p');note.className='offer-note';note.textContent=pref.mode==='rental'?'Price emails require a connected price source. Quotes include their format.':'Announcements and actual availability both count. Estimates never trigger emails.';wrap.appendChild(note);
+  const save=()=>{movie.alert=ReleaseModel.preference({mode:select.value,maxPrice:amount.value===''?pref.maxPrice:Number(amount.value)});saveWatchlist();scheduleSync();priceLabel.hidden=select.value!=='rental';note.textContent=select.value==='rental'?'Price emails require a connected price source. Quotes include their format.':'Announcements and actual availability both count. Estimates never trigger emails.';};
+  select.onchange=save;amount.onchange=save;return wrap;
+}
+function markMovieWatched(movie){const key=seenKey(movie.title,(movie.release_date||'').slice(0,4));const already=seenSet.has(key);seenSet.add(key);saveSeenSet();const entry=watchlist.find(m=>m.id===movie.id);watchlist=watchlist.filter(m=>m.id!==movie.id);saveWatchlist();scheduleSync();renderWatchlist();renderDiscoverCached();showToast(movie.title+' marked watched',()=>{if(!already)seenSet.delete(key);saveSeenSet();if(entry&&!watchlist.some(m=>m.id===entry.id))watchlist.push(entry);saveWatchlist();scheduleSync();renderWatchlist();});}
 
 // ---------- watchlist actions ----------
 
@@ -625,14 +568,14 @@ function addToWatchlist(movie) {
     lastStatusLabel: null,
     statusChangedAt: null,
     pinned: false,
-    manualNote: '',
+    manualNote: '',alert:{mode:'mine',maxPrice:7.99},priceHistory:movie.priceHistory || [],
   });
   saveWatchlist();
-  showToast(movie.title + ' — added to your card');
+  showToast(movie.title + ' added to your card');
   scheduleSync();
-  // keep it out of Discover/Search's cached lists so re-renders don't bring it back
+  // Keep tracked films off the shelf; search still shows their tracked state.
   lastDiscoverResults = lastDiscoverResults.filter(m => m.id !== movie.id);
-  lastSearchResults = lastSearchResults.filter(m => m.id !== movie.id);
+
 }
 
 function togglePin(id) {
@@ -665,39 +608,21 @@ function renderSearchCached() {
   lastSearchResults.forEach(m => document.getElementById('search-grid').appendChild(renderCard(m, { context: 'search', markSeen: true })));
 }
 
-let notOutYetExpanded = false;
-let watchlistSort = 'recommended';
+let watchlistSort = 'cost';
+let costFilter='all';
+let rentalBudget=Number(localStorage.getItem('rewind-rental-budget-v1')??7.99);
+if(!Number.isFinite(rentalBudget)||rentalBudget<0||rentalBudget>100)rentalBudget=7.99;
+const previousVisit=Number(localStorage.getItem('rewind-last-visit-v1'))||Date.now();
+localStorage.setItem('rewind-last-visit-v1',String(Date.now()));
 let watchlistRequest = 0;
 
 async function renderWatchlist(force = false) {
   const request = ++watchlistRequest;
-  const grid = document.getElementById('watchlist-grid');
-  const pinnedGrid = document.getElementById('pinned-grid');
-  const pinnedSection = document.getElementById('pinned-section');
-  const empty = document.getElementById('watchlist-empty');
-  const countEl = document.getElementById('watchlist-count');
-  const changedStrip = document.getElementById('changed-strip');
-  const changedList = document.getElementById('changed-list');
-  const notOutYetToggle = document.getElementById('not-out-yet-toggle');
-  const notOutYetGrid = document.getElementById('not-out-yet-grid');
-
-  grid.innerHTML = '';
-  pinnedGrid.innerHTML = '';
-  changedList.innerHTML = '';
-  notOutYetGrid.innerHTML = '';
-  countEl.textContent = watchlist.length + (watchlist.length === 1 ? ' title' : ' titles');
-
-  if (watchlist.length === 0) {
-    document.getElementById('card-check-status').textContent='Add a film from New Arrivals or Search.';
-    empty.hidden = false;
-    changedStrip.hidden = true;
-    pinnedSection.hidden = true;
-    notOutYetToggle.hidden = true;
-    notOutYetGrid.style.display = 'none';
-    return;
-  }
-  empty.hidden = true;
-
+  const empty=document.getElementById('watchlist-empty');
+  const grids=['watch-now','paid','waiting'];grids.forEach(id=>{document.getElementById(id+'-grid').replaceChildren();document.getElementById(id+'-section').hidden=true;});
+  document.getElementById('watchlist-count').textContent=watchlist.length+(watchlist.length===1?' film':' films');
+  empty.hidden=watchlist.length>0;
+  if(!watchlist.length){document.getElementById('filter-empty').hidden=true;document.getElementById('card-check-status').textContent='';document.getElementById('card-summary').textContent='';return;}
   document.getElementById('card-check-status').textContent='Checking US providers…';
   const results = (await mapLimited([...watchlist],4,async entry=>{
     let status;
@@ -705,12 +630,13 @@ async function renderWatchlist(force = false) {
     try {status=await deriveStatus(lookupMovie,force);}
     catch {status={code:'nodata',kind:'unknown',label:'Availability could not be checked',offers:[],stale:true};}
     if(request !== watchlistRequest) return {entry,status,changed:false,prevLabel:entry.lastStatusLabel};
-    entry.availabilitySnapshot=lookupMovie.availabilitySnapshot;entry.watchmodeCache=lookupMovie.watchmodeCache;
+    Object.assign(entry,{availabilitySnapshot:lookupMovie.availabilitySnapshot,watchmodeCache:lookupMovie.watchmodeCache,detailsSnapshot:lookupMovie.detailsSnapshot,priceHistory:lookupMovie.priceHistory,runtime:lookupMovie.runtime??entry.runtime,director:lookupMovie.director||entry.director,overview:lookupMovie.overview||entry.overview});
     const fingerprint = status.offers?.map(o=>`${o.kind}:${o.provider}:${o.format || ''}:${o.price ?? ''}`).sort().join('|') || status.label;
     const changed = !status.stale && entry.lastAvailabilityKey != null && entry.lastAvailabilityKey !== fingerprint;
     const prevLabel=entry.lastStatusLabel;
     if (!status.stale) {
       if(changed || !entry.lastStatusLabel) entry.statusChangedAt=Date.now();
+      if(changed)entry.lastChange={at:Date.now(),from:prevLabel,to:status.label};
       entry.lastStatusCode=status.code;entry.lastStatusLabel=status.label;entry.lastAvailabilityKey=fingerprint;
     }
     return {entry,status,changed,prevLabel};
@@ -719,67 +645,24 @@ async function renderWatchlist(force = false) {
   document.getElementById('card-check-status').textContent='US providers checked '+new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'})+' · '+results.filter(r=>r.status.stale).length+' failed checks';
   saveWatchlist();
 
-  const pinned = results.filter(r => r.entry.pinned);
-  const unpinned = results.filter(r => !r.entry.pinned);
-  const notOutYet = unpinned.filter(r => r.status.code === 'notyet' || r.status.code === 'nodata');
-  const mainList = unpinned.filter(r => r.status.code === 'free' || r.status.code === 'rent');
-
-  const sorters = {
-    recommended: (a, b) => affinityScore(b.entry.genre_ids) - affinityScore(a.entry.genre_ids),
-    added: (a, b) => (b.entry.addedAt || 0) - (a.entry.addedAt || 0),
-    release: (a, b) => (b.entry.release_date || '').localeCompare(a.entry.release_date || ''),
-    az: (a, b) => a.entry.title.localeCompare(b.entry.title),
-  };
-  const sortFn = sorters[watchlistSort] || sorters.recommended;
-
-  // pinned row: most recently changed first, so a pinned title that just
-  // flipped status jumps to the front of its own row
-  pinned.sort((a, b) => (b.entry.statusChangedAt || 0) - (a.entry.statusChangedAt || 0));
-  notOutYet.sort(sortFn);
-  mainList.sort(sortFn);
-
-  pinnedSection.hidden = pinned.length === 0;
-  pinned.forEach(({ entry, status, changed, prevLabel }) => {
-    pinnedGrid.appendChild(renderCard(entry, { context: 'watchlist', status, changed, prevLabel }));
-  });
-
-  if (notOutYet.length > 0) {
-    notOutYetToggle.hidden = false;
-    notOutYetToggle.textContent = (notOutYetExpanded ? '▴ ' : '▾ ') +
-      `AWAITING STREAMING / UNVERIFIED (${notOutYet.length})`;
-    notOutYetGrid.style.display = notOutYetExpanded ? '' : 'none';
-    notOutYet.forEach(({ entry, status, changed, prevLabel }) => {
-      notOutYetGrid.appendChild(renderCard(entry, { context: 'watchlist', status, changed, prevLabel }));
-    });
-  } else {
-    notOutYetToggle.hidden = true;
-    notOutYetGrid.style.display = 'none';
-  }
-
-  const changedOnes = results.filter(r => r.changed);
-  if (changedOnes.length) {
-    changedStrip.hidden = false;
-    changedOnes.forEach(({ entry, status, prevLabel }) => {
-      changedList.appendChild(renderCard(entry, { context: 'watchlist', status, changed: true, prevLabel }));
-    });
-  } else {
-    changedStrip.hidden = true;
-  }
-
-  mainList.forEach(({ entry, status, changed, prevLabel }) => {
-    grid.appendChild(renderCard(entry, { context: 'watchlist', status, changed, prevLabel }));
-  });
+  const sorters={cost:(a,b)=>(ReleaseModel.cost(a.status.offers,rentalBudget).price??Infinity)-(ReleaseModel.cost(b.status.offers,rentalBudget).price??Infinity),changed:(a,b)=>(b.entry.statusChangedAt||0)-(a.entry.statusChangedAt||0),added:(a,b)=>(b.entry.addedAt||0)-(a.entry.addedAt||0),release:(a,b)=>(b.entry.release_date||'').localeCompare(a.entry.release_date||''),az:(a,b)=>a.entry.title.localeCompare(b.entry.title)};
+  const costRanks={free:0,cheap:1,premium:2,unknown:3,buy:4,waiting:5};
+  results.sort((a,b)=>(watchlistSort==='cost'?(costRanks[ReleaseModel.cost(a.status.offers,rentalBudget,a.status.stale).band]-costRanks[ReleaseModel.cost(b.status.offers,rentalBudget,b.status.stale).band]||sorters.cost(a,b)):Number(!!b.entry.pinned)-Number(!!a.entry.pinned)||(sorters[watchlistSort]||sorters.changed)(a,b)));
+  const groups={now:'watch-now',paid:'paid',waiting:'waiting'};
+  const counts={now:0,paid:0,waiting:0};let changedCount=0;
+  const display=results.filter(r=>{const c=ReleaseModel.cost(r.status.offers,rentalBudget,r.status.stale);return costFilter==='all'||costFilter===c.band;});
+  document.querySelectorAll('[data-cost-filter]').forEach(btn=>{btn.classList.toggle('active',btn.dataset.costFilter===costFilter);btn.setAttribute('aria-pressed',String(btn.dataset.costFilter===costFilter));});
+  let lastPaidBand=null;
+  for(const r of display){const group=ReleaseModel.group(r.status);counts[group]++;const id=groups[group];const changed=r.changed||!!r.entry.lastChange&&r.entry.lastChange.at>previousVisit;if(changed)changedCount++;if(group==='paid'&&watchlistSort==='cost'){const c=ReleaseModel.cost(r.status.offers,rentalBudget);const band=c.band;if(band!==lastPaidBand){const divider=document.createElement('h4');divider.className='cost-divider';divider.textContent=band==='cheap'?'AT YOUR PRICE · $'+rentalBudget.toFixed(2)+' OR LESS':band==='premium'?'OVER YOUR PRICE':band==='buy'?'PURCHASE ONLY':'PRICE NOT CHECKED';document.getElementById(id+'-grid').appendChild(divider);lastPaidBand=band;}}document.getElementById(id+'-grid').appendChild(renderCard(r.entry,{context:'watchlist',status:r.status,changed,prevLabel:r.entry.lastChange?.from}));}
+  for(const [group,id] of Object.entries(groups)){document.getElementById(id+'-section').hidden=!counts[group];document.getElementById(id+'-count').textContent='('+counts[group]+')';}
+  document.getElementById('filter-empty').hidden=display.length>0;
+  document.getElementById('card-summary').textContent=`${counts.now} ready to watch · ${counts.paid} rent or buy · ${counts.waiting} waiting`+(changedCount?` · ${changedCount} changed since your last visit`:'');
+  saveWatchlist();
 }
-
-document.getElementById('sort-select').addEventListener('change', (e) => {
-  watchlistSort = e.target.value;
-  renderWatchlist();
-});
-
-document.getElementById('not-out-yet-toggle').addEventListener('click', () => {
-  notOutYetExpanded = !notOutYetExpanded;
-  renderWatchlist();
-});
+document.getElementById('rental-budget').value=rentalBudget;
+document.getElementById('rental-budget').onchange=e=>{const value=Number(e.target.value);if(e.target.value===''||!Number.isFinite(value)||value<0||value>100)return;rentalBudget=value;localStorage.setItem('rewind-rental-budget-v1',String(value));scheduleSync();renderWatchlist();};
+document.querySelectorAll('[data-cost-filter]').forEach(btn=>btn.onclick=()=>{costFilter=btn.dataset.costFilter;renderWatchlist();});
+document.getElementById('sort-select').addEventListener('change',e=>{watchlistSort=e.target.value;renderWatchlist();});
 
 // ---------- render: discover ----------
 
@@ -809,13 +692,15 @@ async function renderDiscover(append = false) {
     );
     const verified=await mapLimited(candidates,4,async m=>{try{return RewindModel.discoveryMovie(m,await fetchMovieDetails(m.id),filter.window,filter.rereleases);}catch{return null;}});
     if(request !== discoverRequest) return;
-    filtered=filtered.concat(verified.filter(Boolean));
+    filtered=filtered.concat(verified.filter(m=>m&&!isSeen(m)&&!skipSet.has(m.id)&&!watchlist.some(w=>w.id===m.id)));
     pagesChecked++;
     discoverPage++;
   }
 
+  filtered=[...new Map(filtered.map(m=>[m.id,m])).values()];
+  if(append)filtered=filtered.filter(m=>!lastDiscoverResults.some(prior=>prior.id===m.id));
   lastDiscoverResults = append ? lastDiscoverResults.concat(filtered) : filtered;
-  statusEl.textContent=`${lastDiscoverResults.length} films · TMDB-listed US theatrical dates · ${filter.scope==='small'?'smaller releases included':'50+ TMDB ratings; 60+ minutes'}`;
+  statusEl.textContent=`${lastDiscoverResults.length} films · TMDB-listed US theatrical dates · ${filter.scope==='small'?'smaller releases':'recent feature releases'}`;
   filtered.forEach(m => grid.appendChild(renderCard(m, { context: 'discover' })));
 
   const loadMoreBtn = document.getElementById('discover-more');
@@ -827,7 +712,7 @@ async function renderDiscover(append = false) {
     const note = document.createElement('p');
     note.className = 'empty-note';
     note.textContent = exhausted
-      ? "No more matching feature releases in this window. Try Smaller Releases or another month."
+      ? "No more matching feature releases in this window. Try another month or genre."
       : "No matches on these pages. Load more, change the month, or include smaller releases.";
     grid.appendChild(note);
   }
@@ -839,45 +724,22 @@ document.getElementById('discover-more').addEventListener('click', async () => {
 
 // ---------- render: search ----------
 
-document.getElementById('search-form').addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const q = document.getElementById('search-input').value.trim();
-  if (!q) return;
-  const grid = document.getElementById('search-grid');
-  grid.innerHTML = '';
-  const results = await searchMovies(q);
-  lastSearchResults = results;
-  results.forEach(m => grid.appendChild(renderCard(m, { context: 'search', markSeen: true })));
-});
-
-// ---------- tabs ----------
-
-document.getElementById('search-input').addEventListener('focus', (e) => e.target.select());
-
-document.querySelectorAll('.tab-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-    btn.classList.add('active');
-    document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
-    if (btn.dataset.tab === 'watchlist') renderWatchlist();
-    if (btn.dataset.tab === 'search') {
-      document.getElementById('search-input').value = '';
-      document.getElementById('search-grid').innerHTML = '';
-      lastSearchResults = [];
-    }
-  });
-});
+let searchRequest=0;
+document.getElementById('search-form').addEventListener('submit',async e=>{e.preventDefault();const query=document.getElementById('search-input').value.trim();if(!query)return;const request=++searchRequest;document.getElementById('search-clear-btn').hidden=false;document.getElementById('discover-grid').hidden=true;document.getElementById('discover-more').hidden=true;document.getElementById('discovery-filters').hidden=true;const grid=document.getElementById('search-grid');grid.hidden=false;grid.textContent='Searching…';try{const results=await searchMovies(query);if(request!==searchRequest)return;lastSearchResults=results;grid.replaceChildren();results.forEach(m=>grid.appendChild(renderCard(m,{context:'search',markSeen:true})));document.getElementById('discover-status').textContent=results.length+' catalog matches';}catch{if(request===searchRequest)grid.textContent='Search failed. Try again.';}});
+document.getElementById('search-clear-btn').onclick=()=>{searchRequest++;document.getElementById('search-input').value='';document.getElementById('search-grid').hidden=true;document.getElementById('search-clear-btn').hidden=true;document.getElementById('discovery-filters').hidden=false;document.getElementById('discover-grid').hidden=false;document.getElementById('discover-more').hidden=false;document.getElementById('discover-status').textContent=lastDiscoverResults.length+' recent films';};
+document.getElementById('search-input').addEventListener('focus',e=>e.target.select());
+document.querySelectorAll('.tab-btn').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active',b===btn));document.querySelectorAll('.tab-panel').forEach(p=>p.classList.toggle('active',p.id==='tab-'+btn.dataset.tab));if(btn.dataset.tab==='watchlist')renderWatchlist();}));
 
 // ---------- toast ----------
 
 let toastTimer;
-function showToast(msg) {
+function showToast(msg,undo) {
   const el = document.getElementById('toast');
   el.textContent = msg;
+  if(undo){const btn=document.createElement('button');btn.textContent='UNDO';btn.onclick=()=>{undo();el.hidden=true;};el.appendChild(btn);}
   el.hidden = false;
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => { el.hidden = true; }, 2400);
+  toastTimer = setTimeout(() => { el.hidden = true; }, undo ? 10000 : 3500);
 }
 
 document.getElementById('prune-btn').addEventListener('click', () => {
@@ -927,16 +789,16 @@ let emailEnabled = false;
 let emailTimer;
 async function emailRequest(method, data) {
   const token = localStorage.getItem(GH_TOKEN_KEY);
-  if (!token) throw Error('Connect GitHub under Import first.');
+  if (!token) throw Error('Connect GitHub in Settings first.');
   const res = await fetch(ALERT_API,{method,headers:{Authorization:'Bearer ' + token,'Content-Type':'application/json'},...(data ? {body:JSON.stringify(data)} : {})});
   const result = await res.json();
   if (!res.ok) throw Error(result.error || 'Could not update email alerts.');
   return result;
 }
 async function syncEmailCard(enabled = emailEnabled) {
-  const result = await emailRequest('POST',{enabled,movies:watchlist.map(m=>({id:m.id,title:m.title})),services:myServices});
+  const result = await emailRequest('POST',{enabled,movies:watchlist.map(m=>({id:m.id,title:m.title,alert:ReleaseModel.preference(m.alert)})),services:myServices});
   emailEnabled = enabled;
-  document.getElementById('email-alert-status').textContent = enabled ? `Daily email checks enabled for ${result.count} films. The first check reports current availability and future dates; later changes trigger emails.` : 'Email alerts paused.';
+  document.getElementById('email-alert-status').textContent = enabled ? `Daily email checks enabled for ${result.count} films. Alerts follow each film’s selected preference.` : 'Email alerts paused.';
 }
 function scheduleEmailSync() {
   if (!emailEnabled) return;
@@ -956,11 +818,12 @@ for (let i=0;i<24;i++) {
 for (const id of ['release-month','discover-sort','discover-scope','discover-genre','include-rereleases']) document.getElementById(id).onchange = () => {discoverPage=1;renderDiscover().catch(err=>showToast(err.message));};
 async function initEmailAlerts() {
   if (!localStorage.getItem(GH_TOKEN_KEY)) {
-    try {const res=await fetch('https://transmissionalbum.netlify.app/.netlify/functions/rewind-status');if(res.ok){const s=await res.json();document.getElementById('email-alert-status').textContent=`Daily checks ${s.enabled?'active':'paused'} for ${s.tracked} film${s.tracked===1?'':'s'} on the server. Connect GitHub under Import to sync this card.`;}}catch {}
+    try {const res=await fetch('https://transmissionalbum.netlify.app/.netlify/functions/rewind-status');if(res.ok){const s=await res.json();document.getElementById('price-alert-status').textContent=s.pricesConfigured?'Price emails are connected.':'Price-threshold emails are not connected yet. Local quotes can be enabled below.';document.getElementById('email-alert-status').textContent=`Daily checks ${s.enabled?'active':'paused'} for ${s.tracked} film${s.tracked===1?'':'s'} on the server. Connect GitHub in Settings to sync this card.`;}}catch {}
     return;
   }
   try {
     const state = await emailRequest('GET');
+    document.getElementById('price-alert-status').textContent=state.pricesConfigured?'Price emails are connected.':'Price-threshold emails need a connected server price source. Local price checks work with your Watchmode key.';
     emailEnabled = state.enabled;
     document.getElementById('email-alert-status').textContent = state.enabled ? `Daily email checks enabled for ${state.movies.length} films.` : 'Email alerts paused. Enable to track Your Card.';
     // Opening a device must not replace the server's card with stale local data.

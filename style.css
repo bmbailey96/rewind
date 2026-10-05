@@ -520,3 +520,66 @@ button:focus-visible, input:focus-visible {
 .stamp {max-width:100%;overflow-wrap:anywhere;}
 @media(max-width:500px) {.rental-card {width:calc(100% - 10px);max-width:none;} .offer-row {font-size:.85rem;} .watch-options summary {min-height:44px;display:flex;align-items:center;} .card-actions button {min-height:44px;} .card-poster {max-height:360px;object-fit:contain;} }
 [hidden] { display: none !important; }
+
+/* Two shelves; detail is optional, not another task to manage. */
+.sr-only { position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0; }
+.tabs .tab-btn:last-child { margin-left:auto; }
+.filter-panel,.card-controls { margin:1rem 0; padding:.8rem; border:1px solid var(--rule); }
+.filter-fields { display:grid;grid-template-columns:auto minmax(130px,1fr);gap:.6rem;align-items:center;margin-top:1rem; }
+.filter-fields .rerelease-control { grid-column:1/-1; }
+.shelf-group { margin-top:1.8rem; }
+.shelf-group > h3 { font-family:'Special Elite',monospace;margin-bottom:.3rem; }
+.shelf-group > h3 span,.group-note { color:var(--ink-soft);font-size:.85rem; }
+.card-summary { color:var(--stamp-teal); }
+.rental-card { width:calc((100% - 2rem)/3);min-width:0; }
+.card-title { font-size:1rem; }
+.card-availability { font-weight:700;color:var(--stamp-teal);font-size:.95rem;line-height:1.35; }
+.card-availability.status-rent { color:var(--stamp-red); }
+.card-availability.status-notyet,.card-availability.status-nodata { color:var(--ink-soft); }
+.card-synopsis { -webkit-line-clamp:2; }
+.film-details { margin:.7rem 0; }
+.film-details > summary { font-family:'Special Elite',monospace;font-size:.72rem;cursor:pointer;min-height:44px;padding:.5rem 0; }
+.rental-card:has(.film-details[open]) { width:100%; }
+.rental-card:has(.film-details[open]) > .card-poster { width:130px;float:left;margin-right:1rem; }
+.film-details[open] { clear:both; }
+.film-details-body { border-top:1px solid var(--rule);padding-top:.5rem; }
+.offer-row { max-width:620px; }
+.release-timeline { border-top:1px solid var(--rule);margin-top:1.2rem;padding-top:.5rem; }
+.timeline-item { border-left:2px solid var(--rule);padding:.7rem .9rem;margin:.6rem 0;background:rgba(226,217,196,.4); }
+.timeline-text { font-size:.92rem;line-height:1.5;margin:.4rem 0; }
+.timeline-item a { font-size:.75rem;color:var(--stamp-teal); }
+.certainty { display:inline-block;font-family:'Special Elite',monospace;font-size:.64rem;margin-left:.7rem;padding:.15rem .3rem;border:1px solid var(--ink-soft); }
+.certainty.announced { color:var(--stamp-teal);border-color:var(--stamp-teal); }
+.certainty.estimate { color:var(--stamp-red);border-style:dashed; }
+.alert-preference { margin:1.4rem 0;border:1px solid var(--rule);padding:.8rem; }
+.alert-preference select { width:100%;max-width:430px;min-height:44px; }
+.alert-preference label { display:block;margin-top:.7rem; }
+.alert-preference input { width:100px;margin-left:.5rem;min-height:44px; }
+.watch-link { display:flex;align-items:center;justify-content:center;text-decoration:none;background:var(--ink);color:var(--paper);flex:1;font-family:'Special Elite',monospace;font-size:.7rem;padding:.5rem;min-height:44px; }
+.card-actions { flex-wrap:wrap; }
+.card-actions button { min-height:44px; }
+.toast button { margin-left:1rem;background:var(--paper);color:var(--ink);min-height:44px; }
+.maintenance-controls { margin-top:2rem; }
+@media(max-width:650px){.rental-card{width:calc((100% - 1rem)/2);} .tabs .tab-btn{font-size:.65rem;padding:.7rem .6rem;} }
+@media(max-width:450px){.rental-card{width:100%;}.filter-fields{grid-template-columns:1fr;}.rental-card > .card-poster{max-width:270px;display:block;margin:auto auto .7rem;}.rental-card:has(.film-details[open]) > .card-poster{width:95px;max-width:95px;}.search-form{flex-wrap:wrap;} .search-form input{min-width:0;flex:1;}.film-details > summary{font-size:.75rem;} }
+
+/* Put the decision on the front of the card. */
+.card-row.wrap { align-items:flex-start; }
+.cost-block { border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:.7rem 0;margin:.6rem 0; }
+.cost-badge { display:block;font-family:'Special Elite',monospace;font-size:clamp(1.7rem,3vw,2.2rem);line-height:1.15;letter-spacing:-.03em; }
+.cost-free .cost-badge,.cost-cheap .cost-badge { color:var(--stamp-teal); }
+.cost-premium .cost-badge { color:var(--stamp-red); }
+.cost-waiting .cost-badge,.cost-unknown .cost-badge { color:var(--ink-soft);font-size:1.5rem; }
+.cost-caption { font-size:.83rem;margin:.35rem 0 0;line-height:1.4; }
+.cost-warning { font-family:'Special Elite',monospace;font-size:.66rem;border:1px dashed var(--stamp-red);padding:.1rem .3rem;display:inline-block;margin-top:.4rem; }
+.cost-alternative { font-size:.8rem;color:var(--ink-soft);margin:.4rem 0 0; }
+.wait-advice { font-size:.86rem;line-height:1.4;padding-left:.6rem;border-left:2px solid var(--tag-yellow); }
+.cost-filters { display:flex;gap:.4rem;flex-wrap:wrap;margin:1rem 0; }
+.cost-filters button { min-height:44px;font-family:'Special Elite',monospace;font-size:.66rem;background:transparent;border:1px solid var(--rule);color:var(--ink);padding:.55rem .7rem;cursor:pointer; }
+.cost-filters button.active { background:var(--ink);color:var(--paper);border-color:var(--ink); }
+.cost-divider { width:100%;flex:0 0 100%;font-family:'Special Elite',monospace;font-size:.75rem;letter-spacing:.05em;color:var(--ink-soft);margin:1rem 0 0;border-bottom:1px solid var(--rule);padding-bottom:.4rem; }
+.card-controls input { width:95px;min-height:44px;margin-left:.5rem; }
+.card-controls select { min-height:44px;margin-right:1rem; }
+.card-actions .wait-button { flex:0 0 100%; }
+#card-check-status { font-size:.75rem; }
+@media(min-width:451px){.rental-card:has(.film-details[open]) .cost-block{margin-left:146px;border:none;}.rental-card:has(.film-details[open]) .card-actions{max-width:380px;}}

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>REWIND / rental status</title>
+<title>REWIND / films you missed</title>
 <meta name="theme-color" content="#EDE6D6">
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="icons/icon-192.png">
@@ -22,9 +22,8 @@
   </div>
   <nav class="tabs">
     <button class="tab-btn active" data-tab="watchlist">YOUR CARD</button>
-    <button class="tab-btn" data-tab="discover">NEW ARRIVALS</button>
-    <button class="tab-btn" data-tab="search">SEARCH THE CATALOG</button>
-    <button class="tab-btn" data-tab="import">IMPORT</button>
+    <button class="tab-btn" data-tab="discover">FILMS YOU MISSED</button>
+    <button class="tab-btn" data-tab="import">SETTINGS</button>
   </nav>
 </header>
 
@@ -35,77 +34,48 @@
       <h2>Your Card</h2>
       <span class="count-stamp" id="watchlist-count">0 titles</span>
     </div>
-    <div class="card-toolbar"><button id="refresh-card-btn">REFRESH AVAILABILITY &amp; PRICES</button><span id="card-check-status" role="status"></span></div>
-    <button id="prune-btn" class="btn-more" style="margin: 0 0 1rem;">CLEAR OUT ANYTHING OLDER THAN 12 MONTHS</button>
-
-    <select id="sort-select" class="sort-select" style="margin-bottom: 1rem;">
-      <option value="recommended">SORT: RECOMMENDED</option>
-      <option value="added">SORT: RECENTLY ADDED</option>
-      <option value="release">SORT: RELEASE DATE</option>
-      <option value="az">SORT: A-Z</option>
-    </select>
-
-    <section id="pinned-section" hidden>
-      <p class="changed-label" style="color: var(--tag-yellow);">PINNED TO THE TOP</p>
-      <div id="pinned-grid" class="card-row wrap" style="margin-bottom: 1.4rem;"></div>
-    </section>
-
-    <button id="not-out-yet-toggle" class="btn-more" style="margin: 0 0 1.4rem;" hidden></button>
-    <div id="not-out-yet-grid" class="card-row wrap" style="margin-bottom: 1.4rem; display: none;"></div>
-
-    <div id="changed-strip" class="changed-strip" hidden>
-      <p class="changed-label">RESTAMPED SINCE LAST VISIT</p>
-      <div id="changed-list" class="card-row"></div>
-    </div>
-    <div class="import-block">
-      <h3>Email release alerts</h3>
-      <p class="import-note">Your Card is checked daily, even when Rewind is closed. Alerts go to bmbailey96@gmail.com for new streaming services, rentals, purchases, and US theatrical or digital dates. US theatrical dates do not confirm local showtimes.</p>
-      <button id="email-enable-btn">ENABLE EMAIL ALERTS</button>
-      <button id="email-disable-btn" class="secondary">PAUSE EMAIL ALERTS</button>
-      <p id="email-alert-status" class="import-status">Connect GitHub under Import, then enable alerts for Your Card.</p>
-    </div>
-    <div id="watchlist-grid" class="card-row wrap"></div>
-    <p id="watchlist-empty" class="empty-note" hidden>Card's empty. Walk the new arrivals wall or search the catalog and add something.</p>
+    <div class="card-toolbar"><button id="refresh-card-btn" class="secondary">REFRESH</button><span id="card-check-status" role="status"></span></div>
+    <div class="cost-filters" aria-label="Filter your card by cost"><button data-cost-filter="all" aria-pressed="true">ALL</button><button data-cost-filter="free" aria-pressed="false">INCLUDED / FREE</button><button data-cost-filter="cheap" aria-pressed="false">AT MY PRICE</button><button data-cost-filter="premium" aria-pressed="false">OVER MY PRICE</button><button data-cost-filter="waiting" aria-pressed="false">WAITING</button></div>
+    <p id="filter-empty" class="empty-note" hidden>No tracked films in this group.</p>
+    <p id="card-summary" class="card-summary"></p>
+    <details class="card-controls"><summary>Sort & rental budget</summary>
+      <label for="sort-select">Order</label><select id="sort-select" class="sort-select"><option value="cost">COST: LOW TO HIGH</option><option value="changed">RECENT CHANGES</option><option value="added">RECENTLY TRACKED</option><option value="release">RELEASE DATE</option><option value="az">A-Z</option></select>
+      <label for="rental-budget">My usual rental limit ($)</label><input id="rental-budget" type="number" min="0" max="100" step="0.01" value="7.99"><p class="offer-note">Apple TV and Prime Video quotes come first. The headline uses HD or 4K when available; cheaper offers elsewhere stay visible. Your limit groups cards, and does not change existing film alerts.</p>
+    </details>
+    <section id="watch-now-section" class="shelf-group" hidden><h3>Watch now <span id="watch-now-count"></span></h3><p class="group-note">Included with your services, or free.</p><div id="watch-now-grid" class="card-row wrap"></div></section>
+    <section id="paid-section" class="shelf-group" hidden><h3>Rent or buy <span id="paid-count"></span></h3><div id="paid-grid" class="card-row wrap"></div></section>
+    <section id="waiting-section" class="shelf-group" hidden><h3>Waiting <span id="waiting-count"></span></h3><p class="group-note">Waiting for an included offer or a confirmed listing.</p><div id="waiting-grid" class="card-row wrap"></div></section>
+    <div id="watchlist-grid" hidden></div>
+    <p id="watchlist-empty" class="empty-note" hidden>Track a film from Films You Missed. We’ll keep an eye on it.</p>
   </section>
 
   <section id="tab-discover" class="tab-panel">
     <div class="panel-head">
-      <h2>New Arrivals</h2>
+      <h2>Films You Missed</h2>
       <span class="count-stamp">US theatrical releases</span>
     </div>
-    <label for="release-month">Release month</label>
-    <select id="release-month" class="sort-select"><option value="">LAST 6 MONTHS</option></select>
-    <label for="discover-sort">Order</label>
-    <select id="discover-sort" class="sort-select"><option value="popularity.desc">POPULAR FILMS</option><option value="release_date.desc">RELEASE DATE</option></select>
-    <label for="discover-scope">Shelf</label>
-    <select id="discover-scope" class="sort-select"><option value="features">FEATURE RELEASES</option><option value="small">SMALLER RELEASES TOO</option></select>
-    <label for="discover-genre">Genre</label>
-    <select id="discover-genre" class="sort-select"><option value="">ALL GENRES</option><option value="27">HORROR</option><option value="878">SCIENCE FICTION</option><option value="18">DRAMA</option><option value="35">COMEDY</option><option value="53">THRILLER</option><option value="99">DOCUMENTARY</option><option value="16">ANIMATION</option></select>
-    <label class="rerelease-control"><input id="include-rereleases" type="checkbox"> Include theatrical rereleases</label>
-    <p class="import-note">Feature films with US theatrical dates listed in TMDB. The default shelf requires 50 audience ratings and a 60-minute runtime to keep shorts and placeholder entries out. Smaller Releases lowers the rating count to 5. Search always searches the full catalog.</p>
+    <form id="search-form" class="search-form"><label class="sr-only" for="search-input">Find a film</label><input id="search-input" type="search" placeholder="Find a film…" autocomplete="off"><button type="submit">SEARCH</button><button id="search-clear-btn" type="button" class="secondary" hidden>BACK TO THE SHELF</button></form>
+    <div id="search-grid" class="card-row wrap" hidden></div>
+    <details id="discovery-filters" class="filter-panel"><summary>Filter the shelf</summary><div class="filter-fields">
+      <label for="release-month">Release month</label><select id="release-month" class="sort-select"><option value="">LAST 6 MONTHS</option></select>
+      <label for="discover-sort">Order</label><select id="discover-sort" class="sort-select"><option value="popularity.desc">POPULAR FIRST</option><option value="release_date.desc">RECENT FIRST</option></select>
+      <label for="discover-scope">Shelf</label><select id="discover-scope" class="sort-select"><option value="features">ALL FEATURE RELEASES</option><option value="small">SMALL RELEASES FIRST</option></select>
+      <label for="discover-genre">Genre</label><select id="discover-genre" class="sort-select"><option value="">ALL GENRES</option><option value="27">HORROR</option><option value="878">SCIENCE FICTION</option><option value="18">DRAMA</option><option value="35">COMEDY</option><option value="53">THRILLER</option><option value="99">DOCUMENTARY</option><option value="16">ANIMATION</option></select>
+      <label class="rerelease-control"><input id="include-rereleases" type="checkbox"> Include theatrical rereleases</label>
+    </div><p class="import-note">Feature films with a US theatrical listing and a runtime of at least an hour. No minimum rating count. Seen, skipped, and tracked films stay off this shelf.</p></details>
     <p id="discover-status" class="import-status" role="status"></p>
     <div id="discover-grid" class="card-row wrap"></div>
     <button id="discover-more" class="btn-more">LOAD MORE STOCK</button>
   </section>
 
-  <section id="tab-search" class="tab-panel">
-    <div class="panel-head">
-      <h2>Search the Catalog</h2>
-    </div>
-    <form id="search-form" class="search-form">
-      <input id="search-input" type="text" placeholder="Title..." autocomplete="off">
-      <button type="submit">FIND IT</button>
-    </form>
-    <div id="search-grid" class="card-row wrap"></div>
-  </section>
-
   <section id="tab-import" class="tab-panel">
     <div class="panel-head">
-      <h2>Import from Letterboxd</h2>
+      <h2>Settings</h2>
     </div>
+    <div class="import-block"><h3>Email alerts</h3><p class="import-note">Daily checks for the films on your card. Each film has its own alert choice.</p><button id="email-enable-btn">ENABLE EMAILS</button><button id="email-disable-btn" class="secondary">PAUSE EMAILS</button><p id="email-alert-status" class="import-status">Connect GitHub below to sync this card for email alerts.</p><p id="price-alert-status" class="import-note"></p></div>
     <div class="import-block">
       <h3>Already Seen</h3>
-      <p class="import-note">Upload <code>watched.csv</code> from your Letterboxd export. New Arrivals will stop showing you anything already on this list.</p>
+      <p class="import-note">Upload <code>watched.csv</code> from your Letterboxd export. Films You Missed will stop showing you anything already on this list.</p>
       <input type="file" id="import-watched" accept=".csv">
       <p id="watched-status" class="import-status"></p>
     </div>
@@ -123,7 +93,7 @@
     </div>
     <div class="import-block">
       <h3>Live rental and purchase prices</h3>
-      <p class="import-note">JustWatch supplies the service listings, but not dollar amounts. Connect a <a href="https://api.watchmode.com/requestApiKey" target="_blank" rel="noopener">Watchmode key</a> to show quoted US prices and formats. Missing quotes stay blank; no typical or estimated prices are substituted.</p>
+      <p class="import-note">JustWatch supplies the service listings, but not dollar amounts. Connect a <a href="https://api.watchmode.com/requestApiKey" target="_blank" rel="noopener">Watchmode key</a> to show quoted US prices and formats. Quotes show the store and format. Price history starts with your first successful check.</p>
       <input type="password" id="watchmode-key-input" class="text-input" placeholder="Watchmode API key">
       <div class="sync-actions">
         <button id="watchmode-save-btn">SAVE KEY</button>
@@ -141,14 +111,16 @@
       </div>
       <p id="sync-status" class="import-status"></p>
     </div>
+    <details class="maintenance-controls"><summary>Card maintenance</summary><p>Remove tracked films released more than a year ago. Nothing is cleared automatically.</p><button id="prune-btn" class="secondary">CLEAR OLDER FILMS</button></details>
   </section>
 
 </main>
 
-<div id="toast" class="toast" hidden></div>
+<div id="toast" class="toast" role="status" hidden></div>
 
-<footer class="site-footer">US streaming availability powered by JustWatch. Film details from TMDB. Listings and quotes can lag; verify the final offer at the provider.</footer>
+<footer class="site-footer">US streaming availability powered by JustWatch. Film details from TMDB. Announcements and estimates have their sources inside each card.</footer>
 <script src="rewind-model.js"></script>
+<script src="release-model.js"></script>
 <script src="availability-ui.js"></script>
 <script src="app.js"></script>
 </body>
