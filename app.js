@@ -198,7 +198,7 @@ function collectSyncData() {
 function applySyncData(data) {
   if (!data) return;
   if(typeof data.rentalBudget==='number'&&data.rentalBudget>=0&&data.rentalBudget<=100){rentalBudget=data.rentalBudget;localStorage.setItem('rewind-rental-budget-v1',String(rentalBudget));document.getElementById('rental-budget').value=rentalBudget;}
-  if(data.hub&&typeof data.hub==='object'){for(const key of ['taste','hidden','muted','followed','knownEvents','suggestions','dismissedSuggestions','ignoredTaste'])if(Array.isArray(data.hub[key]))hubState[key]=data.hub[key];if(Number.isFinite(data.hub.suggestionsCheckedAt))hubState.suggestionsCheckedAt=data.hub.suggestionsCheckedAt;if(typeof data.hub.eventAlerts==='boolean')hubState.eventAlerts=data.hub.eventAlerts;localStorage.setItem('rewind-hub-v1',JSON.stringify(hubState));}
+  if(data.hub&&typeof data.hub==='object'){for(const key of ['taste','hidden','muted','followed','knownEvents','suggestions','dismissedSuggestions','ignoredTaste'])if(Array.isArray(data.hub[key]))hubState[key]=data.hub[key];if(Number.isFinite(data.hub.suggestionsVersion))hubState.suggestionsVersion=data.hub.suggestionsVersion;if(Number.isFinite(data.hub.suggestionsCheckedAt))hubState.suggestionsCheckedAt=data.hub.suggestionsCheckedAt;if(typeof data.hub.eventAlerts==='boolean')hubState.eventAlerts=data.hub.eventAlerts;localStorage.setItem('rewind-hub-v1',JSON.stringify(hubState));}
   watchlist = data.watchlist || [];
   if (Array.isArray(data.services)) {myServices = data.services;localStorage.setItem('rewind-services-v1',JSON.stringify(myServices));renderServiceSettings();}
   seenSet = new Set(data.seen || []);
