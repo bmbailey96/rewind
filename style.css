@@ -494,3 +494,28 @@ button:focus-visible, input:focus-visible {
 @media (max-width: 480px) {
   .rental-card { width: 42vw; }
 }
+
+/* Viewing options keep subscription access separate from paid storefronts. */
+.card-toolbar { display:flex; flex-wrap:wrap; gap:.7rem; align-items:center; margin-bottom:1rem; }
+#card-check-status { font-size:.8rem; color:var(--ink-soft); }
+.watch-options { margin:.6rem 0; border-top:1px solid var(--rule); border-bottom:1px solid var(--rule); padding:.55rem 0; font-size:.8rem; }
+.watch-options summary { cursor:pointer; font-weight:bold; }
+.watch-options h4 { margin:.8rem 0 .35rem; font-family:'Special Elite',monospace; font-size:.72rem; text-transform:uppercase; color:var(--stamp-teal); }
+.offer-row { display:flex; justify-content:space-between; gap:.7rem; padding:.35rem 0; border-bottom:1px dotted var(--rule); align-items:start; }
+.offer-row a { color:var(--ink); text-underline-offset:3px; }
+.offer-price { text-align:right; flex-shrink:0; max-width:48%; font-size:.75rem; }
+.offer-note,.checked-note,.release-note { font-size:.7rem; line-height:1.4; color:var(--ink-soft); margin:.45rem 0; }
+.lookup-warning { font-size:.75rem; color:var(--stamp-red); }
+.card-synopsis { font-size:.82rem; line-height:1.4; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; margin:.6rem 0; }
+.service-settings { display:flex; flex-wrap:wrap; gap:.6rem 1rem; }
+.service-settings label { display:flex; align-items:center; gap:.3rem; font-size:.9rem; }
+.rerelease-control { display:block; margin:.6rem 0; font-size:.85rem; }
+.site-footer { max-width:900px; margin:2rem auto; padding:1rem; border-top:1px solid var(--rule); font-size:.75rem; color:var(--ink-soft); }
+.card-meta { line-height:1.4; }
+@media(max-width:500px) { .offer-row { gap:.4rem; } .card-toolbar button { width:100%; } }
+
+.inline-status {font-size:.8rem;font-weight:bold;color:var(--stamp-teal);}
+.card-actions {flex-wrap:wrap;}
+
+.stamp {max-width:100%;overflow-wrap:anywhere;}
+@media(max-width:500px) {.rental-card {width:calc(100% - 10px);max-width:none;} .offer-row {font-size:.85rem;} .watch-options summary {min-height:44px;display:flex;align-items:center;} .card-actions button {min-height:44px;} .card-poster {max-height:360px;object-fit:contain;} }

@@ -18,7 +18,7 @@
 <header class="counter">
   <div class="counter-inner">
     <h1 class="shop-name">REWIND</h1>
-    <p class="shop-tag">be kind &middot; rewind &middot; check the wall</p>
+    <p class="shop-tag">the films you missed &middot; where to watch them</p>
   </div>
   <nav class="tabs">
     <button class="tab-btn active" data-tab="watchlist">YOUR CARD</button>
@@ -35,6 +35,7 @@
       <h2>Your Card</h2>
       <span class="count-stamp" id="watchlist-count">0 titles</span>
     </div>
+    <div class="card-toolbar"><button id="refresh-card-btn">REFRESH AVAILABILITY &amp; PRICES</button><span id="card-check-status" role="status"></span></div>
     <button id="prune-btn" class="btn-more" style="margin: 0 0 1rem;">CLEAR OUT ANYTHING OLDER THAN 12 MONTHS</button>
 
     <select id="sort-select" class="sort-select" style="margin-bottom: 1rem;">
@@ -73,10 +74,16 @@
       <span class="count-stamp">US theatrical releases</span>
     </div>
     <label for="release-month">Release month</label>
-    <select id="release-month" class="sort-select"><option value="">LAST 12 MONTHS</option></select>
+    <select id="release-month" class="sort-select"><option value="">LAST 6 MONTHS</option></select>
     <label for="discover-sort">Order</label>
-    <select id="discover-sort" class="sort-select"><option value="release_date.desc">RELEASE DATE</option><option value="popularity.desc">POPULARITY</option></select>
-    <p class="import-note">Browse US theatrical releases, select the films you missed, then check Your Card. Small releases are included without a minimum rating count.</p>
+    <select id="discover-sort" class="sort-select"><option value="popularity.desc">POPULAR FILMS</option><option value="release_date.desc">RELEASE DATE</option></select>
+    <label for="discover-scope">Shelf</label>
+    <select id="discover-scope" class="sort-select"><option value="features">FEATURE RELEASES</option><option value="small">SMALLER RELEASES TOO</option></select>
+    <label for="discover-genre">Genre</label>
+    <select id="discover-genre" class="sort-select"><option value="">ALL GENRES</option><option value="27">HORROR</option><option value="878">SCIENCE FICTION</option><option value="18">DRAMA</option><option value="35">COMEDY</option><option value="53">THRILLER</option><option value="99">DOCUMENTARY</option><option value="16">ANIMATION</option></select>
+    <label class="rerelease-control"><input id="include-rereleases" type="checkbox"> Include theatrical rereleases</label>
+    <p class="import-note">Feature films with US theatrical dates listed in TMDB. The default shelf requires 50 audience ratings and a 60-minute runtime to keep shorts and placeholder entries out. Smaller Releases lowers the rating count to 5. Search always searches the full catalog.</p>
+    <p id="discover-status" class="import-status" role="status"></p>
     <div id="discover-grid" class="card-row wrap"></div>
     <button id="discover-more" class="btn-more">LOAD MORE STOCK</button>
   </section>
@@ -110,8 +117,13 @@
     </div>
 
     <div class="import-block">
-      <h3>Free/Ad-Supported Coverage (Watchmode)</h3>
-      <p class="import-note">TMDB's data (JustWatch) sometimes misses free ad-supported platforms like Tubi and Pluto. Get a free key at <code>api.watchmode.com/requestApiKey</code> (2,500 free requests/month, no card needed) to double-check Your Card against those when TMDB comes up empty. Optional, everything else works fine without it.</p>
+      <h3>Your streaming services</h3>
+      <p class="import-note">Check the subscriptions you have. Store rentals and add-on channels are never counted as included with Prime Video, Apple TV+, or another base service.</p>
+      <div id="service-settings" class="service-settings"></div>
+    </div>
+    <div class="import-block">
+      <h3>Live rental and purchase prices</h3>
+      <p class="import-note">JustWatch supplies the service listings, but not dollar amounts. Connect a <a href="https://api.watchmode.com/requestApiKey" target="_blank" rel="noopener">Watchmode key</a> to show quoted US prices and formats. Missing quotes stay blank; no typical or estimated prices are substituted.</p>
       <input type="password" id="watchmode-key-input" class="text-input" placeholder="Watchmode API key">
       <div class="sync-actions">
         <button id="watchmode-save-btn">SAVE KEY</button>
@@ -135,6 +147,9 @@
 
 <div id="toast" class="toast" hidden></div>
 
+<footer class="site-footer">US streaming availability powered by JustWatch. Film details from TMDB. Listings and quotes can lag; verify the final offer at the provider.</footer>
+<script src="rewind-model.js"></script>
+<script src="availability-ui.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

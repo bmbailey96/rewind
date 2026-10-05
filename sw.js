@@ -1,5 +1,5 @@
-const CACHE = 'rewind-v2';
-const SHELL = ['/', 'index.html', 'style.css', 'app.js', 'manifest.json'];
+const CACHE = 'rewind-v3';
+const SHELL = ['/', 'index.html', 'style.css', 'app.js', 'rewind-model.js', 'availability-ui.js', 'manifest.json'];
 
 self.addEventListener('install', (e) => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)));
@@ -18,13 +18,13 @@ self.addEventListener('activate', (e) => {
 // shell files (app.js, style.css) from sticking around after a deploy.
 self.addEventListener('fetch', (e) => {
   const url = new URL(e.request.url);
-  if (url.hostname.includes('themoviedb.org')) return; // always live, never cached
+  // Availability, prices, credentials, and third-party responses are never cached here.
+  if (e.request.method !== 'GET' || url.origin !== self.location.origin || !SHELL.some(p=>url.pathname === (p==='/' ? '/' : '/'+p))) return;
 
   e.respondWith(
     fetch(e.request)
       .then(res => {
-        const resClone = res.clone();
-        caches.open(CACHE).then(c => c.put(e.request, resClone));
+        if (res.ok) {const resClone = res.clone();caches.open(CACHE).then(c => c.put(e.request, resClone));}
         return res;
       })
       .catch(() => caches.match(e.request))

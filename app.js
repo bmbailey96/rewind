@@ -202,6 +202,7 @@ function collectSyncData() {
     watchlist,
     seen: [...seenSet],
     skipped: [...skipSet],
+    services: myServices,
     updatedAt: Date.now(),
   };
 }
@@ -209,6 +210,7 @@ function collectSyncData() {
 function applySyncData(data) {
   if (!data) return;
   watchlist = data.watchlist || [];
+  if (Array.isArray(data.services)) {myServices = data.services;localStorage.setItem('rewind-services-v1',JSON.stringify(myServices));renderServiceSettings();}
   seenSet = new Set(data.seen || []);
   skipSet = new Set(data.skipped || []);
   saveWatchlist();
@@ -265,6 +267,7 @@ async function pushToGist() {
 }
 
 function scheduleSync() {
+  scheduleEmailSync();
   if (!localStorage.getItem(GH_TOKEN_KEY)) return;
   clearTimeout(syncTimer);
   syncTimer = setTimeout(() => pushToGist().catch(() => {}), 1500);
@@ -275,11 +278,12 @@ document.getElementById('watchmode-save-btn').addEventListener('click', () => {
   const statusEl = document.getElementById('watchmode-status');
   if (!key) {
     localStorage.removeItem(WATCHMODE_KEY_STORAGE);
-    statusEl.textContent = 'Key cleared, Watchmode check disabled.';
-    return;
+    statusEl.textContent = 'Price source disconnected. No cached price quotes will be displayed.';
+    watchlist.forEach(m=>delete m.watchmodeCache);renderWatchlist();return;
   }
   localStorage.setItem(WATCHMODE_KEY_STORAGE, key);
-  statusEl.textContent = 'Saved. Your Card will check Watchmode from now on when TMDB comes up short.';
+  watchlist.forEach(m=>delete m.watchmodeCache);
+  statusEl.textContent = 'Saved. Checking US provider offers and quoted rental/purchase prices.';
   renderWatchlist();
 });
 
@@ -340,7 +344,6 @@ function loadWatchlist() {
 
 function saveWatchlist() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(watchlist));
-  scheduleEmailSync();
 }
 
 // ---------- tmdb calls ----------
@@ -360,20 +363,39 @@ function dateMonthsAgo(months) {
   return d.toISOString().slice(0, 10);
 }
 
-async function fetchDiscover(page = 1) {
-  const today = new Date().toISOString().slice(0, 10);
+function discoveryWindow() {
+  const today = new Intl.DateTimeFormat('en-CA',{timeZone:'America/Denver',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
   const month = document.getElementById('release-month').value;
-  const start = month ? month + '-01' : dateMonthsAgo(12);
-  const end = month ? new Date(Date.UTC(Number(month.slice(0,4)), Number(month.slice(5,7)), 0)).toISOString().slice(0,10) : today;
-  const data = await tmdbGet('/discover/movie', {
-    region: REGION,
-    sort_by: document.getElementById('discover-sort').value,
-    with_release_type: '2|3',
-    'release_date.gte': start,
-    'release_date.lte': end,
-    page,
+  const start = month ? month + '-01' : dateMonthsAgo(6);
+  const monthEnd = month ? new Date(Date.UTC(Number(month.slice(0,4)),Number(month.slice(5,7)),0)).toISOString().slice(0,10) : today;
+  return {start,end:monthEnd < today ? monthEnd : today,today};
+}
+const movieDetailCache = new Map();
+async function fetchMovieDetails(id) {
+  if (!movieDetailCache.has(id)) {
+    movieDetailCache.set(id,tmdbGet(`/movie/${id}`,{append_to_response:'release_dates,credits'}).catch(err=>{movieDetailCache.delete(id);throw err;}));
+  }
+  return movieDetailCache.get(id);
+}
+async function mapLimited(items, concurrency, fn) {
+  const results = new Array(items.length);let next = 0;
+  await Promise.all(Array.from({length:Math.min(concurrency,items.length)},async()=>{
+    while(next < items.length){const i=next++;results[i]=await fn(items[i],i);}
+  }));
+  return results;
+}
+async function fetchDiscover(page = 1, filter = null) {
+  const window = filter?.window || discoveryWindow();
+  const broad = (filter?.scope || document.getElementById('discover-scope').value) === 'small';
+  const rereleases = filter?.rereleases ?? document.getElementById('include-rereleases').checked;
+  const genre = filter?.genre ?? document.getElementById('discover-genre').value;
+  return tmdbGet('/discover/movie', {
+    region:REGION,sort_by:filter?.sort || document.getElementById('discover-sort').value,
+    with_release_type:'2|3','release_date.gte':window.start,'release_date.lte':window.end,
+    'vote_count.gte':broad ? 5 : 50,'with_runtime.gte':60,include_video:false,include_adult:false,
+    ...(!rereleases ? {'primary_release_date.gte':dateMonthsAgo(24)} : {}),
+    ...(genre ? {with_genres:genre} : {}),page,
   });
-  return data;
 }
 
 async function searchMovies(query) {
@@ -392,157 +414,68 @@ async function fetchReleaseDates(id) {
   return entry ? entry.release_dates : [];
 }
 
-// keywords matched against TMDB/JustWatch provider_name (lowercase, substring match)
-const MY_SERVICES = [
-  'hulu',
-  'amazon prime video', 'prime video',
-  'apple tv plus', 'apple tv+',
-  'hbo max', 'max',
-  'netflix',
-  'eternal family',
-  'peacock',
-  'paramount plus', 'paramount+',
-  'disney plus', 'disney+',
-  'shudder',
-];
-
-// JustWatch lists channel add-ons (e.g. "AMC Plus Apple TV Channel", "Max
-// Amazon Channel") as their own provider entries. Naively matching "apple tv"
-// or "amazon" as a substring would wrongly treat ANY channel sold through
-// those storefronts as something you own. Strip the storefront/channel
-// wrapper first to get the actual underlying service name, then compare.
-function baseServiceName(providerName) {
-  return (providerName || '')
-    .replace(/\s*(Amazon Channel|Apple TV Channel|Roku Premium Channel|Roku Channel)\s*$/i, '')
-    .trim();
-}
-
-function isMyService(providerName) {
-  const base = baseServiceName(providerName).toLowerCase();
-  return MY_SERVICES.some(s => base === s || base.includes(s));
-}
-
-// ---------- watchmode (secondary check for free ad-supported gaps) ----------
-
+// ---------- availability and service preferences ----------
+let myServices;
+try {const stored=JSON.parse(localStorage.getItem('rewind-services-v1'));myServices=Array.isArray(stored)?stored.filter(s=>typeof s==='string'):[...RewindModel.DEFAULT_SERVICES];}
+catch {myServices = [...RewindModel.DEFAULT_SERVICES];}
 const WATCHMODE_KEY_STORAGE = 'rewind-watchmode-key';
-const WATCHMODE_CACHE_HOURS = 12;
-
-function getWatchmodeKey() {
-  return localStorage.getItem(WATCHMODE_KEY_STORAGE);
-}
-
-// Best-effort only: if Watchmode's ID-matching format ever changes, this
-// fails silently and the app just falls back to whatever TMDB already found.
-// Returns { free: {provider_name, link} | null, lowestRent: {price, provider_name} | null }
-// Best-effort only: if Watchmode's ID-matching format ever changes, this
-// fails silently and the app just falls back to whatever TMDB already found.
-// Returns { free: {provider_name, link} | null }
+const WATCHMODE_CACHE_HOURS = 6;
+function getWatchmodeKey() { return localStorage.getItem(WATCHMODE_KEY_STORAGE); }
 async function checkWatchmode(tmdbId) {
   const key = getWatchmodeKey();
   if (!key) return null;
-  try {
-    const searchRes = await fetch(`https://api.watchmode.com/v1/search/?apiKey=${key}&search_field=tmdb_movie_id&search_value=${tmdbId}`);
-    if (!searchRes.ok) {
-      console.warn('[Watchmode] search request failed', searchRes.status, await searchRes.text().catch(() => ''));
-      return null;
-    }
-    const searchData = await searchRes.json();
-    const match = searchData.title_results?.[0];
-    if (!match) {
-      console.warn('[Watchmode] no title match for tmdb id', tmdbId, searchData);
-      return null;
-    }
-
-    const sourcesRes = await fetch(`https://api.watchmode.com/v1/title/${match.id}/sources/?apiKey=${key}&regions=US`);
-    if (!sourcesRes.ok) {
-      console.warn('[Watchmode] sources request failed', sourcesRes.status, await sourcesRes.text().catch(() => ''));
-      return null;
-    }
-    const sources = await sourcesRes.json();
-    const free = sources.find(s => s.type === 'free');
-
-    return { free: free ? { provider_name: free.name, link: free.web_url } : null };
-  } catch (e) {
-    console.warn('[Watchmode] request threw', e);
-    return null;
-  }
+  const res = await fetch(`https://api.watchmode.com/v1/title/movie-${tmdbId}/sources/?regions=US`,{headers:{'X-API-Key':key}});
+  if (!res.ok) throw Error(`Price lookup failed (${res.status}). Provider prices were not updated.`);
+  const sources = await res.json();
+  if (!Array.isArray(sources)) throw Error('Price source returned an invalid response.');
+  return {sources,checkedAt:Date.now()};
 }
-
-async function checkWatchmodeCached(entry) {
+async function checkWatchmodeCached(movie, force = false) {
   if (!getWatchmodeKey()) return null;
-  const cache = entry.watchmodeCache;
-  const fresh = cache && (Date.now() - cache.checkedAt) < WATCHMODE_CACHE_HOURS * 3600 * 1000;
-  if (fresh) return cache.found;
-  const found = await checkWatchmode(entry.id);
-  entry.watchmodeCache = { checkedAt: Date.now(), found };
+  const cache = movie.watchmodeCache;
+  if (!force && cache?.sources && Date.now()-cache.checkedAt < WATCHMODE_CACHE_HOURS*3600000) return cache;
+  const found = await checkWatchmode(movie.id);
+  movie.watchmodeCache = found;
   return found;
 }
-
-// ---------- status logic ----------
-
-// returns { code, label, date, link }
-async function deriveStatus(movie) {
-  const [providers, releaseDates] = await Promise.all([
-    fetchWatchProviders(movie.id),
-    fetchReleaseDates(movie.id),
-  ]);
-
-  if (providers) {
-    const link = providers.link || null;
-
-    // "free" means free to anyone, no subscription needed at all (Tubi,
-    // Pluto, Crackle, The Roku Channel, etc.) — this should never require
-    // checking it against your subscribed services, it's free regardless
-    if (providers.free?.length) {
-      const p = providers.free[0];
-      return { code: 'free', label: 'FREE ON ' + baseServiceName(p.provider_name).toUpperCase(), providers: providers.free, link };
-    }
-
-    // flatrate/ads require an actual account or subscription, so these DO
-    // need to be checked against what you actually have
-    const subscriptionLists = [
-      ...(providers.flatrate || []),
-      ...(providers.ads || []),
-    ];
-
-    const mine = subscriptionLists.find(p => isMyService(p.provider_name));
-    if (mine) {
-      return { code: 'free', label: 'STREAMING ON ' + baseServiceName(mine.provider_name).toUpperCase(), providers: [mine], link };
-    }
-
-    // it's streaming, just not on anything you subscribe to
-    if (subscriptionLists.length) {
-      const p = subscriptionLists[0];
-      const wm = await checkWatchmodeCached(movie);
-      if (wm?.free) return { code: 'free', label: 'FREE ON ' + wm.free.provider_name.toUpperCase(), link: wm.free.link || link };
-      return { code: 'rent', label: 'ON ' + baseServiceName(p.provider_name).toUpperCase() + ' (NOT ONE OF YOURS)', providers: subscriptionLists, link };
-    }
-
-    if (providers.rent?.length || providers.buy?.length) {
-      const p = providers.rent?.[0] || providers.buy?.[0];
-      const wm = await checkWatchmodeCached(movie);
-      if (wm?.free) return { code: 'free', label: 'FREE ON ' + wm.free.provider_name.toUpperCase(), link: wm.free.link || link };
-      return { code: 'rent', label: 'AVAILABLE TO RENT ON ' + baseServiceName(p.provider_name).toUpperCase(), providers: providers.rent || providers.buy, link };
-    }
+async function deriveStatus(movie, force = false) {
+  const results = await Promise.allSettled([fetchWatchProviders(movie.id),fetchReleaseDates(movie.id)]);
+  const p = results[0];const d = results[1];
+  const releaseDates = d.status === 'fulfilled' ? d.value : [];
+  if (p.status === 'rejected') {
+    if (movie.availabilitySnapshot) return {...movie.availabilitySnapshot,stale:true,priceWarning:'Provider lookup failed. Showing the previous check.'};
+    return {code:'nodata',kind:'unknown',label:'Availability could not be checked',offers:[],stale:true};
   }
-
-  const digitalDates = releaseDates.filter(r => r.type === RELEASE_TYPE_DIGITAL).sort((a,b) => a.release_date.localeCompare(b.release_date));
-  const digital = digitalDates.find(r => r.release_date.slice(0,10) <= new Date().toISOString().slice(0,10)) || digitalDates[0];
-  if (digital) {
-    const d = new Date(digital.release_date);
-    const today = new Date();
-    if (d > today) {
-      return { code: 'notyet', label: 'CONFIRMED ' + d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }), date: digital.release_date };
-    }
-    return { code: 'rent', label: 'DIGITAL SINCE ' + d.toLocaleDateString('en-US', { month: 'short', year: 'numeric' }) };
+  const providers = p.value || {};
+  let quote = null;let priceWarning = '';
+  if (getWatchmodeKey()) {
+    try {quote = await checkWatchmodeCached(movie,force);}
+    catch (err) {priceWarning = err.message;}
   }
-
-  const wm = await checkWatchmodeCached(movie);
-  if (wm?.free) return { code: 'free', label: 'FREE ON ' + wm.free.provider_name.toUpperCase(), link: wm.free.link };
-
-  const theatrical = releaseDates.filter(r => [2,3].includes(r.type)).sort((a,b) => a.release_date.localeCompare(b.release_date)).find(r => new Date(r.release_date) > new Date());
-  if (theatrical) return {code:'notyet',label:'US THEATRICAL ' + new Date(theatrical.release_date).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}),date:theatrical.release_date};
-  return { code: 'nodata', label: 'NO STREAMING DATE YET' };
+  const offers = RewindModel.mergeOffers(RewindModel.normalizeTMDB(providers,myServices),RewindModel.normalizeWatchmode(quote?.sources,myServices));
+  const today = discoveryWindow().today;
+  const futureDigital = releaseDates.filter(r=>r.type===4 && r.release_date.slice(0,10)>today).sort((a,b)=>a.release_date.localeCompare(b.release_date))[0];
+  const pastDigital = releaseDates.filter(r=>r.type===4 && r.release_date.slice(0,10)<=today).sort((a,b)=>b.release_date.localeCompare(a.release_date))[0];
+  const futureTheater = releaseDates.filter(r=>[2,3].includes(r.type) && r.release_date.slice(0,10)>today).sort((a,b)=>a.release_date.localeCompare(b.release_date))[0];
+  let best = RewindModel.summary(offers);
+  if (!best && futureDigital) best = {code:'notyet',kind:'upcoming',label:'Digital release listed '+formatFilmDate(futureDigital.release_date),date:futureDigital.release_date};
+  if (!best && futureTheater) best = {code:'notyet',kind:'theaters',label:'US theatrical release '+formatFilmDate(futureTheater.release_date),date:futureTheater.release_date};
+  if (!best && pastDigital) best = {code:'nodata',kind:'unverified',label:'Digital date passed · no current provider listing'};
+  if (!best) best = {code:'nodata',kind:'unknown',label:'No US streaming offer listed'};
+  const result = {...best,offers,link:RewindModel.safeLink(providers.link),checkedAt:Date.now(),quoteCheckedAt:quote?.checkedAt || null,priceWarning,datesUnavailable:d.status==='rejected',digitalDate:futureDigital?.release_date || null};
+  movie.availabilitySnapshot = result;
+  return result;
+}
+function formatFilmDate(value) {
+  return new Date(value.slice(0,10)+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+}
+function renderServiceSettings() {
+  const root=document.getElementById('service-settings');root.innerHTML='';
+  RewindModel.SERVICE_CHOICES.forEach(name=>{
+    const label=document.createElement('label');const checkbox=document.createElement('input');checkbox.type='checkbox';checkbox.checked=myServices.includes(name);
+    checkbox.onchange=()=>{myServices=checkbox.checked?[...myServices,name]:myServices.filter(s=>s!==name);localStorage.setItem('rewind-services-v1',JSON.stringify(myServices));scheduleSync();renderWatchlist();};
+    label.append(checkbox,document.createTextNode(' '+name));root.appendChild(label);
+  });
 }
 
 // ---------- rendering helpers ----------
@@ -586,14 +519,15 @@ function renderCard(movie, opts = {}) {
       stampWrap.appendChild(ghost);
     }
     card.appendChild(stampWrap);
+    card.appendChild(renderAvailability(movie,status));
 
-    if (status.link && (status.code === 'rent' || status.code === 'free')) {
+    if (status.link) {
       const priceLink = document.createElement('a');
       priceLink.href = status.link;
       priceLink.target = '_blank';
       priceLink.rel = 'noopener';
       priceLink.className = 'price-link';
-      priceLink.textContent = status.code === 'rent' ? 'CHECK PRICE ↗' : 'ALL OPTIONS ↗';
+      priceLink.textContent = 'VERIFY OFFERS ↗';
       card.appendChild(priceLink);
     }
   }
@@ -614,8 +548,10 @@ function renderCard(movie, opts = {}) {
 
   const meta = document.createElement('p');
   meta.className = 'card-meta';
-  meta.textContent = year || 'year unknown';
+  meta.textContent = [year,movie.runtime ? movie.runtime+' min' : '',movie.director].filter(Boolean).join(' · ') || 'year unknown';
   card.appendChild(meta);
+  if (movie.usReleaseDate) {const release=document.createElement('p');release.className='release-note';release.textContent='US theatrical listing · '+formatFilmDate(movie.usReleaseDate);card.appendChild(release);}
+  if (movie.overview) {const synopsis=document.createElement('p');synopsis.className='card-synopsis';synopsis.textContent=movie.overview;card.appendChild(synopsis);}
 
   const actions = document.createElement('div');
   actions.className = 'card-actions';
@@ -657,6 +593,17 @@ function renderCard(movie, opts = {}) {
     }
   }
 
+  if (context !== 'watchlist') {
+    const check=document.createElement('button');check.className='secondary';check.textContent='WHERE TO WATCH';
+    const slot=document.createElement('div');slot.className='inline-availability';
+    check.onclick=async()=>{
+      check.disabled=true;check.textContent='CHECKING…';
+      try {const availability=await deriveStatus(movie,true);slot.innerHTML='';const label=document.createElement('p');label.className='inline-status';label.textContent=availability.label;slot.append(label,renderAvailability(movie,availability));check.textContent='REFRESH OPTIONS';}
+      catch {slot.textContent='Could not check availability. Try again.';check.textContent='TRY AGAIN';}
+      finally {check.disabled=false;}
+    };
+    actions.appendChild(check);card.appendChild(slot);
+  }
   card.appendChild(actions);
   return card;
 }
@@ -669,6 +616,8 @@ function addToWatchlist(movie) {
     id: movie.id,
     title: movie.title,
     poster_path: movie.poster_path,
+    overview:movie.overview || '',runtime:movie.runtime || null,director:movie.director || '',usReleaseDate:movie.usReleaseDate || null,
+    availabilitySnapshot:movie.availabilitySnapshot || null,watchmodeCache:movie.watchmodeCache || null,
     release_date: movie.release_date || movie.primary_release_date || '',
     genre_ids: movie.genre_ids || [],
     addedAt: Date.now(),
@@ -718,8 +667,10 @@ function renderSearchCached() {
 
 let notOutYetExpanded = false;
 let watchlistSort = 'recommended';
+let watchlistRequest = 0;
 
-async function renderWatchlist() {
+async function renderWatchlist(force = false) {
+  const request = ++watchlistRequest;
   const grid = document.getElementById('watchlist-grid');
   const pinnedGrid = document.getElementById('pinned-grid');
   const pinnedSection = document.getElementById('pinned-section');
@@ -737,6 +688,7 @@ async function renderWatchlist() {
   countEl.textContent = watchlist.length + (watchlist.length === 1 ? ' title' : ' titles');
 
   if (watchlist.length === 0) {
+    document.getElementById('card-check-status').textContent='Add a film from New Arrivals or Search.';
     empty.hidden = false;
     changedStrip.hidden = true;
     pinnedSection.hidden = true;
@@ -746,21 +698,25 @@ async function renderWatchlist() {
   }
   empty.hidden = true;
 
-  const results = [];
-
-  for (const entry of watchlist) {
+  document.getElementById('card-check-status').textContent='Checking US providers…';
+  const results = (await mapLimited([...watchlist],4,async entry=>{
     let status;
-    try { status = await deriveStatus(entry); }
-    catch (err) { status = {code:entry.lastStatusCode || 'nodata',label:entry.lastStatusLabel || 'LOOKUP UNAVAILABLE; TRY AGAIN'}; }
-    const changed = entry.lastStatusLabel != null && (entry.lastStatusCode !== status.code || entry.lastStatusLabel !== status.label);
-    if (changed || entry.lastStatusCode === null) {
-      entry.statusChangedAt = Date.now();
+    const lookupMovie={...entry};
+    try {status=await deriveStatus(lookupMovie,force);}
+    catch {status={code:'nodata',kind:'unknown',label:'Availability could not be checked',offers:[],stale:true};}
+    if(request !== watchlistRequest) return {entry,status,changed:false,prevLabel:entry.lastStatusLabel};
+    entry.availabilitySnapshot=lookupMovie.availabilitySnapshot;entry.watchmodeCache=lookupMovie.watchmodeCache;
+    const fingerprint = status.offers?.map(o=>`${o.kind}:${o.provider}:${o.format || ''}:${o.price ?? ''}`).sort().join('|') || status.label;
+    const changed = !status.stale && entry.lastAvailabilityKey != null && entry.lastAvailabilityKey !== fingerprint;
+    const prevLabel=entry.lastStatusLabel;
+    if (!status.stale) {
+      if(changed || !entry.lastStatusLabel) entry.statusChangedAt=Date.now();
+      entry.lastStatusCode=status.code;entry.lastStatusLabel=status.label;entry.lastAvailabilityKey=fingerprint;
     }
-    results.push({ entry, status, changed });
-    entry._prevLabel = entry.lastStatusLabel;
-    entry.lastStatusCode = status.code;
-    entry.lastStatusLabel = status.label;
-  }
+    return {entry,status,changed,prevLabel};
+  })).filter(r=>watchlist.some(m=>m.id===r.entry.id));
+  if (request !== watchlistRequest) return;
+  document.getElementById('card-check-status').textContent='US providers checked '+new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'})+' · '+results.filter(r=>r.status.stale).length+' failed checks';
   saveWatchlist();
 
   const pinned = results.filter(r => r.entry.pinned);
@@ -783,17 +739,17 @@ async function renderWatchlist() {
   mainList.sort(sortFn);
 
   pinnedSection.hidden = pinned.length === 0;
-  pinned.forEach(({ entry, status, changed }) => {
-    pinnedGrid.appendChild(renderCard(entry, { context: 'watchlist', status, changed, prevLabel: entry._prevLabel }));
+  pinned.forEach(({ entry, status, changed, prevLabel }) => {
+    pinnedGrid.appendChild(renderCard(entry, { context: 'watchlist', status, changed, prevLabel }));
   });
 
   if (notOutYet.length > 0) {
     notOutYetToggle.hidden = false;
     notOutYetToggle.textContent = (notOutYetExpanded ? '▴ ' : '▾ ') +
-      `NOT OUT YET (${notOutYet.length})`;
+      `AWAITING STREAMING / UNVERIFIED (${notOutYet.length})`;
     notOutYetGrid.style.display = notOutYetExpanded ? '' : 'none';
-    notOutYet.forEach(({ entry, status, changed }) => {
-      notOutYetGrid.appendChild(renderCard(entry, { context: 'watchlist', status, changed, prevLabel: entry._prevLabel }));
+    notOutYet.forEach(({ entry, status, changed, prevLabel }) => {
+      notOutYetGrid.appendChild(renderCard(entry, { context: 'watchlist', status, changed, prevLabel }));
     });
   } else {
     notOutYetToggle.hidden = true;
@@ -803,15 +759,15 @@ async function renderWatchlist() {
   const changedOnes = results.filter(r => r.changed);
   if (changedOnes.length) {
     changedStrip.hidden = false;
-    changedOnes.forEach(({ entry, status }) => {
-      changedList.appendChild(renderCard(entry, { context: 'watchlist', status, changed: true, prevLabel: entry._prevLabel }));
+    changedOnes.forEach(({ entry, status, prevLabel }) => {
+      changedList.appendChild(renderCard(entry, { context: 'watchlist', status, changed: true, prevLabel }));
     });
   } else {
     changedStrip.hidden = true;
   }
 
-  mainList.forEach(({ entry, status, changed }) => {
-    grid.appendChild(renderCard(entry, { context: 'watchlist', status, changed, prevLabel: entry._prevLabel }));
+  mainList.forEach(({ entry, status, changed, prevLabel }) => {
+    grid.appendChild(renderCard(entry, { context: 'watchlist', status, changed, prevLabel }));
   });
 }
 
@@ -830,6 +786,8 @@ document.getElementById('not-out-yet-toggle').addEventListener('click', () => {
 let discoverRequest = 0;
 async function renderDiscover(append = false) {
   const request = ++discoverRequest;
+  const filter={window:discoveryWindow(),scope:document.getElementById('discover-scope').value,genre:document.getElementById('discover-genre').value,rereleases:document.getElementById('include-rereleases').checked,sort:document.getElementById('discover-sort').value};
+  const statusEl=document.getElementById('discover-status');statusEl.textContent='Finding feature releases…';
   const grid = document.getElementById('discover-grid');
   if (!append) grid.innerHTML = '';
   // always clear any previous empty-state message before deciding whether to show a new one
@@ -843,18 +801,21 @@ async function renderDiscover(append = false) {
   let totalPages = Infinity;
 
   while (filtered.length < MIN_RESULTS && pagesChecked < MAX_PAGES_PER_LOAD && discoverPage <= totalPages) {
-    const data = await fetchDiscover(discoverPage);
+    const data = await fetchDiscover(discoverPage,filter);
     if (request !== discoverRequest) return;
     totalPages = data.total_pages || totalPages;
-    const pageFiltered = data.results.filter(m =>
+    const candidates = data.results.filter(m =>
       !isSeen(m) && !skipSet.has(m.id) && !watchlist.some(w => w.id === m.id)
     );
-    filtered = filtered.concat(pageFiltered);
+    const verified=await mapLimited(candidates,4,async m=>{try{return RewindModel.discoveryMovie(m,await fetchMovieDetails(m.id),filter.window,filter.rereleases);}catch{return null;}});
+    if(request !== discoverRequest) return;
+    filtered=filtered.concat(verified.filter(Boolean));
     pagesChecked++;
     discoverPage++;
   }
 
   lastDiscoverResults = append ? lastDiscoverResults.concat(filtered) : filtered;
+  statusEl.textContent=`${lastDiscoverResults.length} films · TMDB-listed US theatrical dates · ${filter.scope==='small'?'smaller releases included':'50+ TMDB ratings; 60+ minutes'}`;
   filtered.forEach(m => grid.appendChild(renderCard(m, { context: 'discover' })));
 
   const loadMoreBtn = document.getElementById('discover-more');
@@ -866,14 +827,14 @@ async function renderDiscover(append = false) {
     const note = document.createElement('p');
     note.className = 'empty-note';
     note.textContent = exhausted
-      ? "That's everything TMDB has for the last 12 months, you've triaged all of it."
-      : "Nothing new right now, looks like you've already added, skipped, or seen everything TMDB's currently returning for the last 12 months. Check back later or hit LOAD MORE STOCK to dig further back in the results.";
+      ? "No more matching feature releases in this window. Try Smaller Releases or another month."
+      : "No matches on these pages. Load more, change the month, or include smaller releases.";
     grid.appendChild(note);
   }
 }
 
 document.getElementById('discover-more').addEventListener('click', async () => {
-  await renderDiscover(true);
+  try {await renderDiscover(true);}catch(err){showToast(err.message);}
 });
 
 // ---------- render: search ----------
@@ -973,7 +934,7 @@ async function emailRequest(method, data) {
   return result;
 }
 async function syncEmailCard(enabled = emailEnabled) {
-  const result = await emailRequest('POST',{enabled,movies:watchlist.map(m=>({id:m.id,title:m.title}))});
+  const result = await emailRequest('POST',{enabled,movies:watchlist.map(m=>({id:m.id,title:m.title})),services:myServices});
   emailEnabled = enabled;
   document.getElementById('email-alert-status').textContent = enabled ? `Daily email checks enabled for ${result.count} films. The first check reports current availability and future dates; later changes trigger emails.` : 'Email alerts paused.';
 }
@@ -992,9 +953,12 @@ for (let i=0;i<24;i++) {
   option.textContent = date.toLocaleDateString('en-US',{month:'long',year:'numeric'}).toUpperCase();
   monthSelect.appendChild(option);
 }
-for (const id of ['release-month','discover-sort']) document.getElementById(id).onchange = () => {discoverPage=1;renderDiscover().catch(err=>showToast(err.message));};
+for (const id of ['release-month','discover-sort','discover-scope','discover-genre','include-rereleases']) document.getElementById(id).onchange = () => {discoverPage=1;renderDiscover().catch(err=>showToast(err.message));};
 async function initEmailAlerts() {
-  if (!localStorage.getItem(GH_TOKEN_KEY)) return;
+  if (!localStorage.getItem(GH_TOKEN_KEY)) {
+    try {const res=await fetch('https://transmissionalbum.netlify.app/.netlify/functions/rewind-status');if(res.ok){const s=await res.json();document.getElementById('email-alert-status').textContent=`Daily checks ${s.enabled?'active':'paused'} for ${s.tracked} film${s.tracked===1?'':'s'} on the server. Connect GitHub under Import to sync this card.`;}}catch {}
+    return;
+  }
   try {
     const state = await emailRequest('GET');
     emailEnabled = state.enabled;
@@ -1002,4 +966,6 @@ async function initEmailAlerts() {
     // Opening a device must not replace the server's card with stale local data.
   } catch (err) { document.getElementById('email-alert-status').textContent = err.message; }
 }
+renderServiceSettings();
+document.getElementById('refresh-card-btn').onclick=()=>renderWatchlist(true);
 init().then(initEmailAlerts);
