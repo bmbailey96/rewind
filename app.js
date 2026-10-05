@@ -482,7 +482,7 @@ async function deriveStatus(movie, force = false) {
   return result;
 }
 function formatFilmDate(value) {
-  return new Date(value.slice(0,10)+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+  const date=/^\d{4}-\d{2}-\d{2}/.test(String(value))?new Date(String(value).slice(0,10)+'T12:00:00Z'):new Date(value);return Number.isFinite(date.getTime())?date.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric',timeZone:'UTC'}):'Date unavailable';
 }
 function renderServiceSettings() {
   const root=document.getElementById('service-settings');root.innerHTML='';
