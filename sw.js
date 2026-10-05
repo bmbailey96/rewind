@@ -1,5 +1,5 @@
-const CACHE = 'rewind-v5';
-const SHELL = ['/', 'index.html', 'style.css', 'app.js', 'rewind-model.js', 'availability-ui.js', 'release-model.js', 'manifest.json', 'hub-model.js', 'hub.js'];
+const CACHE = 'rewind-v6';
+const SHELL = ['/', 'index.html', 'style.css', 'app.js', 'rewind-model.js', 'availability-ui.js', 'release-model.js', 'manifest.json', 'hub-model.js', 'oracle.js', 'hub.js'];
 
 self.addEventListener('install', (e) => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)));

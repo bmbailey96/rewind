@@ -49,3 +49,11 @@ Rewind remains the shared card and availability store. The original kalispell-sh
 - Event emails are an explicit Settings option, initially off. When enabled with daily emails, new national event dates and local booking dates are reported for tracked films, positive taste records, and followed events. Failed checks do not trigger emails. Event deduplication is checkpointed only after successful delivery. Price threshold emails still require the server WATCHMODE_API_KEY.
 
 Tests include source HTML fixtures, date rollover, gap-preserving bars, selection filters, imports, evidence rules, local watched/undo, Letterboxd links, and existing availability/price checks.
+
+
+## Simplified film hub (October 5)
+The picker now has two plain choices: a verified draw from the current watchlist, or one new discovery outside that watchlist. Personal discoveries use positive ratings, favorites, ownership and repeat watches; without these they are explicitly labeled discovery picks. The historical Roulette JSON is no longer fetched or offered. Tone triangles, presets, content switches and the duplicate wildcard result were removed from the interface.
+Expanded cards use a proportional release graphic and a compact viewing shortlist. Full offers, source notes, rental checks and explanations remain in a closed disclosure. Alert preferences remain in their own disclosure. Dates without confirmed timing are shown as undated chips, never assigned a fictitious timeline position.
+Local screening bars now share the site palette, with verified exact-title poster lookup and optional taste explanations. Ambiguous title matches keep the source title with no invented poster or recommendation. Screening details use a fourteen-day highlight strip; exact times remain behind a disclosure or the ticket link.
+
+The Oracle consults modeled Kalispell weather, daylight, an approximate synodic moon phase, recent film headlines, dated imported diary records, positive taste records, current viewing costs and matched local runs. Its atmospheric contribution is capped at 0.8 ranking points. The report shows missing inputs explicitly and treats mood as playful inference. Weather/news are fetched through a public read-only backend; personal records remain in the browser. No historical horror deck is loaded.

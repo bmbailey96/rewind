@@ -519,12 +519,12 @@ function renderCard(movie, opts = {}) {
   if(status){const upcoming=(status.announcements||[]).filter(a=>a.kind==='subscription'&&a.date&&a.date>discoveryWindow().today).sort((a,b)=>a.date.localeCompare(b.date))[0];if(upcoming){const note=document.createElement('p');note.className='wait-advice';note.textContent=upcoming.provider+' on '+formatFilmDate(upcoming.date)+' · announced';card.appendChild(note);}else if(costInfo?.band==='premium'){const note=document.createElement('p');note.className='wait-advice';const pref=ReleaseModel.preference(movie.alert);const estimate=ReleaseModel.priceEstimate(movie,status.offers,watchlist,discoveryWindow().today,pref.mode==='rental'?pref.maxPrice:rentalBudget);note.textContent=estimate&&!estimate.overdue?'Cheaper rental estimate: '+formatFilmDate(estimate.start)+' to '+formatFilmDate(estimate.end):'Above your $'+rentalBudget.toFixed(2)+' limit. No drop date announced.';card.appendChild(note);}}
 
   const details=document.createElement('details');details.className='film-details';
-  const summary=document.createElement('summary');summary.textContent='DETAILS & RELEASE TIMELINE';details.appendChild(summary);
+  const summary=document.createElement('summary');summary.textContent='VIEWING OPTIONS & TIMELINE';details.appendChild(summary);
   const body=document.createElement('div');body.className='film-details-body';details.appendChild(body);card.appendChild(details);
   let current=status;
   const fillDetails=()=>{
     body.replaceChildren();if(current)body.appendChild(renderAvailability(movie,{...current,previousLabel:opts.prevLabel},{details:[...observedDetails.values()],movies:watchlist}));
-    if(context==='watchlist')body.appendChild(renderAlertPreference(movie));
+    if(context==='watchlist'){const alert=document.createElement('details');alert.className='source-disclosure';const title=document.createElement('summary');title.textContent='Alert settings';alert.append(title,renderAlertPreference(movie));body.appendChild(alert);}
     const extra=document.createElement('p');extra.className='card-meta';extra.textContent=[movie.runtime?movie.runtime+' min':'',movie.director].filter(Boolean).join(' · ');body.appendChild(extra);
     if(movie.overview){const synopsis=document.createElement('p');synopsis.textContent=movie.overview;body.appendChild(synopsis);}
     const filmLinks=document.createElement('div');filmLinks.className='film-links';const lb=document.createElement('a');lb.textContent='LETTERBOXD';lb.href=HubModel.letterboxd(movie);lb.target='_blank';lb.rel='noopener';filmLinks.appendChild(lb);body.appendChild(filmLinks);

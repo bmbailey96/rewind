@@ -4,19 +4,18 @@ function renderAvailability(movie,status,context={}) {
   const wrap=document.createElement('div');wrap.className='availability';
   if(status.stale)appendNote(wrap,'Could not refresh. Previous availability may have changed.','lookup-warning');
   if(status.previousLabel&&status.previousLabel!==status.label)appendNote(wrap,'Previously: '+status.previousLabel);
-  const groups=[['Your subscriptions',o=>o.kind==='subscription'&&o.included],['Free streaming',o=>o.kind==='free'],['Rent',o=>o.kind==='rent'],['Buy',o=>o.kind==='buy'],['Other subscriptions / channels',o=>o.kind==='subscription'&&!o.included],['Cable login',o=>o.kind==='cable']];
-  for(const [name,filter] of groups){const offers=ReleaseModel.compactOffers(status.offers).filter(filter);if(!offers.length)continue;const heading=document.createElement('h4');heading.textContent=name;wrap.appendChild(heading);
-    offers.sort((a,b)=>Number(!['apple','amazon'].includes(ReleaseModel.storeKey(a.provider)))-Number(!['apple','amazon'].includes(ReleaseModel.storeKey(b.provider)))||(a.price??Infinity)-(b.price??Infinity)||a.provider.localeCompare(b.provider));
-    for(const offer of offers){const row=document.createElement('div');row.className='offer-row';const provider=document.createElement(offer.link?'a':'span');provider.textContent=offer.provider;if(offer.link){provider.href=offer.link;provider.target='_blank';provider.rel='noopener noreferrer';}const amount=document.createElement('span');amount.className='offer-price';amount.textContent=offer.kind==='subscription'?(offer.included?'Included':'Separate subscription'):offer.kind==='free'?(offer.adSupported?'Free with ads':'Free'):offer.kind==='cable'?'Cable account':offer.price===null?'Price not supplied':`$${offer.price.toFixed(2)}`;if(offer.format)amount.textContent+=' · '+offer.format;row.append(provider,amount);wrap.appendChild(row);if(offer.channel)appendNote(wrap,'Add-on channel; not included with the base service.');}
-  }
-  if(!(status.offers||[]).length)appendNote(wrap,'No confirmed US viewing offer in this check.');
   wrap.appendChild(renderReleaseTimeline(movie,status,context));
-  const source='US listings: JustWatch'+(status.quoteCheckedAt?' + Watchmode. Quotes checked '+new Date(status.quoteCheckedAt).toLocaleString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'})+'.':'. Dollar prices require the price connection in Settings.');
-  appendNote(wrap,source);if(status.priceWarning)appendNote(wrap,status.priceWarning,'lookup-warning');
-  if(status.checkedAt)appendNote(wrap,'Availability checked '+new Date(status.checkedAt).toLocaleString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}),'checked-note');
+  const all=ReleaseModel.compactOffers(status.offers),cost=ReleaseModel.cost(status.offers,rentalBudget,status.stale);
+  const chosen=all.filter(o=>o.kind==='free'||o.kind==='subscription'&&o.included||o.kind==='rent'&&['apple','amazon'].includes(ReleaseModel.storeKey(o.provider)));
+  if(!chosen.length&&cost.offer)chosen.push(cost.offer);
+  const rows=(root,offers)=>{for(const o of offers){const row=document.createElement('div');row.className='offer-row';const name=document.createElement(o.link?'a':'span');name.textContent=o.provider;if(o.link){name.href=o.link;name.target='_blank';name.rel='noopener noreferrer';}const price=document.createElement('strong');price.textContent=o.kind==='subscription'?(o.included?'Included':'Subscription'):o.kind==='free'?'Free'+(o.adSupported?' with ads':''):typeof o.price==='number'?'$'+o.price.toFixed(2):'Price not supplied';row.append(name,price);root.appendChild(row);}};
+  const heading=document.createElement('h4');heading.textContent='Where to watch';wrap.appendChild(heading);rows(wrap,chosen.slice(0,3));
+  if(!all.length)appendNote(wrap,'No confirmed viewing option yet.');
+  const more=document.createElement('details');more.className='source-disclosure';const summary=document.createElement('summary');summary.textContent='All viewing options & sources';more.appendChild(summary);rows(more,all);more.appendChild(renderReleaseEvidence(movie,status,context));
+  if(status.priceWarning)appendNote(more,status.priceWarning,'lookup-warning');if(status.checkedAt)appendNote(more,'Availability checked '+new Date(status.checkedAt).toLocaleString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}));appendNote(more,'US listings: JustWatch'+(status.quoteCheckedAt?' + Watchmode rental quotes.':'. Dollar prices require a price connection in Settings.'));wrap.appendChild(more);
   return wrap;
 }
-function renderReleaseTimeline(movie,status,context={}){
+function renderReleaseEvidence(movie,status,context={}){
   const root=document.createElement('section');root.className='release-timeline';const heading=document.createElement('h4');heading.textContent='Release timeline';root.appendChild(heading);
   const today=discoveryWindow().today;const details=status.details||movie.detailsSnapshot;const stage=ReleaseModel.stages(details,today);
   const row=(label,text,certainty,sourceLabel,sourceUrl)=>{const item=document.createElement('div');item.className='timeline-item';const name=document.createElement('strong');name.textContent=label;item.appendChild(name);const badge=document.createElement('span');badge.className='certainty '+certainty.toLowerCase();badge.textContent=certainty;item.appendChild(badge);appendNote(item,text,'timeline-text');if(sourceUrl)releaseSource(item,sourceLabel,sourceUrl);root.appendChild(item);return item;};
@@ -50,4 +49,22 @@ function renderReleaseTimeline(movie,status,context={}){
   if(status.calendarWarning)appendNote(root,status.calendarWarning);
   appendNote(root,'Selected verified announcements, not a complete streaming calendar. Estimates never trigger an email.');
   return root;
+}
+
+function renderReleaseTimeline(movie,status,context={}){
+ const root=document.createElement('section');root.className='visual-release';const today=discoveryWindow().today,stage=ReleaseModel.stages(status.details||movie.detailsSnapshot,today),points=[];
+ const add=(label,date,certainty,source)=>{points.push({label,date:ReleaseModel.date(date)?date.slice(0,10):null,certainty,source});};
+ if(stage.wide||stage.limited)add('Theaters',stage.wide||stage.limited,'Listed');
+ const digital=(status.announcements||[]).find(a=>a.kind==='digital');if(digital?.date||stage.digital)add('Rent / buy',digital?.date||stage.digital,digital?'Announced':'Listed',digital?.sourceUrl);
+ else if((status.offers||[]).some(o=>['rent','buy'].includes(o.kind)))add('Rent / buy',null,'Available now');
+ else {const e=ReleaseModel.digitalEstimate(status.details||movie.detailsSnapshot||{},context.details||[],today);if(e&&!e.overdue)add('Digital window',e.start,'Estimate · through '+formatFilmDate(e.end));else add('Digital',null,'Not announced');}
+ const subscriptions=(status.announcements||[]).filter(a=>a.kind==='subscription');for(const a of subscriptions)add(a.provider,a.date,'Announced',a.sourceUrl);
+ for(const c of status.calendar||[]){if(c.region&&c.region!=='US'||!c.source_name||!ReleaseModel.date(c.source_release_date)||subscriptions.some(a=>a.provider===c.source_name&&a.date===c.source_release_date))continue;add(c.source_name,c.source_release_date,'Listed');}
+ const included=[...new Set((status.offers||[]).filter(o=>o.kind==='subscription'&&o.included).map(o=>o.provider))];if(included.length)add(included.join(' / '),null,status.stale?'Previous check':'Streaming now');else if(!subscriptions.length&&!points.some(p=>p.label!=='Theaters'&&p.label!=='Rent / buy'&&p.label!=='Digital'&&p.label!=='Digital window'))add('Subscription',null,'Not announced');
+ const price=(status.announcements||[]).find(a=>a.kind==='price'&&typeof a.price==='number');if(price)add('$'+price.price.toFixed(2)+' rental',price.date,'Announced',price.sourceUrl);else {const e=ReleaseModel.priceEstimate(movie,status.offers,context.movies||[],today,rentalBudget);if(e&&!e.overdue)add('Under $'+e.threshold.toFixed(2),e.start,'Estimate · through '+formatFilmDate(e.end));}
+ const dated=points.filter(p=>p.date).sort((a,b)=>a.date.localeCompare(b.date)),undated=points.filter(p=>!p.date);
+ if(dated.length){const line=document.createElement('div');line.className='release-graphic';line.setAttribute('aria-label','Release timeline. Spacing follows the listed dates.');const min=Math.min(...dated.map(p=>Date.parse(p.date))),max=Math.max(Date.parse(today),...dated.map(p=>Date.parse(p.date))),span=Math.max(86400000,max-min);line.style.height=(80+dated.length*35)+'px';const rail=document.createElement('div');rail.className='release-rail';line.appendChild(rail);
+ for(const [i,p] of dated.entries()){const dot=document.createElement('div');dot.className='release-stop '+(p.certainty.startsWith('Estimate')?'estimate':'')+(p.date>today?' future':'');dot.style.left=(5+(Date.parse(p.date)-min)/span*85)+'%';dot.style.top=(24+i*35)+'px';const text=document.createElement('div');text.className='release-stop-label';if((Date.parse(p.date)-min)/span<.45){text.style.left='0';text.style.right='auto';text.style.textAlign='left';}text.textContent=p.label+' · '+formatFilmDate(p.date);const note=document.createElement('small');note.textContent=p.certainty;text.appendChild(note);dot.appendChild(text);line.appendChild(dot);}
+ const now=document.createElement('span');now.className='release-today';now.style.left=(5+Math.max(0,Math.min(1,(Date.parse(today)-min)/span))*85)+'%';now.textContent='TODAY';line.appendChild(now);root.appendChild(line);}
+ const chips=document.createElement('div');chips.className='release-chips';for(const p of undated){const chip=document.createElement('div');chip.className='release-chip';const label=document.createElement('strong');label.textContent=p.label;const caption=document.createElement('span');caption.textContent=p.certainty;chip.append(label,caption);chips.appendChild(chip);}root.appendChild(chips);return root;
 }
