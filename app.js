@@ -198,7 +198,7 @@ function collectSyncData() {
 function applySyncData(data) {
   if (!data) return;
   if(typeof data.rentalBudget==='number'&&data.rentalBudget>=0&&data.rentalBudget<=100){rentalBudget=data.rentalBudget;localStorage.setItem('rewind-rental-budget-v1',String(rentalBudget));document.getElementById('rental-budget').value=rentalBudget;}
-  if(data.hub&&typeof data.hub==='object'){for(const key of ['taste','hidden','muted','followed','knownEvents'])if(Array.isArray(data.hub[key]))hubState[key]=data.hub[key];if(typeof data.hub.eventAlerts==='boolean')hubState.eventAlerts=data.hub.eventAlerts;localStorage.setItem('rewind-hub-v1',JSON.stringify(hubState));}
+  if(data.hub&&typeof data.hub==='object'){for(const key of ['taste','hidden','muted','followed','knownEvents','suggestions','dismissedSuggestions','ignoredTaste'])if(Array.isArray(data.hub[key]))hubState[key]=data.hub[key];if(Number.isFinite(data.hub.suggestionsCheckedAt))hubState.suggestionsCheckedAt=data.hub.suggestionsCheckedAt;if(typeof data.hub.eventAlerts==='boolean')hubState.eventAlerts=data.hub.eventAlerts;localStorage.setItem('rewind-hub-v1',JSON.stringify(hubState));}
   watchlist = data.watchlist || [];
   if (Array.isArray(data.services)) {myServices = data.services;localStorage.setItem('rewind-services-v1',JSON.stringify(myServices));renderServiceSettings();}
   seenSet = new Set(data.seen || []);
@@ -324,7 +324,7 @@ let discoverPage = 1;
 let watchlist = loadWatchlist();
 let hubState;
 try {hubState=JSON.parse(localStorage.getItem('rewind-hub-v1'))||{};}catch{hubState={};}
-for(const key of ['taste','hidden','muted','followed','knownEvents'])if(!Array.isArray(hubState[key]))hubState[key]=[];
+for(const key of ['taste','hidden','muted','followed','knownEvents','suggestions','dismissedSuggestions','ignoredTaste'])if(!Array.isArray(hubState[key]))hubState[key]=[];
 
 
 // ---------- storage ----------
@@ -448,7 +448,7 @@ async function checkWatchmodeCached(movie, force = false) {
   movie.watchmodeCache = found;
   return found;
 }
-async function deriveStatus(movie, force = false) {
+async function deriveRemoteStatus(movie, force = false) {
   const results = await Promise.allSettled([fetchWatchProviders(movie.id),fetchMovieDetails(movie.id,force),fetchAnnouncements(),fetchStreamingCalendar()]);
   const p = results[0];const d = results[1];
   const fullDetails=d.status==='fulfilled'?d.value:null;
@@ -481,6 +481,7 @@ async function deriveStatus(movie, force = false) {
   movie.availabilitySnapshot = result;
   return result;
 }
+async function deriveStatus(movie,force=false){const status=await deriveRemoteStatus(movie,force);const owned=hubState.taste.find(m=>m.id===movie.id&&m.owned);if(!owned)return status;const formats=owned.physicalFormats?.length?owned.physicalFormats:['Physical copy'];const physical=formats.map(format=>({kind:'physical',provider:'Your shelf',format,included:true,price:0,link:null}));const result={...status,offers:[...physical,...(status.stale?[]:status.offers||[])],stale:false,physical:true,code:'owned',kind:'physical',label:'On your physical shelf',remoteStale:status.stale,priceWarning:status.stale?'Streaming could not refresh. Your imported shelf copy is still available.':status.priceWarning};movie.availabilitySnapshot=result;return result;}
 function formatFilmDate(value) {
   const date=/^\d{4}-\d{2}-\d{2}/.test(String(value))?new Date(String(value).slice(0,10)+'T12:00:00Z'):new Date(value);return Number.isFinite(date.getTime())?date.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric',timeZone:'UTC'}):'Date unavailable';
 }

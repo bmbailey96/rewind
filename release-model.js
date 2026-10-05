@@ -23,12 +23,13 @@
     const estimate=windowFor(new Date(initial.at).toISOString().slice(0,10),samples,today);return estimate?{...estimate,provider:premium.provider,format:premium.format,threshold}:null;
   }
   function matchingAnnouncements(feed,id){return (feed?.announcements||[]).filter(r=>r.tmdbId===id&&r.region==='US'&&['subscription','digital','theatrical','price'].includes(r.kind)&&r.sourceUrl&&/^https:\/\//.test(r.sourceUrl)&&(!r.date||date(r.date))&&(!r.expires||r.expires>=feed.today));}
-  function group(status){if(status?.stale)return 'waiting';if((status?.offers||[]).some(o=>o.kind==='free'||o.kind==='subscription'&&o.included))return 'now';if((status?.offers||[]).some(o=>['rent','buy'].includes(o.kind)))return 'paid';return 'waiting';}
+  function group(status){if(status?.stale)return 'waiting';if((status?.offers||[]).some(o=>o.kind==='physical'||o.kind==='free'||o.kind==='subscription'&&o.included))return 'now';if((status?.offers||[]).some(o=>['rent','buy'].includes(o.kind)))return 'paid';return 'waiting';}
   function storeKey(name){const n=String(name||'').toLowerCase().replace(/[^a-z0-9]/g,'');if(['appletv','appletvstore','itunes'].includes(n))return 'apple';if(['amazon','amazonvideo','primevideo','amazonprimevideo'].includes(n))return 'amazon';return n;}
   function storeLabel(name){const key=storeKey(name);return key==='apple'?'Apple TV':key==='amazon'?'Prime Video':name;}
   function qualityRank(value){return /4k|uhd/i.test(value||'')?0:/hd/i.test(value||'')?1:/sd/i.test(value||'')?3:2;}
   function cost(offers,budget=7.99,stale=false){
     const all=offers||[];
+    const physical=all.filter(o=>o.kind==='physical');if(physical.length)return {band:'free',badge:'ON YOUR SHELF',caption:[...new Set(physical.map(o=>o.format||'Physical copy'))].join(' / '),price:0,offer:physical[0],stale:false};
     const included=all.filter(o=>o.kind==='subscription'&&o.included);
     if(included.length)return {band:stale?'waiting':'free',badge:'INCLUDED',caption:[...new Set(included.map(o=>o.provider))].join(' · '),price:0,offer:included[0],stale};
     const free=all.filter(o=>o.kind==='free');if(free.length)return {band:stale?'waiting':'free',badge:'FREE',caption:free[0].provider+(free[0].adSupported?' · with ads':''),price:0,offer:free[0],stale};
