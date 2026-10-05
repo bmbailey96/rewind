@@ -827,7 +827,9 @@ document.getElementById('not-out-yet-toggle').addEventListener('click', () => {
 
 // ---------- render: discover ----------
 
+let discoverRequest = 0;
 async function renderDiscover(append = false) {
+  const request = ++discoverRequest;
   const grid = document.getElementById('discover-grid');
   if (!append) grid.innerHTML = '';
   // always clear any previous empty-state message before deciding whether to show a new one
@@ -842,6 +844,7 @@ async function renderDiscover(append = false) {
 
   while (filtered.length < MIN_RESULTS && pagesChecked < MAX_PAGES_PER_LOAD && discoverPage <= totalPages) {
     const data = await fetchDiscover(discoverPage);
+    if (request !== discoverRequest) return;
     totalPages = data.total_pages || totalPages;
     const pageFiltered = data.results.filter(m =>
       !isSeen(m) && !skipSet.has(m.id) && !watchlist.some(w => w.id === m.id)
