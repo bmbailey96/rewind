@@ -9,3 +9,13 @@ const movie={id:2,title:'Film',availabilitySnapshot:{announcements:[{date:'2026-
 console.log('Hub: exact event matching, safe Letterboxd links, positive taste evidence, explanations, content exclusions and non-destructive imports passed');
 const writerSeed={id:700,title:'Liked Writer Film',rating:4.5,meta:{genres:[],credits:{crew:[{job:'Screenplay',name:'Writer Person'}]}}};const writerMovie={id:701,title:'New Writer Film',meta:{genres:[],credits:{crew:[{job:'Writer',name:'Writer Person'}]}}};const writerFit=H.affinity(writerMovie,[writerSeed]);assert.ok(writerFit.score>2);assert.match(writerFit.reasons[0],/Same writer/);
 const genericSeed={id:900,title:'Liked Horror',rating:5,meta:{keywords:{keywords:[{name:'sequel'},{name:'supernatural'},{name:'witty'}]},genres:[{name:'Horror'}]}},genericMovie={id:901,title:'Generic Horror',meta:{keywords:{keywords:[{name:'sequel'},{name:'supernatural'},{name:'witty'}]},genres:[{name:'Horror'}]}};assert.ok(H.affinity(genericMovie,[genericSeed]).score<2,'Generic sequel/tone tags must not become a strong recommendation');
+
+const included={stale:false,offers:[{kind:'subscription',included:true,provider:'Prime Video'}]},pickAt=Date.UTC(2026,9,6),pickPool=[{id:1,title:'Ordinary'},{id:2,title:'Pinned',pinned:true},{id:3,title:'Newly included',includedSince:pickAt-86400000,availabilitySnapshot:included},{id:4,title:'Old arrival',includedSince:pickAt-20*86400000,availabilitySnapshot:included}];
+assert.equal(H.orderWatchlist(pickPool,'smart',pickAt,()=>.5)[0].id,2);
+assert.equal(H.orderWatchlist(pickPool,'smart',pickAt,()=>.5)[1].id,3);
+assert.equal(H.watchlistPriority({...pickPool[2],availabilitySnapshot:{...included,stale:true}},pickAt),0);
+assert.equal(H.watchlistPriority({...pickPool[2],includedSince:pickAt+86400000},pickAt),0);
+assert.equal(H.watchlistPriority({availabilitySnapshot:included},pickAt),0,'An included first observation does not invent an arrival');
+assert.deepEqual(H.orderWatchlist(pickPool,'shuffle',pickAt,()=>.5).map(m=>m.id),H.shuffle(pickPool,()=>.5).map(m=>m.id));
+assert.equal(H.affinity(match,[seed]).connection.seedTitle,'A Favorite');
+console.log('Watchlist priority: pins, confirmed recent arrivals, stale and first-check exclusions, and pure shuffle passed');

@@ -153,6 +153,7 @@ function loadSkipSet() {
 
 function saveSkipSet() {
   localStorage.setItem(SKIP_KEY, JSON.stringify([...skipSet]));
+  updateBrowseDismissControl();
 }
 
 function skipMovie(id) {
@@ -546,7 +547,7 @@ function renderCard(movie, opts = {}) {
   }else{
     const inList=watchlist.some(w=>w.id===movie.id);const track=document.createElement('button');track.textContent=inList?'TRACKED':'TRACK THIS FILM';track.disabled=inList;
     track.onclick=()=>{addToWatchlist(movie);if(context==='discover')card.remove();else{track.textContent='TRACKED';track.disabled=true;}};actions.appendChild(track);
-    if(context==='discover'){const skip=document.createElement('button');skip.className='secondary';skip.textContent='SKIP';skip.onclick=()=>{skipMovie(movie.id);card.remove();};secondaryActions.appendChild(skip);}
+    if((context==='discover'||context==='search')&&!inList){const skip=document.createElement('button');skip.className='secondary';skip.textContent='SKIP';skip.onclick=()=>{skipMovie(movie.id);card.remove();updateBrowseDismissControl();};secondaryActions.appendChild(skip);}
   }
   if(!current)body.appendChild(secondaryActions);
   card.appendChild(actions);return card;
@@ -616,14 +617,52 @@ function removeFromWatchlist(id) {
 let lastDiscoverResults = [];
 let lastSearchResults = [];
 
+function browseCandidates(grid){return [...grid.querySelectorAll('.rental-card')].map(card=>({card,id:Number(card.dataset.movieId)})).filter(row=>!watchlist.some(m=>m.id===row.id));}
+function updateBrowseDismissControl(){
+  const grid=document.getElementById('search-grid').hidden?document.getElementById('discover-grid'):document.getElementById('search-grid');
+  const count=browseCandidates(grid).length,button=document.getElementById('browse-dismiss');
+  if(button){button.disabled=!count;button.textContent=count?'CLEAR THESE '+count+' FILMS':'CLEAR THESE FILMS';}
+  const note=document.getElementById('dismissed-count');if(note)note.textContent=skipSet.size+' films passed over. These stay off Browse until restored.';
+  const restore=document.getElementById('restore-dismissed');if(restore)restore.hidden=!skipSet.size;
+}
+function dismissVisibleBrowse(){
+  const search=!document.getElementById('search-grid').hidden,grid=document.getElementById(search?'search-grid':'discover-grid'),rows=browseCandidates(grid);
+  if(!rows.length)return 0;
+  const ids=new Set(rows.map(row=>row.id)),newIds=[...ids].filter(id=>!skipSet.has(id));
+  const removedDiscover=lastDiscoverResults.filter(m=>ids.has(m.id)),removedSearch=lastSearchResults.filter(m=>ids.has(m.id));
+  ++discoverRequest;++searchRequest;
+  for(const id of ids)skipSet.add(id);saveSkipSet();scheduleSync();
+  lastDiscoverResults=lastDiscoverResults.filter(m=>!ids.has(m.id));lastSearchResults=lastSearchResults.filter(m=>!ids.has(m.id));
+  for(const row of rows)row.card.remove();
+  document.getElementById('discover-status').textContent=rows.length+' passed over. Added films kept. Load more when you want.';
+  updateBrowseDismissControl();
+  showToast(rows.length+' films passed over',()=>{
+   for(const id of newIds)skipSet.delete(id);saveSkipSet();scheduleSync();
+   lastDiscoverResults=[...new Map([...lastDiscoverResults,...removedDiscover].map(m=>[m.id,m])).values()];
+   lastSearchResults=[...new Map([...lastSearchResults,...removedSearch].map(m=>[m.id,m])).values()];
+   renderDiscoverCached();renderSearchCached();updateBrowseDismissControl();
+   document.getElementById('discover-status').textContent='Pass-over undone. Added films kept.';
+  });return rows.length;
+}
 function renderDiscoverCached() {
-  document.getElementById('discover-grid').querySelectorAll('.rental-card').forEach(el => el.remove());
-  lastDiscoverResults.forEach(m => document.getElementById('discover-grid').appendChild(renderCard(m, { context: 'discover' })));
+  const grid=document.getElementById('discover-grid');grid.replaceChildren();
+  lastDiscoverResults.filter(m=>!isSeen(m)&&!skipSet.has(m.id)&&!watchlist.some(w=>w.id===m.id)).forEach(m=>grid.appendChild(renderCard(m,{context:'discover'})));
+  updateBrowseDismissControl();
 }
 function renderSearchCached() {
-  document.getElementById('search-grid').querySelectorAll('.rental-card').forEach(el => el.remove());
-  lastSearchResults.forEach(m => document.getElementById('search-grid').appendChild(renderCard(m, { context: 'search', markSeen: true })));
+  const grid=document.getElementById('search-grid');grid.replaceChildren();
+  lastSearchResults.filter(m=>!skipSet.has(m.id)).forEach(m=>grid.appendChild(renderCard(m,{context:'search',markSeen:true})));
+  updateBrowseDismissControl();
 }
+document.getElementById('browse-dismiss').onclick=dismissVisibleBrowse;
+document.getElementById('restore-dismissed').onclick=()=>{
+ const prior=[...skipSet];skipSet.clear();saveSkipSet();scheduleSync();discoverPage=1;
+ renderDiscover().catch(err=>showToast(err.message));renderSearchCached();
+ showToast('Passed-over films restored',()=>{for(const id of prior)skipSet.add(id);saveSkipSet();scheduleSync();renderDiscoverCached();renderSearchCached();});
+};
+const browseObserver=new MutationObserver(updateBrowseDismissControl);
+for(const id of ['discover-grid','search-grid'])browseObserver.observe(document.getElementById(id),{childList:true,attributes:true,attributeFilter:['hidden']});
+updateBrowseDismissControl();
 
 let watchlistSort = 'cost';
 let costFilter='all';
@@ -647,11 +686,15 @@ async function renderWatchlist(force = false) {
     try {status=await deriveStatus(lookupMovie,force);}
     catch {status={code:'nodata',kind:'unknown',label:'Availability could not be checked',offers:[],stale:true};}
     if(request !== watchlistRequest) return {entry,status,changed:false,prevLabel:entry.lastStatusLabel};
+    const priorIncluded=typeof entry.lastFreshIncluded==='boolean'?entry.lastFreshIncluded:entry.availabilitySnapshot&&!entry.availabilitySnapshot.stale?HubModel.isIncluded(entry.availabilitySnapshot):null;
     Object.assign(entry,{availabilitySnapshot:lookupMovie.availabilitySnapshot,watchmodeCache:lookupMovie.watchmodeCache,detailsSnapshot:lookupMovie.detailsSnapshot,priceHistory:lookupMovie.priceHistory,runtime:lookupMovie.runtime??entry.runtime,director:lookupMovie.director||entry.director,overview:lookupMovie.overview||entry.overview});
     const fingerprint = status.offers?.map(o=>`${o.kind}:${o.provider}:${o.format || ''}:${o.price ?? ''}`).sort().join('|') || status.label;
     const changed = !status.stale && entry.lastAvailabilityKey != null && entry.lastAvailabilityKey !== fingerprint;
     const prevLabel=entry.lastStatusLabel;
     if (!status.stale) {
+      const included=HubModel.isIncluded(status);
+      if(priorIncluded===false&&included)entry.includedSince=Date.now();
+      entry.lastFreshIncluded=included;
       if(changed || !entry.lastStatusLabel) entry.statusChangedAt=Date.now();
       if(changed)entry.lastChange={at:Date.now(),from:prevLabel,to:status.label};
       entry.lastStatusCode=status.code;entry.lastStatusLabel=status.label;entry.lastAvailabilityKey=fingerprint;
@@ -726,6 +769,7 @@ async function renderDiscover(append = false) {
   loadMoreBtn.disabled = exhausted;
   loadMoreBtn.textContent = exhausted ? 'NOTHING FURTHER BACK' : 'LOAD MORE STOCK';
 
+  updateBrowseDismissControl();
   if (filtered.length === 0) {
     const note = document.createElement('p');
     note.className = 'empty-note';
@@ -743,8 +787,8 @@ document.getElementById('discover-more').addEventListener('click', async () => {
 // ---------- render: search ----------
 
 let searchRequest=0;
-document.getElementById('search-form').addEventListener('submit',async e=>{e.preventDefault();const query=document.getElementById('search-input').value.trim();if(!query)return;const request=++searchRequest;document.getElementById('search-clear-btn').hidden=false;document.getElementById('discover-grid').hidden=true;document.getElementById('discover-more').hidden=true;document.getElementById('discovery-filters').hidden=true;const grid=document.getElementById('search-grid');grid.hidden=false;grid.textContent='Searching…';try{const results=await searchMovies(query);if(request!==searchRequest)return;lastSearchResults=results;grid.replaceChildren();results.forEach(m=>grid.appendChild(renderCard(m,{context:'search',markSeen:true})));document.getElementById('discover-status').textContent=results.length+' catalog matches';}catch{if(request===searchRequest)grid.textContent='Search failed. Try again.';}});
-document.getElementById('search-clear-btn').onclick=()=>{searchRequest++;document.getElementById('search-input').value='';document.getElementById('search-grid').hidden=true;document.getElementById('search-clear-btn').hidden=true;document.getElementById('discovery-filters').hidden=false;document.getElementById('discover-grid').hidden=false;document.getElementById('discover-more').hidden=false;document.getElementById('discover-status').textContent=lastDiscoverResults.length+' recent films';};
+document.getElementById('search-form').addEventListener('submit',async e=>{e.preventDefault();const query=document.getElementById('search-input').value.trim();if(!query)return;const request=++searchRequest;document.getElementById('search-clear-btn').hidden=false;document.getElementById('discover-grid').hidden=true;document.getElementById('discover-more').hidden=true;document.getElementById('discovery-filters').hidden=true;const grid=document.getElementById('search-grid');grid.hidden=false;grid.textContent='Searching…';try{const results=await searchMovies(query);if(request!==searchRequest)return;lastSearchResults=results.filter(m=>!skipSet.has(m.id));grid.replaceChildren();lastSearchResults.forEach(m=>grid.appendChild(renderCard(m,{context:'search',markSeen:true})));document.getElementById('discover-status').textContent=lastSearchResults.length+' catalog matches';}catch{if(request===searchRequest)grid.textContent='Search failed. Try again.';}});
+document.getElementById('search-clear-btn').onclick=()=>{searchRequest++;document.getElementById('search-input').value='';document.getElementById('search-grid').hidden=true;document.getElementById('search-clear-btn').hidden=true;document.getElementById('discovery-filters').hidden=false;document.getElementById('discover-grid').hidden=false;document.getElementById('discover-more').hidden=false;document.getElementById('discover-status').textContent=lastDiscoverResults.length+' recent films';updateBrowseDismissControl();};
 document.getElementById('search-input').addEventListener('focus',e=>e.target.select());
 document.querySelectorAll('.tab-btn').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active',b===btn));document.querySelectorAll('.tab-panel').forEach(p=>p.classList.toggle('active',p.id==='tab-'+btn.dataset.tab));if(btn.dataset.tab==='watchlist')renderWatchlist();}));
 
