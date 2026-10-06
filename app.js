@@ -533,21 +533,21 @@ function renderCard(movie, opts = {}) {
     const filmLinks=document.createElement('div');filmLinks.className='film-links';const lb=document.createElement('a');lb.textContent='LETTERBOXD';lb.href=HubModel.letterboxd(movie);lb.target='_blank';lb.rel='noopener';filmLinks.appendChild(lb);body.appendChild(filmLinks);
     if(context==='watchlist'){
       const tools=document.createElement('div');tools.className='card-actions';
-      for(const [name,fn] of [[movie.pinned?'UNPIN':'PIN',()=>togglePin(movie.id)],['STOP TRACKING',()=>removeFromWatchlist(movie.id)]]){const btn=document.createElement('button');btn.className='secondary';btn.textContent=name;btn.onclick=fn;tools.appendChild(btn);}body.appendChild(tools);
+      for(const [name,fn] of [[movie.pinned?'UNPIN':'PIN',()=>togglePin(movie.id)],['REMOVE FROM WATCHLIST',()=>removeFromWatchlist(movie.id)]]){const btn=document.createElement('button');btn.className='secondary';btn.textContent=name;btn.onclick=fn;tools.appendChild(btn);}body.appendChild(tools);
     }
   };
   if(current)fillDetails();
   details.addEventListener('toggle',async()=>{if(!details.open)return;if(current){fillDetails();return;}body.textContent='Checking releases and viewing options…';try{current=await deriveStatus(movie);fillDetails();}catch{body.textContent='Could not load this film. Close and reopen to retry.';}});
   const actions=document.createElement('div');actions.className='card-actions';
   if(context==='watchlist'){
-    const watched=document.createElement('button');watched.className='secondary';watched.textContent='WATCHED';watched.onclick=()=>markMovieWatched(movie);secondaryActions.appendChild(watched);
+    const watched=document.createElement('button');watched.className='secondary';watched.textContent='MARK WATCHED';watched.onclick=()=>markMovieWatched(movie);secondaryActions.appendChild(watched);
     const next=!status?.stale?costInfo?.offer:null;
-    if(next?.link){const link=document.createElement('a');link.className='watch-link';link.textContent=next.included||next.kind==='free'?'WATCH':next.kind==='buy'?'BUY OFFER':'RENT OFFER';link.href=next.link;link.target='_blank';link.rel='noopener noreferrer';actions.prepend(link);}
+    if(next?.link){const link=document.createElement('a');link.className='watch-link';link.textContent=next.included||next.kind==='free'?'WHERE TO WATCH':next.kind==='buy'?'WHERE TO BUY':'WHERE TO RENT';link.href=next.link;link.target='_blank';link.rel='noopener noreferrer';actions.prepend(link);}
     if(costInfo?.band==='premium'){const wait=document.createElement('button');wait.className='secondary wait-button';const pref=ReleaseModel.preference(movie.alert);wait.textContent=pref.mode==='rental'?'WAITING FOR $'+pref.maxPrice.toFixed(2):'WAIT FOR $'+rentalBudget.toFixed(2);wait.onclick=()=>{movie.alert={mode:'rental',maxPrice:rentalBudget};saveWatchlist();scheduleSync();showToast('Watching for a rental at $'+rentalBudget.toFixed(2)+' or less');renderWatchlist();};secondaryActions.appendChild(wait);}
   }else{
-    const inList=watchlist.some(w=>w.id===movie.id);const track=document.createElement('button');track.textContent=inList?'TRACKED':'TRACK THIS FILM';track.disabled=inList;
-    track.onclick=()=>{addToWatchlist(movie);if(context==='discover')card.remove();else{track.textContent='TRACKED';track.disabled=true;}};actions.appendChild(track);
-    if((context==='discover'||context==='search')&&!inList){const skip=document.createElement('button');skip.className='secondary';skip.textContent='SKIP';skip.onclick=()=>{skipMovie(movie.id);card.remove();updateBrowseDismissControl();};secondaryActions.appendChild(skip);}
+    const inList=watchlist.some(w=>w.id===movie.id);const track=document.createElement('button');track.textContent=inList?'ADDED':'ADD TO WATCHLIST';track.disabled=inList;
+    track.onclick=()=>{addToWatchlist(movie);if(context==='discover')card.remove();else{track.textContent='ADDED';track.disabled=true;}};actions.appendChild(track);
+    if((context==='discover'||context==='search')&&!inList){const skip=document.createElement('button');skip.className='secondary';skip.textContent='PASS OVER THIS FILM';skip.onclick=()=>{skipMovie(movie.id);card.remove();updateBrowseDismissControl();};secondaryActions.appendChild(skip);}
   }
   if(!current)body.appendChild(secondaryActions);
   card.appendChild(actions);return card;
@@ -621,7 +621,7 @@ function browseCandidates(grid){return [...grid.querySelectorAll('.rental-card')
 function updateBrowseDismissControl(){
   const grid=document.getElementById('search-grid').hidden?document.getElementById('discover-grid'):document.getElementById('search-grid');
   const count=browseCandidates(grid).length,button=document.getElementById('browse-dismiss');
-  if(button){button.disabled=!count;button.textContent=count?'CLEAR THESE '+count+' FILMS':'CLEAR THESE FILMS';}
+  if(button){button.disabled=!count;button.textContent=count?'PASS OVER THESE '+count+' FILMS':'PASS OVER THESE FILMS';}
   const note=document.getElementById('dismissed-count');if(note)note.textContent=skipSet.size+' films passed over. These stay off Browse until restored.';
   const restore=document.getElementById('restore-dismissed');if(restore)restore.hidden=!skipSet.size;
 }
@@ -767,7 +767,7 @@ async function renderDiscover(append = false) {
   const loadMoreBtn = document.getElementById('discover-more');
   const exhausted = discoverPage > totalPages;
   loadMoreBtn.disabled = exhausted;
-  loadMoreBtn.textContent = exhausted ? 'NOTHING FURTHER BACK' : 'LOAD MORE STOCK';
+  loadMoreBtn.textContent = exhausted ? 'NO MORE MATCHES' : 'MORE FILMS';
 
   updateBrowseDismissControl();
   if (filtered.length === 0) {

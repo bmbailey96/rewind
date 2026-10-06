@@ -21,7 +21,7 @@
     <p class="shop-tag">your films &middot; your screenings &middot; your next good idea</p>
   </div>
   <nav class="tabs">
-    <button class="tab-btn active" data-tab="watchlist">YOUR CARD</button>
+    <button class="tab-btn active" data-tab="watchlist">WATCHLIST</button>
     <button class="tab-btn" data-tab="discover">FIND A FILM</button>
     <button class="tab-btn" data-tab="upcoming">COMING UP</button>
     <button class="tab-btn" data-tab="import">SETTINGS</button>
@@ -32,12 +32,12 @@
 
   <section id="tab-watchlist" class="tab-panel active">
     <div class="panel-head">
-      <h2>Your Card</h2>
+      <h2>Watchlist</h2>
       <span class="count-stamp" id="watchlist-count">0 titles</span>
     </div>
-    <div class="counter-welcome"><div><p class="welcome-kicker">WHAT TO WATCH</p><p>Your films, with the legwork done.</p></div><button id="choose-tonight">CHOOSE FOR ME</button></div>
+    <div class="counter-welcome"><div><p class="welcome-kicker">WHAT TO WATCH</p><p>Your films, with the legwork done.</p></div><button id="choose-tonight">HELP ME CHOOSE</button></div>
     <details id="card-options" class="screen-options"><summary id="card-options-label">Filter, sort & refresh</summary><div class="options-body">
-    <div class="card-toolbar"><button id="refresh-card-btn" class="secondary">REFRESH</button><span id="card-check-status" role="status"></span></div>
+    <div class="card-toolbar"><button id="refresh-card-btn" class="secondary">CHECK AVAILABILITY</button><span id="card-check-status" role="status"></span></div>
     <div class="cost-filters" aria-label="Filter your card by cost"><button data-cost-filter="all" aria-pressed="true">ALL</button><button data-cost-filter="free" aria-pressed="false">INCLUDED / FREE</button><button data-cost-filter="cheap" aria-pressed="false">AT MY PRICE</button><button data-cost-filter="premium" aria-pressed="false">OVER MY PRICE</button><button data-cost-filter="waiting" aria-pressed="false">WAITING</button></div>
     <div class="card-controls">
       <label for="sort-select">Order</label><select id="sort-select" class="sort-select"><option value="cost">COST: LOW TO HIGH</option><option value="changed">RECENT CHANGES</option><option value="added">RECENTLY TRACKED</option><option value="release">RELEASE DATE</option><option value="az">A-Z</option></select>
@@ -50,7 +50,7 @@
     <section id="paid-section" class="shelf-group" hidden><h3>Rent or buy <span id="paid-count"></span></h3><div id="paid-grid" class="card-row wrap"></div></section>
     <section id="waiting-section" class="shelf-group" hidden><h3>Waiting <span id="waiting-count"></span></h3><p class="group-note">Waiting for an included offer or a confirmed listing.</p><div id="waiting-grid" class="card-row wrap"></div></section>
     <div id="watchlist-grid" hidden></div>
-    <p id="watchlist-empty" class="empty-note" hidden>Track a film from Films You Missed. We’ll keep an eye on it.</p>
+    <p id="watchlist-empty" class="empty-note" hidden>Track a film from Browse. We’ll keep an eye on it.</p>
   </section>
 
   <section id="tab-discover" class="tab-panel">
@@ -58,9 +58,9 @@
       <h2>Find a Film</h2>
       <span class="count-stamp">US theatrical releases</span>
     </div>
-    <div class="hub-mode-buttons" aria-label="Find a film"><button data-find-mode="roulette" aria-pressed="false">MY WATCHLIST</button><button data-find-mode="oracle" aria-pressed="false">ORACLE</button><button data-find-mode="shelf" aria-pressed="true">BROWSE</button></div>
-    <section id="hub-picker" hidden><h3 id="picker-heading"></h3><p id="picker-intro"></p><details id="picker-priorities" class="inline-options"><summary>Pick preferences</summary><label>Selection<select id="picker-order"><option value="smart">Pins & new arrivals first</option><option value="shuffle">Pure shuffle</option></select></label></details><div class="picker-controls"><label>Watch from<select id="picker-cost"><option value="budget">Included or up to my rental limit</option><option value="included">Included / free only</option><option value="any">Any price, including theaters</option><option value="physical">My physical shelf only</option></select></label></div><div class="picker-actions"><button id="pick-film">PICK A FILM</button><button id="pick-again" class="secondary" hidden>ANOTHER PICK</button><details id="picker-more" class="inline-options" hidden><summary>More choices</summary><div class="options-body"><button id="banish-pick" class="secondary" hidden>NOT TONIGHT</button><button id="undo-banish" class="secondary" hidden>UNDO</button></div></details></div><p id="picker-status" role="status"></p><div id="picker-results" class="card-row wrap"></div></section>
-    <form id="search-form" class="search-form"><label class="sr-only" for="search-input">Find a film</label><input id="search-input" type="search" placeholder="Find a film…" autocomplete="off"><button type="submit">SEARCH</button><button id="search-clear-btn" type="button" class="secondary" hidden>BACK TO THE SHELF</button></form>
+    <div class="hub-mode-buttons" aria-label="Find a film"><button data-find-mode="roulette" aria-pressed="false">FROM MY WATCHLIST</button><button data-find-mode="oracle" aria-pressed="false">ORACLE</button><button data-find-mode="shelf" aria-pressed="true">BROWSE</button></div>
+    <section id="hub-picker" hidden><h3 id="picker-heading"></h3><p id="picker-intro"></p><details id="picker-priorities" class="inline-options"><summary>Pick preferences</summary><label>Selection<select id="picker-order"><option value="smart">Pins & new arrivals first</option><option value="shuffle">Pure shuffle</option></select></label></details><div class="picker-controls"><label>Watch from<select id="picker-cost"><option value="budget">Included or up to my rental limit</option><option value="included">Included / free only</option><option value="any">Any price, including theaters</option><option value="physical">My physical shelf only</option></select></label></div><div class="picker-actions"><button id="pick-film">PICK A FILM</button><button id="pick-again" class="secondary" hidden>PICK ANOTHER</button><details id="picker-more" class="inline-options" hidden><summary>This pick</summary><div class="options-body"><button id="banish-pick" class="secondary" hidden>SET ASIDE FOR THIS VISIT</button><button id="undo-banish" class="secondary" hidden>ALLOW LAST FILM AGAIN</button></div></details></div><p id="picker-status" role="status"></p><div id="picker-results" class="card-row wrap"></div></section>
+    <form id="search-form" class="search-form"><label class="sr-only" for="search-input">Find a film</label><input id="search-input" type="search" placeholder="Find a film…" autocomplete="off"><button type="submit">SEARCH</button><button id="search-clear-btn" type="button" class="secondary" hidden>BACK TO BROWSE</button></form>
     <div id="search-grid" class="card-row wrap" hidden></div>
     <details id="discovery-filters" class="filter-panel"><summary>Filter the shelf</summary><div class="filter-fields">
       <label for="release-month">Release month</label><select id="release-month" class="sort-select"><option value="">LAST 6 MONTHS</option></select>
@@ -69,13 +69,13 @@
       <label for="discover-genre">Genre</label><select id="discover-genre" class="sort-select"><option value="">ALL GENRES</option><option value="27">HORROR</option><option value="878">SCIENCE FICTION</option><option value="18">DRAMA</option><option value="35">COMEDY</option><option value="53">THRILLER</option><option value="99">DOCUMENTARY</option><option value="16">ANIMATION</option></select>
       <label class="rerelease-control"><input id="include-rereleases" type="checkbox"> Include theatrical rereleases</label>
     </div><p class="import-note">Feature films with a US theatrical listing and a runtime of at least an hour. No minimum rating count. Seen, skipped, and tracked films stay off this shelf.</p></details>
-    <div id="browse-dismiss-bar" class="browse-dismiss-bar"><button id="browse-dismiss" class="secondary" disabled>CLEAR THESE FILMS</button><span id="browse-dismiss-note">Pass over the films on this page. Added films stay.</span></div>
+    <div id="browse-dismiss-bar" class="browse-dismiss-bar"><button id="browse-dismiss" class="secondary" disabled>PASS OVER THESE FILMS</button><span id="browse-dismiss-note">Hidden from Browse until restored. Added films stay.</span></div>
     <p id="discover-status" class="import-status" role="status"></p>
     <div id="discover-grid" class="card-row wrap"></div>
-    <button id="discover-more" class="btn-more">LOAD MORE STOCK</button>
+    <button id="discover-more" class="btn-more">MORE FILMS</button>
   </section>
 
-  <section id="tab-upcoming" class="tab-panel"><div class="panel-head"><h2>Coming Up</h2><span class="count-stamp">LOCAL SCREENINGS & RELEASES</span></div><p class="hub-lead">At the theater. On your services. Next on your calendar.</p><details id="calendar-options" class="screen-options"><summary id="calendar-options-label">Filter & view options</summary><div class="options-body"><div class="calendar-controls"><div class="segmented"><button id="calendar-view" aria-pressed="true">CALENDAR</button><button id="calendar-list" aria-pressed="false">LIST</button></div><label>Show<select id="calendar-scope"><option value="all">EVERYTHING</option><option value="local">KALISPELL SCREENINGS</option><option value="events">FATHOM & ANNIVERSARIES</option><option value="tracked">MY TRACKED FILMS & FAVORITES</option><option value="streaming">STREAMING / DIGITAL</option><option value="recommended">FOR YOU</option></select></label><label>Find<input id="calendar-search" type="search" placeholder="Search the board"></label><button id="cinema-refresh" class="secondary">REFRESH</button></div><div class="calendar-legend"><span class="legend-local">● LOCAL SCREENING</span><span class="legend-event">● NATIONAL EVENT</span><span class="legend-stream">● STREAMING / DIGITAL</span><span>Striped bars = an announced window, not daily screenings</span></div></div></details><p id="suggestion-status" class="offer-note" role="status"></p><p id="cinema-status" class="offer-note" role="status"></p><div class="cinema-board"><div class="board-head"><div><h3 id="calendar-range"></h3><span id="calendar-count"></span></div><div class="board-nav"><button id="calendar-prev" aria-label="Previous week">←</button><button id="calendar-today">TODAY</button><button id="calendar-next" aria-label="Next week">→</button></div></div><div id="calendar-scroll" class="calendar-scroll"><div id="calendar-bars"></div></div><div id="calendar-listings" hidden></div></div><div id="event-detail" class="event-detail" hidden></div><details class="maintenance-controls"><summary>Hidden screenings & quiet films</summary><div id="cinema-hidden"></div></details><p class="offer-note">Kalispell screenings use listed dates and times in Mountain Time. “Last listed” is not a confirmed closing date. National Fathom dates do not confirm participation here.</p><div class="source-links"><a href="https://www.cinemark.com/theatres/mt-kalispell/cinemark-signature-stadium-kalispell-14" target="_blank" rel="noopener">CINEMARK KALISPELL</a><a href="https://www.fathomentertainment.com/releases/" target="_blank" rel="noopener">FATHOM CALENDAR</a></div></section>
+  <section id="tab-upcoming" class="tab-panel"><div class="panel-head"><h2>Coming Up</h2><span class="count-stamp">LOCAL SCREENINGS & RELEASES</span></div><p class="hub-lead">At the theater. On your services. Next on your calendar.</p><details id="calendar-options" class="screen-options"><summary id="calendar-options-label">Filter & view options</summary><div class="options-body"><div class="calendar-controls"><div class="segmented"><button id="calendar-view" aria-pressed="true">CALENDAR</button><button id="calendar-list" aria-pressed="false">LIST</button></div><label>Show<select id="calendar-scope"><option value="all">EVERYTHING</option><option value="local">KALISPELL SCREENINGS</option><option value="events">FATHOM & ANNIVERSARIES</option><option value="tracked">MY TRACKED FILMS & FAVORITES</option><option value="streaming">STREAMING / DIGITAL</option><option value="recommended">FOR YOU</option></select></label><label>Find<input id="calendar-search" type="search" placeholder="Search the board"></label><button id="cinema-refresh" class="secondary">UPDATE CALENDAR</button></div><div class="calendar-legend"><span class="legend-local">● LOCAL SCREENING</span><span class="legend-event">● NATIONAL EVENT</span><span class="legend-stream">● STREAMING / DIGITAL</span><span>Striped bars = an announced window, not daily screenings</span></div></div></details><p id="suggestion-status" class="offer-note" role="status"></p><p id="cinema-status" class="offer-note" role="status"></p><div class="cinema-board"><div class="board-head"><div><h3 id="calendar-range"></h3><span id="calendar-count"></span></div><div class="board-nav"><button id="calendar-prev" aria-label="Previous week">←</button><button id="calendar-today">TODAY</button><button id="calendar-next" aria-label="Next week">→</button></div></div><div id="calendar-scroll" class="calendar-scroll"><div id="calendar-bars"></div></div><div id="calendar-listings" hidden></div></div><div id="event-detail" class="event-detail" hidden></div><details class="maintenance-controls"><summary>Hidden screenings & quiet films</summary><div id="cinema-hidden"></div></details><p class="offer-note">Kalispell screenings use listed dates and times in Mountain Time. “Last listed” is not a confirmed closing date. National Fathom dates do not confirm participation here.</p><div class="source-links"><a href="https://www.cinemark.com/theatres/mt-kalispell/cinemark-signature-stadium-kalispell-14" target="_blank" rel="noopener">CINEMARK KALISPELL</a><a href="https://www.fathomentertainment.com/releases/" target="_blank" rel="noopener">FATHOM CALENDAR</a></div></section>
 
   <section id="tab-import" class="tab-panel">
     <div class="panel-head">
@@ -84,13 +84,13 @@
     <div class="import-block"><h3>Email alerts</h3><p class="import-note">Daily checks for the films on your card. Each film has its own alert choice.</p><button id="email-enable-btn">ENABLE EMAILS</button><button id="email-disable-btn" class="secondary">PAUSE EMAILS</button><p id="email-alert-status" class="import-status">Connect GitHub below to sync this card for email alerts.</p><label class="event-email-choice"><input id="event-email-alerts" type="checkbox"> Include Fathom events and local screening updates for tracked films, imported favorites, and followed events</label><p class="offer-note">Event emails follow the same enabled / paused setting above. National announcements are labeled separately from local bookings.</p><p id="price-alert-status" class="import-note"></p></div>
     <div class="import-block">
       <h3>Already Seen</h3>
-      <p class="import-note">Upload <code>watched.csv</code> from your Letterboxd export. Films You Missed will stop showing you anything already on this list.</p>
+      <p class="import-note">Upload <code>watched.csv</code> from your Letterboxd export. Browse will stop showing you anything already on this list.</p>
       <input type="file" id="import-watched" accept=".csv">
       <p id="watched-status" class="import-status"></p>
     </div>
     <div class="import-block">
       <h3>Existing Watchlist</h3>
-      <p class="import-note">Upload <code>watchlist.csv</code>. Every title, including older films, gets matched against TMDB and dropped onto Your Card. Takes a minute for a few hundred titles, don't close the tab.</p>
+      <p class="import-note">Upload <code>watchlist.csv</code>. Every title, including older films, gets matched against TMDB and dropped onto your watchlist. Takes a minute for a few hundred titles, don't close the tab.</p>
       <input type="file" id="import-watchlist" accept=".csv">
       <p id="watchlist-import-status" class="import-status"></p>
     </div>
@@ -112,7 +112,7 @@
 
     <div class="import-block">
       <h3>Sync Across Devices</h3>
-      <p class="import-note">Keeps Your Card, seen list, and skip list in sync everywhere you open this site, using a private GitHub Gist. Make a token at <code>github.com/settings/tokens</code> (classic token, only needs the "gist" scope), paste it below once per device. Connecting will pull whatever's already synced and apply it here, so do this on the device with your existing data first.</p>
+      <p class="import-note">Keeps your watchlist, seen list, and skip list in sync everywhere you open this site, using a private GitHub Gist. Make a token at <code>github.com/settings/tokens</code> (classic token, only needs the "gist" scope), paste it below once per device. Connecting will pull whatever's already synced and apply it here, so do this on the device with your existing data first.</p>
       <input type="password" id="gh-token-input" class="text-input" placeholder="GitHub token (ghp_...)">
       <div class="sync-actions">
         <button id="gh-connect-btn">CONNECT &amp; PULL</button>
