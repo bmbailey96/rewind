@@ -7,3 +7,19 @@ assert.notEqual(crimeReading.heading,O.reading(m,fit,at).heading,'Film metadata 
 assert.equal(O.reading(crimeFilm,crimeFit,at).text,crimeReading.text,'Copy is stable when reopening a reading');
 assert.doesNotMatch(O.reading({id:999,title:'Unknown'},null,at).text,/rated|own|favorite/,'Missing evidence invents no personal history');
 console.log('Oracle readings: film-specific themes, grounded ratings, stable copy and no invented personal signals passed');
+
+// The displayed contribution ledger must reconcile exactly with the score.
+const detailedSeed={id:701,title:'Known favorite',rating:5,owned:true,favorite:true,rewatches:3,meta:{genres:[{name:'Horror'}],keywords:{keywords:[{name:'mountain'}]},credits:{crew:[{job:'Director',name:'Director Name'},{job:'Writer',name:'Writer Name'}]}}};
+const detailed={id:702,title:'Mountain Moon',release_date:'1985-01-01',meta:{runtime:95,genres:[{name:'Horror'}],keywords:{keywords:['mountain','winter','swamp','rain','storm','night','werewolf'].map(name=>({name}))},credits:detailedSeed.meta.credits}};
+const rich={checkedAt:at,weather:{current:{temperature_2m:35,apparent_temperature:30,relative_humidity_2m:90,cloud_cover:90,precipitation:.1,wind_speed_10m:15,wind_gusts_10m:30,pressure_msl:990,surface_pressure:890},daily:{daylight_duration:[30000],sunset:['2026-10-05T12:00'],precipitation_probability_max:[80]}},news:[{title:'Director Name discusses a movie',publishedAt:new Date(at-86400000).toISOString()}]};
+const diary=[{title:'An eighties favorite',rating:5,release_date:'1987-01-01',watchedAt:'2026-10-01'},detailedSeed];
+const detailedFit=H.affinity(detailed,[detailedSeed]),scored=O.rank(detailed,detailedFit,rich,diary,at,true).oracle;
+assert.ok(Math.abs(scored.ledger.reduce((s,x)=>s+x.points,0)-scored.score)<1e-9,'Ledger contributions add to the final score without double counting');
+for(const title of ['Temperature','Feels like','Humidity','Cloud cover','Rain / snow','Wind','Gusts','Air pressure','Surface pressure','Daylight','Sunset','Rain probability','Moon','Season','Release year','Director','Writers','Genres','Keywords','Local screening','Recent film news','Ownership / favorites','Repeat watches','High ratings'])assert.ok(scored.ledger.find(x=>x.title===title).points>0,title+' has a reachable scoring rule');
+assert.ok(scored.contextScale<1,'Overflow scales all context contributions proportionately');
+const zero=O.rank({id:800,title:'Unspecified'},null,null,[],at).oracle;
+for(const title of ['Temperature','Feels like','Humidity','Wind','Gusts','Air pressure','Surface pressure','Daylight','Sunset','Rain probability','Release year','Recent film news'])assert.equal(zero.ledger.find(x=>x.title===title).points,0,title+' does not invent missing evidence');
+const late=O.rank(detailed,detailedFit,null,[],Date.UTC(2026,9,6,4)).oracle;assert.ok(late.ledger.find(x=>x.title==='Runtime').points>0,'Late weekday runtime rule actually weighs');
+const badNews={news:[{title:'Director Namesake speaks',publishedAt:new Date(at-86400000).toISOString()},{title:'Director Name speaks',publishedAt:new Date(at-20*86400000).toISOString()}]};assert.equal(O.rank(detailed,detailedFit,badNews,[],at).oracle.related,undefined,'Stale headlines and partial names do not match');
+assert.equal(O.rank(detailed,detailedFit,rich,[{...diary[0],watchedAt:'2027-01-01'}],at).oracle.ledger.find(x=>x.title==='Release year').points,0,'Future diary dates do not influence an era');
+console.log('Oracle ledger: every scoring rule reachable, exact score accounting, cap scaling, missing/future data and fresh exact news matches passed');

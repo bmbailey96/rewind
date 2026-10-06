@@ -92,3 +92,5 @@ const wait=()=>new Promise(r=>setTimeout(r,100));
  console.log('Rewind hub flow: three shelves, source timeline, no vote floor, thresholds persist/sync, real price drops, stale checks, watched undo, inline search passed');
  dom.window.close();
 })().catch(e=>{console.error(e);process.exitCode=1});
+
+assert.ok(fs.readFileSync(__dirname+'/../index.html','utf8').indexOf('id="browse-dismiss-bar"')>fs.readFileSync(__dirname+'/../index.html','utf8').indexOf('id="discover-more"'),'Bulk dismissal follows the browse results');
