@@ -6,6 +6,12 @@ const details=m=>({...m,runtime:m.id===7?4:100,overview:'A useful synopsis. More
 const wait=()=>new Promise(r=>setTimeout(r,100));
 (async()=>{
  const dom=new JSDOM(fs.readFileSync(__dirname+'/../index.html','utf8'),{url:'https://bekind-rewind.netlify.app',runScripts:'outside-only'}),w=dom.window;let failed=false,price=19.99,posted,discoverQueries=[],deckRequests=0;
+ // Keep dated screening fixtures independent of the day CI runs.
+ const NativeDate=w.Date;
+ w.Date=class extends NativeDate {
+  constructor(...args){super(...(args.length?args:['2026-10-05T18:00:00Z']));}
+  static now(){return NativeDate.parse('2026-10-05T18:00:00Z');}
+ };
  w.HTMLElement.prototype.scrollIntoView=function(){};w.HTMLDialogElement.prototype.showModal=function(){this.open=true};w.HTMLDialogElement.prototype.close=function(){this.open=false};
  w.localStorage.setItem('rewind-watchlist-v1',JSON.stringify(films));w.localStorage.setItem('rewind-coyote-seeded-v1','1');w.localStorage.setItem('rewind-watchmode-key','fixture');
  w.fetch=async(raw,opts={})=>{const u=new URL(raw,'https://bekind-rewind.netlify.app');let body;
