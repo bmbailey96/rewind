@@ -929,3 +929,5 @@ main{padding-top:24px}
  .calendar-inline-details{margin-top:12px;border-top:1px solid var(--rule);padding-top:12px}.calendar-inline-details .screening-hero{padding:12px;gap:10px}.calendar-inline-details .screening-hero h3{font-size:1.2rem}.calendar-inline-details .screening-hero img{width:50px}.calendar-inline-details .screening-strip{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));overflow:visible}.calendar-inline-details .screening-date{min-width:0;padding:6px 1px}
  .board-head{border-radius:12px;margin-bottom:12px}.board-nav{display:flex;gap:6px}.board-nav button{min-height:44px}
 }
+
+.bar-lane{grid-template-rows:minmax(92px,1fr)}

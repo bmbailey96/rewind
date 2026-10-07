@@ -169,6 +169,12 @@ const wait=()=>new Promise(r=>setTimeout(r,100));
  [...r.document.querySelectorAll('#cinema-hidden button')].find(b=>b.textContent.startsWith('RESTORE')).click();assert.equal(r.document.querySelectorAll('#calendar-bars .run-bar.local').length,2);
  r.eval('applySyncData({...collectSyncData(),hub:{...collectSyncData().hub,hiddenTheaterFilms:'+JSON.stringify(hiddenSaved)+'}});changed()');assert.equal(r.document.querySelectorAll('#calendar-bars .run-bar.local').length,2,'Restore tombstones defeat old synced hide records');r.document.getElementById('calendar-theaters').click();assert.equal(r.document.querySelectorAll('#calendar-bars .run-bar.local').length,0);assert.match(r.document.getElementById('calendar-listings').textContent,/Arrives on Shudder/);
  await wait();await wait();reload.window.close();
+ // A date-only backup with a newer generated timestamp must not displace a
+ // bounded, detailed audited snapshot during an outage.
+ const originalFetch=w.fetch,localAudit={id:'audit-film',title:'Audited Film',dates:['2026-10-07'],start:'2026-10-07',end:'2026-10-07',screenings:[{date:'2026-10-07',time:'7:00pm',url:'https://tickets.fandango.com/test'}]};
+ w.fetch=async(raw,opts)=>{if(String(raw).includes('rewind-cinema'))return {ok:true,json:async()=>({events:{items:[],stale:false,checkedAt:w.Date.now()},local:{items:[{...localAudit,dates:['2026-10-06'],screenings:[]}],stale:true,checkedAt:w.Date.now()}})};if(raw==='cinema-snapshot.json')return {ok:true,json:async()=>({events:{items:[],checkedAt:w.Date.now()-3600000},local:{items:[localAudit],checkedAt:w.Date.now()-3600000}})};return originalFetch(raw,opts);};
+ w.document.getElementById('cinema-refresh').click();await wait();await wait();
+ const auditCard=[...w.document.querySelectorAll('#calendar-mobile article')].find(c=>c.textContent.includes('Audited Film'));assert.ok(auditCard);assert.equal(auditCard.querySelectorAll('.mobile-week-day.listed').length,1);assert.equal(auditCard.querySelector('.mobile-week-day.listed strong').textContent,'7');assert.match(auditCard.textContent,/PREVIOUS CHECK/);
  console.log('Rewind hub flow: three shelves, source timeline, no vote floor, thresholds persist/sync, real price drops, stale checks, watched undo, inline search passed');
  dom.window.close();
 })().catch(e=>{console.error(e);process.exitCode=1});
