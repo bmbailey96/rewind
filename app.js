@@ -199,7 +199,7 @@ function collectSyncData() {
 function applySyncData(data) {
   if (!data) return;
   if(typeof data.rentalBudget==='number'&&data.rentalBudget>=0&&data.rentalBudget<=100){rentalBudget=data.rentalBudget;localStorage.setItem('rewind-rental-budget-v1',String(rentalBudget));document.getElementById('rental-budget').value=rentalBudget;}
-  if(data.hub&&typeof data.hub==='object'){for(const key of ['taste','hidden','muted','followed','knownEvents','suggestions','dismissedSuggestions','ignoredTaste'])if(Array.isArray(data.hub[key]))hubState[key]=data.hub[key];if(Number.isFinite(data.hub.suggestionsVersion))hubState.suggestionsVersion=data.hub.suggestionsVersion;if(Number.isFinite(data.hub.suggestionsCheckedAt))hubState.suggestionsCheckedAt=data.hub.suggestionsCheckedAt;if(typeof data.hub.eventAlerts==='boolean')hubState.eventAlerts=data.hub.eventAlerts;localStorage.setItem('rewind-hub-v1',JSON.stringify(hubState));}
+  if(data.hub&&typeof data.hub==='object'){for(const key of ['taste','hidden','muted','followed','knownEvents','suggestions','dismissedSuggestions','ignoredTaste','hiddenTheaterFilms','ignoredOwnership'])if(Array.isArray(data.hub[key]))hubState[key]=data.hub[key];if(Number.isFinite(data.hub.suggestionsVersion))hubState.suggestionsVersion=data.hub.suggestionsVersion;if(Number.isFinite(data.hub.suggestionsCheckedAt))hubState.suggestionsCheckedAt=data.hub.suggestionsCheckedAt;if(typeof data.hub.eventAlerts==='boolean')hubState.eventAlerts=data.hub.eventAlerts;localStorage.setItem('rewind-hub-v1',JSON.stringify(hubState));}
   watchlist = data.watchlist || [];
   if (Array.isArray(data.services)) {myServices = data.services;localStorage.setItem('rewind-services-v1',JSON.stringify(myServices));renderServiceSettings();}
   seenSet = new Set(data.seen || []);
@@ -325,7 +325,7 @@ let discoverPage = 1;
 let watchlist = loadWatchlist();
 let hubState;
 try {hubState=JSON.parse(localStorage.getItem('rewind-hub-v1'))||{};}catch{hubState={};}
-for(const key of ['taste','hidden','muted','followed','knownEvents','suggestions','dismissedSuggestions','ignoredTaste'])if(!Array.isArray(hubState[key]))hubState[key]=[];
+for(const key of ['taste','hidden','muted','followed','knownEvents','suggestions','dismissedSuggestions','ignoredTaste','hiddenTheaterFilms','ignoredOwnership'])if(!Array.isArray(hubState[key]))hubState[key]=[];
 
 
 // ---------- storage ----------
@@ -525,7 +525,7 @@ function renderCard(movie, opts = {}) {
   const card=document.createElement('article');card.className='rental-card';card.dataset.movieId=movie.id;
   const image=posterUrl(movie.poster_path);const poster=document.createElement(image?'img':'div');poster.className='card-poster'+(image?'':' poster-missing');if(image){poster.loading='lazy';poster.src=image;poster.alt=movie.title+' poster';poster.onerror=()=>{const fallback=document.createElement('div');fallback.className='card-poster poster-missing';fallback.textContent='NO POSTER ON FILE';poster.replaceWith(fallback);};}else{poster.textContent='NO POSTER ON FILE';}card.appendChild(poster);
   const title=document.createElement('h3');title.className='card-title';title.textContent=movie.title;card.appendChild(title);
-  const meta=document.createElement('p');meta.className='card-meta';meta.textContent=[(movie.release_date||'').slice(0,4),movie.director].filter(Boolean).join(' · ');card.appendChild(meta);
+  const meta=document.createElement('p');meta.className='card-meta';meta.textContent=[(movie.release_date||'').slice(0,4),movie.runtime?movie.runtime+' min':'Runtime not listed',movie.director].filter(Boolean).join(' · ');card.appendChild(meta);
   if(movie.pinned){const pinned=document.createElement('span');pinned.className='new-tag';pinned.textContent='PINNED';card.appendChild(pinned);}
   if(changed){const tag=document.createElement('span');tag.className='new-tag';tag.textContent='CHANGED SINCE YOUR LAST VISIT';card.appendChild(tag);}
   if(opts.markSeen&&isSeen(movie)){const tag=document.createElement('span');tag.className='new-tag';tag.textContent='ALREADY SEEN';card.appendChild(tag);}
@@ -543,6 +543,7 @@ function renderCard(movie, opts = {}) {
     body.replaceChildren();body.appendChild(secondaryActions);if(current)body.appendChild(renderAvailability(movie,{...current,previousLabel:opts.prevLabel},{details:[...observedDetails.values()],movies:watchlist}));
     if(context==='watchlist'){const alert=document.createElement('details');alert.className='source-disclosure';const title=document.createElement('summary');title.textContent='Alert settings';alert.append(title,renderAlertPreference(movie));body.appendChild(alert);}
     const extra=document.createElement('p');extra.className='card-meta';extra.textContent=[movie.runtime?movie.runtime+' min':'',movie.director].filter(Boolean).join(' · ');body.appendChild(extra);
+    if(opts.onRemovePhysical){const remove=document.createElement('button');remove.className='secondary';remove.textContent='REMOVE FROM PHYSICAL SHELF';remove.onclick=opts.onRemovePhysical;body.appendChild(remove);}
     if(movie.overview){const synopsis=document.createElement('p');synopsis.textContent=movie.overview;body.appendChild(synopsis);}
     const filmLinks=document.createElement('div');filmLinks.className='film-links';const lb=document.createElement('a');lb.textContent='LETTERBOXD';lb.href=HubModel.letterboxd(movie);lb.target='_blank';lb.rel='noopener';filmLinks.appendChild(lb);body.appendChild(filmLinks);
     if(context==='watchlist'){
@@ -556,9 +557,11 @@ function renderCard(movie, opts = {}) {
   if(context==='watchlist'){
     const watched=document.createElement('button');watched.className='secondary';watched.textContent='MARK WATCHED';watched.onclick=()=>markMovieWatched(movie);secondaryActions.appendChild(watched);
     const next=!status?.stale?costInfo?.offer:null;
-    if(next?.link){const link=document.createElement('a');link.className='watch-link';link.textContent=next.included||next.kind==='free'?'WHERE TO WATCH':next.kind==='buy'?'WHERE TO BUY':'WHERE TO RENT';link.href=next.link;link.target='_blank';link.rel='noopener noreferrer';actions.prepend(link);}
+    if(next?.link){const link=document.createElement('a');link.className='watch-link';link.textContent=next.kind==='buy'?'BUY':next.kind==='rent'?'RENT':'WATCH';link.href=next.link;link.target='_blank';link.rel='noopener noreferrer';actions.prepend(link);}
     if(costInfo?.band==='premium'){const wait=document.createElement('button');wait.className='secondary wait-button';const pref=ReleaseModel.preference(movie.alert);wait.textContent=pref.mode==='rental'?'WAITING FOR $'+pref.maxPrice.toFixed(2):'WAIT FOR $'+rentalBudget.toFixed(2);wait.onclick=()=>{movie.alert={mode:'rental',maxPrice:rentalBudget};saveWatchlist();scheduleSync();showToast('Watching for a rental at $'+rentalBudget.toFixed(2)+' or less');renderWatchlist();};secondaryActions.appendChild(wait);}
   }else{
+    const next=!status?.stale?costInfo?.offer:null;if(next?.link){const watch=document.createElement('a');watch.className='watch-link';watch.textContent=next.kind==='rent'?'RENT':next.kind==='buy'?'BUY':'WATCH';watch.href=next.link;watch.target='_blank';watch.rel='noopener noreferrer';actions.appendChild(watch);}
+    if(context==='physical'){const watched=document.createElement('button');watched.className='secondary';watched.textContent='MARK WATCHED';watched.onclick=()=>markMovieWatched(movie);secondaryActions.appendChild(watched);}
     const inList=watchlist.some(w=>w.id===movie.id);const track=document.createElement('button');track.textContent=inList?'ADDED':'ADD TO WATCHLIST';track.disabled=inList;
     track.onclick=()=>{addToWatchlist(movie);if(context==='discover')card.remove();else{track.textContent='ADDED';track.disabled=true;}};actions.appendChild(track);
     if((context==='discover'||context==='search')&&!inList){const skip=document.createElement('button');skip.className='secondary';skip.textContent='PASS OVER THIS FILM';skip.onclick=()=>{skipMovie(movie.id);card.remove();updateBrowseDismissControl();};secondaryActions.appendChild(skip);}
@@ -700,8 +703,8 @@ async function renderWatchlist(force = false, reuse = false) {
     try {
       if(reuse&&entry.availabilitySnapshot){
         const cached=entry.availabilitySnapshot;
-        const offers=(cached.offers||[]).map(o=>o.kind==='subscription'?{...o,included:RewindModel.included(o.provider,myServices)}:o);
-        status={...cached,...(RewindModel.summary(offers)||{}),offers};lookupMovie.availabilitySnapshot=status;
+        const owned=hubState.taste.find(m=>m.id===entry.id&&m.owned);const remote=(cached.offers||[]).filter(o=>o.kind!=='physical').map(o=>o.kind==='subscription'?{...o,included:RewindModel.included(o.provider,myServices)}:o);
+        const offers=[...(owned?HubModel.shelfStatus(owned).offers:[]),...remote];status={...cached,...(owned?HubModel.shelfStatus(owned):RewindModel.summary(offers)||{code:'nodata',kind:'unknown',label:'No current offer'}),physical:!!owned,offers,stale:owned?false:cached.physical?!!cached.remoteStale:cached.stale};lookupMovie.availabilitySnapshot=status;
       }else status=await deriveStatus(lookupMovie,force);
     }
     catch {status={code:'nodata',kind:'unknown',label:'Availability could not be checked',offers:[],stale:true};}

@@ -880,3 +880,26 @@ main{padding-top:24px}
  .counter-welcome{flex-direction:column}.counter-welcome button{flex:auto;width:100%}
  .service-settings{grid-template-columns:1fr}
 }
+/* Tonight, the disc shelf, and the Oracle's plainly visible controls. */
+.tonight-shelf{margin:0 0 28px;padding:20px;border:1px solid var(--rule);border-radius:12px;background:#e9eee7}
+.tonight-shelf .panel-head{margin:0;padding:0 0 12px}.tonight-shelf h3{margin:0;font:700 1.5rem 'Vollkorn',serif}
+#tonight-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.tonight-card{min-width:0;background:#fff;border:1px solid var(--rule);border-radius:10px;padding:14px;display:flex;gap:12px;align-items:flex-start}
+.tonight-card>img{width:64px;aspect-ratio:2/3;object-fit:cover;border-radius:5px;flex:none}
+.tonight-card-body{min-width:0;flex:1}.tonight-card h4{font:700 1rem 'Vollkorn',serif;margin:0 0 6px;line-height:1.3}
+.tonight-price{display:block;font-size:.82rem;line-height:1.5}.tonight-reason{font-size:.8rem;line-height:1.55;color:var(--ink-soft);margin:10px 0 12px}
+.tonight-details>summary{font-size:.78rem;padding:12px 0;cursor:pointer}.tonight-details[open]{margin-top:12px}.tonight-details .visual-release{overflow:auto}
+.tonight-card:has(.tonight-details[open]){grid-column:1/-1}.tonight-card:has(.tonight-details[open]) .tonight-card-body{max-width:100%}
+.shelf-location{font-size:.72rem;font-weight:700;line-height:1.5}.shelf-tools{display:flex;align-items:end;gap:16px;margin:16px 0}.shelf-tools label{display:grid;gap:6px;min-width:150px}
+.calendar-visibility{display:flex;flex-wrap:wrap;gap:14px;margin:12px 0}.calendar-visibility label{display:flex;gap:10px;align-items:center;font-size:.85rem;min-height:44px}.calendar-visibility input{width:20px;height:20px;flex:none}
+.screening-hide-actions{display:flex;flex-wrap:wrap;gap:12px;margin:16px 0}.screening-hide-actions button{min-height:44px}
+.picker-actions{display:flex;align-items:stretch;flex-wrap:wrap;gap:12px}.pick-secondary{display:contents}.pick-secondary[hidden]{display:none}
+.picker-actions button{margin:0;min-height:48px;white-space:normal;line-height:1.3;font-size:.8rem}
+.oracle-chamber .picker-actions button.secondary{color:#f0dbab;background:#213d3a;border:1px solid #b8c9bf}
+.oracle-chamber .picker-actions button.secondary:hover{background:#36564d;color:#fff1ce}
+.oracle-chamber .picker-actions button:disabled{color:#c5d1cc;background:#263c3c;opacity:.7}
+.oracle-section-heading{margin:22px 0 8px;font-size:.75rem;font-family:system-ui;text-transform:uppercase;letter-spacing:.09em;color:#52665d}
+.oracle-taste-evidence{line-height:1.6;color:var(--ink)}.oracle-evidence-heading{grid-column:1/-1;margin:16px 0 0;font:700 .9rem system-ui}
+.return-stamp{display:inline-block;color:#8b342b;border:2px solid #8b342b;padding:8px 12px;transform:rotate(-3deg);font:700 .8rem monospace;letter-spacing:.08em;margin:4px 0 18px}
+@media(max-width:1100px){#tonight-grid{grid-template-columns:1fr}.tonight-card>img{width:76px}.tonight-card-body .watch-link{display:inline-flex;width:auto;min-height:44px}.tonight-details{margin-top:8px}}
+@media(max-width:600px){.tonight-shelf{padding:14px}.tonight-shelf .count-stamp{display:none}.tonight-card{padding:12px}.tonight-card>img{width:60px}.hub-mode-buttons{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.picker-actions button{flex:1 1 135px;padding:12px}.shelf-tools{flex-wrap:wrap}.shelf-tools label{flex:1}.screening-hide-actions button{flex:1 1 150px}}

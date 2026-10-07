@@ -5,7 +5,7 @@ const films=[{id:1204680,title:'Coyote vs. Acme',release_date:'2026-08-28',poste
 const details=m=>({...m,runtime:m.id===7?4:100,overview:'A useful synopsis. More details after that.',credits:{crew:[{job:'Director',name:'Jane Director'}]},release_dates:{results:[{iso_3166_1:'US',release_dates:[{type:3,release_date:m.release_date+'T00:00:00Z'},...(m.id===1204680?[{type:4,release_date:'2026-09-29T00:00:00Z'}]:[])]}]}});
 const wait=()=>new Promise(r=>setTimeout(r,100));
 (async()=>{
- const dom=new JSDOM(fs.readFileSync(__dirname+'/../index.html','utf8'),{url:'https://bekind-rewind.netlify.app',runScripts:'outside-only'}),w=dom.window;let failed=false,price=19.99,posted,discoverQueries=[],deckRequests=0,included3=true,searchMatches=[films[1]];
+ const dom=new JSDOM(fs.readFileSync(__dirname+'/../index.html','utf8'),{url:'https://bekind-rewind.netlify.app',runScripts:'outside-only'}),w=dom.window;let failed=false,price=19.99,posted,discoverQueries=[],deckRequests=0,included3=true,searchMatches=[films[1]],cinemaRevision=0;
  // Keep dated screening fixtures independent of the day CI runs.
  const NativeDate=w.Date;
  w.Date=class extends NativeDate {
@@ -16,7 +16,7 @@ const wait=()=>new Promise(r=>setTimeout(r,100));
  w.localStorage.setItem('rewind-ui-v1',JSON.stringify({pickerCost:'included',pickerMode:'oracle'}));
  w.localStorage.setItem('rewind-watchlist-v1',JSON.stringify(films));w.localStorage.setItem('rewind-coyote-seeded-v1','1');w.localStorage.setItem('rewind-watchmode-key','fixture');
  w.fetch=async(raw,opts={})=>{const u=new URL(raw,'https://bekind-rewind.netlify.app');let body;
-  if(u.pathname.includes('rewind-cinema')||u.pathname==='/cinema-snapshot.json')body={events:{items:[{id:'event-a',title:'Coyote vs. Acme Special Screening',dates:['2026-10-06','2026-10-08'],ranges:[],start:'2026-10-06',end:'2026-10-08',dateLabel:'Oct 6 · Oct 8',url:'https://www.fathomentertainment.com/releases/test/'}],checkedAt:Date.now(),stale:false},local:{items:[{id:'local-coyote',title:'Coyote vs. Acme',dates:['2026-10-06','2026-10-07','2026-10-09'],start:'2026-10-06',end:'2026-10-09',screenings:[{date:'2026-10-06',time:'7:00pm',format:'Standard',url:'https://tickets.fandango.com/test'}],url:'https://www.cinemark.com/theatres/test'}],checkedAt:Date.now(),stale:false}};
+  if(u.pathname.includes('rewind-cinema')||u.pathname==='/cinema-snapshot.json')body={events:{items:[{id:'event-a',title:'Coyote vs. Acme Special Screening',dates:['2026-10-06','2026-10-08'],ranges:[],start:'2026-10-06',end:'2026-10-08',dateLabel:'Oct 6 · Oct 8',url:'https://www.fathomentertainment.com/releases/test/'}],checkedAt:Date.now(),stale:false},local:{items:[{id:'local-coyote-'+cinemaRevision,title:'Coyote vs. Acme',dates:['2026-10-06','2026-10-07','2026-10-09'],start:'2026-10-06',end:'2026-10-09',screenings:[{date:'2026-10-06',time:'7:00pm',format:'Standard',url:'https://tickets.fandango.com/test'}],url:'https://www.cinemark.com/theatres/test'}],checkedAt:Date.now(),stale:false}};
   else if(u.pathname==='/roulette-deck.json'){deckRequests++;body=[{...films[2],tags:['folk'],tones:{cozy:80},runtime:100}];}
   else if(u.pathname==='/release-announcements.json')body=feed;
   else if(u.pathname.includes('rewind-watchlist')){if(opts.method==='POST'){posted=JSON.parse(opts.body);body={count:posted.movies.length};}else body={enabled:true,movies:films,pricesConfigured:false};}
@@ -29,10 +29,12 @@ const wait=()=>new Promise(r=>setTimeout(r,100));
   else {const id=Number(u.pathname.split('/').at(-1));body=details(films.find(m=>m.id===id)||{id,title:'Feature',release_date:'2026-08-28',poster_path:'/f.jpg'});}
   return {ok:true,json:async()=>body};
  };
- w.eval(['rewind-model.js','release-model.js','availability-ui.js','hub-model.js','oracle.js','app.js','hub.js'].map(file=>fs.readFileSync(__dirname+'/../'+file,'utf8')).join('\n')); 
+ w.eval(['rewind-model.js','release-model.js','availability-ui.js','hub-model.js','oracle.js','app.js','hub.js'].map(file=>fs.readFileSync(__dirname+'/../'+file,'utf8')).join('\n')+'\nwindow.testState={movies:()=>watchlist,hub:()=>hubState,changed:()=>Hub.stateChanged()};');
  await wait();await w.eval("renderWatchlist()");
  assert.equal(w.document.querySelectorAll('.tabs button').length,4);
  assert.equal(w.document.getElementById('card-options').open,false);
+ assert.equal(w.document.getElementById('calendar-scope').value,'personal');assert.equal(w.document.getElementById('calendar-recommendations').checked,false);
+ assert.match(w.document.getElementById('tonight-grid').textContent,/Included Movie/);assert.doesNotMatch(w.document.getElementById('tonight-grid').textContent,/Coyote/,'Over-budget rental is absent from Tonight');
  assert.equal(w.document.getElementById('picker-cost').value,'included');
  w.document.getElementById('choose-tonight').click();
  assert.equal(w.document.getElementById('tab-discover').classList.contains('active'),true);
@@ -89,6 +91,7 @@ const wait=()=>new Promise(r=>setTimeout(r,100));
  assert.equal([...options.querySelectorAll('button')].filter(b=>b.textContent==='PASS OVER THIS FILM').length,1,'Reopening keeps exactly one skip action');
  w.document.getElementById('picker-cost').value='physical';w.document.getElementById('picker-cost').dispatchEvent(new w.Event('change'));
  assert.equal(JSON.parse(w.localStorage.getItem('rewind-ui-v1')).pickerCost,'physical');
+ assert.match(w.document.getElementById('return-stamp').textContent,/RETURNED OCT 5, 2026/);
  assert.ok(w.document.getElementById('watched-dialog').open);assert.match(w.document.getElementById('watched-letterboxd').href,/letterboxd.com\/tmdb\/3/);
  // Native search clear and an empty query result must restore a usable shelf.
  w.document.querySelector('[data-find-mode=shelf]').click();searchMatches=[];
@@ -116,6 +119,47 @@ const wait=()=>new Promise(r=>setTimeout(r,100));
  const publicStatus=await w.eval('deriveStatus('+JSON.stringify(publicFilm)+')');assert.ok(publicStatus.offers.some(o=>o.price===3.99&&o.format==='HD'));
  assert.ok(publicStatus.priceSources.includes('JustWatch US prices'));
  assert.equal(w.document.querySelectorAll('.tab-btn[aria-current=page]').length,1);
+
+ // Tonight never substitutes stale or unquoted rentals, while owned discs survive an outage.
+ w.eval("testState.movies().find(m=>m.id===1204680).availabilitySnapshot.stale=true;testState.changed()");
+ assert.doesNotMatch(w.document.getElementById('tonight-grid').textContent,/Coyote/);
+ assert.match(w.document.getElementById('tonight-grid').textContent,/The Cycle/);
+ w.eval("testState.movies().find(m=>m.id===1204680).availabilitySnapshot.stale=false;testState.changed()");
+ assert.ok(w.document.querySelectorAll('#tonight-grid .tonight-card').length<=3);
+ assert.match(w.document.querySelector('#paid-grid .card-meta').textContent,/100 min/);
+ // The owned shelf keeps rewatches and exposes a reversible removal, even after opening details.
+ w.document.querySelector('[data-find-mode=physical]').click();assert.equal(w.document.getElementById('hub-picker').hidden,true);
+ assert.match(w.document.getElementById('physical-grid').textContent,/VHS|A REWATCH/);
+ const shelfDetails=w.document.querySelector('#physical-grid .film-details');shelfDetails.open=true;await wait();
+ const shelfRemove=[...shelfDetails.querySelectorAll('button')].find(b=>b.textContent==='REMOVE FROM PHYSICAL SHELF');assert.ok(shelfRemove);shelfRemove.click();await wait();
+ assert.equal(JSON.parse(w.localStorage.getItem('rewind-hub-v1')).taste.find(m=>m.id===1290418).owned,false);
+ assert.equal(JSON.parse(w.localStorage.getItem('rewind-hub-v1')).taste.find(m=>m.id===1290418).rating,4.5,'Shelf removal preserves the rating');
+ assert.doesNotMatch(w.document.getElementById('watch-now-grid').textContent,/The Cycle/,'Removed ownership does not remain in cached offers');
+ w.document.querySelector('#toast button').click();await wait();assert.match(w.document.getElementById('physical-grid').textContent,/The Cycle/);
+ // Include recommendations only on request; hiding a theater film leaves its digital releases alone.
+ w.eval("testState.movies().find(m=>m.id===1204680).availabilitySnapshot.announcements=[{date:'2026-10-08',provider:'Apple TV',kind:'digital'}];testState.hub().suggestions=[{id:98,title:'Suggested Film',release_date:'2026-10-01',suggestionReason:'Same writer',availabilitySnapshot:{announcements:[{date:'2026-10-09',provider:'Shudder'}]}}];testState.changed()");
+ assert.doesNotMatch(w.document.getElementById('calendar-listings').textContent,/Suggested Film/);
+ w.document.getElementById('calendar-recommendations').click();assert.match(w.document.getElementById('calendar-listings').textContent,/Suggested Film/);
+ w.document.getElementById('calendar-recommendations').click();
+ const openCoyote=()=>[...w.document.querySelectorAll('#calendar-bars .board-label')].find(b=>b.textContent.includes('Coyote')).click();
+ openCoyote();[...w.document.querySelectorAll('#event-detail button')].find(b=>b.textContent==='HIDE THIS VISIT').click();
+ assert.equal(w.document.querySelectorAll('#calendar-bars .run-bar.local').length,0);
+ assert.match(w.document.getElementById('calendar-listings').textContent,/Arrives on Apple TV/);
+ assert.equal(JSON.parse(w.localStorage.getItem('rewind-hub-v1')).hiddenTheaterFilms.length,0,'Visit hide is not persisted or synced');
+ [...w.document.querySelectorAll('#cinema-hidden button')].find(b=>b.textContent.startsWith('RESTORE')).click();assert.equal(w.document.querySelectorAll('#calendar-bars .run-bar.local').length,2);
+ openCoyote();[...w.document.querySelectorAll('#event-detail button')].find(b=>b.textContent==='HIDE PERMANENTLY').click();
+ const hiddenSaved=JSON.parse(w.localStorage.getItem('rewind-hub-v1')).hiddenTheaterFilms;assert.equal(hiddenSaved.length,1);assert.equal(hiddenSaved[0].id,1204680);
+ assert.equal(w.eval('collectSyncData().hub.hiddenTheaterFilms.length'),1);
+ cinemaRevision++;w.document.getElementById('cinema-refresh').click();await wait();await wait();assert.equal(w.document.querySelectorAll('#calendar-bars .run-bar.local').length,0,'A fresh listing ID does not defeat permanent movie hiding');
+ // A second page load retains permanent hiding, and restore brings the current listings back.
+ const reload=new JSDOM(fs.readFileSync(__dirname+'/../index.html','utf8'),{url:'https://bekind-rewind.netlify.app',runScripts:'outside-only'}),r=reload.window;
+ r.Date=w.Date;r.HTMLElement.prototype.scrollIntoView=function(){};r.HTMLDialogElement.prototype.showModal=function(){this.open=true};r.HTMLDialogElement.prototype.close=function(){this.open=false};r.fetch=w.fetch;
+ for(let i=0;i<w.localStorage.length;i++){const key=w.localStorage.key(i);if(key!=='rewind-gh-token')r.localStorage.setItem(key,w.localStorage.getItem(key));}
+ r.eval(['rewind-model.js','release-model.js','availability-ui.js','hub-model.js','oracle.js','app.js','hub.js'].map(file=>fs.readFileSync(__dirname+'/../'+file,'utf8')).join('\n'));await wait();await wait();
+ assert.equal(r.document.querySelectorAll('#calendar-bars .run-bar.local').length,0);
+ [...r.document.querySelectorAll('#cinema-hidden button')].find(b=>b.textContent.startsWith('RESTORE')).click();assert.equal(r.document.querySelectorAll('#calendar-bars .run-bar.local').length,2);
+ r.document.getElementById('calendar-theaters').click();assert.equal(r.document.querySelectorAll('#calendar-bars .run-bar.local').length,0);assert.match(r.document.getElementById('calendar-listings').textContent,/Arrives on Shudder/);
+ await wait();await wait();reload.window.close();
  console.log('Rewind hub flow: three shelves, source timeline, no vote floor, thresholds persist/sync, real price drops, stale checks, watched undo, inline search passed');
  dom.window.close();
 })().catch(e=>{console.error(e);process.exitCode=1});

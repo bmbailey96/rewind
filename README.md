@@ -91,3 +91,16 @@ Daily emails retain the five-film cap and now include a verified rental quote, s
 The shelf uses a responsive four/three/two-column grid, aligned card actions, a stable poster placeholder, uniform 44px controls and 16px text fields on phones. Expanded cards occupy a full grid row. The calendar shares one column definition between headers and bars, keeps film names and dates visible while scrolling, uses readable day widths on phones and preserves window stripes over backdrop art. Search handles no matches and the native clear button. Loading controls prevent repeated requests; filter/sort changes repaint saved availability with an explicit saved-check label. Removing a watchlist film has Undo, and watched Undo is idempotent. Opening screening details focuses Close and returns to the source control when possible. Updating the calendar also refreshes its discovery layer.
 
 Removed: retired tone-triangle console styles, zero-count shelf summary repetition, stale references to Your Card and Films You Missed, and the repeated forwarding-address punchline. Film records, imports, sources, controls, original repositories and Oracle evidence remain available. Public-store prices are checked without uploading browser keys or sync credentials.
+
+
+### Tonight and physical copies
+
+The Tonight shelf selects up to three verified options from tracked films and owned copies, including a mix of included, affordable rental, and physical offers when available. Rentals must be quoted at or below the user's current limit; remote snapshots older than 24 hours or marked stale are excluded. Missing runtime stays explicit. Film cards now show runtime and direct provider links.
+
+Find a Film includes My Shelf, with format filtering and reversible ownership removal that preserves ratings and diary records. Scanner CSV headers accept Name/Title/Movie Title, Year/Release Year/Production Year, and Format/Media Format/Media Type, plus optional TMDB ID. Exact title/year matching rejects ambiguous imports and names them for review. Physical copies enter Oracle's candidate pool with the same source-independent ranking rules, including labeled rewatches.
+
+### Calendar visibility
+
+The default view is tracked films and local screenings. Recommendations are opt-in. Theater listings can be switched off independently of digital dates. Each theater film can be hidden for the current visit or permanently until restored. Permanent records follow the matched film, not the listing ID, and are included in device sync. Temporary records remain in memory only. Existing hidden-event records are preserved. Hidden screenings & quiet films contains restore controls.
+
+Oracle's action buttons use explicit dark-background colors, with direct set-aside and Undo controls. Reports distinguish recorded taste from the atmospheric reading while retaining every source and scoring rule. Marking a film watched adds a dated return stamp without changing the undo or Letterboxd workflow.

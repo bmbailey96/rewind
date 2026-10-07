@@ -19,3 +19,9 @@ assert.equal(H.watchlistPriority({availabilitySnapshot:included},pickAt),0,'An i
 assert.deepEqual(H.orderWatchlist(pickPool,'shuffle',pickAt,()=>.5).map(m=>m.id),H.shuffle(pickPool,()=>.5).map(m=>m.id));
 assert.equal(H.affinity(match,[seed]).connection.seedTitle,'A Favorite');
 console.log('Watchlist priority: pins, confirmed recent arrivals, stale and first-check exclusions, and pure shuffle passed');
+
+assert.deepEqual(H.shelfRow({'Movie Title':'The Thing','Production Year':'1982','Media Format':'Blu-ray','TMDB ID':'1091'}),{title:'The Thing',year:'1982',format:'Blu-ray',tmdbId:'1091'});
+assert.equal(H.sameTheaterFilm({id:1091,title:'The Thing',year:'1982'},{id:60935,title:'The Thing',year:'2011'}),false);
+assert.equal(H.sameTheaterFilm({id:1091,title:'The Thing',year:'1982'},{title:'The Thing',year:'1982'}),true);
+assert.equal(H.theaterIdentity({title:'The Thing 40th Anniversary'},{id:1091,release_date:'1982-06-25'}).title,'The Thing');
+assert.equal(H.shelfStatus({physicalFormats:['DVD','VHS']}).offers.length,2);
