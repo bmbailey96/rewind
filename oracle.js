@@ -77,5 +77,15 @@
   }
   return {heading,text};
  }
- return {moon,rank,reading};
+ function compare(pool){
+  const ranked=[...pool].sort((a,b)=>b.oracle.score-a.oracle.score),winner=ranked[0];if(!winner)return null;
+  const weather=new Set(['Temperature','Feels like','Humidity','Cloud cover','Rain / snow','Wind','Gusts','Air pressure','Surface pressure','Daylight','Sunset','Rain probability']);
+  const totals=m=>new Map((m.oracle.ledger||[]).filter(x=>!['summary','context'].includes(x.group)).map(x=>[x.title,x.points]));
+  const win=totals(winner),alternatives=ranked.slice(1,4).map(movie=>{
+   const other=totals(movie),deltas=[...new Set([...win.keys(),...other.keys()])].map(title=>({title,points:(win.get(title)||0)-(other.get(title)||0)})).filter(x=>Math.abs(x.points)>1e-9),gap=Math.max(0,winner.oracle.score-movie.oracle.score),weatherDelta=deltas.filter(x=>weather.has(x.title)).reduce((s,x)=>s+x.points,0),tie=gap<1e-9;
+   return {id:movie.id,title:movie.title,score:movie.oracle.score,taste:movie.oracle.tasteScore,context:movie.oracle.atmosphereScore,gap,tie,close:!tie&&gap<=.1+1e-9,weatherTipped:!tie&&weatherDelta>0&&gap-weatherDelta<=1e-9,gains:deltas.filter(x=>x.points>0).sort((a,b)=>b.points-a.points).slice(0,3),losses:deltas.filter(x=>x.points<0).sort((a,b)=>a.points-b.points).slice(0,3),deltas,connection:movie.fit?.reasons?.join('. ')||'No established personal taste connection.'};
+  });
+  return {count:ranked.length,winner:{title:winner.title,score:winner.oracle.score,taste:winner.oracle.tasteScore,context:winner.oracle.atmosphereScore},alternatives};
+ }
+ return {moon,rank,reading,compare};
 });
