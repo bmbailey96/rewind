@@ -199,7 +199,7 @@ function collectSyncData() {
 function applySyncData(data) {
   if (!data) return;
   if(typeof data.rentalBudget==='number'&&data.rentalBudget>=0&&data.rentalBudget<=100){rentalBudget=data.rentalBudget;localStorage.setItem('rewind-rental-budget-v1',String(rentalBudget));document.getElementById('rental-budget').value=rentalBudget;}
-  if(data.hub&&typeof data.hub==='object'){for(const key of ['taste','hidden','muted','followed','knownEvents','suggestions','dismissedSuggestions','ignoredTaste','hiddenTheaterFilms','ignoredOwnership'])if(Array.isArray(data.hub[key]))hubState[key]=data.hub[key];if(Number.isFinite(data.hub.suggestionsVersion))hubState.suggestionsVersion=data.hub.suggestionsVersion;if(Number.isFinite(data.hub.suggestionsCheckedAt))hubState.suggestionsCheckedAt=data.hub.suggestionsCheckedAt;if(typeof data.hub.eventAlerts==='boolean')hubState.eventAlerts=data.hub.eventAlerts;localStorage.setItem('rewind-hub-v1',JSON.stringify(hubState));}
+  if(data.hub&&typeof data.hub==='object'){const restores=[...(hubState.theaterHideRestores||[]),...(data.hub.theaterHideRestores||[])];hubState.hiddenTheaterFilms=CounterModel.mergeHiddenFilms(hubState.hiddenTheaterFilms,data.hub.hiddenTheaterFilms,restores);hubState.theaterHideRestores=[...new Map(restores.map(r=>[r.key+':'+r.at,r])).values()];for(const key of ['taste','hidden','muted','followed','knownEvents','suggestions','dismissedSuggestions','ignoredTaste','ignoredOwnership','setAsides','feedback','changeReceipts','calendarBaseline'])if(Array.isArray(data.hub[key]))hubState[key]=data.hub[key];if(Number.isFinite(data.hub.receiptsReadAt))hubState.receiptsReadAt=Math.max(hubState.receiptsReadAt||0,data.hub.receiptsReadAt);if(Number.isFinite(data.hub.suggestionsVersion))hubState.suggestionsVersion=data.hub.suggestionsVersion;if(Number.isFinite(data.hub.suggestionsCheckedAt))hubState.suggestionsCheckedAt=data.hub.suggestionsCheckedAt;if(typeof data.hub.eventAlerts==='boolean')hubState.eventAlerts=data.hub.eventAlerts;localStorage.setItem('rewind-hub-v1',JSON.stringify(hubState));}
   watchlist = data.watchlist || [];
   if (Array.isArray(data.services)) {myServices = data.services;localStorage.setItem('rewind-services-v1',JSON.stringify(myServices));renderServiceSettings();}
   seenSet = new Set(data.seen || []);
@@ -325,7 +325,7 @@ let discoverPage = 1;
 let watchlist = loadWatchlist();
 let hubState;
 try {hubState=JSON.parse(localStorage.getItem('rewind-hub-v1'))||{};}catch{hubState={};}
-for(const key of ['taste','hidden','muted','followed','knownEvents','suggestions','dismissedSuggestions','ignoredTaste','hiddenTheaterFilms','ignoredOwnership'])if(!Array.isArray(hubState[key]))hubState[key]=[];
+for(const key of ['taste','hidden','muted','followed','knownEvents','suggestions','dismissedSuggestions','ignoredTaste','hiddenTheaterFilms','theaterHideRestores','ignoredOwnership','setAsides','feedback','changeReceipts','calendarBaseline'])if(!Array.isArray(hubState[key]))hubState[key]=[];
 
 
 // ---------- storage ----------
@@ -715,7 +715,7 @@ async function renderWatchlist(force = false, reuse = false) {
   document.getElementById('card-check-status').textContent=reuse?'Showing saved availability.':'Checking US providers…';
   const results = (await mapLimited([...watchlist],4,async entry=>{
     let status;
-    const lookupMovie={...entry};
+    const lookupMovie={...entry};const beforeAvailability=entry.availabilityBaseline||(!entry.availabilitySnapshot?.stale?entry.availabilitySnapshot:null);
     try {
       if(reuse&&entry.availabilitySnapshot){
         const cached=entry.availabilitySnapshot;
@@ -725,6 +725,7 @@ async function renderWatchlist(force = false, reuse = false) {
     }
     catch {status={code:'nodata',kind:'unknown',label:'Availability could not be checked',offers:[],stale:true};}
     if(request !== watchlistRequest) return {entry,status,changed:false,prevLabel:entry.lastStatusLabel};
+    if(!reuse&&!status.stale){for(const receipt of CounterModel.changes(beforeAvailability,status,Date.now())){const record={...receipt,movieId:entry.id,title:entry.title,id:[entry.id,receipt.type,receipt.key,status.quoteCheckedAt||status.checkedAt].join(':')};if(!hubState.changeReceipts.some(r=>r.id===record.id))hubState.changeReceipts.push(record);}entry.availabilityBaseline={...status};localStorage.setItem('rewind-hub-v1',JSON.stringify(hubState));}
     const priorIncluded=typeof entry.lastFreshIncluded==='boolean'?entry.lastFreshIncluded:entry.availabilitySnapshot&&!entry.availabilitySnapshot.stale?HubModel.isIncluded(entry.availabilitySnapshot):null;
     Object.assign(entry,{availabilitySnapshot:lookupMovie.availabilitySnapshot,watchmodeCache:lookupMovie.watchmodeCache,storePriceCache:lookupMovie.storePriceCache,detailsSnapshot:lookupMovie.detailsSnapshot,priceHistory:lookupMovie.priceHistory,runtime:lookupMovie.runtime??entry.runtime,director:lookupMovie.director||entry.director,overview:lookupMovie.overview||entry.overview});
     const fingerprint = status.offers?.map(o=>`${o.kind}:${o.provider}:${o.format || ''}:${o.price ?? ''}`).sort().join('|') || status.label;

@@ -903,3 +903,29 @@ main{padding-top:24px}
 .return-stamp{display:inline-block;color:#8b342b;border:2px solid #8b342b;padding:8px 12px;transform:rotate(-3deg);font:700 .8rem monospace;letter-spacing:.08em;margin:4px 0 18px}
 @media(max-width:1100px){#tonight-grid{grid-template-columns:1fr}.tonight-card>img{width:76px}.tonight-card-body .watch-link{display:inline-flex;width:auto;min-height:44px}.tonight-details{margin-top:8px}}
 @media(max-width:600px){.tonight-shelf{padding:14px}.tonight-shelf .count-stamp{display:none}.tonight-card{padding:12px}.tonight-card>img{width:60px}.hub-mode-buttons{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.picker-actions button{flex:1 1 135px;padding:12px}.shelf-tools{flex-wrap:wrap}.shelf-tools label{flex:1}.screening-hide-actions button{flex:1 1 150px}}
+/* The page owns vertical scrolling. Mobile uses a complete week per film. */
+.calendar-scroll{max-height:none;overflow-x:auto;overflow-y:visible}
+#calendar-mobile{display:none}
+.calendar-film-label{background:#fff;min-width:0;align-self:stretch}
+.calendar-film-label .board-label{width:100%;border-right:0;text-align:left}
+.calendar-film-actions{display:flex;flex-wrap:wrap;gap:6px;padding:8px 10px}
+.calendar-film-actions button{min-height:44px;font-size:.62rem;padding:8px 10px;white-space:normal;line-height:1.25;color:var(--ink);background:#f2f4f0;border:1px solid var(--rule)}
+.aside-record{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--rule);font-size:.8rem}
+.aside-record span{flex:1 1 180px}.aside-record button{min-height:44px}
+#picker-feedback{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}#picker-feedback button{min-height:44px}
+#set-aside-duration-label{display:grid;gap:6px;margin:12px 0;color:inherit}
+#change-receipts article{padding:12px 0;border-bottom:1px solid var(--rule)}#change-receipts p{margin:6px 0;font-size:.8rem}
+@media(max-width:700px){
+ #calendar-scroll{display:none!important}#calendar-mobile:not([hidden]){display:grid;gap:12px;background:transparent}
+ .calendar-mobile-card{padding:14px;background:#fff;border:1px solid var(--rule);border-radius:12px;min-width:0;overflow-wrap:anywhere}
+ .calendar-film-head{display:block;text-align:left;width:100%;background:none;color:var(--ink);border:0;padding:0;font-size:1rem;font-weight:650;line-height:1.4;min-height:64px}
+ .calendar-film-head img{float:left;width:42px;height:63px;object-fit:cover;border-radius:4px;margin-right:12px}
+ .calendar-source-note{font-size:.75rem;line-height:1.5;margin:12px 0;color:var(--ink-soft)}
+ .mobile-week-strip{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px;margin:12px 0}
+ .mobile-week-day{text-align:center;padding:8px 1px;border:1px solid var(--rule);border-radius:5px;color:var(--ink-soft);background:#f7f8f5}
+ .mobile-week-day small,.mobile-week-day strong{display:block}.mobile-week-day small{font-size:.57rem}.mobile-week-day strong{font-size:.85rem}
+ .mobile-week-day.listed{background:#216b63;color:#fff;border-color:#216b63}.mobile-week-day.announced-window{background:repeating-linear-gradient(135deg,#765b24,#765b24 6px,#886b30 6px,#886b30 12px);color:#fff}.mobile-week-day.today{outline:2px solid #b28c46;outline-offset:1px}
+ .calendar-mobile-card .calendar-film-actions{padding:4px 0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.calendar-film-actions button:first-child{grid-column:1/-1}
+ .calendar-inline-details{margin-top:12px;border-top:1px solid var(--rule);padding-top:12px}.calendar-inline-details .screening-hero{padding:12px;gap:10px}.calendar-inline-details .screening-hero h3{font-size:1.2rem}.calendar-inline-details .screening-hero img{width:50px}.calendar-inline-details .screening-strip{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));overflow:visible}.calendar-inline-details .screening-date{min-width:0;padding:6px 1px}
+ .board-head{border-radius:12px;margin-bottom:12px}.board-nav{display:flex;gap:6px}.board-nav button{min-height:44px}
+}
