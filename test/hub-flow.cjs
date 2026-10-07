@@ -157,7 +157,7 @@ const wait=()=>new Promise(r=>setTimeout(r,100));
  assert.equal(JSON.parse(w.localStorage.getItem('rewind-hub-v1')).hiddenTheaterFilms.length,0,'Visit hide is not persisted or synced');
  [...w.document.querySelectorAll('#cinema-hidden button')].find(b=>b.textContent.startsWith('RESTORE')).click();assert.equal(w.document.querySelectorAll('#calendar-bars .run-bar.local').length,2);
  openCoyote();[...w.document.querySelectorAll('#event-detail button')].find(b=>b.textContent==='HIDE PERMANENTLY').click();
- const hiddenSaved=JSON.parse(w.localStorage.getItem('rewind-hub-v1')).hiddenTheaterFilms;assert.equal(hiddenSaved.length,1);assert.equal(hiddenSaved[0].id,1204680);
+ w.eval('testState.hub().hiddenTheaterFilms=[]');await w.eval('renderWatchlist(true)');const hiddenSaved=JSON.parse(w.localStorage.getItem('rewind-hub-v1')).hiddenTheaterFilms;assert.equal(hiddenSaved.length,1,'Saving from a stale open tab cannot erase a newer permanent hide');assert.equal(hiddenSaved[0].id,1204680);
  assert.equal(w.eval('collectSyncData().hub.hiddenTheaterFilms.length'),1);w.eval('applySyncData({...collectSyncData(),hub:{...collectSyncData().hub,hiddenTheaterFilms:[]}});testState.changed()');assert.equal(w.document.querySelectorAll('#calendar-bars .run-bar.local').length,0,'An older sync response cannot erase a new local hide');
  cinemaRevision++;w.document.getElementById('cinema-refresh').click();await wait();await wait();assert.equal(w.document.querySelectorAll('#calendar-bars .run-bar.local').length,0,'A fresh listing ID does not defeat permanent movie hiding');
  // A second page load retains permanent hiding, and restore brings the current listings back.

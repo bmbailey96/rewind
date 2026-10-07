@@ -21,3 +21,5 @@ assert.equal(C.mergeHiddenFilms([hide],[],[{key:'title:amelie:2001',at:11}]).len
 assert.equal(C.mergeHiddenFilms([{...hide,createdAt:12}],[],[{key:'title:amelie:2001',at:11}]).length,1,'A later hide wins over a restore');
 const seed={id:2,title:'Seed',rating:5,meta:{credits:{crew:[{job:'Director',name:'Test Person'}]}}},candidate={id:3,title:'Film',meta:seed.meta};assert.ok(H.affinity(candidate,[seed]).score>0);assert.equal(H.affinity(candidate,[seed],[{id:3,kind:'weak',seedId:2}]).score,0);assert.ok(H.affinity({...candidate,id:4},[seed],[{id:3,kind:'weak',seedId:2}]).score>0);
 console.log('Counter: scoped/expiring deferrals, comparable fresh prices, receipts, late art identity, sync restore ordering and exact feedback passed');
+
+assert.equal(C.mergeHiddenFilms([hide],[{...hide,id:194,listingId:'new'}],[{...hide,key:'title:amelie:2001',at:11}]).length,0,'Restoring a title identity also clears its later resolved ID');

@@ -1,4 +1,5 @@
 (function(root,factory){if(typeof module==='object'&&module.exports)module.exports=factory(require('./release-model'));else root.CounterModel=factory(root.ReleaseModel);})(typeof globalThis!=='undefined'?globalThis:this,function(Release){
+ const norm=s=>String(s||'').normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]/g,'');
  function quote(o){return o&&o.kind==='rent'&&typeof o.price==='number'&&Number.isFinite(o.price)&&o.price>=0;}
  function createAside(movie,mode,at,offer,budget,scope='all'){
   const record={id:movie.id,title:movie.title,mode,at,scope};
@@ -17,7 +18,7 @@
  }
  function setAside(movie,status,records,context,at,day){return (records||[]).some(r=>r.id===movie.id&&(r.scope!=='oracle'||context==='oracle')&&asideActive(r,status,at,day));}
  function mergeHiddenFilms(local,remote,restores){const records=[];for(const item of [...(local||[]),...(remote||[])]){if(!item||typeof item.title!=='string')continue;const key=item.id?'tmdb:'+item.id:'title:'+item.title.normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]/g,'')+':'+(item.year||'');const prior=records.find(r=>r.key===key);if(!prior)records.push({...item,key});else if((item.createdAt||0)>(prior.createdAt||0))Object.assign(prior,item);}
-  return records.filter(item=>!(restores||[]).some(r=>(r.key===item.key||r.listingId&&r.listingId===item.listingId)&&r.at>=(item.createdAt||0)));
+  return records.filter(item=>!(restores||[]).some(r=>(r.key===item.key||r.listingId&&r.listingId===item.listingId||(r.id&&item.id?Number(r.id)===Number(item.id):r.title&&norm(r.title)===norm(item.title)&&(!r.year||!item.year||r.year===item.year)))&&r.at>=(item.createdAt||0)));
  }
  function changes(before,after,at){
   if(!before||before.stale||!after||after.stale)return [];
