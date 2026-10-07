@@ -18,10 +18,10 @@
 <header class="counter">
   <div class="counter-inner">
     <h1 class="shop-name">REWIND</h1>
-    <p class="shop-tag">your films &middot; your screenings &middot; your next good idea</p>
+    <p class="shop-tag">you came in for one film.</p>
   </div>
-  <nav class="tabs">
-    <button class="tab-btn active" data-tab="watchlist">WATCHLIST</button>
+  <nav class="tabs" aria-label="Main navigation">
+    <button class="tab-btn active" data-tab="watchlist" aria-current="page">WATCHLIST</button>
     <button class="tab-btn" data-tab="discover">FIND A FILM</button>
     <button class="tab-btn" data-tab="upcoming">COMING UP</button>
     <button class="tab-btn" data-tab="import">SETTINGS</button>
@@ -35,7 +35,7 @@
       <h2>Watchlist</h2>
       <span class="count-stamp" id="watchlist-count">0 titles</span>
     </div>
-    <div class="counter-welcome"><div><p class="welcome-kicker">WHAT TO WATCH</p><p>Your films, with the legwork done.</p></div><button id="choose-tonight">HELP ME CHOOSE</button></div>
+    <div class="counter-welcome"><div><p class="welcome-kicker">WHAT TO WATCH</p><p>You picked the films. We’ll check the counter.</p></div><button id="choose-tonight">HELP ME CHOOSE</button></div>
     <details id="card-options" class="screen-options"><summary id="card-options-label">Filter, sort & refresh</summary><div class="options-body">
     <div class="card-toolbar"><button id="refresh-card-btn" class="secondary">CHECK AVAILABILITY</button><span id="card-check-status" role="status"></span></div>
     <div class="cost-filters" aria-label="Filter your card by cost"><button data-cost-filter="all" aria-pressed="true">ALL</button><button data-cost-filter="free" aria-pressed="false">INCLUDED / FREE</button><button data-cost-filter="cheap" aria-pressed="false">AT MY PRICE</button><button data-cost-filter="premium" aria-pressed="false">OVER MY PRICE</button><button data-cost-filter="waiting" aria-pressed="false">WAITING</button></div>
@@ -44,19 +44,19 @@
       <label for="rental-budget">My usual rental limit ($)</label><input id="rental-budget" type="number" min="0" max="100" step="0.01" value="7.99"><p class="offer-note">Apple TV and Prime Video quotes come first. The headline uses HD or 4K when available; cheaper offers elsewhere stay visible. Your limit groups cards, and does not change existing film alerts.</p>
     </div>
     </div></details>
-    <p id="filter-empty" class="empty-note" hidden>No tracked films in this group.</p>
+    <p id="filter-empty" class="empty-note" hidden>No films in this group. <button id="reset-cost-filter" class="secondary">SHOW ALL FILMS</button></p>
     <p id="card-summary" class="card-summary"></p>
     <section id="watch-now-section" class="shelf-group" hidden><h3>Watch now <span id="watch-now-count"></span></h3><p class="group-note">Included with your services, or free.</p><div id="watch-now-grid" class="card-row wrap"></div></section>
     <section id="paid-section" class="shelf-group" hidden><h3>Rent or buy <span id="paid-count"></span></h3><div id="paid-grid" class="card-row wrap"></div></section>
     <section id="waiting-section" class="shelf-group" hidden><h3>Waiting <span id="waiting-count"></span></h3><p class="group-note">Waiting for an included offer or a confirmed listing.</p><div id="waiting-grid" class="card-row wrap"></div></section>
     <div id="watchlist-grid" hidden></div>
-    <p id="watchlist-empty" class="empty-note" hidden>Track a film from Browse. We’ll keep an eye on it.</p>
+    <p id="watchlist-empty" class="empty-note" hidden>Your watchlist is empty. Browse for a film worth waiting for.</p>
   </section>
 
   <section id="tab-discover" class="tab-panel">
     <div class="panel-head">
       <h2>Find a Film</h2>
-      <span class="count-stamp">US theatrical releases</span>
+      <span class="count-stamp">Recent theatrical releases</span>
     </div>
     <div class="hub-mode-buttons" aria-label="Find a film"><button data-find-mode="roulette" aria-pressed="false">FROM MY WATCHLIST</button><button data-find-mode="oracle" aria-pressed="false">ORACLE</button><button data-find-mode="shelf" aria-pressed="true">BROWSE</button></div>
     <section id="hub-picker" hidden><h3 id="picker-heading"></h3><p id="picker-intro"></p><details id="picker-priorities" class="inline-options"><summary>Pick preferences</summary><label>Selection<select id="picker-order"><option value="smart">Pins & new arrivals first</option><option value="shuffle">Pure shuffle</option></select></label></details><div class="picker-controls"><label>Watch from<select id="picker-cost"><option value="budget">Included or up to my rental limit</option><option value="included">Included / free only</option><option value="any">Any price, including theaters</option><option value="physical">My physical shelf only</option></select></label></div><div class="picker-actions"><button id="pick-film">PICK A FILM</button><button id="pick-again" class="secondary" hidden>PICK ANOTHER</button><details id="picker-more" class="inline-options" hidden><summary>This pick</summary><div class="options-body"><button id="banish-pick" class="secondary" hidden>SET ASIDE FOR THIS VISIT</button><button id="undo-banish" class="secondary" hidden>ALLOW LAST FILM AGAIN</button></div></details></div><p id="picker-status" role="status"></p><div id="picker-results" class="card-row wrap"></div></section>
@@ -75,23 +75,23 @@
     <div id="browse-dismiss-bar" class="browse-dismiss-bar"><button id="browse-dismiss" class="secondary" disabled>PASS OVER THESE FILMS</button><span id="browse-dismiss-note">Hidden from Browse until restored. Added films stay.</span></div>
   </section>
 
-  <section id="tab-upcoming" class="tab-panel"><div class="panel-head"><h2>Coming Up</h2><span class="count-stamp">LOCAL SCREENINGS & RELEASES</span></div><p class="hub-lead">At the theater. On your services. Next on your calendar.</p><details id="calendar-options" class="screen-options"><summary id="calendar-options-label">Filter & view options</summary><div class="options-body"><div class="calendar-controls"><div class="segmented"><button id="calendar-view" aria-pressed="true">CALENDAR</button><button id="calendar-list" aria-pressed="false">LIST</button></div><label>Show<select id="calendar-scope"><option value="all">EVERYTHING</option><option value="local">KALISPELL SCREENINGS</option><option value="events">FATHOM & ANNIVERSARIES</option><option value="tracked">MY TRACKED FILMS & FAVORITES</option><option value="streaming">STREAMING / DIGITAL</option><option value="recommended">FOR YOU</option></select></label><label>Find<input id="calendar-search" type="search" placeholder="Search the board"></label><button id="cinema-refresh" class="secondary">UPDATE CALENDAR</button></div><div class="calendar-legend"><span class="legend-local">● LOCAL SCREENING</span><span class="legend-event">● NATIONAL EVENT</span><span class="legend-stream">● STREAMING / DIGITAL</span><span>Striped bars = an announced window, not daily screenings</span></div></div></details><p id="suggestion-status" class="offer-note" role="status"></p><p id="cinema-status" class="offer-note" role="status"></p><div class="cinema-board"><div class="board-head"><div><h3 id="calendar-range"></h3><span id="calendar-count"></span></div><div class="board-nav"><button id="calendar-prev" aria-label="Previous week">←</button><button id="calendar-today">TODAY</button><button id="calendar-next" aria-label="Next week">→</button></div></div><div id="calendar-scroll" class="calendar-scroll"><div id="calendar-bars"></div></div><div id="calendar-listings" hidden></div></div><div id="event-detail" class="event-detail" hidden></div><details class="maintenance-controls"><summary>Hidden screenings & quiet films</summary><div id="cinema-hidden"></div></details><p class="offer-note">Kalispell screenings use listed dates and times in Mountain Time. “Last listed” is not a confirmed closing date. National Fathom dates do not confirm participation here.</p><div class="source-links"><a href="https://www.cinemark.com/theatres/mt-kalispell/cinemark-signature-stadium-kalispell-14" target="_blank" rel="noopener">CINEMARK KALISPELL</a><a href="https://www.fathomentertainment.com/releases/" target="_blank" rel="noopener">FATHOM CALENDAR</a></div></section>
+  <section id="tab-upcoming" class="tab-panel"><div class="panel-head"><h2>Coming Up</h2><span class="count-stamp">LOCAL SCREENINGS & RELEASES</span></div><p class="hub-lead">At the theater. On your services. Next on your calendar.</p><details id="calendar-options" class="screen-options"><summary id="calendar-options-label">Filter & view options</summary><div class="options-body"><div class="calendar-controls"><div class="segmented"><button id="calendar-view" aria-pressed="true">CALENDAR</button><button id="calendar-list" aria-pressed="false">LIST</button></div><label>Show<select id="calendar-scope"><option value="all">EVERYTHING</option><option value="local">KALISPELL SCREENINGS</option><option value="events">FATHOM & ANNIVERSARIES</option><option value="tracked">MY WATCHLIST & FAVORITES</option><option value="streaming">STREAMING / DIGITAL</option><option value="recommended">FOR YOU</option></select></label><label>Find<input id="calendar-search" type="search" placeholder="Search the board"></label><button id="cinema-refresh" class="secondary">UPDATE CALENDAR</button></div><div class="calendar-legend"><span class="legend-local">● LOCAL SCREENING</span><span class="legend-event">● NATIONAL EVENT</span><span class="legend-stream">● STREAMING / DIGITAL</span><span>Striped bars = an announced window, not daily screenings</span></div></div></details><p id="suggestion-status" class="offer-note" role="status"></p><p id="cinema-status" class="offer-note" role="status"></p><div class="cinema-board"><div class="board-head"><div><h3 id="calendar-range"></h3><span id="calendar-count"></span></div><div class="board-nav"><button id="calendar-prev" aria-label="Previous week">←</button><button id="calendar-today">TODAY</button><button id="calendar-next" aria-label="Next week">→</button></div></div><div id="calendar-scroll" class="calendar-scroll" tabindex="0" role="region" aria-label="Seven-day screening board. Scroll horizontally for dates."><div id="calendar-bars"></div></div><div id="calendar-listings" hidden></div></div><div id="event-detail" class="event-detail" hidden></div><details class="maintenance-controls"><summary>Hidden screenings & quiet films</summary><div id="cinema-hidden"></div></details><p class="offer-note">Kalispell screenings use listed dates and times in Mountain Time. “Last listed” is not a confirmed closing date. National Fathom dates do not confirm participation here.</p><div class="source-links"><a href="https://www.cinemark.com/theatres/mt-kalispell/cinemark-signature-stadium-kalispell-14" target="_blank" rel="noopener">CINEMARK KALISPELL</a><a href="https://www.fathomentertainment.com/releases/" target="_blank" rel="noopener">FATHOM CALENDAR</a></div></section>
 
   <section id="tab-import" class="tab-panel">
     <div class="panel-head">
       <h2>Settings</h2>
     </div>
-    <div class="import-block"><h3>Email alerts</h3><p class="import-note">Daily checks for the films on your card. Each film has its own alert choice.</p><button id="email-enable-btn">ENABLE EMAILS</button><button id="email-disable-btn" class="secondary">PAUSE EMAILS</button><p id="email-alert-status" class="import-status">Connect GitHub below to sync this card for email alerts.</p><label class="event-email-choice"><input id="event-email-alerts" type="checkbox"> Include Fathom events and local screening updates for tracked films, imported favorites, and followed events</label><p class="offer-note">Event emails follow the same enabled / paused setting above. National announcements are labeled separately from local bookings.</p><p id="price-alert-status" class="import-note"></p></div>
+    <div class="import-block"><h3>Email alerts</h3><p class="import-note">A short daily digest of changes to your watchlist. Five films at most, with quoted prices when available.</p><button id="email-enable-btn">ENABLE EMAILS</button><button id="email-disable-btn" class="secondary">PAUSE EMAILS</button><p id="email-alert-status" class="import-status">Connect GitHub below to sync this card for email alerts.</p><label class="event-email-choice"><input id="event-email-alerts" type="checkbox"> Include Fathom events and local screening updates for tracked films, imported favorites, and followed events</label><p class="offer-note">Event emails follow the same enabled / paused setting above. National announcements are labeled separately from local bookings.</p><p id="price-alert-status" class="import-note"></p></div>
     <div class="import-block">
       <h3>Already Seen</h3>
       <p class="import-note">Upload <code>watched.csv</code> from your Letterboxd export. Browse will stop showing you anything already on this list.</p>
-      <input type="file" id="import-watched" accept=".csv">
+      <input type="file" aria-label="Import watched films" id="import-watched" accept=".csv">
       <p id="watched-status" class="import-status"></p>
     </div>
     <div class="import-block">
       <h3>Existing Watchlist</h3>
-      <p class="import-note">Upload <code>watchlist.csv</code>. Every title, including older films, gets matched against TMDB and dropped onto your watchlist. Takes a minute for a few hundred titles, don't close the tab.</p>
-      <input type="file" id="import-watchlist" accept=".csv">
+      <p class="import-note">Upload <code>watchlist.csv</code>. Every title, including older films, gets matched against TMDB and added to your watchlist. Takes a minute for a few hundred titles, don't close the tab.</p>
+      <input type="file" aria-label="Import watchlist" id="import-watchlist" accept=".csv">
       <p id="watchlist-import-status" class="import-status"></p>
     </div>
 
@@ -102,8 +102,8 @@
     </div>
     <div class="import-block">
       <h3>Live rental and purchase prices</h3>
-      <p class="import-note">JustWatch supplies the service listings, but not dollar amounts. Connect a <a href="https://api.watchmode.com/requestApiKey" target="_blank" rel="noopener">Watchmode key</a> to show quoted US prices and formats. Quotes show the store and format. Price history starts with your first successful check.</p>
-      <input type="password" id="watchmode-key-input" class="text-input" placeholder="Watchmode API key">
+      <p class="import-note">US store prices are checked automatically through JustWatch. For another price source, connect a <a href="https://api.watchmode.com/requestApiKey" target="_blank" rel="noopener">Watchmode key</a> to add Watchmode quotes. Prices include store, format and check time. An unmatched film stays unpriced.</p>
+      <input type="password" id="watchmode-key-input" class="text-input" aria-label="Optional Watchmode API key" placeholder="Optional Watchmode API key" autocomplete="off">
       <div class="sync-actions">
         <button id="watchmode-save-btn">SAVE KEY</button>
       </div>
@@ -113,15 +113,15 @@
     <div class="import-block">
       <h3>Sync Across Devices</h3>
       <p class="import-note">Keeps your watchlist, seen list, and skip list in sync everywhere you open this site, using a private GitHub Gist. Make a token at <code>github.com/settings/tokens</code> (classic token, only needs the "gist" scope), paste it below once per device. Connecting will pull whatever's already synced and apply it here, so do this on the device with your existing data first.</p>
-      <input type="password" id="gh-token-input" class="text-input" placeholder="GitHub token (ghp_...)">
+      <input type="password" id="gh-token-input" class="text-input" aria-label="GitHub sync token" placeholder="GitHub token (ghp_...)" autocomplete="off">
       <div class="sync-actions">
         <button id="gh-connect-btn">CONNECT &amp; PULL</button>
         <button id="gh-sync-now-btn" class="secondary">PUSH NOW</button>
       </div>
       <p id="sync-status" class="import-status"></p>
     </div>
-    <div class="import-block"><h3>Your taste</h3><p class="import-note">Import Letterboxd ratings.csv, diary.csv, or a favorites / owned-films list.csv. Ratings of 4 stars or higher, explicit favorites, ownership, and repeat watches guide recommendations. Watchlist additions never become taste evidence. A physical-shelf CSV can use Name or Title, Year or Release Year, and Format or Media Type. Copies appear as Your shelf; the shelf-only picker also allows labeled rewatches.</p><label>Import as<select id="taste-import-kind"><option value="profile">RATINGS + DIARY PROFILE</option><option value="ratings">RATINGS</option><option value="diary">DIARY / REWATCHES</option><option value="favorites">FAVORITES</option><option value="owned">PHYSICAL SHELF · DVD / BLU-RAY / VHS</option></select></label><input id="import-taste" type="file" accept=".csv"><p id="taste-status" role="status"></p><details><summary>Manage taste records</summary><div id="taste-records"></div></details></div><div class="import-block"><h3>The other counters</h3><p class="import-note">Original project source repositories. Your film hub is here.</p><div id="legacy-links"></div><p class="import-note">Browser data is separate between sites. Import your old lists here; nothing is silently removed from the originals.</p></div>
-    <details class="maintenance-controls"><summary>Card maintenance</summary><p id="dismissed-count"></p><button id="restore-dismissed" class="secondary" hidden>RESTORE PASSED-OVER FILMS</button><p>Remove tracked films released more than a year ago. Nothing is cleared automatically.</p><button id="prune-btn" class="secondary">CLEAR OLDER FILMS</button></details>
+    <div class="import-block"><h3>Your taste</h3><p class="import-note">Import Letterboxd ratings.csv, diary.csv, or a favorites / owned-films list.csv. Ratings of 4 stars or higher, explicit favorites, ownership, and repeat watches guide recommendations. Watchlist additions never become taste evidence. A physical-shelf CSV can use Name or Title, Year or Release Year, and Format or Media Type. Copies appear as Your shelf; the shelf-only picker also allows labeled rewatches.</p><label>Import as<select id="taste-import-kind"><option value="profile">RATINGS + DIARY PROFILE</option><option value="ratings">RATINGS</option><option value="diary">DIARY / REWATCHES</option><option value="favorites">FAVORITES</option><option value="owned">PHYSICAL SHELF · DVD / BLU-RAY / VHS</option></select></label><input aria-label="Import taste or physical shelf records" id="import-taste" type="file" accept=".csv"><p id="taste-status" role="status"></p><details><summary>Manage taste records</summary><div id="taste-records"></div></details></div><div class="import-block"><h3>The other counters</h3><p class="import-note">Original project source repositories. Your film hub is here.</p><div id="legacy-links"></div><p class="import-note">Browser data is separate between sites. Import your old lists here; nothing is silently removed from the originals.</p></div>
+    <details class="maintenance-controls"><summary>Watchlist maintenance</summary><p id="dismissed-count"></p><button id="restore-dismissed" class="secondary" hidden>RESTORE PASSED-OVER FILMS</button><p>Remove watchlist films released more than a year ago. Nothing is cleared automatically.</p><button id="prune-btn" class="secondary">CLEAR OLDER FILMS</button></details>
   </section>
 
 </main>
@@ -129,7 +129,7 @@
 <dialog id="watched-dialog"><h2>Seen it.</h2><p id="watched-film-name"></p><p>Want to leave a rating on Letterboxd?</p><div class="card-actions"><a id="watched-letterboxd" class="watch-link" target="_blank" rel="noopener">OPEN LETTERBOXD</a><button id="watched-undo" class="secondary">UNDO WATCHED</button><button id="watched-close" class="secondary">DONE</button></div><p class="offer-note">Rewind records this locally. You choose whether to log or rate it on Letterboxd.</p></dialog>
 <div id="toast" class="toast" role="status" hidden></div>
 
-<footer class="site-footer">US streaming availability powered by JustWatch. Film details from TMDB. Announcements and estimates have their sources inside each card.</footer>
+<footer class="site-footer">Film details: TMDB. US offers and prices: JustWatch. Sources and check times live inside each film.</footer>
 <script src="rewind-model.js"></script>
 <script src="release-model.js"></script>
 <script src="availability-ui.js"></script>

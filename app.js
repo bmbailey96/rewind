@@ -80,7 +80,7 @@ document.getElementById('import-watched').addEventListener('change', async (e) =
     added++;
   });
   saveSeenSet();
-  document.getElementById('watched-status').textContent = `Loaded ${added} seen titles. Films You Missed will filter them out from now on.`;
+  document.getElementById('watched-status').textContent = `Loaded ${added} seen titles. Browse will keep them off the shelf.`;
   scheduleSync();
   renderDiscover();
 });
@@ -132,7 +132,7 @@ document.getElementById('import-watchlist').addEventListener('change', async (e)
     await new Promise(res => setTimeout(res, 120));
   }
   saveWatchlist();
-  statusEl.textContent = `Done. ${matched} added to Your Card, ${skipped} skipped (already tracked, ambiguous, or unmatched).`;
+  statusEl.textContent = `Done. ${matched} added to your watchlist, ${skipped} skipped (already tracked, ambiguous, or unmatched).`;
   scheduleSync();
   renderWatchlist();
 });
@@ -449,8 +449,17 @@ async function checkWatchmodeCached(movie, force = false) {
   movie.watchmodeCache = found;
   return found;
 }
+async function checkStorePricesCached(movie,force=false){
+  const cache=movie.storePriceCache;
+  if(!force&&cache&&Array.isArray(cache.offers)&&Date.now()-cache.checkedAt<6*3600000)return cache;
+  const res=await fetch('https://transmissionalbum.netlify.app/.netlify/functions/rewind-prices?id='+movie.id,{signal:AbortSignal.timeout(15000)});
+  if(!res.ok)throw Error('US store prices unavailable. No dollar amount assumed.');
+  const result=await res.json();
+  if(result.id!==movie.id||!Array.isArray(result.offers)||!Number.isFinite(result.checkedAt))throw Error('Invalid store price response.');
+  movie.storePriceCache=result;return result;
+}
 async function deriveRemoteStatus(movie, force = false) {
-  const results = await Promise.allSettled([fetchWatchProviders(movie.id),fetchMovieDetails(movie.id,force),fetchAnnouncements(),fetchStreamingCalendar()]);
+  const results = await Promise.allSettled([fetchWatchProviders(movie.id),fetchMovieDetails(movie.id,force),fetchAnnouncements(),fetchStreamingCalendar(),checkStorePricesCached(movie,force)]);
   const p = results[0];const d = results[1];
   const fullDetails=d.status==='fulfilled'?d.value:null;
   const details=fullDetails?{id:fullDetails.id,runtime:fullDetails.runtime,release_dates:fullDetails.release_dates}:movie.detailsSnapshot;
@@ -467,7 +476,11 @@ async function deriveRemoteStatus(movie, force = false) {
     try {quote = await checkWatchmodeCached(movie,force);}
     catch (err) {priceWarning = err.message;}
   }
-  const offers = RewindModel.mergeOffers(RewindModel.normalizeTMDB(providers,myServices),RewindModel.normalizeWatchmode(quote?.sources,myServices));
+  const storeQuotes=results[4].status==='fulfilled'?results[4].value:null;
+  if(results[4].status==='rejected')priceWarning=[priceWarning,'US store prices could not refresh.'].filter(Boolean).join(' ');
+  const storeOffers=(storeQuotes?.offers||[]).filter(o=>o.region==='US'&&['rent','buy'].includes(o.kind)&&typeof o.price==='number'&&Number.isFinite(o.price)&&o.price>=0&&RewindModel.safeLink(o.link));
+  const watchmodeOffers=RewindModel.normalizeWatchmode(quote?.sources,myServices);
+  const offers = RewindModel.mergeOffers(RewindModel.mergeOffers(RewindModel.normalizeTMDB(providers,myServices),storeOffers),watchmodeOffers);
   const today = discoveryWindow().today;
   const futureDigital = releaseDates.filter(r=>r.type===4 && r.release_date.slice(0,10)>today).sort((a,b)=>a.release_date.localeCompare(b.release_date))[0];
   const pastDigital = releaseDates.filter(r=>r.type===4 && r.release_date.slice(0,10)<=today).sort((a,b)=>b.release_date.localeCompare(a.release_date))[0];
@@ -477,8 +490,9 @@ async function deriveRemoteStatus(movie, force = false) {
   if (!best && futureTheater) best = {code:'notyet',kind:'theaters',label:'US theatrical release '+formatFilmDate(futureTheater.release_date),date:futureTheater.release_date};
   if (!best && pastDigital) best = {code:'nodata',kind:'unverified',label:'Digital date passed · no current provider listing'};
   if (!best) best = {code:'nodata',kind:'unknown',label:'No US streaming offer listed'};
-  movie.priceHistory=ReleaseModel.recordQuotes(movie.priceHistory,offers,quote?.checkedAt);
-  const result = {...best,...timeline,calendarWarning:results[3].status==='rejected'?'Upcoming calendar unavailable. Showing the verified announcement feed.':'',announcementUnavailable:results[2].status==='rejected',offers,link:RewindModel.safeLink(providers.link),checkedAt:Date.now(),quoteCheckedAt:quote?.checkedAt || null,priceWarning,datesUnavailable:d.status==='rejected',digitalDate:futureDigital?.release_date || null};
+  movie.priceHistory=ReleaseModel.recordQuotes(movie.priceHistory,storeOffers,storeQuotes?.checkedAt);
+  movie.priceHistory=ReleaseModel.recordQuotes(movie.priceHistory,watchmodeOffers,quote?.checkedAt);
+  const result = {...best,...timeline,calendarWarning:results[3].status==='rejected'?'Upcoming calendar unavailable. Showing the verified announcement feed.':'',announcementUnavailable:results[2].status==='rejected',offers,link:RewindModel.safeLink(providers.link),checkedAt:Date.now(),quoteCheckedAt:[storeQuotes?.checkedAt,quote?.checkedAt].filter(Number.isFinite).sort((a,b)=>a-b)[0]||null,priceSources:[...(storeQuotes?['JustWatch US prices']:[]),...(quote?['Watchmode']:[])],priceWarning,datesUnavailable:d.status==='rejected',digitalDate:futureDigital?.release_date || null};
   movie.availabilitySnapshot = result;
   return result;
 }
@@ -490,7 +504,7 @@ function renderServiceSettings() {
   const root=document.getElementById('service-settings');root.innerHTML='';
   RewindModel.SERVICE_CHOICES.forEach(name=>{
     const label=document.createElement('label');const checkbox=document.createElement('input');checkbox.type='checkbox';checkbox.checked=myServices.includes(name);
-    checkbox.onchange=()=>{myServices=checkbox.checked?[...myServices,name]:myServices.filter(s=>s!==name);localStorage.setItem('rewind-services-v1',JSON.stringify(myServices));scheduleSync();renderWatchlist();};
+    checkbox.onchange=()=>{myServices=checkbox.checked?[...myServices,name]:myServices.filter(s=>s!==name);localStorage.setItem('rewind-services-v1',JSON.stringify(myServices));scheduleSync();renderWatchlist(false,true);};
     label.append(checkbox,document.createTextNode(' '+name));root.appendChild(label);
   });
 }
@@ -509,7 +523,7 @@ function stampRotation(seed) {
 function renderCard(movie, opts = {}) {
   const {context='discover',status=null,changed=false}=opts;
   const card=document.createElement('article');card.className='rental-card';card.dataset.movieId=movie.id;
-  const poster=document.createElement('img');poster.className='card-poster';poster.loading='lazy';poster.src=posterUrl(movie.poster_path);poster.alt=movie.title+' poster';card.appendChild(poster);
+  const image=posterUrl(movie.poster_path);const poster=document.createElement(image?'img':'div');poster.className='card-poster'+(image?'':' poster-missing');if(image){poster.loading='lazy';poster.src=image;poster.alt=movie.title+' poster';poster.onerror=()=>{const fallback=document.createElement('div');fallback.className='card-poster poster-missing';fallback.textContent='NO POSTER ON FILE';poster.replaceWith(fallback);};}else{poster.textContent='NO POSTER ON FILE';}card.appendChild(poster);
   const title=document.createElement('h3');title.className='card-title';title.textContent=movie.title;card.appendChild(title);
   const meta=document.createElement('p');meta.className='card-meta';meta.textContent=[(movie.release_date||'').slice(0,4),movie.director].filter(Boolean).join(' · ');card.appendChild(meta);
   if(movie.pinned){const pinned=document.createElement('span');pinned.className='new-tag';pinned.textContent='PINNED';card.appendChild(pinned);}
@@ -558,14 +572,14 @@ function renderAlertPreference(movie){
   for(const [value,label] of [['mine','Included with my services or free'],['any','Any availability or release news'],['rental','Rental at my price']]){const option=document.createElement('option');option.value=value;option.textContent=label;select.appendChild(option);}
   const pref=ReleaseModel.preference(movie.alert);select.value=pref.mode;wrap.appendChild(select);
   const priceLabel=document.createElement('label');priceLabel.textContent='Maximum rental price ($)';priceLabel.hidden=pref.mode!=='rental';const amount=document.createElement('input');amount.type='number';amount.min='0';amount.max='100';amount.step='0.01';amount.value=pref.maxPrice;amount.setAttribute('aria-label','Maximum rental price for '+movie.title);priceLabel.appendChild(amount);wrap.appendChild(priceLabel);
-  const note=document.createElement('p');note.className='offer-note';note.textContent=pref.mode==='rental'?'Price emails require a connected price source. Quotes include their format.':'Announcements and actual availability both count. Estimates never trigger emails.';wrap.appendChild(note);
-  const save=()=>{movie.alert=ReleaseModel.preference({mode:select.value,maxPrice:amount.value===''?pref.maxPrice:Number(amount.value)});saveWatchlist();scheduleSync();priceLabel.hidden=select.value!=='rental';note.textContent=select.value==='rental'?'Price emails require a connected price source. Quotes include their format.':'Announcements and actual availability both count. Estimates never trigger emails.';};
+  const note=document.createElement('p');note.className='offer-note';note.textContent=pref.mode==='rental'?'Daily US store quotes include price and format. An unmatched or failed quote never counts as a price drop.':'Announcements and actual availability both count. Estimates never trigger emails.';wrap.appendChild(note);
+  const save=()=>{movie.alert=ReleaseModel.preference({mode:select.value,maxPrice:amount.value===''?pref.maxPrice:Number(amount.value)});saveWatchlist();scheduleSync();priceLabel.hidden=select.value!=='rental';note.textContent=select.value==='rental'?'Daily US store quotes include price and format. An unmatched or failed quote never counts as a price drop.':'Announcements and actual availability both count. Estimates never trigger emails.';};
   select.onchange=save;amount.onchange=save;return wrap;
 }
 function markMovieWatched(movie){
   const key=seenKey(movie.title,(movie.release_date||'').slice(0,4)),already=seenSet.has(key),entry=watchlist.find(m=>m.id===movie.id);
   seenSet.add(key);saveSeenSet();watchlist=watchlist.filter(m=>m.id!==movie.id);saveWatchlist();scheduleSync();renderWatchlist();renderDiscoverCached();
-  const undo=()=>{if(!already)seenSet.delete(key);saveSeenSet();if(entry&&!watchlist.some(m=>m.id===entry.id))watchlist.push(entry);saveWatchlist();scheduleSync();renderWatchlist();};
+  let restored=false;const undo=()=>{if(restored)return;restored=true;if(!already)seenSet.delete(key);saveSeenSet();if(entry&&!watchlist.some(m=>m.id===entry.id))watchlist.push(entry);saveWatchlist();scheduleSync();renderWatchlist();};
   showToast(movie.title+' marked watched',undo);if(typeof Hub!=='undefined')Hub.watched(movie,undo);
 }
 
@@ -578,7 +592,7 @@ function addToWatchlist(movie) {
     title: movie.title,
     poster_path: movie.poster_path,
     overview:movie.overview || '',runtime:movie.runtime || null,director:movie.director || '',usReleaseDate:movie.usReleaseDate || null,
-    availabilitySnapshot:movie.availabilitySnapshot || null,watchmodeCache:movie.watchmodeCache || null,
+    availabilitySnapshot:movie.availabilitySnapshot || null,watchmodeCache:movie.watchmodeCache || null,storePriceCache:movie.storePriceCache||null,
     release_date: movie.release_date || movie.primary_release_date || '',
     genre_ids: movie.genre_ids || [],letterboxdURL:movie.letterboxdURL||null,tags:movie.tags||[],tones:movie.tones||null,tagline:movie.tagline||'',
     addedAt: Date.now(),
@@ -589,9 +603,9 @@ function addToWatchlist(movie) {
     manualNote: '',alert:{mode:'mine',maxPrice:7.99},priceHistory:movie.priceHistory || [],
   });
   saveWatchlist();
-  showToast(movie.title + ' added to your card');
+  showToast(movie.title + ' added to your watchlist');
   scheduleSync();
-  // Keep tracked films off the shelf; search still shows their tracked state.
+  // Keep watchlist films off the shelf; search still shows their tracked state.
   lastDiscoverResults = lastDiscoverResults.filter(m => m.id !== movie.id);
 
 }
@@ -602,14 +616,13 @@ function togglePin(id) {
   entry.pinned = !entry.pinned;
   saveWatchlist();
   scheduleSync();
-  renderWatchlist();
+  renderWatchlist(false,true);
 }
 
 function removeFromWatchlist(id) {
-  watchlist = watchlist.filter(w => w.id !== id);
-  saveWatchlist();
-  scheduleSync();
-  renderWatchlist();
+  const entry=watchlist.find(w=>w.id===id);if(!entry)return;
+  watchlist=watchlist.filter(w=>w.id!==id);saveWatchlist();scheduleSync();renderWatchlist(false,true);
+  showToast(entry.title+' removed from your watchlist',()=>{if(!watchlist.some(w=>w.id===id))watchlist.push(entry);saveWatchlist();scheduleSync();renderWatchlist(false,true);});
 }
 
 // ---------- render: watchlist ----------
@@ -672,7 +685,7 @@ const previousVisit=Number(localStorage.getItem('rewind-last-visit-v1'))||Date.n
 localStorage.setItem('rewind-last-visit-v1',String(Date.now()));
 let watchlistRequest = 0;
 
-async function renderWatchlist(force = false) {
+async function renderWatchlist(force = false, reuse = false) {
   const request = ++watchlistRequest;
   const empty=document.getElementById('watchlist-empty');
   const grids=['watch-now','paid','waiting'];grids.forEach(id=>{document.getElementById(id+'-grid').replaceChildren();document.getElementById(id+'-section').hidden=true;});
@@ -683,11 +696,17 @@ async function renderWatchlist(force = false) {
   const results = (await mapLimited([...watchlist],4,async entry=>{
     let status;
     const lookupMovie={...entry};
-    try {status=await deriveStatus(lookupMovie,force);}
+    try {
+      if(reuse&&entry.availabilitySnapshot){
+        const cached=entry.availabilitySnapshot;
+        const offers=(cached.offers||[]).map(o=>o.kind==='subscription'?{...o,included:RewindModel.included(o.provider,myServices)}:o);
+        status={...cached,...(RewindModel.summary(offers)||{}),offers};lookupMovie.availabilitySnapshot=status;
+      }else status=await deriveStatus(lookupMovie,force);
+    }
     catch {status={code:'nodata',kind:'unknown',label:'Availability could not be checked',offers:[],stale:true};}
     if(request !== watchlistRequest) return {entry,status,changed:false,prevLabel:entry.lastStatusLabel};
     const priorIncluded=typeof entry.lastFreshIncluded==='boolean'?entry.lastFreshIncluded:entry.availabilitySnapshot&&!entry.availabilitySnapshot.stale?HubModel.isIncluded(entry.availabilitySnapshot):null;
-    Object.assign(entry,{availabilitySnapshot:lookupMovie.availabilitySnapshot,watchmodeCache:lookupMovie.watchmodeCache,detailsSnapshot:lookupMovie.detailsSnapshot,priceHistory:lookupMovie.priceHistory,runtime:lookupMovie.runtime??entry.runtime,director:lookupMovie.director||entry.director,overview:lookupMovie.overview||entry.overview});
+    Object.assign(entry,{availabilitySnapshot:lookupMovie.availabilitySnapshot,watchmodeCache:lookupMovie.watchmodeCache,storePriceCache:lookupMovie.storePriceCache,detailsSnapshot:lookupMovie.detailsSnapshot,priceHistory:lookupMovie.priceHistory,runtime:lookupMovie.runtime??entry.runtime,director:lookupMovie.director||entry.director,overview:lookupMovie.overview||entry.overview});
     const fingerprint = status.offers?.map(o=>`${o.kind}:${o.provider}:${o.format || ''}:${o.price ?? ''}`).sort().join('|') || status.label;
     const changed = !status.stale && entry.lastAvailabilityKey != null && entry.lastAvailabilityKey !== fingerprint;
     const prevLabel=entry.lastStatusLabel;
@@ -702,7 +721,7 @@ async function renderWatchlist(force = false) {
     return {entry,status,changed,prevLabel};
   })).filter(r=>watchlist.some(m=>m.id===r.entry.id));
   if (request !== watchlistRequest) return;
-  document.getElementById('card-check-status').textContent='US providers checked '+new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'})+' · '+results.filter(r=>r.status.stale).length+' failed checks';
+  document.getElementById('card-check-status').textContent=reuse?'Showing saved availability. Check availability to refresh.':'US providers checked '+new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'})+(results.some(r=>r.status.stale)?' · '+results.filter(r=>r.status.stale).length+' previous checks':'');
   saveWatchlist();
 
   const sorters={cost:(a,b)=>(ReleaseModel.cost(a.status.offers,rentalBudget).price??Infinity)-(ReleaseModel.cost(b.status.offers,rentalBudget).price??Infinity),changed:(a,b)=>(b.entry.statusChangedAt||0)-(a.entry.statusChangedAt||0),added:(a,b)=>(b.entry.addedAt||0)-(a.entry.addedAt||0),release:(a,b)=>(b.entry.release_date||'').localeCompare(a.entry.release_date||''),az:(a,b)=>a.entry.title.localeCompare(b.entry.title)};
@@ -717,13 +736,14 @@ async function renderWatchlist(force = false) {
   for(const r of display){const group=ReleaseModel.group(r.status);counts[group]++;const id=groups[group];const changed=r.changed||!!r.entry.lastChange&&r.entry.lastChange.at>previousVisit;if(changed)changedCount++;if(group==='paid'&&watchlistSort==='cost'){const c=ReleaseModel.cost(r.status.offers,rentalBudget);const band=c.band;if(band!==lastPaidBand){const divider=document.createElement('h4');divider.className='cost-divider';divider.textContent=band==='cheap'?'AT YOUR PRICE · $'+rentalBudget.toFixed(2)+' OR LESS':band==='premium'?'OVER YOUR PRICE':band==='buy'?'PURCHASE ONLY':'PRICE NOT CHECKED';document.getElementById(id+'-grid').appendChild(divider);lastPaidBand=band;}}document.getElementById(id+'-grid').appendChild(renderCard(r.entry,{context:'watchlist',status:r.status,changed,prevLabel:r.entry.lastChange?.from}));}
   for(const [group,id] of Object.entries(groups)){document.getElementById(id+'-section').hidden=!counts[group];document.getElementById(id+'-count').textContent='('+counts[group]+')';}
   document.getElementById('filter-empty').hidden=display.length>0;
-  document.getElementById('card-summary').textContent=`${counts.now} ready to watch · ${counts.paid} rent or buy · ${counts.waiting} waiting`+(changedCount?` · ${changedCount} changed since your last visit`:'');
+  document.getElementById('card-summary').textContent=changedCount?changedCount+' changed since your last visit':'';
   saveWatchlist();window.dispatchEvent(new Event('rewind:card-rendered'));
 }
 document.getElementById('rental-budget').value=rentalBudget;
-document.getElementById('rental-budget').onchange=e=>{const value=Number(e.target.value);if(e.target.value===''||!Number.isFinite(value)||value<0||value>100)return;rentalBudget=value;localStorage.setItem('rewind-rental-budget-v1',String(value));scheduleSync();renderWatchlist();};
-document.querySelectorAll('[data-cost-filter]').forEach(btn=>btn.onclick=()=>{costFilter=btn.dataset.costFilter;renderWatchlist();});
-document.getElementById('sort-select').addEventListener('change',e=>{watchlistSort=e.target.value;renderWatchlist();});
+document.getElementById('rental-budget').onchange=e=>{const value=Number(e.target.value);if(e.target.value===''||!Number.isFinite(value)||value<0||value>100)return;rentalBudget=value;localStorage.setItem('rewind-rental-budget-v1',String(value));scheduleSync();renderWatchlist(false,true);};
+document.getElementById('reset-cost-filter').onclick=()=>{costFilter='all';renderWatchlist(false,true);};
+document.querySelectorAll('[data-cost-filter]').forEach(btn=>btn.onclick=()=>{costFilter=btn.dataset.costFilter;renderWatchlist(false,true);});
+document.getElementById('sort-select').addEventListener('change',e=>{watchlistSort=e.target.value;renderWatchlist(false,true);});
 
 // ---------- render: discover ----------
 
@@ -731,9 +751,10 @@ let discoverRequest = 0;
 async function renderDiscover(append = false) {
   const request = ++discoverRequest;
   const filter={window:discoveryWindow(),scope:document.getElementById('discover-scope').value,genre:document.getElementById('discover-genre').value,rereleases:document.getElementById('include-rereleases').checked,sort:document.getElementById('discover-sort').value};
-  const statusEl=document.getElementById('discover-status');statusEl.textContent='Finding feature releases…';
+  const statusEl=document.getElementById('discover-status'),loadButton=document.getElementById('discover-more');loadButton.disabled=true;statusEl.textContent='Finding feature releases…';
   const grid = document.getElementById('discover-grid');
-  if (!append) grid.innerHTML = '';
+  grid.setAttribute('aria-busy','true');
+  try{
   // always clear any previous empty-state message before deciding whether to show a new one
   grid.querySelectorAll('.empty-note').forEach(el => el.remove());
 
@@ -762,6 +783,7 @@ async function renderDiscover(append = false) {
   if(append)filtered=filtered.filter(m=>!lastDiscoverResults.some(prior=>prior.id===m.id));
   lastDiscoverResults = append ? lastDiscoverResults.concat(filtered) : filtered;
   statusEl.textContent=`${lastDiscoverResults.length} films · TMDB-listed US theatrical dates · ${filter.scope==='small'?'smaller releases':'recent feature releases'}`;
+  if(!append)grid.replaceChildren();
   filtered.forEach(m => grid.appendChild(renderCard(m, { context: 'discover' })));
 
   const loadMoreBtn = document.getElementById('discover-more');
@@ -778,6 +800,7 @@ async function renderDiscover(append = false) {
       : "No matches on these pages. Load more, change the month, or include smaller releases.";
     grid.appendChild(note);
   }
+  }catch(err){if(request===discoverRequest)statusEl.textContent='Could not load this shelf. Try More films or change a filter.';throw err;}finally{if(request===discoverRequest){grid.setAttribute('aria-busy','false');if(loadButton.textContent!=='NO MORE MATCHES')loadButton.disabled=false;}}
 }
 
 document.getElementById('discover-more').addEventListener('click', async () => {
@@ -787,10 +810,10 @@ document.getElementById('discover-more').addEventListener('click', async () => {
 // ---------- render: search ----------
 
 let searchRequest=0;
-document.getElementById('search-form').addEventListener('submit',async e=>{e.preventDefault();const query=document.getElementById('search-input').value.trim();if(!query)return;const request=++searchRequest;document.getElementById('search-clear-btn').hidden=false;document.getElementById('discover-grid').hidden=true;document.getElementById('discover-more').hidden=true;document.getElementById('discovery-filters').hidden=true;const grid=document.getElementById('search-grid');grid.hidden=false;grid.textContent='Searching…';try{const results=await searchMovies(query);if(request!==searchRequest)return;lastSearchResults=results.filter(m=>!skipSet.has(m.id));grid.replaceChildren();lastSearchResults.forEach(m=>grid.appendChild(renderCard(m,{context:'search',markSeen:true})));document.getElementById('discover-status').textContent=lastSearchResults.length+' catalog matches';}catch{if(request===searchRequest)grid.textContent='Search failed. Try again.';}});
+document.getElementById('search-form').addEventListener('submit',async e=>{e.preventDefault();const query=document.getElementById('search-input').value.trim();if(!query)return;const request=++searchRequest;document.getElementById('search-clear-btn').hidden=false;document.getElementById('discover-grid').hidden=true;document.getElementById('discover-more').hidden=true;document.getElementById('discovery-filters').hidden=true;const grid=document.getElementById('search-grid');grid.hidden=false;grid.textContent='Searching…';try{const results=await searchMovies(query);if(request!==searchRequest)return;lastSearchResults=results.filter(m=>!skipSet.has(m.id));grid.replaceChildren();lastSearchResults.forEach(m=>grid.appendChild(renderCard(m,{context:'search',markSeen:true})));document.getElementById('discover-status').textContent=lastSearchResults.length+' catalog matches';if(!lastSearchResults.length){const note=document.createElement('p');note.className='empty-note';note.textContent='No films found. Try the title without a year or subtitle.';grid.appendChild(note);}}catch{if(request===searchRequest)grid.textContent='Search failed. Try again.';}});
 document.getElementById('search-clear-btn').onclick=()=>{searchRequest++;document.getElementById('search-input').value='';document.getElementById('search-grid').hidden=true;document.getElementById('search-clear-btn').hidden=true;document.getElementById('discovery-filters').hidden=false;document.getElementById('discover-grid').hidden=false;document.getElementById('discover-more').hidden=false;document.getElementById('discover-status').textContent=lastDiscoverResults.length+' recent films';updateBrowseDismissControl();};
-document.getElementById('search-input').addEventListener('focus',e=>e.target.select());
-document.querySelectorAll('.tab-btn').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active',b===btn));document.querySelectorAll('.tab-panel').forEach(p=>p.classList.toggle('active',p.id==='tab-'+btn.dataset.tab));if(btn.dataset.tab==='watchlist')renderWatchlist();}));
+document.getElementById('search-input').addEventListener('search',e=>{if(!e.target.value.trim())document.getElementById('search-clear-btn').click();});
+document.querySelectorAll('.tab-btn').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.tab-btn').forEach(b=>{b.classList.toggle('active',b===btn);if(b===btn)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current');});document.querySelectorAll('.tab-panel').forEach(p=>p.classList.toggle('active',p.id==='tab-'+btn.dataset.tab));if(btn.dataset.tab==='watchlist')renderWatchlist();}));
 
 // ---------- toast ----------
 
@@ -861,7 +884,7 @@ async function emailRequest(method, data) {
 async function syncEmailCard(enabled = emailEnabled) {
   const result = await emailRequest('POST',{enabled,movies:watchlist.map(m=>({id:m.id,title:m.title,alert:ReleaseModel.preference(m.alert)})),services:myServices,eventAlerts:!!hubState.eventAlerts,eventFilms:HubModel.evidence(hubState.taste).slice(0,500).map(m=>({id:m.id,title:m.title})),followedEvents:hubState.followed.slice(0,500)});
   emailEnabled = enabled;
-  document.getElementById('email-alert-status').textContent = enabled ? `Daily email checks enabled for ${result.count} films. Alerts follow each film’s selected preference.` : 'Email alerts paused.';
+  document.getElementById('email-alert-status').textContent = enabled ? `Daily alerts enabled for ${result.count} films. Alerts follow each film’s selected preference.` : 'Email alerts paused.';
 }
 function scheduleEmailSync() {
   if (!emailEnabled) return;
@@ -881,17 +904,17 @@ for (let i=0;i<24;i++) {
 for (const id of ['release-month','discover-sort','discover-scope','discover-genre','include-rereleases']) document.getElementById(id).onchange = () => {discoverPage=1;renderDiscover().catch(err=>showToast(err.message));};
 async function initEmailAlerts() {
   if (!localStorage.getItem(GH_TOKEN_KEY)) {
-    try {const res=await fetch('https://transmissionalbum.netlify.app/.netlify/functions/rewind-status');if(res.ok){const s=await res.json();document.getElementById('price-alert-status').textContent=s.pricesConfigured?'Price emails are connected.':'Price-threshold emails are not connected yet. Local quotes can be enabled below.';document.getElementById('email-alert-status').textContent=`Daily checks ${s.enabled?'active':'paused'} for ${s.tracked} film${s.tracked===1?'':'s'} on the server. Connect GitHub in Settings to sync this card.`;}}catch {}
+    try {const res=await fetch('https://transmissionalbum.netlify.app/.netlify/functions/rewind-status');if(res.ok){const s=await res.json();document.getElementById('price-alert-status').textContent=s.pricesConfigured?'Daily US store price checks are active. Unquoted offers stay unpriced.':'Server price checks are unavailable.';document.getElementById('email-alert-status').textContent=`Daily checks ${s.enabled?'active':'paused'} for ${s.tracked} film${s.tracked===1?'':'s'} on the server. Connect GitHub in Settings to sync this card.`;}}catch {}
     return;
   }
   try {
     const state = await emailRequest('GET');
-    document.getElementById('price-alert-status').textContent=state.pricesConfigured?'Price emails are connected.':'Price-threshold emails need a connected server price source. Local price checks work with your Watchmode key.';
+    document.getElementById('price-alert-status').textContent=state.pricesConfigured?'Daily US store price checks are active. Unquoted offers stay unpriced.':'Server price checks are unavailable.';
     emailEnabled = state.enabled;
-    document.getElementById('email-alert-status').textContent = state.enabled ? `Daily email checks enabled for ${state.movies.length} films.` : 'Email alerts paused. Enable to track Your Card.';
+    document.getElementById('email-alert-status').textContent = state.enabled ? `Daily alerts enabled for ${state.movies.length} films.` : 'Email alerts paused. Enable alerts for your watchlist.';
     // Opening a device must not replace the server's card with stale local data.
   } catch (err) { document.getElementById('email-alert-status').textContent = err.message; }
 }
 renderServiceSettings();
-document.getElementById('refresh-card-btn').onclick=()=>renderWatchlist(true);
+document.getElementById('refresh-card-btn').onclick=async()=>{const btn=document.getElementById('refresh-card-btn');btn.disabled=true;try{await renderWatchlist(true);}catch(err){showToast(err.message);}finally{btn.disabled=false;}};
 init().then(initEmailAlerts);

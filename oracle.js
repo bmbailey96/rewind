@@ -105,7 +105,7 @@
    [/romance|romantic|love affair/, 'Two people. Several avoidable problems.', ['The Oracle has selected a film about the catastrophic administrative consequences of wanting somebody. Very little can be solved by being sensible.', 'Some tenderness, with the usual risk of someone saying the wrong thing at the only moment it mattered.']],
    [/comedy/, 'There is no dignified way through this.', ['A film for watching somebody’s bad idea become everybody’s afternoon. The Oracle respects a disaster that commits to the bit.', 'Tonight’s offering concerns the human animal and its apparently unlimited capacity to make things worse. At least it has the decency to be funny.']],
    [/horror|thriller|mystery/, 'The room is probably fine.', ['A controlled deterioration of the evening. The Oracle recommends a familiar room, a working lamp, and absolutely no investigation of that noise.', 'For the pleasure of feeling something is wrong before anyone can explain what. You can remain on the couch. The people in the film have made other arrangements.']],
-   [/drama/, 'Let somebody else’s life get complicated.', ['A film that gives ordinary human decisions room to become enormous. The Oracle would like you to leave a little space after the credits.', 'People wanting things, saying things, and discovering that neither activity comes with an Undo button. The Oracle has concerns. It is pressing play anyway.']]
+   [/drama/, 'Let somebody else’s life get complicated.', ['A film that gives ordinary human decisions room to become enormous. The Oracle would like you to leave a little space after the credits.', 'People wanting things, saying the wrong things, then having to live in the same room. Let the credits finish.']]
   ];
   const chosen=cases.find(([pattern])=>pattern.test(words)),variant=(Number(movie.id)||0)%2;
   const heading=chosen?chosen[1]:'A door you have not opened.';
@@ -115,7 +115,7 @@
    const affection=c.owned?'You have '+c.seedTitle+' on your shelf.':c.rewatches>1?'You went back to '+c.seedTitle+'.':c.favorite?c.seedTitle+' is one of your saved favorites.':c.rating>=4?'You gave '+c.seedTitle+' '+c.rating+'/5.':'';
    if(c.directors.length)text+=' '+affection+' This comes from '+c.directors.join(' and ')+'. The Oracle is following the person who made the previous mess.';
    else if(c.writers.length)text+=' '+affection+' '+c.writers.join(' and ')+' wrote both. Return to the source of the trouble.';
-   else if(c.keywords.length)text+=' '+affection+' Apparently this particular trouble still has your forwarding address.';
+   else if(c.keywords.length)text+=' '+affection+' Both films share '+c.keywords.slice(0,2).join(' and ')+'.';
    else text+=' '+affection+' That is a loose genre connection, so the Oracle is leaving room to be wrong.';
   }
   return {heading,text};

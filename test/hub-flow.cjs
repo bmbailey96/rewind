@@ -20,6 +20,7 @@ const wait=()=>new Promise(r=>setTimeout(r,100));
   else if(u.pathname==='/roulette-deck.json'){deckRequests++;body=[{...films[2],tags:['folk'],tones:{cozy:80},runtime:100}];}
   else if(u.pathname==='/release-announcements.json')body=feed;
   else if(u.pathname.includes('rewind-watchlist')){if(opts.method==='POST'){posted=JSON.parse(opts.body);body={count:posted.movies.length};}else body={enabled:true,movies:films,pricesConfigured:false};}
+  else if(u.pathname.includes('rewind-prices'))body={id:Number(u.searchParams.get('id')),offers:[],checkedAt:w.Date.now(),source:'JustWatch US prices'};
   else if(u.pathname.includes('rewind-status'))body={enabled:true,tracked:3,pricesConfigured:false};
   else if(u.hostname==='api.watchmode.com') {assert.equal(opts.headers['X-API-Key'],'fixture');if(u.pathname.includes('/releases'))body={releases:[]};else body=u.pathname.includes('1204680')?[{name:'Apple TV Store',type:'rent',region:'US',price,format:'HD',web_url:'https://tv.apple.com/test'}]:[];}
   else if(u.pathname.endsWith('/watch/providers')){if(failed)throw Error('offline');body={results:{US:u.pathname.includes('/1204680/')?{rent:[{provider_id:2,provider_name:'Apple TV Store'}]}:u.pathname.includes('/movie/3/')&&included3?{flatrate:[{provider_id:386,provider_name:'Peacock Premium'}]}:{}}};}
@@ -89,6 +90,25 @@ const wait=()=>new Promise(r=>setTimeout(r,100));
  w.document.getElementById('picker-cost').value='physical';w.document.getElementById('picker-cost').dispatchEvent(new w.Event('change'));
  assert.equal(JSON.parse(w.localStorage.getItem('rewind-ui-v1')).pickerCost,'physical');
  assert.ok(w.document.getElementById('watched-dialog').open);assert.match(w.document.getElementById('watched-letterboxd').href,/letterboxd.com\/tmdb\/3/);
+ // Native search clear and an empty query result must restore a usable shelf.
+ w.document.querySelector('[data-find-mode=shelf]').click();searchMatches=[];
+ w.document.getElementById('search-input').value='NoSuchFilm';w.document.getElementById('search-form').dispatchEvent(new w.Event('submit',{cancelable:true}));await wait();
+ assert.match(w.document.getElementById('search-grid').textContent,/No films found/);
+ w.document.getElementById('search-input').value='';w.document.getElementById('search-input').dispatchEvent(new w.Event('search'));
+ assert.equal(w.document.getElementById('search-grid').hidden,true);assert.equal(w.document.getElementById('search-clear-btn').hidden,true);
+ assert.equal(w.document.getElementById('discover-grid').hidden,false);
+ // Removing a film can be reversed without touching its alert, pin or history.
+ const beforeRemove=JSON.parse(w.localStorage.getItem('rewind-watchlist-v1'));w.eval('removeFromWatchlist(1204680)');await wait();
+ assert.equal(JSON.parse(w.localStorage.getItem('rewind-watchlist-v1')).some(m=>m.id===1204680),false);
+ w.document.querySelector('#toast button').click();await wait();
+ const restored=JSON.parse(w.localStorage.getItem('rewind-watchlist-v1')).find(m=>m.id===1204680);
+ assert.deepEqual(restored.alert,beforeRemove.find(m=>m.id===1204680).alert);
+ // An optional key is no longer required for verified public store quotes.
+ w.localStorage.removeItem('rewind-watchmode-key');const publicFilm={id:1091,title:'The Thing'};
+ const underlying=w.fetch;w.fetch=async(raw,opts)=>String(raw).includes('rewind-prices?id=1091')?{ok:true,json:async()=>({id:1091,checkedAt:w.Date.now(),source:'JustWatch US prices',offers:[{provider:'Apple TV Store',kind:'rent',price:3.99,format:'HD',link:'https://tv.apple.com/us/movie/the-thing',region:'US',source:'JustWatch US prices'}]})}:underlying(raw,opts);
+ const publicStatus=await w.eval('deriveStatus('+JSON.stringify(publicFilm)+')');assert.ok(publicStatus.offers.some(o=>o.price===3.99&&o.format==='HD'));
+ assert.ok(publicStatus.priceSources.includes('JustWatch US prices'));
+ assert.equal(w.document.querySelectorAll('.tab-btn[aria-current=page]').length,1);
  console.log('Rewind hub flow: three shelves, source timeline, no vote floor, thresholds persist/sync, real price drops, stale checks, watched undo, inline search passed');
  dom.window.close();
 })().catch(e=>{console.error(e);process.exitCode=1});
