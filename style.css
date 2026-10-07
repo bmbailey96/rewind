@@ -691,3 +691,4 @@ button{box-shadow:none}.oracle-chamber{position:relative;overflow:hidden;backgro
 @media(max-width:600px){.browse-dismiss-bar{align-items:flex-start;flex-direction:column;gap:6px}.oracle-heading{font-size:1.35rem}}
 
 .oracle-score-table{width:100%;border-collapse:collapse;font-size:.68rem;table-layout:fixed;margin:12px 0}.oracle-score-table th,.oracle-score-table td{padding:7px 4px;border-bottom:1px solid var(--rule);text-align:right;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}.oracle-score-table th:first-child{width:40%;text-align:left}.oracle-comparison h4{margin:18px 0 6px;font-size:.85rem}.oracle-comparison>details>summary{font-size:.72rem;cursor:pointer}
+.oracle-signal a{display:block;font-size:.62rem;margin-top:8px;overflow-wrap:anywhere}.oracle-factor-rule{margin-top:8px}.oracle-factor-rule summary{font-size:.62rem;cursor:pointer;color:var(--ink-soft)}.oracle-factor-rule p{margin-top:6px}
