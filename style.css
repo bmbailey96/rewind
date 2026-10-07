@@ -931,3 +931,7 @@ main{padding-top:24px}
 }
 
 .bar-lane{grid-template-rows:minmax(92px,1fr)}
+.mobile-week-day.today{background:#f7f8f5!important;color:var(--ink-soft)}
+.mobile-week-day.listed.today{background:#216b63!important;color:#fff}
+.mobile-week-day.announced-window.today{background:repeating-linear-gradient(135deg,#765b24,#765b24 6px,#886b30 6px,#886b30 12px)!important;color:#fff}
+@media(max-width:700px){.calendar-film-actions button{font-size:.82rem}.mobile-week-day small{font-size:.65rem}}
