@@ -95,7 +95,7 @@ Removed: retired tone-triangle console styles, zero-count shelf summary repetiti
 
 ### Tonight and physical copies
 
-The Tonight shelf selects up to three verified options from tracked films and owned copies, including a mix of included, affordable rental, and physical offers when available. Rentals must be quoted at or below the user's current limit; remote snapshots older than 24 hours or marked stale are excluded. Missing runtime stays explicit. Film cards now show runtime and direct provider links.
+The Tonight shelf selects up to three verified options from tracked films and owned copies, including a mix of included, affordable rental, and physical offers when available. Rentals must be quoted at or below the user's current limit; remote snapshots older than 24 hours or marked stale are excluded. Missing runtime stays explicit. Film cards now show runtime and direct provider links. Visible Browse and search cards load offers automatically, with four concurrent checks and no lookups for cards that never enter the viewport.
 
 Find a Film includes My Shelf, with format filtering and reversible ownership removal that preserves ratings and diary records. Scanner CSV headers accept Name/Title/Movie Title, Year/Release Year/Production Year, and Format/Media Format/Media Type, plus optional TMDB ID. Exact title/year matching rejects ambiguous imports and names them for review. Physical copies enter Oracle's candidate pool with the same source-independent ranking rules, including labeled rewatches.
 

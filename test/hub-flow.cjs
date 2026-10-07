@@ -12,6 +12,7 @@ const wait=()=>new Promise(r=>setTimeout(r,100));
   constructor(...args){super(...(args.length?args:['2026-10-05T18:00:00Z']));}
   static now(){return NativeDate.parse('2026-10-05T18:00:00Z');}
  };
+ w.IntersectionObserver=class {constructor(callback){this.callback=callback;w.offerObserver=this;}observe(){}unobserve(){}};
  w.HTMLElement.prototype.scrollIntoView=function(){};w.HTMLDialogElement.prototype.showModal=function(){this.open=true};w.HTMLDialogElement.prototype.close=function(){this.open=false};
  w.localStorage.setItem('rewind-ui-v1',JSON.stringify({pickerCost:'included',pickerMode:'oracle'}));
  w.localStorage.setItem('rewind-watchlist-v1',JSON.stringify(films));w.localStorage.setItem('rewind-coyote-seeded-v1','1');w.localStorage.setItem('rewind-watchmode-key','fixture');
@@ -120,6 +121,10 @@ const wait=()=>new Promise(r=>setTimeout(r,100));
  assert.ok(publicStatus.priceSources.includes('JustWatch US prices'));
  assert.equal(w.document.querySelectorAll('.tab-btn[aria-current=page]').length,1);
 
+ // Visible Browse cards obtain a price and a direct link without opening Details.
+ const pricedCard=w.eval('renderCard('+JSON.stringify(publicFilm)+',{context:"search"})');w.document.body.appendChild(pricedCard);
+ assert.equal(pricedCard.querySelector('.cost-block'),null);w.offerObserver.callback([{target:pricedCard,isIntersecting:true}]);await wait();await wait();
+ assert.match(pricedCard.querySelector('.cost-block').textContent,/\$3\.99/);assert.equal(pricedCard.querySelector('.film-details').open,false);assert.match(pricedCard.querySelector('.watch-link').href,/tv.apple.com/);
  // Tonight never substitutes stale or unquoted rentals, while owned discs survive an outage.
  w.eval("testState.movies().find(m=>m.id===1204680).availabilitySnapshot.stale=true;testState.changed()");
  assert.doesNotMatch(w.document.getElementById('tonight-grid').textContent,/Coyote/);

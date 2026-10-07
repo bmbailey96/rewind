@@ -48,7 +48,7 @@ const Hub = (()=>{
  function renderOracleReport(movie,context){
   const report=node('details',null,'oracle-report');report.open=true;report.appendChild(node('summary','The Oracle’s case'));
   const title=node('div',null,'oracle-reading-head');title.appendChild(node('span','◐','oracle-moon'));title.appendChild(node('p',movie.oracle.moon.name+' · Kalispell','oracle-coordinate'));report.appendChild(title);
-  report.appendChild(node('h4','Recorded taste','oracle-section-heading'));report.appendChild(node('p',movie.fit?.reasons?.length?movie.fit.reasons.join('. ')+'.':'No strong recorded taste connection in this batch. This is a discovery pick.','oracle-taste-evidence'));report.appendChild(node('h4','The atmospheric argument','oracle-section-heading'));const reading=FilmOracle.reading(movie,movie.fit);report.appendChild(node('h4',reading.heading,'oracle-heading'));report.appendChild(node('p',reading.text,'oracle-verdict'));
+  report.appendChild(node('h4','Recorded taste','oracle-section-heading'));report.appendChild(node('p',movie.fit?.reasons?.length?movie.fit.reasons.join('. ')+'.':'No strong recorded taste connection in this batch. This is a discovery pick.','oracle-taste-evidence'));report.appendChild(node('h4','The atmospheric argument','oracle-section-heading'));const reading=FilmOracle.reading(movie,{...movie.fit,connection:null});report.appendChild(node('h4',reading.heading,'oracle-heading'));report.appendChild(node('p',reading.text,'oracle-verdict'));
   const omens=movie.oracle.nudge.filter(text=>!text.startsWith('A current film headline'));
   if(omens.length)report.appendChild(node('p',omens.slice(0,3).join(' '),'oracle-observation'));
   const comparison=movie.oracle.comparison;

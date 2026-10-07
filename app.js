@@ -520,6 +520,16 @@ function stampRotation(seed) {
   return n + 'deg';
 }
 
+function renderCostHeadline(costInfo){const block=document.createElement('div');block.className='cost-block cost-'+costInfo.band;const badge=document.createElement('strong');badge.className='cost-badge';badge.textContent=costInfo.badge;block.appendChild(badge);const caption=document.createElement('p');caption.className='cost-caption';caption.textContent=costInfo.caption;block.appendChild(caption);if(costInfo.stale){const old=document.createElement('span');old.className='cost-warning';old.textContent='PREVIOUS CHECK';block.appendChild(old);}if(costInfo.cheaper){const cheaper=document.createElement('p');cheaper.className='cost-alternative';cheaper.textContent='$'+costInfo.cheaper.price.toFixed(2)+' on '+costInfo.cheaper.provider+(costInfo.cheaper.format?' · '+costInfo.cheaper.format:'');block.appendChild(cheaper);}return block;}
+// Only cards that enter the viewport ask for offers. Four checks run at a time.
+const visibleOfferJobs=[],observedOfferCards=new Set();let offerObserver=null,offerChecks=0;
+function observeCardOffers(card,check){
+ if(typeof IntersectionObserver!=='function')return;
+ if(!offerObserver)offerObserver=new IntersectionObserver(entries=>{for(const entry of entries)if(entry.isIntersecting){offerObserver.unobserve(entry.target);observedOfferCards.delete(entry.target);visibleOfferJobs.push(entry.target.offerCheck);}drainOfferChecks();},{rootMargin:'120px'});
+ for(const old of observedOfferCards)if(!old.isConnected){offerObserver.unobserve(old);observedOfferCards.delete(old);}
+ card.offerCheck=async()=>{if(card.isConnected)await check();};observedOfferCards.add(card);offerObserver.observe(card);
+}
+function drainOfferChecks(){while(offerChecks<4&&visibleOfferJobs.length){const job=visibleOfferJobs.shift();offerChecks++;Promise.resolve().then(job).catch(()=>{}).finally(()=>{offerChecks--;drainOfferChecks();});}}
 function renderCard(movie, opts = {}) {
   const {context='discover',status=null,changed=false}=opts;
   const card=document.createElement('article');card.className='rental-card';card.dataset.movieId=movie.id;
@@ -529,8 +539,8 @@ function renderCard(movie, opts = {}) {
   if(movie.pinned){const pinned=document.createElement('span');pinned.className='new-tag';pinned.textContent='PINNED';card.appendChild(pinned);}
   if(changed){const tag=document.createElement('span');tag.className='new-tag';tag.textContent='CHANGED SINCE YOUR LAST VISIT';card.appendChild(tag);}
   if(opts.markSeen&&isSeen(movie)){const tag=document.createElement('span');tag.className='new-tag';tag.textContent='ALREADY SEEN';card.appendChild(tag);}
-  const costInfo=status?.pending?{band:'waiting',badge:'CHECKING',caption:'Getting current offers and prices.'}:status?ReleaseModel.cost(status.offers,rentalBudget,status.stale):null;
-  if(costInfo){const block=document.createElement('div');block.className='cost-block cost-'+costInfo.band;const badge=document.createElement('strong');badge.className='cost-badge';badge.textContent=costInfo.badge;block.appendChild(badge);const caption=document.createElement('p');caption.className='cost-caption';caption.textContent=costInfo.caption;block.appendChild(caption);if(costInfo.stale){const old=document.createElement('span');old.className='cost-warning';old.textContent='PREVIOUS CHECK';block.appendChild(old);}if(costInfo.cheaper){const cheaper=document.createElement('p');cheaper.className='cost-alternative';cheaper.textContent='$'+costInfo.cheaper.price.toFixed(2)+' on '+costInfo.cheaper.provider+(costInfo.cheaper.format?' · '+costInfo.cheaper.format:'');block.appendChild(cheaper);}card.appendChild(block);}
+  let costInfo=status?.pending?{band:'waiting',badge:'CHECKING',caption:'Getting current offers and prices.'}:status?ReleaseModel.cost(status.offers,rentalBudget,status.stale):null;
+  if(costInfo)card.appendChild(renderCostHeadline(costInfo));
 
   if(status){const upcoming=(status.announcements||[]).filter(a=>a.kind==='subscription'&&a.date&&a.date>discoveryWindow().today).sort((a,b)=>a.date.localeCompare(b.date))[0];if(upcoming){const note=document.createElement('p');note.className='wait-advice';note.textContent=upcoming.provider+' on '+formatFilmDate(upcoming.date)+' · announced';card.appendChild(note);}else if(costInfo?.band==='premium'){const note=document.createElement('p');note.className='wait-advice';const pref=ReleaseModel.preference(movie.alert);const estimate=ReleaseModel.priceEstimate(movie,status.offers,watchlist,discoveryWindow().today,pref.mode==='rental'?pref.maxPrice:rentalBudget);note.textContent=estimate&&!estimate.overdue?'Cheaper rental estimate: '+formatFilmDate(estimate.start)+' to '+formatFilmDate(estimate.end):'Above your $'+rentalBudget.toFixed(2)+' limit. No drop date announced.';card.appendChild(note);}}
 
@@ -567,7 +577,13 @@ function renderCard(movie, opts = {}) {
     if((context==='discover'||context==='search')&&!inList){const skip=document.createElement('button');skip.className='secondary';skip.textContent='PASS OVER THIS FILM';skip.onclick=()=>{skipMovie(movie.id);card.remove();updateBrowseDismissControl();};secondaryActions.appendChild(skip);}
   }
   if(!current)body.appendChild(secondaryActions);
-  card.appendChild(actions);return card;
+  card.appendChild(actions);
+  if(!status&&['discover','search'].includes(context))observeCardOffers(card,async()=>{
+   try{const found=await deriveStatus(movie);if(!card.isConnected)return;current=found;costInfo=ReleaseModel.cost(found.offers,rentalBudget,found.stale);card.querySelector('.cost-block')?.remove();details.before(renderCostHeadline(costInfo));
+    const next=!found.stale?costInfo.offer:null;if(next?.link&&!actions.querySelector('.watch-link')){const watch=document.createElement('a');watch.className='watch-link';watch.textContent=next.kind==='rent'?'RENT':next.kind==='buy'?'BUY':'WATCH';watch.href=next.link;watch.target='_blank';watch.rel='noopener noreferrer';actions.prepend(watch);}if(details.open)fillDetails();
+   }catch{if(card.isConnected&&!card.querySelector('.cost-block')){const note=document.createElement('p');note.className='offer-note';note.textContent='Viewing options could not refresh. Open Details to retry.';details.before(note);}}
+  });
+  return card;
 }
 function renderAlertPreference(movie){
   const wrap=document.createElement('fieldset');wrap.className='alert-preference';const legend=document.createElement('legend');legend.textContent='Notify me when';wrap.appendChild(legend);
