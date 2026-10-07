@@ -103,6 +103,13 @@ const wait=()=>new Promise(r=>setTimeout(r,100));
  w.document.querySelector('#toast button').click();await wait();
  const restored=JSON.parse(w.localStorage.getItem('rewind-watchlist-v1')).find(m=>m.id===1204680);
  assert.deepEqual(restored.alert,beforeRemove.find(m=>m.id===1204680).alert);
+ // A slow lookup keeps saved cards visible and exposes progress outside the closed controls.
+ const steadyFetch=w.fetch;let releaseRefresh;const refreshGate=new Promise(resolve=>releaseRefresh=resolve);
+ w.fetch=async(raw,opts)=>{if(String(raw).includes('/watch/providers'))await refreshGate;return steadyFetch(raw,opts);};
+ const refreshing=w.eval('renderWatchlist(true)');await wait();
+ assert.ok(w.document.querySelectorAll('#tab-watchlist .rental-card').length>0,'Saved cards remain during refresh');
+ assert.match(w.document.getElementById('watchlist-load-status').textContent,/Checking offers and prices/);
+ releaseRefresh();await refreshing;w.fetch=steadyFetch;assert.equal(w.document.getElementById('watchlist-load-status').textContent,'');
  // An optional key is no longer required for verified public store quotes.
  w.localStorage.removeItem('rewind-watchmode-key');const publicFilm={id:1091,title:'The Thing'};
  const underlying=w.fetch;w.fetch=async(raw,opts)=>String(raw).includes('rewind-prices?id=1091')?{ok:true,json:async()=>({id:1091,checkedAt:w.Date.now(),source:'JustWatch US prices',offers:[{provider:'Apple TV Store',kind:'rent',price:3.99,format:'HD',link:'https://tv.apple.com/us/movie/the-thing',region:'US',source:'JustWatch US prices'}]})}:underlying(raw,opts);

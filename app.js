@@ -529,7 +529,7 @@ function renderCard(movie, opts = {}) {
   if(movie.pinned){const pinned=document.createElement('span');pinned.className='new-tag';pinned.textContent='PINNED';card.appendChild(pinned);}
   if(changed){const tag=document.createElement('span');tag.className='new-tag';tag.textContent='CHANGED SINCE YOUR LAST VISIT';card.appendChild(tag);}
   if(opts.markSeen&&isSeen(movie)){const tag=document.createElement('span');tag.className='new-tag';tag.textContent='ALREADY SEEN';card.appendChild(tag);}
-  const costInfo=status?ReleaseModel.cost(status.offers,rentalBudget,status.stale):null;
+  const costInfo=status?.pending?{band:'waiting',badge:'CHECKING',caption:'Getting current offers and prices.'}:status?ReleaseModel.cost(status.offers,rentalBudget,status.stale):null;
   if(costInfo){const block=document.createElement('div');block.className='cost-block cost-'+costInfo.band;const badge=document.createElement('strong');badge.className='cost-badge';badge.textContent=costInfo.badge;block.appendChild(badge);const caption=document.createElement('p');caption.className='cost-caption';caption.textContent=costInfo.caption;block.appendChild(caption);if(costInfo.stale){const old=document.createElement('span');old.className='cost-warning';old.textContent='PREVIOUS CHECK';block.appendChild(old);}if(costInfo.cheaper){const cheaper=document.createElement('p');cheaper.className='cost-alternative';cheaper.textContent='$'+costInfo.cheaper.price.toFixed(2)+' on '+costInfo.cheaper.provider+(costInfo.cheaper.format?' · '+costInfo.cheaper.format:'');block.appendChild(cheaper);}card.appendChild(block);}
 
   if(status){const upcoming=(status.announcements||[]).filter(a=>a.kind==='subscription'&&a.date&&a.date>discoveryWindow().today).sort((a,b)=>a.date.localeCompare(b.date))[0];if(upcoming){const note=document.createElement('p');note.className='wait-advice';note.textContent=upcoming.provider+' on '+formatFilmDate(upcoming.date)+' · announced';card.appendChild(note);}else if(costInfo?.band==='premium'){const note=document.createElement('p');note.className='wait-advice';const pref=ReleaseModel.preference(movie.alert);const estimate=ReleaseModel.priceEstimate(movie,status.offers,watchlist,discoveryWindow().today,pref.mode==='rental'?pref.maxPrice:rentalBudget);note.textContent=estimate&&!estimate.overdue?'Cheaper rental estimate: '+formatFilmDate(estimate.start)+' to '+formatFilmDate(estimate.end):'Above your $'+rentalBudget.toFixed(2)+' limit. No drop date announced.';card.appendChild(note);}}
@@ -688,11 +688,12 @@ let watchlistRequest = 0;
 async function renderWatchlist(force = false, reuse = false) {
   const request = ++watchlistRequest;
   const empty=document.getElementById('watchlist-empty');
-  const grids=['watch-now','paid','waiting'];grids.forEach(id=>{document.getElementById(id+'-grid').replaceChildren();document.getElementById(id+'-section').hidden=true;});
+  const loading=document.getElementById('watchlist-load-status');
   document.getElementById('watchlist-count').textContent=watchlist.length+(watchlist.length===1?' film':' films');
   empty.hidden=watchlist.length>0;
-  if(!watchlist.length){document.getElementById('filter-empty').hidden=true;document.getElementById('card-check-status').textContent='';document.getElementById('card-summary').textContent='';return;}
-  document.getElementById('card-check-status').textContent='Checking US providers…';
+  if(!watchlist.length){paintWatchlist([]);loading.textContent='';document.getElementById('filter-empty').hidden=true;document.getElementById('card-check-status').textContent='';document.getElementById('card-summary').textContent='';return;}
+  if(!reuse){paintWatchlist(watchlist.map(entry=>({entry,status:entry.availabilitySnapshot?{...entry.availabilitySnapshot,stale:true}:{code:'nodata',kind:'unknown',label:'Checking availability',offers:[],pending:true},changed:false})));loading.textContent='Checking offers and prices for '+watchlist.length+' film'+(watchlist.length===1?'':'s')+'…';}
+  document.getElementById('card-check-status').textContent=reuse?'Showing saved availability.':'Checking US providers…';
   const results = (await mapLimited([...watchlist],4,async entry=>{
     let status;
     const lookupMovie={...entry};
@@ -724,6 +725,11 @@ async function renderWatchlist(force = false, reuse = false) {
   document.getElementById('card-check-status').textContent=reuse?'Showing saved availability. Check availability to refresh.':'US providers checked '+new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'})+(results.some(r=>r.status.stale)?' · '+results.filter(r=>r.status.stale).length+' previous checks':'');
   saveWatchlist();
 
+  paintWatchlist(results);
+  document.getElementById('watchlist-load-status').textContent='';
+}
+function paintWatchlist(results){
+  for(const id of ['watch-now','paid','waiting']){document.getElementById(id+'-grid').replaceChildren();document.getElementById(id+'-section').hidden=true;}
   const sorters={cost:(a,b)=>(ReleaseModel.cost(a.status.offers,rentalBudget).price??Infinity)-(ReleaseModel.cost(b.status.offers,rentalBudget).price??Infinity),changed:(a,b)=>(b.entry.statusChangedAt||0)-(a.entry.statusChangedAt||0),added:(a,b)=>(b.entry.addedAt||0)-(a.entry.addedAt||0),release:(a,b)=>(b.entry.release_date||'').localeCompare(a.entry.release_date||''),az:(a,b)=>a.entry.title.localeCompare(b.entry.title)};
   const costRanks={free:0,cheap:1,premium:2,unknown:3,buy:4,waiting:5};
   results.sort((a,b)=>Number(!!b.entry.pinned)-Number(!!a.entry.pinned)||(watchlistSort==='cost'?(costRanks[ReleaseModel.cost(a.status.offers,rentalBudget,a.status.stale).band]-costRanks[ReleaseModel.cost(b.status.offers,rentalBudget,b.status.stale).band]||sorters.cost(a,b)):Number(!!b.entry.pinned)-Number(!!a.entry.pinned)||(sorters[watchlistSort]||sorters.changed)(a,b)));
@@ -737,7 +743,7 @@ async function renderWatchlist(force = false, reuse = false) {
   for(const [group,id] of Object.entries(groups)){document.getElementById(id+'-section').hidden=!counts[group];document.getElementById(id+'-count').textContent='('+counts[group]+')';}
   document.getElementById('filter-empty').hidden=display.length>0;
   document.getElementById('card-summary').textContent=changedCount?changedCount+' changed since your last visit':'';
-  saveWatchlist();window.dispatchEvent(new Event('rewind:card-rendered'));
+  window.dispatchEvent(new Event('rewind:card-rendered'));
 }
 document.getElementById('rental-budget').value=rentalBudget;
 document.getElementById('rental-budget').onchange=e=>{const value=Number(e.target.value);if(e.target.value===''||!Number.isFinite(value)||value<0||value>100)return;rentalBudget=value;localStorage.setItem('rewind-rental-budget-v1',String(value));scheduleSync();renderWatchlist(false,true);};
