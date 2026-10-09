@@ -975,3 +975,6 @@ footer{border-color:#303b32;color:#8b9e87;font-size:.7rem}#toast{background:#203
 @media(prefers-reduced-motion:no-preference){header h1:before{animation:rewind-glitch-a 9s infinite}header h1:after{animation:rewind-glitch-b 9s infinite}@keyframes rewind-glitch-a{0%,91%,100%{opacity:0;transform:none}92%{opacity:.7;transform:translate(3px,-1px);clip-path:inset(12% 0 65% 0)}93%{opacity:.7;transform:translate(-3px,1px);clip-path:inset(60% 0 12% 0)}94%{opacity:0}}@keyframes rewind-glitch-b{0%,92%,100%{opacity:0;transform:none}93%{opacity:.6;transform:translate(-2px,0);clip-path:inset(35% 0 40% 0)}94%{opacity:.4;transform:translate(2px,0);clip-path:inset(75% 0 5% 0)}95%{opacity:0}}}
 
 .counter{background:#101415;color:#e7e9e3;border-bottom:1px solid #303b3c}.shop-name{text-shadow:none}.counter-inner{max-width:1080px}.tabs{max-width:1080px}.shop-tagline{color:#8fa39a}.import-block{background:transparent}.calendar-options[hidden]{display:none!important}
+
+/* Keep display fonts and source links consistent with the dark theme. */
+header .shop-name{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:clamp(36px,6vw,64px)}.panel-head h2,.shelf-group h3,.card-title{font-family:"Space Grotesk",system-ui,sans-serif}.source-links a{color:#82c9b6;text-underline-offset:4px;margin-right:16px}
