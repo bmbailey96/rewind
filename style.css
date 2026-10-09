@@ -935,3 +935,20 @@ main{padding-top:24px}
 .mobile-week-day.listed.today{background:#216b63!important;color:#fff}
 .mobile-week-day.announced-window.today{background:repeating-linear-gradient(135deg,#765b24,#765b24 6px,#886b30 6px,#886b30 12px)!important;color:#fff}
 @media(max-width:700px){.calendar-film-actions button{font-size:.82rem}.mobile-week-day small{font-size:.65rem}}
+
+/* Discovery has three release stages, one search, and evidence on the film. */
+.discovery-intro{margin:0 0 16px;color:var(--muted)}
+.discovery-stages{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0}
+.discovery-stages button{background:transparent;color:var(--ink);border:1px solid #bfc7c0;border-radius:999px;font-family:inherit;text-transform:none;letter-spacing:0;padding:10px 16px;min-height:44px}
+.discovery-stages button[aria-pressed="true"]{background:#224d47;color:#fff;border-color:#224d47}
+.discovery-guide{margin:20px 0 16px}.discovery-guide h3{font-size:1.5rem;margin:0 0 6px}.discovery-guide p{margin:0;color:#566560;max-width:65ch;line-height:1.5}
+.discovery-reason{font-size:.82rem;line-height:1.5;padding:10px 12px;border-left:3px solid #538477;background:#edf3ef;color:#244f47;margin:12px 0}
+.release-file{clear:both;background:#f0f4f0;border:1px solid #d6dfd8;padding:12px;border-radius:8px;margin:12px 0;font-family:inherit;font-size:.82rem;line-height:1.5}
+.release-file p{margin:6px 0}.release-stage{display:block;font-size:.7rem;letter-spacing:.07em;color:#315d53}.regional-screening{border-top:1px solid #d6dfd8;padding-top:8px;font-weight:600}
+.release-file a{color:#285d53;text-decoration:underline;text-underline-offset:3px}.release-file .offer-note{font-size:.7rem;margin-bottom:0}
+.release-card{display:block}.release-card>.card-poster{width:88px;float:left;margin:0 14px 12px 0;aspect-ratio:2/3;object-fit:cover}.release-card>.card-title{min-height:0;font-size:1.2rem}.release-card>.card-meta{min-height:0}.release-card>.cost-block{clear:both}.release-card>.film-details{clear:both}.release-card>.card-actions{clear:both}
+.unresolved-film{justify-content:center}.unresolved-film h3{margin:0 0 8px}.unresolved-film p{font-size:.85rem;line-height:1.5}.film-tracked{border-color:#47796a}
+@media(max-width:600px){.discovery-stages{gap:6px}.discovery-stages button{font-size:.82rem;padding:9px 12px}.release-card{grid-column:1/-1;padding:16px}.release-card>.card-title{font-size:1.25rem}.discovery-guide h3{font-size:1.4rem}.discovery-guide p{font-size:.9rem}.release-file,.discovery-reason{font-size:.88rem}}
+@media(prefers-reduced-motion:no-preference){.discovery-stages button,.film-tracked{transition:background-color .15s ease,border-color .15s ease,color .15s ease}.release-card{animation:release-enter .18s ease-out}@keyframes release-enter{from{opacity:.6;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}}
+
+@media(min-width:601px){#discover-grid[data-stage="coming"],#discover-grid[data-stage="circuit"]{grid-template-columns:repeat(2,minmax(0,1fr))}}

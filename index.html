@@ -22,8 +22,8 @@
   </div>
   <nav class="tabs" aria-label="Main navigation">
     <button class="tab-btn active" data-tab="watchlist" aria-current="page">WATCHLIST</button>
-    <button class="tab-btn" data-tab="discover">FIND A FILM</button>
-    <button class="tab-btn" data-tab="upcoming">COMING UP</button>
+    <button class="tab-btn" data-tab="discover">DISCOVER</button>
+    <button class="tab-btn" data-tab="upcoming">CALENDAR</button>
     <button class="tab-btn" data-tab="import">SETTINGS</button>
   </nav>
 </header>
@@ -58,21 +58,24 @@
 
   <section id="tab-discover" class="tab-panel">
     <div class="panel-head">
-      <h2>Find a Film</h2>
+      <h2>Discover</h2>
       <span class="count-stamp">Recent theatrical releases</span>
     </div>
-    <div class="hub-mode-buttons" aria-label="Find a film"><button data-find-mode="roulette" aria-pressed="false">FROM MY WATCHLIST</button><button data-find-mode="oracle" aria-pressed="false">ORACLE</button><button data-find-mode="shelf" aria-pressed="true">BROWSE</button><button data-find-mode="physical" aria-pressed="false">MY SHELF</button></div>
+    <p id="discovery-intro" class="discovery-intro">Find something to watch. Or something worth waiting for.</p>
+    <div class="hub-mode-buttons" aria-label="Find a film"><button data-find-mode="shelf" aria-pressed="true">BROWSE</button><button data-find-mode="oracle" aria-pressed="false">ORACLE</button><button data-find-mode="roulette" aria-pressed="false">MY WATCHLIST</button><button data-find-mode="physical" aria-pressed="false">MY SHELF</button></div>
+    <div id="discovery-stages" class="discovery-stages" aria-label="Browse release stage"><button data-discovery-stage="recent" aria-pressed="true">New releases</button><button data-discovery-stage="coming" aria-pressed="false">Coming soon</button><button data-discovery-stage="circuit" aria-pressed="false">Beyond the multiplex</button></div>
+    <div id="discovery-guide" class="discovery-guide"><h3 id="discovery-stage-title">New releases</h3><p id="discovery-stage-note">Recent US theatrical releases. Viewing options are checked separately.</p></div>
     <section id="hub-picker" hidden><h3 id="picker-heading"></h3><p id="picker-intro"></p><details id="picker-priorities" class="inline-options"><summary>Pick preferences</summary><label>Selection<select id="picker-order"><option value="smart">Pins & new arrivals first</option><option value="shuffle">Pure shuffle</option></select></label></details><div class="picker-controls"><label>Watch from<select id="picker-cost"><option value="budget">Included or up to my rental limit</option><option value="included">Included / free only</option><option value="any">Any price, including theaters</option><option value="physical">My physical shelf only</option></select></label></div><label id="set-aside-duration-label" class="aside-duration" hidden>Set aside for<select id="set-aside-duration"><option value="visit">This visit</option><option value="week">One week</option><option value="price">Until a cheaper rental</option><option value="forever">Indefinitely</option></select></label><div class="picker-actions"><button id="pick-film">PICK A FILM</button><button id="pick-again" class="secondary" hidden>PICK ANOTHER</button><div id="picker-more" class="pick-secondary" hidden><button id="banish-pick" class="secondary" hidden>SET ASIDE THIS VISIT</button><button id="undo-banish" class="secondary" hidden>UNDO SET ASIDE</button></div></div><div id="picker-feedback" class="picker-feedback" hidden><span>Correct this pick</span><button id="feedback-seen" class="secondary">ALREADY SEEN</button><button id="feedback-familiar" class="secondary">TOO FAMILIAR</button><button id="feedback-tonight" class="secondary">WRONG TONIGHT</button><button id="feedback-weak" class="secondary">WEAK CONNECTION</button></div><details class="aside-management"><summary>Set-aside films & corrections</summary><div id="set-aside-records"></div></details><p id="picker-status" role="status"></p><div id="picker-results" class="card-row wrap"></div></section>
     <section id="physical-shelf" hidden><h3>Your physical shelf</h3><p class="offer-note">Already paid for. DVDs, Blu-rays, and VHS copies count equally in the chooser. Watched films stay here for another round.</p><div class="shelf-tools"><label>Format<select id="physical-format"><option value="all">All formats</option></select></label><button id="shelf-import-link" class="secondary">IMPORT SHELF CSV</button></div><p id="physical-count" role="status" class="offer-note"></p><div id="physical-grid" class="card-row wrap"></div></section>
-    <form id="search-form" class="search-form"><label class="sr-only" for="search-input">Find a film</label><input id="search-input" type="search" placeholder="Find a film…" autocomplete="off"><button type="submit">SEARCH</button><button id="search-clear-btn" type="button" class="secondary" hidden>BACK TO BROWSE</button></form>
+    <form id="search-form" class="search-form"><label class="sr-only" for="search-input">Find a film</label><input id="search-input" type="search" placeholder="Any film, any release stage…" autocomplete="off"><button type="submit">SEARCH</button><button id="search-clear-btn" type="button" class="secondary" hidden>BACK TO BROWSE</button></form>
     <div id="search-grid" class="card-row wrap" hidden></div>
     <details id="discovery-filters" class="filter-panel"><summary>Filter the shelf</summary><div class="filter-fields">
       <label for="release-month">Release month</label><select id="release-month" class="sort-select"><option value="">LAST 6 MONTHS</option></select>
-      <label for="discover-sort">Order</label><select id="discover-sort" class="sort-select"><option value="popularity.desc">POPULAR FIRST</option><option value="release_date.desc">RECENT FIRST</option></select>
+      <label for="discover-sort">Order</label><select id="discover-sort" class="sort-select"><option value="taste">YOUR CONNECTIONS FIRST</option><option value="popularity.desc">POPULAR FIRST</option><option value="release_date.desc">RECENT FIRST</option><option value="release_date.asc">SOONEST RELEASE</option></select>
       <label for="discover-scope">Shelf</label><select id="discover-scope" class="sort-select"><option value="features">ALL FEATURE RELEASES</option><option value="small">SMALL RELEASES FIRST</option></select>
       <label for="discover-genre">Genre</label><select id="discover-genre" class="sort-select"><option value="">ALL GENRES</option><option value="27">HORROR</option><option value="878">SCIENCE FICTION</option><option value="18">DRAMA</option><option value="35">COMEDY</option><option value="53">THRILLER</option><option value="99">DOCUMENTARY</option><option value="16">ANIMATION</option></select>
       <label class="rerelease-control"><input id="include-rereleases" type="checkbox"> Include theatrical rereleases</label>
-    </div><p class="import-note">Feature films with a US theatrical listing and a runtime of at least an hour. No minimum rating count. Seen, skipped, and tracked films stay off this shelf.</p></details>
+    </div><p id="discovery-filter-note" class="import-note">Feature films with a US theatrical listing and a runtime of at least an hour. No minimum rating count. Seen, skipped, and tracked films stay off this shelf.</p></details>
     <p id="discover-status" class="import-status" role="status"></p>
     <div id="discover-grid" class="card-row wrap"></div>
     <button id="discover-more" class="btn-more">MORE FILMS</button>
@@ -124,7 +127,7 @@
       </div>
       <p id="sync-status" class="import-status"></p>
     </div>
-    <div class="import-block"><h3>Your taste</h3><p class="import-note">Import Letterboxd ratings.csv, diary.csv, or a favorites / owned-films list.csv. Ratings of 4 stars or higher, explicit favorites, ownership, and repeat watches guide recommendations. Watchlist additions never become taste evidence. A physical-shelf CSV can use Name, Title, or Movie Title; Year, Release Year, or Production Year; and Format, Media Format, or Media Type. TMDB ID is optional. Ambiguous titles stay unmatched. Copies appear as Your shelf; the shelf-only picker also allows labeled rewatches.</p><label>Import as<select id="taste-import-kind"><option value="profile">RATINGS + DIARY PROFILE</option><option value="ratings">RATINGS</option><option value="diary">DIARY / REWATCHES</option><option value="favorites">FAVORITES</option><option value="owned">PHYSICAL SHELF · DVD / BLU-RAY / VHS</option></select></label><input aria-label="Import taste or physical shelf records" id="import-taste" type="file" accept=".csv"><p id="taste-status" role="status"></p><details><summary>Manage taste records</summary><div id="taste-records"></div></details></div><div class="import-block"><h3>The other counters</h3><p class="import-note">Original project source repositories. Your film hub is here.</p><div id="legacy-links"></div><p class="import-note">Browser data is separate between sites. Import your old lists here; nothing is silently removed from the originals.</p></div>
+    <div class="import-block"><h3>Your taste</h3><p class="import-note">Import Letterboxd ratings.csv, diary.csv, or a favorites / owned-films list.csv. Ratings of 4 stars or higher, explicit favorites, ownership, and repeat watches guide recommendations. Watchlist additions never become taste evidence. A physical-shelf CSV can use Name, Title, or Movie Title; Year, Release Year, or Production Year; and Format, Media Format, or Media Type. TMDB ID is optional. Ambiguous titles stay unmatched. Copies appear as Your shelf; the shelf-only picker also allows labeled rewatches.</p><label>Import as<select id="taste-import-kind"><option value="profile">RATINGS + DIARY PROFILE</option><option value="ratings">RATINGS</option><option value="diary">DIARY / REWATCHES</option><option value="favorites">FAVORITES</option><option value="owned">PHYSICAL SHELF · DVD / BLU-RAY / VHS</option></select></label><input aria-label="Import taste or physical shelf records" id="import-taste" type="file" accept=".csv"><p class="import-note">Your published film taste is built in and loads automatically on every device. Imports update it; you do not need to upload it each visit. Strong ratings, ownership, favorites, and repeat watches supply the evidence. Tracking a film records interest, not a positive rating.</p><p id="taste-status" role="status"></p><details><summary>Manage taste records</summary><div id="taste-records"></div></details></div><div class="import-block"><h3>The other counters</h3><p class="import-note">Original project source repositories. Your film hub is here.</p><div id="legacy-links"></div><p class="import-note">Browser data is separate between sites. Import your old lists here; nothing is silently removed from the originals.</p></div>
     <details class="maintenance-controls"><summary>Watchlist maintenance</summary><p id="dismissed-count"></p><button id="restore-dismissed" class="secondary" hidden>RESTORE PASSED-OVER FILMS</button><p>Remove watchlist films released more than a year ago. Nothing is cleared automatically.</p><button id="prune-btn" class="secondary">CLEAR OLDER FILMS</button></details>
   </section>
 
@@ -138,6 +141,7 @@
 <script src="release-model.js"></script>
 <script src="availability-ui.js"></script>
 <script src="counter-model.js"></script>
+<script src="discovery-model.js"></script>
 <script src="hub-model.js"></script>
 <script src="oracle.js"></script>
 <script src="app.js"></script>

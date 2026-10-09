@@ -321,7 +321,7 @@ const STORAGE_KEY = 'rewind-watchlist-v1';
 // release_type codes on TMDB: 1 premiere, 2 limited theatrical, 3 theatrical, 4 digital, 5 physical, 6 tv
 const RELEASE_TYPE_DIGITAL = 4;
 
-let discoverPage = 1;
+let discoverPage = 1;let discoveryStage='recent',horizonFeed=null,horizonPromise=null;
 let watchlist = loadWatchlist();
 let hubState;
 try {hubState=JSON.parse(localStorage.getItem('rewind-hub-v1'))||{};}catch{hubState={};}
@@ -399,8 +399,9 @@ async function fetchDiscover(page = 1, filter = null) {
   const broad = (filter?.scope || document.getElementById('discover-scope').value) === 'small';
   const rereleases = filter?.rereleases ?? document.getElementById('include-rereleases').checked;
   const genre = filter?.genre ?? document.getElementById('discover-genre').value;
+  if(filter?.stage==='coming'){const end=ReleaseModel.addDays(window.today,365),params={include_video:false,include_adult:false,...(genre?{with_genres:genre}:{}),page,sort_by:['popularity.desc','taste'].includes(filter.sort)?'popularity.desc':'primary_release_date.asc'};const results=await Promise.allSettled([tmdbGet('/discover/movie',{...params,region:REGION,with_release_type:'2|3','release_date.gte':window.today,'release_date.lte':end}),tmdbGet('/discover/movie',{...params,'primary_release_date.gte':window.today,'primary_release_date.lte':end})]);const success=results.filter(r=>r.status==='fulfilled').map(r=>r.value);if(!success.length)throw Error('Upcoming catalog unavailable');return {results:[...new Map(success.flatMap(d=>d.results||[]).map(m=>[m.id,m])).values()],total_pages:Math.max(...success.map(d=>d.total_pages||1))};}
   return tmdbGet('/discover/movie', {
-    region:REGION,sort_by:filter?.sort || document.getElementById('discover-sort').value,
+    region:REGION,sort_by:filter?.sort==='taste'?'popularity.desc':filter?.sort || document.getElementById('discover-sort').value,
     with_release_type:'2|3','release_date.gte':window.start,'release_date.lte':window.end,
     ...(broad ? {'vote_count.lte':100} : {}),'with_runtime.gte':60,include_video:false,include_adult:false,
     ...(!rereleases ? {'primary_release_date.gte':dateMonthsAgo(24)} : {}),
@@ -542,7 +543,7 @@ function observeCardOffers(card,check){
 function drainOfferChecks(){while(offerChecks<4&&visibleOfferJobs.length){const job=visibleOfferJobs.shift();offerChecks++;Promise.resolve().then(job).catch(()=>{}).finally(()=>{offerChecks--;drainOfferChecks();});}}
 function renderCard(movie, opts = {}) {
   const {context='discover',status=null,changed=false}=opts;
-  const card=document.createElement('article');card.className='rental-card';card.dataset.movieId=movie.id;
+  const card=document.createElement('article');card.className='rental-card'+(movie.releaseFile?' release-card':'');card.dataset.movieId=movie.id;
   const image=posterUrl(movie.poster_path);const poster=document.createElement(image?'img':'div');poster.className='card-poster'+(image?'':' poster-missing');if(image){poster.loading='lazy';poster.src=image;poster.alt=movie.title+' poster';poster.onerror=()=>{const fallback=document.createElement('div');fallback.className='card-poster poster-missing';fallback.textContent='NO POSTER ON FILE';poster.replaceWith(fallback);};}else{poster.textContent='NO POSTER ON FILE';}card.appendChild(poster);
   const title=document.createElement('h3');title.className='card-title';title.textContent=movie.title;card.appendChild(title);
   const meta=document.createElement('p');meta.className='card-meta';meta.textContent=[(movie.release_date||'').slice(0,4),movie.runtime?movie.runtime+' min':'Runtime not listed',movie.director].filter(Boolean).join(' · ');card.appendChild(meta);
@@ -552,6 +553,7 @@ function renderCard(movie, opts = {}) {
   let costInfo=status?.pending?{band:'waiting',badge:'CHECKING',caption:'Getting current offers and prices.'}:status?ReleaseModel.cost(status.offers,rentalBudget,status.stale):null;
   if(costInfo)card.appendChild(renderCostHeadline(costInfo));
 
+  if(movie.discoveryFit||movie.requestedInterest){const reason=document.createElement('p');reason.className='discovery-reason';reason.textContent=movie.requestedInterest?'You asked to keep an eye on this one.':movie.discoveryFit.reasons.join('. ');card.appendChild(reason);}if(movie.releaseFile)card.appendChild(renderReleaseFile(movie,status));
   if(status){const upcoming=(status.announcements||[]).filter(a=>a.kind==='subscription'&&a.date&&a.date>discoveryWindow().today).sort((a,b)=>a.date.localeCompare(b.date))[0];if(upcoming){const note=document.createElement('p');note.className='wait-advice';note.textContent=upcoming.provider+' on '+formatFilmDate(upcoming.date)+' · announced';card.appendChild(note);}else if(costInfo?.band==='premium'){const note=document.createElement('p');note.className='wait-advice';const pref=ReleaseModel.preference(movie.alert);const estimate=ReleaseModel.priceEstimate(movie,status.offers,watchlist,discoveryWindow().today,pref.mode==='rental'?pref.maxPrice:rentalBudget);note.textContent=estimate&&!estimate.overdue?'Cheaper rental estimate: '+formatFilmDate(estimate.start)+' to '+formatFilmDate(estimate.end):'Above your $'+rentalBudget.toFixed(2)+' limit. No drop date announced.';card.appendChild(note);}}
 
   const details=document.createElement('details');details.className='film-details';
@@ -582,14 +584,14 @@ function renderCard(movie, opts = {}) {
   }else{
     const next=!status?.stale?costInfo?.offer:null;if(next?.link){const watch=document.createElement('a');watch.className='watch-link';watch.textContent=next.kind==='rent'?'RENT':next.kind==='buy'?'BUY':'WATCH';watch.href=next.link;watch.target='_blank';watch.rel='noopener noreferrer';actions.appendChild(watch);}
     if(context==='physical'){const watched=document.createElement('button');watched.className='secondary';watched.textContent='MARK WATCHED';watched.onclick=()=>markMovieWatched(movie);secondaryActions.appendChild(watched);}
-    const inList=watchlist.some(w=>w.id===movie.id);const track=document.createElement('button');track.textContent=inList?'ADDED':'ADD TO WATCHLIST';track.disabled=inList;
-    track.onclick=()=>{addToWatchlist(movie);if(context==='discover')card.remove();else{track.textContent='ADDED';track.disabled=true;}};actions.appendChild(track);
+    const inList=watchlist.some(w=>w.id===movie.id);const track=document.createElement('button');track.textContent=inList?(movie.releaseFile?'TRACKING':'ADDED'):(movie.releaseFile?'TRACK FILM':'ADD TO WATCHLIST');track.disabled=inList;
+    track.onclick=()=>{addToWatchlist(movie);if(context==='discover'&&!movie.releaseFile)card.remove();else{track.textContent=movie.releaseFile?'TRACKING':'ADDED';track.disabled=true;card.classList.add('film-tracked');}};actions.appendChild(track);
     if((context==='discover'||context==='search')&&!inList){const skip=document.createElement('button');skip.className='secondary';skip.textContent='PASS OVER THIS FILM';skip.onclick=()=>{skipMovie(movie.id);card.remove();updateBrowseDismissControl();};secondaryActions.appendChild(skip);}
   }
   if(!current)body.appendChild(secondaryActions);
   card.appendChild(actions);
   if(!status&&['discover','search'].includes(context))observeCardOffers(card,async()=>{
-   try{const found=await deriveStatus(movie);if(!card.isConnected)return;current=found;costInfo=ReleaseModel.cost(found.offers,rentalBudget,found.stale);card.querySelector('.cost-block')?.remove();details.before(renderCostHeadline(costInfo));
+   try{const found=await deriveStatus(movie);if(!card.isConnected)return;current=found;if(movie.releaseFile)card.querySelector('.release-file')?.replaceWith(renderReleaseFile(movie,found));costInfo=ReleaseModel.cost(found.offers,rentalBudget,found.stale);card.querySelector('.cost-block')?.remove();details.before(renderCostHeadline(costInfo));
     const next=!found.stale?costInfo.offer:null;if(next?.link&&!actions.querySelector('.watch-link')){const watch=document.createElement('a');watch.className='watch-link';watch.textContent=next.kind==='rent'?'RENT':next.kind==='buy'?'BUY':'WATCH';watch.href=next.link;watch.target='_blank';watch.rel='noopener noreferrer';actions.prepend(watch);}if(details.open)fillDetails();
    }catch{if(card.isConnected&&!card.querySelector('.cost-block')){const note=document.createElement('p');note.className='offer-note';note.textContent='Viewing options could not refresh. Open Details to retry.';details.before(note);}}
   });
@@ -623,13 +625,13 @@ function addToWatchlist(movie) {
     overview:movie.overview || '',runtime:movie.runtime || null,director:movie.director || '',usReleaseDate:movie.usReleaseDate || null,
     availabilitySnapshot:movie.availabilitySnapshot || null,watchmodeCache:movie.watchmodeCache || null,storePriceCache:movie.storePriceCache||null,
     release_date: movie.release_date || movie.primary_release_date || '',
-    genre_ids: movie.genre_ids || [],letterboxdURL:movie.letterboxdURL||null,tags:movie.tags||[],tones:movie.tones||null,tagline:movie.tagline||'',
+    genre_ids: movie.genre_ids || [],letterboxdURL:movie.letterboxdURL||null,releaseFile:movie.releaseFile||null,tags:movie.tags||[],tones:movie.tones||null,tagline:movie.tagline||'',
     addedAt: Date.now(),
     lastStatusCode: null,
     lastStatusLabel: null,
     statusChangedAt: null,
     pinned: false,
-    manualNote: '',alert:{mode:'mine',maxPrice:7.99},priceHistory:movie.priceHistory || [],
+    manualNote: '',alert:{mode:movie.releaseFile?'any':'mine',maxPrice:7.99},priceHistory:movie.priceHistory || [],
   });
   saveWatchlist();
   showToast(movie.title + ' added to your watchlist');
@@ -688,7 +690,7 @@ function dismissVisibleBrowse(){
 }
 function renderDiscoverCached() {
   const grid=document.getElementById('discover-grid');grid.replaceChildren();
-  lastDiscoverResults.filter(m=>!isSeen(m)&&!skipSet.has(m.id)&&!watchlist.some(w=>w.id===m.id)).forEach(m=>grid.appendChild(renderCard(m,{context:'discover'})));
+  lastDiscoverResults.filter(m=>!isSeen(m)&&!skipSet.has(m.id)&&(!watchlist.some(w=>w.id===m.id)||m.releaseFile)).forEach(m=>grid.appendChild(renderCard(m,{context:'discover'})));
   updateBrowseDismissControl();
 }
 function renderSearchCached() {
@@ -781,16 +783,48 @@ document.getElementById('reset-cost-filter').onclick=()=>{costFilter='all';rende
 document.querySelectorAll('[data-cost-filter]').forEach(btn=>btn.onclick=()=>{costFilter=btn.dataset.costFilter;renderWatchlist(false,true);});
 document.getElementById('sort-select').addEventListener('change',e=>{watchlistSort=e.target.value;renderWatchlist(false,true);});
 
+function renderReleaseFile(movie,status){
+ const facts=DiscoveryModel.facts(movie,status,discoveryWindow().today),box=document.createElement('div');box.className='release-file';
+ const badge=document.createElement('strong');badge.className='release-stage';badge.textContent=facts.badge;box.appendChild(badge);
+ for(const text of [facts.theatrical,facts.home]){const p=document.createElement('p');p.textContent=text;box.appendChild(p);}
+ if(facts.screening){const p=document.createElement('p');p.className='regional-screening';p.textContent=facts.screening.label+' · '+facts.screening.location+' · '+formatFilmDate(facts.screening.date)+' at '+facts.screening.time+' MT'+(facts.screening.stale?' · previous check':'');box.appendChild(p);}
+ const url=HubModel.safeLink(movie.releaseFile.sourceURL);if(url){const a=document.createElement('a');a.href=url;a.target='_blank';a.rel='noopener noreferrer';a.textContent=movie.releaseFile.source+' listing';box.appendChild(a);const p=document.createElement('p');p.className='offer-note';p.textContent='Source checked '+formatFilmDate(new Date(movie.releaseFile.checkedAt).toISOString().slice(0,10));box.appendChild(p);}return box;
+}
+function updateDiscoveryGuide(){
+ const content={recent:['New releases','Recent US theatrical releases, with your strongest connections first.'],coming:['Worth waiting for','Forthcoming films, including first releases abroad. A catalog date does not confirm a Kalispell booking.'],circuit:['Beyond the multiplex','Independent distributor listings and verified regional screenings. Small releases get room to breathe.']}[discoveryStage];
+ document.querySelector('#tab-discover .count-stamp').textContent='A RELEASE RADAR';document.getElementById('discovery-stage-title').textContent=content[0];document.getElementById('discovery-stage-note').textContent=content[1];
+ const search=!!document.getElementById('search-input').value.trim();document.getElementById('discovery-filters').hidden=search||discoveryStage==='circuit';document.getElementById('discover-more').hidden=search||discoveryStage==='circuit';
+ for(const id of ['release-month','discover-scope']){document.getElementById(id).hidden=discoveryStage!=='recent';document.querySelector('label[for="'+id+'"]').hidden=discoveryStage!=='recent';}document.getElementById('include-rereleases').closest('label').hidden=discoveryStage!=='recent';
+ document.getElementById('discovery-filter-note').textContent=discoveryStage==='coming'?'Future listings may have no runtime, poster, or US date yet. Those gaps stay labeled. Known shorts are excluded.':'Feature films with a US theatrical listing. No minimum rating count. Seen, skipped, and tracked films stay off this shelf.';
+ document.querySelectorAll('[data-discovery-stage]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.discoveryStage===discoveryStage)));
+}
+async function fetchHorizon(){
+ if(horizonFeed)return horizonFeed;if(horizonPromise)return horizonPromise;
+ horizonPromise=(async()=>{let data;try{const r=await fetch('https://transmissionalbum.netlify.app/.netlify/functions/rewind-horizon');if(!r.ok)throw Error();data=await r.json();if(!Array.isArray(data.items))throw Error();}catch{const r=await fetch('horizon-snapshot.json',{cache:'no-cache'});if(!r.ok)throw Error('Independent listings unavailable');data={...await r.json(),stale:true};}if(!Number.isFinite(data.checkedAt)||Date.now()-data.checkedAt>7*86400000)data.items=[];horizonFeed=data;return data;})();try{return await horizonPromise;}finally{horizonPromise=null;}
+}
+async function refreshTrackedReleases(){const feed=await fetchHorizon();let changed=false;for(const tracked of watchlist){const row=feed.items.find(m=>m.id===tracked.id);if(!row||!tracked.releaseFile)continue;const file=DiscoveryModel.sourceMovie(row)?.releaseFile;if(file){tracked.releaseFile={...file,screenings:file.screenings.map(r=>({...r,stale:feed.stale||r.stale}))};changed=true;}}if(changed){saveWatchlist();window.dispatchEvent(new Event('rewind:state'));}}
+async function rankDiscovery(movies){
+ if(typeof Hub!=='undefined')await Hub.loadTasteBaseline();const seeds=HubModel.evidence(hubState.taste);
+ const ranked=await mapLimited(movies,4,async movie=>{if(!movie.id)return movie;let meta=movie.meta;try{if(!meta?.credits)meta=await fetchMovieDetails(movie.id);if(!meta?.keywords)meta={...meta,keywords:await tmdbGet('/movie/'+movie.id+'/keywords')};}catch{}const fit=HubModel.affinity({...movie,meta},seeds,hubState.feedback);return {...movie,meta,discoveryFit:HubModel.strongConnection(fit)?fit:null,requestedInterest:movie.id===1599181};});
+ if(document.getElementById('discover-sort').value==='taste')ranked.sort((a,b)=>Number(!!b.requestedInterest)-Number(!!a.requestedInterest)||(b.discoveryFit?.score||0)-(a.discoveryFit?.score||0));return ranked;
+}
+async function renderCircuit(request){
+ const feed=await fetchHorizon(),grid=document.getElementById('discover-grid');const movies=await rankDiscovery(feed.items.map(DiscoveryModel.sourceMovie).filter(m=>m&&(!m.id||!isSeen(m)&&!skipSet.has(m.id))));if(request!==discoverRequest)return;
+ lastDiscoverResults=movies;grid.replaceChildren();for(const movie of movies){if(movie.id)grid.appendChild(renderCard(movie,{context:'discover'}));else{const card=document.createElement('article');card.className='rental-card unresolved-film';const h=document.createElement('h3');h.textContent=movie.title;card.appendChild(h);const p=document.createElement('p');p.textContent='Catalog identity not verified. Read the distributor listing before tracking.';card.appendChild(p);const a=document.createElement('a');a.href=movie.releaseFile.sourceURL;a.target='_blank';a.rel='noopener noreferrer';a.textContent='READ FILM LISTING';card.appendChild(a);grid.appendChild(card);}}
+ document.getElementById('discover-status').textContent=movies.length+' independent listings · '+(feed.stale?'previous check':'source checked '+formatFilmDate(new Date(feed.checkedAt).toISOString().slice(0,10)))+' · refreshed daily';if(!movies.length)grid.textContent='No current independent listings. Search any film above.';updateBrowseDismissControl();
+}
+
 // ---------- render: discover ----------
 
 let discoverRequest = 0;
 async function renderDiscover(append = false) {
   const request = ++discoverRequest;
-  const filter={window:discoveryWindow(),scope:document.getElementById('discover-scope').value,genre:document.getElementById('discover-genre').value,rereleases:document.getElementById('include-rereleases').checked,sort:document.getElementById('discover-sort').value};
-  const statusEl=document.getElementById('discover-status'),loadButton=document.getElementById('discover-more');loadButton.disabled=true;statusEl.textContent='Finding feature releases…';
+  const filter={stage:discoveryStage,window:discoveryWindow(),scope:document.getElementById('discover-scope').value,genre:document.getElementById('discover-genre').value,rereleases:document.getElementById('include-rereleases').checked,sort:document.getElementById('discover-sort').value};
+  const statusEl=document.getElementById('discover-status'),loadButton=document.getElementById('discover-more');loadButton.disabled=true;statusEl.textContent=discoveryStage==='circuit'?'Checking independent release listings…':discoveryStage==='coming'?'Finding forthcoming films…':'Finding recent releases…';
   const grid = document.getElementById('discover-grid');
-  grid.setAttribute('aria-busy','true');
+  grid.dataset.stage=discoveryStage;grid.setAttribute('aria-busy','true');if(!append)grid.replaceChildren();
   try{
+  if(filter.stage==='circuit'){await renderCircuit(request);return;}
   // always clear any previous empty-state message before deciding whether to show a new one
   grid.querySelectorAll('.empty-note').forEach(el => el.remove());
 
@@ -803,22 +837,23 @@ async function renderDiscover(append = false) {
 
   while (filtered.length < MIN_RESULTS && pagesChecked < MAX_PAGES_PER_LOAD && discoverPage <= totalPages) {
     const data = await fetchDiscover(discoverPage,filter);
+    if(discoverPage===1&&filter.stage==='coming'&&filter.sort==='taste'){if(typeof Hub!=='undefined')await Hub.loadTasteBaseline();const seeds=HubModel.evidence(hubState.taste).sort((a,b)=>(Number(!!b.owned)+Number(!!b.favorite)+(b.rating||0))-(Number(!!a.owned)+Number(!!a.favorite)+(a.rating||0))).slice(0,6);const related=await mapLimited(seeds,3,async seed=>{try{return (await tmdbGet('/movie/'+seed.id+'/recommendations')).results||[];}catch{return [];}});data.results=[...new Map([...related.flat().filter(m=>!m.release_date||m.release_date>=filter.window.today),...data.results].map(m=>[m.id,m])).values()];}
     if (request !== discoverRequest) return;
     totalPages = data.total_pages || totalPages;
     const candidates = data.results.filter(m =>
       !isSeen(m) && !skipSet.has(m.id) && !watchlist.some(w => w.id === m.id)
     );
-    const verified=await mapLimited(candidates,4,async m=>{try{return RewindModel.discoveryMovie(m,await fetchMovieDetails(m.id),filter.window,filter.rereleases);}catch{return null;}});
+    const verified=await mapLimited(candidates,4,async m=>{try{const details=await fetchMovieDetails(m.id);return filter.stage==='coming'?DiscoveryModel.futureMovie(m,details,filter.window.today,ReleaseModel.addDays(filter.window.today,365)):RewindModel.discoveryMovie(m,details,filter.window,filter.rereleases);}catch{return null;}});
     if(request !== discoverRequest) return;
     filtered=filtered.concat(verified.filter(m=>m&&!isSeen(m)&&!skipSet.has(m.id)&&!watchlist.some(w=>w.id===m.id)));
     pagesChecked++;
     discoverPage++;
   }
 
-  filtered=[...new Map(filtered.map(m=>[m.id,m])).values()];
+  filtered=await rankDiscovery([...new Map(filtered.map(m=>[m.id,m])).values()]);if(request!==discoverRequest)return;
   if(append)filtered=filtered.filter(m=>!lastDiscoverResults.some(prior=>prior.id===m.id));
   lastDiscoverResults = append ? lastDiscoverResults.concat(filtered) : filtered;
-  statusEl.textContent=`${lastDiscoverResults.length} films · TMDB-listed US theatrical dates · ${filter.scope==='small'?'smaller releases':'recent feature releases'}`;
+  statusEl.textContent=filter.stage==='coming'?lastDiscoverResults.length+' films with forthcoming listings · US and first-release dates are labeled separately':`${lastDiscoverResults.length} films · TMDB-listed US theatrical dates · ${filter.scope==='small'?'smaller releases':'recent feature releases'}`;
   if(!append)grid.replaceChildren();
   filtered.forEach(m => grid.appendChild(renderCard(m, { context: 'discover' })));
 
@@ -846,8 +881,8 @@ document.getElementById('discover-more').addEventListener('click', async () => {
 // ---------- render: search ----------
 
 let searchRequest=0;
-document.getElementById('search-form').addEventListener('submit',async e=>{e.preventDefault();const query=document.getElementById('search-input').value.trim();if(!query)return;const request=++searchRequest;document.getElementById('search-clear-btn').hidden=false;document.getElementById('discover-grid').hidden=true;document.getElementById('discover-more').hidden=true;document.getElementById('discovery-filters').hidden=true;const grid=document.getElementById('search-grid');grid.hidden=false;grid.textContent='Searching…';try{const results=await searchMovies(query);if(request!==searchRequest)return;lastSearchResults=results.filter(m=>!skipSet.has(m.id));grid.replaceChildren();lastSearchResults.forEach(m=>grid.appendChild(renderCard(m,{context:'search',markSeen:true})));document.getElementById('discover-status').textContent=lastSearchResults.length+' catalog matches';if(!lastSearchResults.length){const note=document.createElement('p');note.className='empty-note';note.textContent='No films found. Try the title without a year or subtitle.';grid.appendChild(note);}}catch{if(request===searchRequest)grid.textContent='Search failed. Try again.';}});
-document.getElementById('search-clear-btn').onclick=()=>{searchRequest++;document.getElementById('search-input').value='';document.getElementById('search-grid').hidden=true;document.getElementById('search-clear-btn').hidden=true;document.getElementById('discovery-filters').hidden=false;document.getElementById('discover-grid').hidden=false;document.getElementById('discover-more').hidden=false;document.getElementById('discover-status').textContent=lastDiscoverResults.length+' recent films';updateBrowseDismissControl();};
+document.getElementById('search-form').addEventListener('submit',async e=>{e.preventDefault();const query=document.getElementById('search-input').value.trim();if(!query)return;++discoverRequest;const request=++searchRequest;document.getElementById('search-clear-btn').hidden=false;document.getElementById('discover-grid').hidden=true;document.getElementById('discover-more').hidden=true;document.getElementById('discovery-filters').hidden=true;const grid=document.getElementById('search-grid');grid.hidden=false;grid.textContent='Searching…';try{const results=await searchMovies(query);if(request!==searchRequest)return;lastSearchResults=results.filter(m=>!skipSet.has(m.id));grid.replaceChildren();lastSearchResults.forEach(m=>grid.appendChild(renderCard(m,{context:'search',markSeen:true})));document.getElementById('discover-status').textContent=lastSearchResults.length+' catalog matches';if(!lastSearchResults.length){const note=document.createElement('p');note.className='empty-note';note.textContent='No films found. Try the title without a year or subtitle.';grid.appendChild(note);}}catch{if(request===searchRequest)grid.textContent='Search failed. Try again.';}});
+document.getElementById('search-clear-btn').onclick=()=>{searchRequest++;document.getElementById('search-input').value='';document.getElementById('search-grid').hidden=true;document.getElementById('search-clear-btn').hidden=true;document.getElementById('discover-grid').hidden=false;updateDiscoveryGuide();renderDiscoverCached();document.getElementById('discover-status').textContent=lastDiscoverResults.length+' films on this shelf';updateBrowseDismissControl();};
 document.getElementById('search-input').addEventListener('search',e=>{if(!e.target.value.trim())document.getElementById('search-clear-btn').click();});
 document.querySelectorAll('.tab-btn').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.tab-btn').forEach(b=>{b.classList.toggle('active',b===btn);if(b===btn)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current');});document.querySelectorAll('.tab-panel').forEach(p=>p.classList.toggle('active',p.id==='tab-'+btn.dataset.tab));if(btn.dataset.tab==='watchlist')renderWatchlist();}));
 
@@ -954,3 +989,6 @@ async function initEmailAlerts() {
 renderServiceSettings();
 document.getElementById('refresh-card-btn').onclick=async()=>{const btn=document.getElementById('refresh-card-btn');btn.disabled=true;try{await renderWatchlist(true);}catch(err){showToast(err.message);}finally{btn.disabled=false;}};
 init().then(initEmailAlerts);
+
+document.querySelectorAll('[data-discovery-stage]').forEach(button=>button.onclick=()=>{searchRequest++;document.getElementById('search-input').value='';document.getElementById('search-clear-btn').hidden=true;document.getElementById('search-grid').hidden=true;document.getElementById('discover-grid').hidden=false;discoveryStage=button.dataset.discoveryStage;discoverPage=1;updateDiscoveryGuide();renderDiscover().catch(e=>showToast(e.message));});
+updateDiscoveryGuide();

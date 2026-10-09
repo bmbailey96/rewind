@@ -1,0 +1,13 @@
+const assert=require('node:assert/strict'),D=require('../discovery-model'),H=require('../hub-model');
+const us=(type,date)=>({results:[{iso_3166_1:'US',release_dates:[{type,release_date:date+'T00:00:00Z'}]}]});
+const m={id:8,title:'Forthcoming',release_date:'2026-11-01'};
+assert.ok(D.futureMovie(m,{...m,runtime:0,release_dates:us(3,'2026-11-20')},'2026-10-09','2027-10-09'));
+assert.equal(D.futureMovie(m,{...m,runtime:15},'2026-10-09','2027-10-09'),null);
+assert.equal(D.futureMovie(m,{...m,release_date:'2026-01-01'},'2026-10-09','2027-10-09'),null);
+assert.equal(D.valid('2026-02-30'),false);
+const premiere=D.futureMovie(m,m,'2026-10-09','2027-10-09');assert.match(D.facts(premiere,null,'2026-10-09').theatrical,/US date not established/);
+assert.equal(D.sourceMovie({title:'Bad',sourceURL:'javascript:alert(1)'}),null);
+const film=D.sourceMovie({id:1599181,title:'Chronovisor',sourceURL:'https://grasshopperfilm.com/film/chronovisor/',sourceStatus:'limited',details:{release_dates:us(2,'2026-09-04')},screenings:[{date:'2026-10-24',time:'5:30pm',location:'Missoula, MT',label:'Montana Film Festival',checkedAt:Date.now(),sourceURL:'https://www.montanafilmfestival.org/films/feature/chronovisor/'}]});
+assert.match(D.facts(film,null,'2026-10-09').theatrical,/Limited US run began/);assert.match(D.facts(film,null,'2026-10-09').home,/No US home/);assert.match(D.facts(film,{stale:true,offers:[{kind:'rent'}]},'2026-10-09').home,/unavailable/);
+assert.ok(H.upcoming(film,'2026-10-09').some(r=>r.regional&&r.label.includes('Missoula')));film.releaseFile.screenings[0].checkedAt-=8*86400000;assert.equal(H.upcoming(film,'2026-10-09').filter(r=>r.regional).length,0);
+console.log('Discovery: uncertain dates, feature eligibility, US scope, regional screenings, stale checks and safe sources passed');
