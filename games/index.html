@@ -175,14 +175,14 @@ async function loadWeather() {
   try {
     const r = await fetch('https://transmissionalbum.netlify.app/.netlify/functions/rewind-oracle-context');
     const c = await r.json();if(!r.ok||!c.weather?.current)throw Error('Weather unavailable');
-    const w=c.weather.current,data={cloudCover:w.cloud_cover,temp:w.temperature_2m,isDay:w.is_day,sunset:c.weather.daily?.sunset?.[0],trend:'steady'};
+    const w=c.weather.current,rawSunset=c.weather.daily?.sunset?.[0],offset=c.weather.utc_offset_seconds,sunset=rawSunset&&Number.isFinite(offset)?new Date(Date.parse(rawSunset+'Z')-offset*1000).toISOString():null,data={cloudCover:w.cloud_cover,temp:w.temperature_2m,isDay:w.is_day,sunset,trend:'steady'};
     state.weather = data;
     const mins = daylightMinutesLeft(data.sunset);
     const cloud = data.cloudCover;
     const cloudWord = cloud == null ? '' : cloud < 20 ? 'clear skies' : cloud < 60 ? 'partly cloudy' : 'overcast';
     const trendWord = data.trend === 'clearing' ? ', clearing up' : data.trend === 'building' ? ', clouding over' : '';
     const daylightWord = data.isDay === 0 ? 'after dark' : (mins != null && mins > 0 ? `~${mins < 60 ? mins + ' min' : Math.round(mins/60) + ' hr'} of daylight left` : 'daylight fading');
-    strip.textContent = `${cloudWord}${trendWord}, ${daylightWord}, ${data.temp != null ? Math.round(data.temp) + '°' : ''} · ${moonPhase().name}`;
+    strip.textContent = `Kalispell · ${cloudWord}${trendWord}, ${daylightWord}, ${data.temp != null ? Math.round(data.temp) + '°' : ''} · ${moonPhase().name}`;
   } catch (e) {
     strip.textContent = 'sky unreadable, going in blind';
     state.weather = { cloudCover: null, isDay: 1, sunset: null };
