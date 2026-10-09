@@ -4063,6 +4063,7 @@ Upset rate: ${p.upsetRate.toFixed(1)}%</title></circle>`
         matchArea.innerHTML = '<div class="hint">Import your existing Arena JSON, connect your previous cloud save, or add albums to begin. The text field contains examples, not a ranking.</div>';
       }
 
+      if(isMobile()&&!albums.length)setMobileTab('data');
       // Restore collapsed panel state; auto-collapse if albums are loaded
       const savedCollapsed = localStorage.getItem(PANEL_COLLAPSED_KEY);
       if (savedCollapsed === "1" || (savedCollapsed === null && albums.length > 0)) {
