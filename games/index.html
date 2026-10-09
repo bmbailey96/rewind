@@ -114,7 +114,7 @@ const ORIGINAL_POOL =
 const POOL = GameHistory.merge(ORIGINAL_POOL, PlayStationStats.records);
 const MODES = {
   start:   { label: "Start Something New", buckets: ["Never Started", "Barely Started"] },
-  finish:  { label: "Finish What You Started", buckets: ["Active", "Barely Started", "Gave Up"] },
+  finish:  { label: "Return to a Game", buckets: ["Active", "Barely Started", "Gave Up", "Played · progress unknown"] },
   comfort: { label: "Known Comfort Pick", buckets: ["Finished - Would Replay", "Active - Comfort Pick"] },
   replay:  { label: "Full Replay", buckets: ["Finished - Would Replay"] },
 };
@@ -270,7 +270,7 @@ function reasonText(g, modeKey, weatherTag) {
     comfort: "You know this one already, easy to drop back into.",
     replay: "Full replay itch, this one's built to hold up a second time.",
   };
-  bits.push(modeSentence[modeKey]);
+  bits.push(modeKey==='finish'&&g.bucket==='Played · progress unknown'?"A return visit. The console knows you played it; it does not know whether you finished it.":modeSentence[modeKey]);
   if (weatherTag === 'dread') bits.push("The sky gives this one some cover. Indoors, it has its own problems.");
   if (weatherTag === 'open') bits.push("Clear and bright out, plenty of daylight left, good conditions for something open and sprawling.");
   if (weatherTag === 'cozy') bits.push("Middling sky, nothing dramatic, good night for something quieter.");
