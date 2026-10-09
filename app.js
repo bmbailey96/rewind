@@ -1,4 +1,6 @@
 // ---------- letterboxd import ----------
+StorageModel.migrate(localStorage);
+function persistData(key,data){if(StorageModel.save(localStorage,key,data))return true;showToast('This browser could not save the latest change. Your previous saved films are still available. Free some site storage or reconnect sync.');return false;}
 
 const SEEN_KEY = 'rewind-seen-v1';
 let seenSet = loadSeenSet();
@@ -173,7 +175,7 @@ const GH_GIST_KEY = 'rewind-gist-id';
 let syncTimer,syncFlight=null;
 const SYNC_BASE_KEY='rewind-sync-base-v1',SYNC_DIRTY_KEY='rewind-sync-dirty-v1';
 const syncBase=()=>{try{return JSON.parse(localStorage.getItem(SYNC_BASE_KEY)||'null');}catch{return null;}};
-function rememberSync(data){localStorage.setItem(SYNC_BASE_KEY,JSON.stringify(data));}
+function rememberSync(data){persistData(SYNC_BASE_KEY,data);}
 function syncNotice(text,error=false){const e=document.getElementById('sync-status');if(e){e.dataset.tone=error?'error':'info';e.textContent=text;}}
 async function ghJSON(path,options){const r=await ghFetch(path,options);if(!r.ok)throw Error(r.status===401||r.status===403?'GitHub did not accept this token. Check its gist permission.':'GitHub sync failed (HTTP '+r.status+'). Your changes remain on this device.');return r.json();}
 
@@ -191,12 +193,12 @@ function ghFetch(path, opts = {}) {
 
 function collectSyncData() {
   return {
-    watchlist,
+    watchlist:StorageModel.compact(watchlist),
     seen: [...seenSet],
     skipped: [...skipSet],
     services: myServices,
     rentalBudget,
-    hub:hubState,
+    hub:StorageModel.compact(hubState),
     ui:JSON.parse(localStorage.getItem('rewind-ui-v1')||'{}'),
     recommendations:JSON.parse(localStorage.getItem('rewind-recommendations-v1')||'[]'),
     updatedAt: Date.now(),
@@ -303,7 +305,7 @@ function mergeTheaterState(incoming){
  hubState.hiddenTheaterFilms=CounterModel.mergeHiddenFilms(hubState.hiddenTheaterFilms,Array.isArray(incoming.hiddenTheaterFilms)?incoming.hiddenTheaterFilms:[],restores);
 }
 function refreshTheaterState(){try{mergeTheaterState(JSON.parse(localStorage.getItem('rewind-hub-v1')||'{}'));}catch{}}
-function persistHubState(){refreshTheaterState();localStorage.setItem('rewind-hub-v1',JSON.stringify(hubState));}
+function persistHubState(){refreshTheaterState();persistData('rewind-hub-v1',hubState);}
 window.addEventListener('storage',event=>{if(event.key==='rewind-hub-v1'){refreshTheaterState();if(typeof Hub!=='undefined')Hub.stateChanged();}});
 
 // ---------- storage ----------
@@ -318,7 +320,7 @@ function loadWatchlist() {
 }
 
 function saveWatchlist() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(watchlist));
+  persistData(STORAGE_KEY,watchlist);
   window.dispatchEvent(new Event('rewind:state'));
 }
 
