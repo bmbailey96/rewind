@@ -1,4 +1,4 @@
-const CACHE = 'rewind-v22';
+const CACHE = 'rewind-v23';
 const SHELL = ['/', 'index.html', 'style.css', 'app.js', 'rewind-model.js', 'availability-ui.js', 'release-model.js', 'manifest.json', 'hub-model.js', 'counter-model.js', 'discovery-model.js', 'taste-model.js', 'oracle.js', 'hub.js'];
 
 self.addEventListener('install', (e) => {
