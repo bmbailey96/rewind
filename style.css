@@ -978,3 +978,4 @@ footer{border-color:#303b32;color:#8b9e87;font-size:.7rem}#toast{background:#203
 
 /* Keep display fonts and source links consistent with the dark theme. */
 header .shop-name{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:clamp(36px,6vw,64px)}.panel-head h2,.shelf-group h3,.card-title{font-family:"Space Grotesk",system-ui,sans-serif}.source-links a{color:#82c9b6;text-underline-offset:4px;margin-right:16px}
+.calendar-film-actions button.track-action{background:#83c6b0;color:#101b18;border:0}.calendar-film-actions button.track-action:hover{background:#a4ddc9;color:#101b18}.calendar-film-actions button.track-action:disabled{background:transparent;color:#94bb9d;opacity:1}
