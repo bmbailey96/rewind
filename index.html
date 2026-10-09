@@ -12,8 +12,10 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="/media-nav.css">
 </head>
 <body>
+<script src="/media-nav.js"></script>
 
 <header class="counter">
   <div class="counter-inner">
@@ -127,7 +129,7 @@
       </div>
       <p id="sync-status" class="import-status"></p>
     </div>
-    <div class="import-block"><h3>Your taste</h3><p class="import-note">Import Letterboxd ratings.csv, diary.csv, or a favorites / owned-films list.csv. Ratings of 4 stars or higher, explicit favorites, ownership, and repeat watches guide recommendations. Watchlist additions never become taste evidence. A physical-shelf CSV can use Name, Title, or Movie Title; Year, Release Year, or Production Year; and Format, Media Format, or Media Type. TMDB ID is optional. Ambiguous titles stay unmatched. Copies appear as Your shelf; the shelf-only picker also allows labeled rewatches.</p><label>Import as<select id="taste-import-kind"><option value="profile">RATINGS + DIARY PROFILE</option><option value="ratings">RATINGS</option><option value="diary">DIARY / REWATCHES</option><option value="favorites">FAVORITES</option><option value="owned">PHYSICAL SHELF · DVD / BLU-RAY / VHS</option></select></label><input aria-label="Import taste or physical shelf records" id="import-taste" type="file" accept=".csv"><p class="import-note">Your STATIC taste profile and published ratings are built in. No repeat uploads. Imports add new records; tracking records interest, not a positive rating.</p><details class="written-taste"><summary>Your written taste profile</summary><p id="written-taste"></p></details><p id="taste-status" role="status"></p><details><summary>Manage taste records</summary><div id="taste-records"></div></details></div><div class="import-block"><h3>The other counters</h3><p class="import-note">Original project source repositories. Your film hub is here.</p><div id="legacy-links"></div><p class="import-note">Browser data is separate between sites. Import your old lists here; nothing is silently removed from the originals.</p></div>
+    <div class="import-block"><h3>Your taste</h3><p class="import-note">Import Letterboxd ratings.csv, diary.csv, or a favorites / owned-films list.csv. Ratings of 4 stars or higher, explicit favorites, ownership, and repeat watches guide recommendations. Watchlist additions never become taste evidence. A physical-shelf CSV can use Name, Title, or Movie Title; Year, Release Year, or Production Year; and Format, Media Format, or Media Type. TMDB ID is optional. Ambiguous titles stay unmatched. Copies appear as Your shelf; the shelf-only picker also allows labeled rewatches.</p><label>Import as<select id="taste-import-kind"><option value="profile">RATINGS + DIARY PROFILE</option><option value="ratings">RATINGS</option><option value="diary">DIARY / REWATCHES</option><option value="favorites">FAVORITES</option><option value="owned">PHYSICAL SHELF · DVD / BLU-RAY / VHS</option></select></label><input aria-label="Import taste or physical shelf records" id="import-taste" type="file" accept=".csv"><p class="import-note">Your STATIC taste profile and published ratings are built in. No repeat uploads. Imports add new records; tracking records interest, not a positive rating.</p><details class="written-taste"><summary>Your written taste profile</summary><p id="written-taste"></p></details><p id="taste-status" role="status"></p><details><summary>Manage taste records</summary><div id="taste-records"></div></details></div><div class="import-block"><h3>Project sources</h3><p class="import-note">Original film projects used by this section.</p><div id="legacy-links"></div><p class="import-note">Films, music, and games now share this site. Old Arena rankings can be brought over with its JSON import or existing cloud save.</p></div>
     <details class="maintenance-controls"><summary>Watchlist maintenance</summary><p id="dismissed-count"></p><button id="restore-dismissed" class="secondary" hidden>RESTORE PASSED-OVER FILMS</button><p>Remove watchlist films released more than a year ago. Nothing is cleared automatically.</p><button id="prune-btn" class="secondary">CLEAR OLDER FILMS</button></details>
   </section>
 
@@ -144,6 +146,7 @@
 <script src="discovery-model.js"></script>
 <script src="taste-model.js"></script>
 <script src="hub-model.js"></script>
+<script src="artwork-model.js"></script>
 <script src="occasion-model.js"></script>
 <script src="oracle.js"></script>
 <script src="storage-model.js"></script>

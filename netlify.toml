@@ -5,3 +5,24 @@
   for = "/sw.js"
   [headers.values]
     Cache-Control = "no-cache"
+
+[[redirects]]
+  from = "/music-api/*"
+  to = "https://transmissionalbum.netlify.app/.netlify/functions/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/music-art"
+  to = "/.netlify/functions/media-art?kind=album"
+  status = 200
+
+[[redirects]]
+  from = "/games-cover"
+  to = "/.netlify/functions/media-art?kind=game"
+  status = 200
+
+[[redirects]]
+  from = "/games-psn"
+  to = "/.netlify/functions/game-psn"
+  status = 200

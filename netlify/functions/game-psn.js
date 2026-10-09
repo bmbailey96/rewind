@@ -1,0 +1,1 @@
+exports.handler=async()=>({statusCode:503,headers:{'content-type':'application/json'},body:JSON.stringify({error:'Live PS5 sync is not connected on the combined site. Your imported game shelf is available.'})});
