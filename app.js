@@ -170,7 +170,12 @@ const GIST_FILENAME = 'rewind-sync.json';
 const GH_TOKEN_KEY = 'rewind-gh-token';
 const GH_GIST_KEY = 'rewind-gist-id';
 
-let syncTimer;
+let syncTimer,syncFlight=null;
+const SYNC_BASE_KEY='rewind-sync-base-v1',SYNC_DIRTY_KEY='rewind-sync-dirty-v1';
+const syncBase=()=>{try{return JSON.parse(localStorage.getItem(SYNC_BASE_KEY)||'null');}catch{return null;}};
+function rememberSync(data){localStorage.setItem(SYNC_BASE_KEY,JSON.stringify(data));}
+function syncNotice(text,error=false){const e=document.getElementById('sync-status');if(e){e.dataset.tone=error?'error':'info';e.textContent=text;}}
+async function ghJSON(path,options){const r=await ghFetch(path,options);if(!r.ok)throw Error(r.status===401||r.status===403?'GitHub did not accept this token. Check its gist permission.':'GitHub sync failed (HTTP '+r.status+'). Your changes remain on this device.');return r.json();}
 
 function ghFetch(path, opts = {}) {
   const token = localStorage.getItem(GH_TOKEN_KEY);
@@ -192,12 +197,16 @@ function collectSyncData() {
     services: myServices,
     rentalBudget,
     hub:hubState,
+    ui:JSON.parse(localStorage.getItem('rewind-ui-v1')||'{}'),
+    recommendations:JSON.parse(localStorage.getItem('rewind-recommendations-v1')||'[]'),
     updatedAt: Date.now(),
   };
 }
 
 function applySyncData(data) {
   if (!data) return;
+  if(data.ui&&typeof data.ui==='object')localStorage.setItem('rewind-ui-v1',JSON.stringify(data.ui));
+  if(Array.isArray(data.recommendations))localStorage.setItem('rewind-recommendations-v1',JSON.stringify(data.recommendations));
   if(typeof data.rentalBudget==='number'&&data.rentalBudget>=0&&data.rentalBudget<=100){rentalBudget=data.rentalBudget;localStorage.setItem('rewind-rental-budget-v1',String(rentalBudget));document.getElementById('rental-budget').value=rentalBudget;}
   if(data.hub&&typeof data.hub==='object'){const restores=[...(hubState.theaterHideRestores||[]),...(data.hub.theaterHideRestores||[])];hubState.hiddenTheaterFilms=CounterModel.mergeHiddenFilms(hubState.hiddenTheaterFilms,data.hub.hiddenTheaterFilms,restores);hubState.theaterHideRestores=[...new Map(restores.map(r=>[r.key+':'+r.at,r])).values()];for(const key of ['taste','hidden','muted','followed','knownEvents','suggestions','dismissedSuggestions','ignoredTaste','ignoredOwnership','setAsides','feedback','changeReceipts','calendarBaseline'])if(Array.isArray(data.hub[key]))hubState[key]=data.hub[key];if(Number.isFinite(data.hub.receiptsReadAt))hubState.receiptsReadAt=Math.max(hubState.receiptsReadAt||0,data.hub.receiptsReadAt);if(Number.isFinite(data.hub.suggestionsVersion))hubState.suggestionsVersion=data.hub.suggestionsVersion;if(Number.isFinite(data.hub.suggestionsCheckedAt))hubState.suggestionsCheckedAt=data.hub.suggestionsCheckedAt;if(typeof data.hub.eventAlerts==='boolean')hubState.eventAlerts=data.hub.eventAlerts;persistHubState();}
   watchlist = data.watchlist || [];
@@ -210,59 +219,17 @@ function applySyncData(data) {
 }
 
 async function findOrCreateGist() {
-  const existingId = localStorage.getItem(GH_GIST_KEY);
-  if (existingId) {
-    const check = await ghFetch('/gists/' + existingId);
-    if (check.ok) return existingId;
-  }
-  const listRes = await ghFetch('/gists?per_page=100');
-  if (listRes.ok) {
-    const gists = await listRes.json();
-    const found = gists.find(g => g.description === GIST_DESC);
-    if (found) {
-      localStorage.setItem(GH_GIST_KEY, found.id);
-      return found.id;
-    }
-  }
-  const createRes = await ghFetch('/gists', {
-    method: 'POST',
-    body: JSON.stringify({
-      description: GIST_DESC,
-      public: false,
-      files: { [GIST_FILENAME]: { content: JSON.stringify(collectSyncData()) } },
-    }),
-  });
-  const created = await createRes.json();
-  localStorage.setItem(GH_GIST_KEY, created.id);
-  return created.id;
+  const existing=localStorage.getItem(GH_GIST_KEY);if(existing){const r=await ghFetch('/gists/'+existing);if(r.ok)return existing;if(r.status!==404)throw Error('Could not access your saved sync connection. Check the token.');}
+  for(let page=1;page<=10;page++){const list=await ghJSON('/gists?per_page=100&page='+page),found=list.find(g=>g.description===GIST_DESC&&g.files?.[GIST_FILENAME]);if(found){localStorage.setItem(GH_GIST_KEY,found.id);return found.id;}if(list.length<100)break;}
+  const data=collectSyncData(),created=await ghJSON('/gists',{method:'POST',body:JSON.stringify({description:GIST_DESC,public:false,files:{[GIST_FILENAME]:{content:JSON.stringify(data)}}})});if(!created.id)throw Error('GitHub returned no sync ID.');localStorage.setItem(GH_GIST_KEY,created.id);rememberSync(data);return created.id;
 }
-
-async function pullFromGist() {
-  const gistId = await findOrCreateGist();
-  const res = await ghFetch('/gists/' + gistId);
-  const gist = await res.json();
-  const content = gist.files?.[GIST_FILENAME]?.content;
-  if (content) {
-    try { applySyncData(JSON.parse(content)); } catch (e) { /* ignore malformed */ }
-  }
-}
-
-async function pushToGist() {
-  const gistId = await findOrCreateGist();
-  await ghFetch('/gists/' + gistId, {
-    method: 'PATCH',
-    body: JSON.stringify({ files: { [GIST_FILENAME]: { content: JSON.stringify(collectSyncData()) } } }),
-  });
-  const statusEl = document.getElementById('sync-status');
-  if (statusEl) statusEl.textContent = 'Last synced ' + new Date().toLocaleTimeString();
-}
-
-function scheduleSync() {
-  scheduleEmailSync();
-  if (!localStorage.getItem(GH_TOKEN_KEY)) return;
-  clearTimeout(syncTimer);
-  syncTimer = setTimeout(() => pushToGist().catch(() => {}), 1500);
-}
+async function readGist(id){const gist=await ghJSON('/gists/'+id),file=gist.files?.[GIST_FILENAME];let content=file?.content;if(file?.truncated){const rawURL=new URL(file.raw_url);if(rawURL.protocol!=='https:'||rawURL.hostname!=='gist.githubusercontent.com')throw Error('Unexpected sync file address.');const response=await fetch(rawURL.href,{headers:{Authorization:'token '+localStorage.getItem(GH_TOKEN_KEY)},cache:'no-store'});if(!response.ok)throw Error('Could not read the full saved film profile.');content=await response.text();}let data;try{data=JSON.parse(content);}catch{throw Error('Saved sync data could not be read. Local films were kept.');}if(!data||!Array.isArray(data.watchlist)||!Array.isArray(data.seen)||!Array.isArray(data.skipped))throw Error('Saved sync data is incomplete. Local films were kept.');return data;}
+async function pullFromGist(){const id=await findOrCreateGist(),remote=await readGist(id),base=syncBase(),local=collectSyncData(),merged=SyncModel.merge(base||{},local,remote);applySyncData(merged);rememberSync(remote);window.dispatchEvent(new Event('rewind:state'));return merged;}
+async function pushToGist(){if(syncFlight)return syncFlight;syncFlight=(async()=>{const id=await findOrCreateGist(),remote=await readGist(id),local=collectSyncData(),merged=SyncModel.merge(syncBase()||{},local,remote);merged.updatedAt=Date.now();await ghJSON('/gists/'+id,{method:'PATCH',body:JSON.stringify({files:{[GIST_FILENAME]:{content:JSON.stringify(merged)}}})});const current=collectSyncData(),after=SyncModel.merge(local,current,merged);applySyncData(after);rememberSync(merged);const changed=JSON.stringify({...current,updatedAt:0})!==JSON.stringify({...local,updatedAt:0});if(changed){localStorage.setItem(SYNC_DIRTY_KEY,'1');scheduleSync();}else localStorage.removeItem(SYNC_DIRTY_KEY);window.dispatchEvent(new Event('rewind:state'));syncNotice('Synced '+new Date().toLocaleTimeString()+'. Ready on your connected devices.');})().catch(e=>{syncNotice(e.message,true);throw e;}).finally(()=>{syncFlight=null;});return syncFlight;}
+function scheduleSync(){scheduleEmailSync();localStorage.setItem(SYNC_DIRTY_KEY,'1');if(!localStorage.getItem(GH_TOKEN_KEY))return;clearTimeout(syncTimer);syncNotice('Saving changes across devices…');syncTimer=setTimeout(()=>pushToGist().catch(()=>{}),1500);}
+let lastSyncPull=0;
+async function refreshDeviceSync(){if(!localStorage.getItem(GH_TOKEN_KEY)||document.hidden||syncFlight||Date.now()-lastSyncPull<30000)return;lastSyncPull=Date.now();try{if(localStorage.getItem(SYNC_DIRTY_KEY))await pushToGist();else{await pullFromGist();syncNotice('Synced '+new Date().toLocaleTimeString()+'. Connected devices share this film memory.');}renderWatchlist(false,true);}catch(e){syncNotice(e.message,true);}}
+window.addEventListener('focus',refreshDeviceSync);window.addEventListener('online',refreshDeviceSync);document.addEventListener('visibilitychange',refreshDeviceSync);
 
 document.getElementById('watchmode-save-btn').addEventListener('click', () => {
   const key = document.getElementById('watchmode-key-input').value.trim();
@@ -287,12 +254,13 @@ document.getElementById('gh-connect-btn').addEventListener('click', async () => 
   statusEl.textContent = 'Connecting...';
   try {
     await pullFromGist();
-    statusEl.dataset.tone='info';statusEl.textContent = 'Connected. Pulled latest synced data.';
+    await pushToGist();
+    statusEl.dataset.tone='info';statusEl.textContent = 'Connected and synced. Use this same GitHub connection on your phone.';
     renderWatchlist();
     renderDiscover();
     await initEmailAlerts();
   } catch (e) {
-    statusEl.dataset.tone='error';statusEl.textContent = 'Connection failed, check the token has "gist" scope.';
+    statusEl.dataset.tone='error';statusEl.textContent = e.message || 'Connection failed. Check the token has gist permission.';
   }
 });
 
@@ -306,7 +274,7 @@ document.getElementById('gh-sync-now-btn').addEventListener('click', async () =>
   try {
     await pushToGist();
   } catch (e) {
-    statusEl.dataset.tone='error';statusEl.textContent = 'Push failed.';
+    statusEl.dataset.tone='error';statusEl.textContent = e.message || 'Sync failed. Your changes remain on this device.';
   }
 });
 
@@ -921,10 +889,10 @@ async function init() {
     const statusEl = document.getElementById('sync-status');
     if (statusEl) statusEl.textContent = 'Syncing...';
     try {
-      await pullFromGist();
+      if(localStorage.getItem(SYNC_DIRTY_KEY))await pushToGist();else await pullFromGist();
       if (statusEl) statusEl.textContent = 'Synced ' + new Date().toLocaleTimeString();
     } catch (e) {
-      if (statusEl) statusEl.textContent = 'Could not reach sync, showing local data.';
+      if (statusEl) {statusEl.dataset.tone='error';statusEl.textContent = 'Could not reach sync. Your changes remain on this device.';}
     }
   }
   if (!localStorage.getItem('rewind-coyote-seeded-v1')) {

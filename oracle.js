@@ -133,5 +133,18 @@
   });
   return {count:ranked.length,winner:{title:winner.title,score:winner.oracle.score,taste:winner.oracle.tasteScore,context:winner.oracle.atmosphereScore},alternatives};
  }
- return {moon,rank,reading,compare};
+ function momentReading(movie,context,at=Date.now()){
+  const base=reading(movie,{connection:null},at),d=movie.meta||movie,words=[movie.title,movie.overview,d.overview,...(d.genres||[]).map(g=>g.name||g),...(d.keywords?.keywords||[]).map(k=>k.name||k)].join(' ').toLowerCase();
+  const parts=new Intl.DateTimeFormat('en-US',{timeZone:'America/Denver',hour:'numeric',minute:'2-digit',hourCycle:'h23'}).formatToParts(at),hour=Number(parts.find(p=>p.type==='hour').value),clock=new Intl.DateTimeFormat('en-US',{timeZone:'America/Denver',hour:'numeric',minute:'2-digit'}).format(at);
+  const fresh=Number.isFinite(context?.checkedAt)&&at-context.checkedAt>=0&&at-context.checkedAt<3*3600000,w=fresh?context.weather?.current||{}:{},day=hour>=7&&hour<18,dark=/horror|noir|thriller|mystery|surreal|dream/.test(words),funny=/comedy/.test(words),vast=/space|cosmic|alien|landscape|adventure/.test(words);
+  let outside=Number.isFinite(w.temperature_2m)?Math.round(w.temperature_2m)+'°F outside':'';
+  if(Number.isFinite(w.precipitation)&&w.precipitation>0)outside+=(outside?' and ':'')+'precipitation on the weather report';else if(Number.isFinite(w.cloud_cover))outside+=(outside?' and ':'')+(w.cloud_cover<30?'mostly clear skies':w.cloud_cover>75?'a sky full of cloud':'some cloud overhead');
+  const opening='It’s '+clock+' in Kalispell'+(outside?', with '+outside:'')+'.';
+  const light=day?(Number.isFinite(w.cloud_cover)&&w.cloud_cover<30?(dark?'If daylight is getting into the room, draw the curtains for '+movie.title+'; its '+(/surreal|dream/.test(words)?'unreliable reality':'suspense')+' deserves somewhere it can spread.':movie.title+' can have the afternoon: '+(funny?'a little human absurdity is a reasonable use of all this daylight.':vast?'give the screen to somewhere larger than the room.':'let somebody else’s world take over while yours still has daylight left.')):dark?'An afternoon screening of '+movie.title+' is a small, voluntary breach of the peace; close the curtains if the room needs persuading.':'Give '+movie.title+' this stretch of the day; '+(funny?'the people in it will spend it considerably less sensibly.':'there is no requirement to save every good film for bedtime.')):dark?'The day has already done its talking; '+movie.title+' gets the room for the next unsettling part.':'Hand the evening to '+movie.title+'; '+(funny?'it can make the questionable decisions for a while.':'let the film supply the complications for a change.');
+  const phase=moon(at),symbol=phase.name==='New moon'?'The '+phase.name.toLowerCase()+' offers a useful fictional excuse for '+(dark?'secrets and things starting in the dark':'a fresh start')+'.':phase.name==='Full moon'?'The full moon is the Oracle’s theatrical excuse to turn everything up a little.':phase.name.startsWith('Waning')||phase.name==='Last quarter'?'Borrow the '+phase.name.toLowerCase()+' as a symbol of '+(/grief|memory|loss/.test(words)?'what refuses to disappear':'letting the day go')+'.':'';
+  const moonLine=phase.name.startsWith('Waxing')||phase.name==='First quarter'?'Borrow the '+phase.name.toLowerCase()+' as a symbol of something gathering momentum; '+movie.title+' gets to provide the actual evidence.':symbol;
+  const sentence=base.text.match(/[^.!?]+[.!?]/)?.[0]?.trim()||base.text;
+  return {heading:base.heading,text:[opening,light,sentence.replace(/Tonight/g,day?'This afternoon':'Tonight').replace(/An evening of/g,day?'An afternoon of':'An evening of'),moonLine].join(' ')};
+ }
+ return {moon,rank,reading,momentReading,compare};
 });

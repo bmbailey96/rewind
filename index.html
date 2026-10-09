@@ -119,11 +119,11 @@
 
     <div class="import-block">
       <h3>Sync Across Devices</h3>
-      <p class="import-note">Keeps your watchlist, seen list, and skip list in sync everywhere you open this site, using a private GitHub Gist. Make a token at <code>github.com/settings/tokens</code> (classic token, only needs the "gist" scope), paste it below once per device. Connecting will pull whatever's already synced and apply it here, so do this on the device with your existing data first.</p>
+      <p class="import-note">Connect this browser and your phone to the same GitHub account to share tracked films, permanent hides, watched films, taste imports, streaming services, your budget, and recent Oracle picks. Make a <a href="https://github.com/settings/tokens/new?scopes=gist&amp;description=Rewind%20sync" target="_blank" rel="noopener">classic GitHub token with only gist permission</a>. Paste it once on each device. Connect the device with your films first, then your phone. Changes save automatically and refresh when you return to the site. The token stays on each device; it is never included in the saved film data.</p>
       <input type="password" id="gh-token-input" class="text-input" aria-label="GitHub sync token" placeholder="GitHub token (ghp_...)" autocomplete="off">
       <div class="sync-actions">
         <button id="gh-connect-btn">CONNECT &amp; PULL</button>
-        <button id="gh-sync-now-btn" class="secondary">PUSH NOW</button>
+        <button id="gh-sync-now-btn" class="secondary">SYNC NOW</button>
       </div>
       <p id="sync-status" class="import-status"></p>
     </div>
@@ -145,7 +145,10 @@
 <script src="taste-model.js"></script>
 <script src="hub-model.js"></script>
 <script src="oracle.js"></script>
+<script src="sync-model.js"></script>
+<script src="static-model.js"></script>
 <script src="app.js"></script>
 <script src="hub.js"></script>
+<script src="static-experience.js"></script>
 </body>
 </html>

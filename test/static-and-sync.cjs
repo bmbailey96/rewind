@@ -1,0 +1,14 @@
+const assert=require('node:assert/strict'),S=require('../sync-model'),D=require('../static-model'),O=require('../oracle');
+const a={id:1,title:'One'},b={id:2,title:'Two'},c={id:3,title:'Three'};
+assert.deepEqual(S.merge({watchlist:[a]},{watchlist:[a,b]},{watchlist:[a,c]}).watchlist,[a,b,c]);
+assert.deepEqual(S.merge({watchlist:[a,b]},{watchlist:[a]},{watchlist:[a,b,c]}).watchlist,[a,c],'Offline removal survives unrelated additions on the other device');
+assert.deepEqual(S.merge({}, {watchlist:[a],rentalBudget:5}, {watchlist:[b],rentalBudget:3}).watchlist,[a,b],'Connecting keeps films from both devices');
+assert.equal(S.merge({}, {rentalBudget:5}, {rentalBudget:3}).rentalBudget,3,'A newly connected device uses the saved budget');
+assert.deepEqual(S.merge({seen:['a']},{seen:['a','b']},{seen:['a','c']}).seen,['a','b','c']);
+assert.deepEqual(S.merge({hub:{taste:[a]}},{hub:{taste:[a,b]}},{hub:{taste:[a,c]}}).hub.taste,[a,b,c]);
+const rows=D.anniversaries([{id:1,title:'Real date',release_date:'1978-10-25'},{id:2,title:'Bad date',release_date:'2020-02-30'},{id:3,title:'Future',release_date:'2027-10-25'},{id:4,title:'Leap',release_date:'2000-02-29'}],2026,9);assert.equal(rows.length,1);assert.equal(rows[0].years,48);assert.equal(rows[0].date,'2026-10-25');assert.equal(D.anniversaries([{id:4,title:'Leap',release_date:'2000-02-29'}],2026,1).length,0);
+assert.deepEqual(D.mixed([{...a,discoveryCategory:'Horror'},{...b,discoveryCategory:'Horror'},{...c,discoveryCategory:'Comedy'}],[],2).map(m=>m.id),[1,3]);
+const at=Date.parse('2026-10-09T18:48:00Z'),film={id:8,title:'A Strange Film',overview:'A surreal mystery.',meta:{genres:[{name:'Mystery'}]}};
+const reading=O.momentReading(film,{checkedAt:at,weather:{current:{temperature_2m:71,cloud_cover:10}}},at);assert.match(reading.text,/12:48 PM/);assert.match(reading.text,/71°F/);assert.match(reading.text,/If daylight/);assert.match(reading.text,/A Strange Film/);assert.match(reading.text,/fictional excuse/);
+assert.doesNotMatch(O.momentReading(film,{checkedAt:at-86400000,weather:{current:{temperature_2m:71}}},at).text,/71°F/,'Stale weather stays out of the reading');assert.doesNotMatch(reading.text,/you rated|shares.*with/i);
+console.log('STATIC interactions: diverse shelves, valid anniversaries, fresh moment prose, and cross-device additions/removals passed');
