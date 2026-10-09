@@ -1,1 +1,2285 @@
-{"generatedAt":1791406471250,"today":"2026-10-07","theatre":"Cinemark Signature Stadium Kalispell 14","theatreURL":"https://www.cinemark.com/theatres/mt-kalispell/cinemark-signature-stadium-kalispell-14","local":{"items":[{"id":"local:adorehimheishere","title":"Adore Him: He Is Here","screenings":[{"date":"2026-10-07","time":"7:00pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=7NNyLN8g"},{"date":"2026-10-08","time":"7:00pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5gJoAJ0v"}],"dates":["2026-10-07","2026-10-08"],"start":"2026-10-07","end":"2026-10-08","scope":"local","source":"TributeMovies / Fandango","url":"https://www.cinemark.com/theatres/mt-kalispell/cinemark-signature-stadium-kalispell-14","checkedAt":1791405709219},{"id":"local:angelandthebadman","title":"Angel and the Badman","screenings":[{"date":"2026-10-08","time":"1:10pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=E2Wzz0JD"},{"date":"2026-10-08","time":"3:55pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EWR66vzZ"},{"date":"2026-10-08","time":"6:40pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=7oYooPNV"},{"date":"2026-10-09","time":"1:15pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=E0DPqlVY"},{"date":"2026-10-09","time":"4:00pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5RMOBljo"},{"date":"2026-10-09","time":"6:40pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=7yP6p4vb"},{"date":"2026-10-09","time":"9:25pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EkyoV608"},{"date":"2026-10-10","time":"10:30am","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=Ekyooq88"},{"date":"2026-10-10","time":"1:15pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5RMOOJZo"},{"date":"2026-10-10","time":"4:00pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=7yP66YZb"},{"date":"2026-10-10","time":"6:40pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EK8wwxQ1"},{"date":"2026-10-10","time":"9:25pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=E0DPPyzY"},{"date":"2026-10-11","time":"10:35am","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=Erx00JeZ"},{"date":"2026-10-11","time":"1:15pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=3BZwwxL4"},{"date":"2026-10-11","time":"4:00pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=7LKwwYVD"},{"date":"2026-10-11","time":"6:40pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5ONRRDlo"},{"date":"2026-10-12","time":"1:15pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=7NNyybGN"},{"date":"2026-10-12","time":"4:00pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EX0XXv8P"},{"date":"2026-10-12","time":"6:40pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=56VPPBj2"},{"date":"2026-10-13","time":"1:10pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5ONRRDoB"},{"date":"2026-10-13","time":"3:55pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EkyooqzL"},{"date":"2026-10-13","time":"6:40pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=E0DPPy8W"},{"date":"2026-10-14","time":"1:10pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=56VPPBjr"},{"date":"2026-10-14","time":"3:55pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=Erx00JeK"},{"date":"2026-10-14","time":"6:40pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=58ODDrVq"}],"dates":["2026-10-08","2026-10-09","2026-10-10","2026-10-11","2026-10-12","2026-10-13","2026-10-14"],"start":"2026-10-08","end":"2026-10-14","scope":"local","source":"TributeMovies / Fandango","url":"https://www.cinemark.com/theatres/mt-kalispell/cinemark-signature-stadium-kalispell-14","checkedAt":1791405709219},{"id":"local:avengersendgameencore","title":"Avengers Endgame: Encore","screenings":[{"date":"2026-10-07","time":"3:05pm","format":"3D Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=3BZVgxAX"},{"date":"2026-10-07","time":"6:40pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5DPMZx0P"},{"date":"2026-10-08","time":"12:40pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=7oYdpKVP"},{"date":"2026-10-08","time":"2:50pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=3GMRYaAg"},{"date":"2026-10-09","time":"3:55pm","format":"3D Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=3BZVY2AX"},{"date":"2026-10-09","time":"12:35pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EedY6ZwX"},{"date":"2026-10-09","time":"8:10pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=59eB4axV"},{"date":"2026-10-10","time":"10:10am","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=7VKvXBAK"},{"date":"2026-10-10","time":"7:40pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5QxNLRzw"},{"date":"2026-10-11","time":"10:10am","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=7yPopMnn"},{"date":"2026-10-11","time":"6:30pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5RMgB0Dq"},{"date":"2026-10-12","time":"11:50am","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EJ8OYnbY"},{"date":"2026-10-12","time":"3:55pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5DPMYdlv"},{"date":"2026-10-13","time":"11:50am","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=7NNr0aJD"},{"date":"2026-10-13","time":"3:55pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EX0lgrLk"},{"date":"2026-10-14","time":"2:55pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EbdYBlyl"}],"dates":["2026-10-07","2026-10-08","2026-10-09","2026-10-10","2026-10-11","2026-10-12","2026-10-13","2026-10-14"],"start":"2026-10-07","end":"2026-10-14","scope":"local","source":"TributeMovies / Fandango","url":"https://www.cinemark.com/theatres/mt-kalispell/cinemark-signature-stadium-kalispell-14","checkedAt":1791405709219},{"id":"local:coyotevsacme","title":"Coyote vs. Acme","screenings":[{"date":"2026-10-08","time":"12:15pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5wvzWVKA"}],"dates":["2026-10-08"],"start":"2026-10-08","end":"2026-10-08","scope":"local","source":"TributeMovies / Fandango","url":"https://www.cinemark.com/theatres/mt-kalispell/cinemark-signature-stadium-kalispell-14","checkedAt":1791405709219},{"id":"local:danielandthefieryfurnace","title":"Daniel and the Fiery Furnace","screenings":[{"date":"2026-10-07","time":"3:35pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5wvzD1wA"},{"date":"2026-10-08","time":"12:05pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5RMgB0AL"}],"dates":["2026-10-07","2026-10-08"],"start":"2026-10-07","end":"2026-10-08","scope":"local","source":"TributeMovies / Fandango","url":"https://www.cinemark.com/theatres/mt-kalispell/cinemark-signature-stadium-kalispell-14","checkedAt":1791405709219},{"id":"local:digger","title":"Digger","screenings":[{"date":"2026-10-07","time":"3:20pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EYXYZv4V"},{"date":"2026-10-07","time":"4:20pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EWRMVvZg"},{"date":"2026-10-07","time":"7:05pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EJ8OZxrG"},{"date":"2026-10-07","time":"7:30pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=7oYdXPwP"},{"date":"2026-10-08","time":"12:50pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EWRMN8Ag"},{"date":"2026-10-08","time":"4:00pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=E2WbwlKw"},{"date":"2026-10-09","time":"12:05pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=7VKvXBq0"},{"date":"2026-10-09","time":"3:15pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EvOzpQxK"},{"date":"2026-10-09","time":"6:45pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EMn8RKAo"},{"date":"2026-10-09","time":"9:55pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=ElKzYOgj"},{"date":"2026-10-10","time":"12:30pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=58OLMYZm"},{"date":"2026-10-10","time":"3:40pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=3BZVY2yX"},{"date":"2026-10-10","time":"6:50pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=7LKByaXd"},{"date":"2026-10-10","time":"10:00pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=ErxzoXwG"},{"date":"2026-10-11","time":"10:20am","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=3A4QAaXQ"},{"date":"2026-10-11","time":"1:25pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5m0eDLxO"},{"date":"2026-10-11","time":"4:30pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EYXYj60N"},{"date":"2026-10-11","time":"7:35pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EJ8OYnKY"},{"date":"2026-10-12","time":"1:25pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5jqYQ04k"},{"date":"2026-10-12","time":"4:30pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5QxNLRAw"},{"date":"2026-10-12","time":"7:40pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=7VKvXBkK"},{"date":"2026-10-13","time":"1:25pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EdzYrPMO"},{"date":"2026-10-13","time":"4:30pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=E1xweMql"},{"date":"2026-10-13","time":"7:40pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=E2Wbwlyg"},{"date":"2026-10-14","time":"1:25pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5gJYN4LO"},{"date":"2026-10-14","time":"4:30pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=7NNr0aQ2"}],"dates":["2026-10-07","2026-10-08","2026-10-09","2026-10-10","2026-10-11","2026-10-12","2026-10-13","2026-10-14"],"start":"2026-10-07","end":"2026-10-14","scope":"local","source":"TributeMovies / Fandango","url":"https://www.cinemark.com/theatres/mt-kalispell/cinemark-signature-stadium-kalispell-14","checkedAt":1791405709219},{"id":"local:forgottenisland","title":"Forgotten Island","screenings":[{"date":"2026-10-07","time":"3:25pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5ON6gDAa"},{"date":"2026-10-07","time":"6:25pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5DPn6leR"},{"date":"2026-10-08","time":"1:05pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=ElKzYOpj"},{"date":"2026-10-08","time":"3:50pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5pLzpr4g"},{"date":"2026-10-08","time":"6:35pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=3PJXOyPW"},{"date":"2026-10-09","time":"12:45pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=E0Dbqvgr"},{"date":"2026-10-09","time":"3:40pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EkyYVkNe"},{"date":"2026-10-09","time":"6:35pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5ON6kaAa"},{"date":"2026-10-09","time":"9:30pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=7LKByaAd"},{"date":"2026-10-10","time":"10:25am","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=7oYdpKwP"},{"date":"2026-10-10","time":"1:10pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=3GMRYaLg"},{"date":"2026-10-10","time":"7:00pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5wvzWVwA"},{"date":"2026-10-10","time":"9:45pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=7nmnpBwy"},{"date":"2026-10-10","time":"4:55pm","format":"3D Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5jqYQ0pk"},{"date":"2026-10-11","time":"10:15am","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5pLzprak"},{"date":"2026-10-11","time":"1:00pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=ElKzYOZW"},{"date":"2026-10-11","time":"3:45pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EMn8RKxX"},{"date":"2026-10-11","time":"6:35pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EvOzpQAv"},{"date":"2026-10-12","time":"12:20pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=E0Dbqval"},{"date":"2026-10-12","time":"3:25pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EkyYVkP4"},{"date":"2026-10-12","time":"6:35pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5ON6kabW"},{"date":"2026-10-13","time":"12:20pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EYXYj6KN"},{"date":"2026-10-13","time":"3:25pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=3A4QAaVQ"},{"date":"2026-10-13","time":"6:35pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5m0eDLzO"},{"date":"2026-10-14","time":"12:20pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=7yPopM4Q"},{"date":"2026-10-14","time":"3:25pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=E0DbqvlN"},{"date":"2026-10-14","time":"6:35pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5RMgB0lk"}],"dates":["2026-10-07","2026-10-08","2026-10-09","2026-10-10","2026-10-11","2026-10-12","2026-10-13","2026-10-14"],"start":"2026-10-07","end":"2026-10-14","scope":"local","source":"TributeMovies / Fandango","url":"https://www.cinemark.com/theatres/mt-kalispell/cinemark-signature-stadium-kalispell-14","checkedAt":1791405709219},{"id":"local:heartofthebeast","title":"Heart of the Beast","screenings":[{"date":"2026-10-07","time":"4:00pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EbdYLewP"},{"date":"2026-10-07","time":"5:00pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=7NNrebAg"},{"date":"2026-10-07","time":"6:35pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5jqYjPX4"},{"date":"2026-10-08","time":"12:00pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=7nmnpBQy"},{"date":"2026-10-08","time":"1:25pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=54dRaPZl"},{"date":"2026-10-08","time":"2:35pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=7qZ2d6My"},{"date":"2026-10-08","time":"4:10pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EbdYBl0P"},{"date":"2026-10-08","time":"5:10pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EedY6ZLX"},{"date":"2026-10-08","time":"6:50pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EaNYLMRp"},{"date":"2026-10-08","time":"7:50pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=59eB4aZV"},{"date":"2026-10-09","time":"12:10pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5m0eDLwW"},{"date":"2026-10-09","time":"1:05pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=58OLMYPm"},{"date":"2026-10-09","time":"2:50pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=3A4QAame"},{"date":"2026-10-09","time":"4:05pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=ErxzoXlG"},{"date":"2026-10-09","time":"5:30pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=7qZ2d6wy"},{"date":"2026-10-09","time":"6:50pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=56VkMKl4"},{"date":"2026-10-09","time":"9:50pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EX0lgrGG"},{"date":"2026-10-10","time":"10:30am","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EdzYrPwq"},{"date":"2026-10-10","time":"11:30am","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EX0lgrxk"},{"date":"2026-10-10","time":"1:05pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=E2WbwlVw"},{"date":"2026-10-10","time":"2:20pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5gJYN4vM"},{"date":"2026-10-10","time":"3:45pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EWRMN8Zg"},{"date":"2026-10-10","time":"5:00pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=7NNr0agD"},{"date":"2026-10-10","time":"6:50pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EK8LYe6L"},{"date":"2026-10-10","time":"9:40pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=E1xweMQP"},{"date":"2026-10-11","time":"10:55am","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=54dRaPYw"},{"date":"2026-10-11","time":"11:55am","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=E1xweMzl"},{"date":"2026-10-11","time":"1:30pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=ExNJpvd2"},{"date":"2026-10-11","time":"2:35pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EK8LYeP6"},{"date":"2026-10-11","time":"4:05pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5Z9wQXkG"},{"date":"2026-10-11","time":"5:15pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EdzYrPjO"},{"date":"2026-10-11","time":"6:50pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=3PJXOya8"},{"date":"2026-10-12","time":"12:00pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=ErxzoXDe"},{"date":"2026-10-12","time":"1:05pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EbdYBlVK"},{"date":"2026-10-12","time":"2:35pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=7LKByaZo"},{"date":"2026-10-12","time":"3:50pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EaNYLMQd"},{"date":"2026-10-12","time":"5:10pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=3BZVY2N6"},{"date":"2026-10-12","time":"6:30pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=3zdmplBK"},{"date":"2026-10-12","time":"7:50pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=58OLMYR9"},{"date":"2026-10-13","time":"12:00pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=59eB4a8M"},{"date":"2026-10-13","time":"1:10pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=56VkMKOL"},{"date":"2026-10-13","time":"2:35pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EedY6Zl9"},{"date":"2026-10-13","time":"3:55pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=ErxzoXAe"},{"date":"2026-10-13","time":"5:10pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=7qZ2d6mD"},{"date":"2026-10-13","time":"6:40pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=58OLMYB9"},{"date":"2026-10-13","time":"7:50pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=7nmnpBDb"},{"date":"2026-10-14","time":"12:00pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=7LKByagG"},{"date":"2026-10-14","time":"1:05pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=54dRaPxA"},{"date":"2026-10-14","time":"2:35pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5ON6kaVQ"},{"date":"2026-10-14","time":"3:50pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=ExNJpvxo"},{"date":"2026-10-14","time":"5:10pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EkyYVk6y"},{"date":"2026-10-14","time":"6:30pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5Z9wQXzj"},{"date":"2026-10-14","time":"7:50pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=3BZVY20g"}],"dates":["2026-10-07","2026-10-08","2026-10-09","2026-10-10","2026-10-11","2026-10-12","2026-10-13","2026-10-14"],"start":"2026-10-07","end":"2026-10-14","scope":"local","source":"TributeMovies / Fandango","url":"https://www.cinemark.com/theatres/mt-kalispell/cinemark-signature-stadium-kalispell-14","checkedAt":1791405709219},{"id":"local:themetropolitanoperacosfantutte","title":"The Metropolitan Opera: Cos\u00ec fan tutte","screenings":[{"date":"2026-10-07","time":"6:30pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5QxBP6Wg"}],"dates":["2026-10-07"],"start":"2026-10-07","end":"2026-10-07","scope":"local","source":"TributeMovies / Fandango","url":"https://www.cinemark.com/theatres/mt-kalispell/cinemark-signature-stadium-kalispell-14","checkedAt":1791405709219},{"id":"local:othermommy","title":"Other Mommy","screenings":[{"date":"2026-10-08","time":"7:00pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EbdqnNnP"}],"dates":["2026-10-08"],"start":"2026-10-08","end":"2026-10-08","scope":"local","source":"TributeMovies / Fandango","url":"https://www.cinemark.com/theatres/mt-kalispell/cinemark-signature-stadium-kalispell-14","checkedAt":1791405709219},{"id":"local:practicalmagic2","title":"Practical Magic 2","screenings":[{"date":"2026-10-07","time":"3:25pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=58OLdrPm"},{"date":"2026-10-07","time":"7:15pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=ErxzWJlG"},{"date":"2026-10-08","time":"12:30pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=ExNJpv0n"},{"date":"2026-10-09","time":"12:30pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=ExNJpvbn"},{"date":"2026-10-09","time":"9:35pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=54dRaPvl"},{"date":"2026-10-10","time":"10:50am","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=E0Dbqvjl"},{"date":"2026-10-10","time":"9:35pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5RMgB0vq"},{"date":"2026-10-11","time":"10:50am","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=7nmnpB4b"},{"date":"2026-10-12","time":"12:30pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=ElKzYOaW"},{"date":"2026-10-12","time":"3:45pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5pLzprYk"},{"date":"2026-10-13","time":"12:30pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=E0DbqvAl"},{"date":"2026-10-13","time":"3:45pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5RMgB0qq"},{"date":"2026-10-14","time":"12:30pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EvOzpQPp"},{"date":"2026-10-14","time":"3:45pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=7VKvXBxN"}],"dates":["2026-10-07","2026-10-08","2026-10-09","2026-10-10","2026-10-11","2026-10-12","2026-10-13","2026-10-14"],"start":"2026-10-07","end":"2026-10-14","scope":"local","source":"TributeMovies / Fandango","url":"https://www.cinemark.com/theatres/mt-kalispell/cinemark-signature-stadium-kalispell-14","checkedAt":1791405709219},{"id":"local:primetime","title":"Primetime","screenings":[{"date":"2026-10-07","time":"5:05pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5pLzXPvg"},{"date":"2026-10-07","time":"7:50pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=ElKzWPgj"},{"date":"2026-10-08","time":"12:45pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EJ8OYndG"},{"date":"2026-10-08","time":"3:35pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5DPMYdAP"},{"date":"2026-10-08","time":"7:35pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=3zdmplz6"},{"date":"2026-10-09","time":"1:00pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EJ8OYnrG"},{"date":"2026-10-09","time":"4:50pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=3zdmplw6"},{"date":"2026-10-09","time":"7:40pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5DPMYd0P"},{"date":"2026-10-09","time":"10:25pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EYXYj64V"},{"date":"2026-10-10","time":"10:35am","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=58OLMYZ9"},{"date":"2026-10-10","time":"1:20pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=7LKByaXo"},{"date":"2026-10-10","time":"4:10pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=ErxzoXwe"},{"date":"2026-10-10","time":"6:45pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=56VkMKpL"},{"date":"2026-10-10","time":"9:20pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=3BZVY2y6"},{"date":"2026-10-11","time":"10:20am","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EWRMN8yb"},{"date":"2026-10-11","time":"1:10pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=3GMRYavz"},{"date":"2026-10-11","time":"4:55pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=E2WbwlDg"},{"date":"2026-10-11","time":"7:45pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=7oYdpKbk"},{"date":"2026-10-12","time":"1:15pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=3PJXOym8"},{"date":"2026-10-12","time":"4:10pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=ExNJpvO2"},{"date":"2026-10-12","time":"7:45pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5Z9wQX8G"},{"date":"2026-10-13","time":"12:10pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=7LKByazo"},{"date":"2026-10-13","time":"3:10pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5ON6kaKW"},{"date":"2026-10-13","time":"7:45pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EkyYVkb4"},{"date":"2026-10-14","time":"12:10pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5pLzprQz"},{"date":"2026-10-14","time":"3:10pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EMn8RKj2"},{"date":"2026-10-14","time":"7:45pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=ElKzYOXk"}],"dates":["2026-10-07","2026-10-08","2026-10-09","2026-10-10","2026-10-11","2026-10-12","2026-10-13","2026-10-14"],"start":"2026-10-07","end":"2026-10-14","scope":"local","source":"TributeMovies / Fandango","url":"https://www.cinemark.com/theatres/mt-kalispell/cinemark-signature-stadium-kalispell-14","checkedAt":1791405709219},{"id":"local:residentevil","title":"Resident Evil","screenings":[{"date":"2026-10-07","time":"4:15pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=59eBW6xV"},{"date":"2026-10-07","time":"5:25pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=3A4Qgdme"},{"date":"2026-10-07","time":"6:50pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=7nmnrewy"},{"date":"2026-10-07","time":"8:00pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EedYeVwX"},{"date":"2026-10-08","time":"11:55am","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=E1xweMjP"},{"date":"2026-10-08","time":"2:30pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EdzYrPOq"},{"date":"2026-10-08","time":"5:05pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EK8LYeAL"},{"date":"2026-10-08","time":"7:40pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=7yPopMa9"},{"date":"2026-10-09","time":"1:25pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=7NNr0aAg"},{"date":"2026-10-09","time":"4:20pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5gJYN48v"},{"date":"2026-10-09","time":"7:05pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5jqYQ0X4"},{"date":"2026-10-09","time":"8:00pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EbdYBlwP"},{"date":"2026-10-09","time":"9:40pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5QxNLRKM"},{"date":"2026-10-09","time":"10:35pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EaNYLMWp"},{"date":"2026-10-10","time":"10:20am","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EkyYVkwe"},{"date":"2026-10-10","time":"12:55pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5RMgB0vL"},{"date":"2026-10-10","time":"3:35pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=7yPopMd9"},{"date":"2026-10-10","time":"6:15pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5ON6kaja"},{"date":"2026-10-10","time":"7:45pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EkyYVkw4"},{"date":"2026-10-10","time":"8:50pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=E0Dbqvjr"},{"date":"2026-10-10","time":"10:25pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5ON6kajW"},{"date":"2026-10-11","time":"11:00am","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5DPMYdjv"},{"date":"2026-10-11","time":"1:35pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=3zdmplnK"},{"date":"2026-10-11","time":"4:20pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EaNYLMXd"},{"date":"2026-10-11","time":"7:00pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EbdYBlNK"},{"date":"2026-10-11","time":"7:55pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5wvzWVnV"},{"date":"2026-10-12","time":"11:55am","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=56VkMKAL"},{"date":"2026-10-12","time":"2:30pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EX0lgrRk"},{"date":"2026-10-12","time":"5:05pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=7NNr0a4D"},{"date":"2026-10-12","time":"8:00pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5gJYN4PM"},{"date":"2026-10-13","time":"11:55am","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EWRMN8Ob"},{"date":"2026-10-13","time":"2:30pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=3GMRYaZz"},{"date":"2026-10-13","time":"5:05pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5wvzWVkV"},{"date":"2026-10-13","time":"8:00pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=7oYdpKJk"},{"date":"2026-10-14","time":"11:55am","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EX0lgrb4"},{"date":"2026-10-14","time":"2:30pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=ErxzoXvR"},{"date":"2026-10-14","time":"5:05pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=58OLMYKk"},{"date":"2026-10-14","time":"7:40pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=56VkMKb8"}],"dates":["2026-10-07","2026-10-08","2026-10-09","2026-10-10","2026-10-11","2026-10-12","2026-10-13","2026-10-14"],"start":"2026-10-07","end":"2026-10-14","scope":"local","source":"TributeMovies / Fandango","url":"https://www.cinemark.com/theatres/mt-kalispell/cinemark-signature-stadium-kalispell-14","checkedAt":1791405709219},{"id":"local:spidermanbrandnewday","title":"Spider-Man: Brand New Day","screenings":[{"date":"2026-10-07","time":"7:20pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EX0lQvGG"}],"dates":["2026-10-07"],"start":"2026-10-07","end":"2026-10-07","scope":"local","source":"TributeMovies / Fandango","url":"https://www.cinemark.com/theatres/mt-kalispell/cinemark-signature-stadium-kalispell-14","checkedAt":1791405709219},{"id":"local:verity","title":"Verity","screenings":[{"date":"2026-10-07","time":"3:10pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=ExNJDYbn"},{"date":"2026-10-07","time":"3:50pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=7VKv8pq0"},{"date":"2026-10-07","time":"4:25pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=58OpQRdo"},{"date":"2026-10-07","time":"6:20pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5Z9wMVAy"},{"date":"2026-10-07","time":"7:40pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=3BZpqNgO"},{"date":"2026-10-08","time":"12:10pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EYXYj6AV"},{"date":"2026-10-08","time":"1:30pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5Z9wQXRy"},{"date":"2026-10-08","time":"3:05pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5m0eDLjW"},{"date":"2026-10-08","time":"4:25pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=56VZyAdw"},{"date":"2026-10-08","time":"6:00pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=3A4QAaYe"},{"date":"2026-10-08","time":"7:20pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=Erx6yDWX"},{"date":"2026-10-09","time":"12:25pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5pLzprvg"},{"date":"2026-10-09","time":"1:30pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5jqRnpjM"},{"date":"2026-10-09","time":"3:20pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=3PJXOynW"},{"date":"2026-10-09","time":"4:25pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5gJqmvdG"},{"date":"2026-10-09","time":"7:20pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EX0qPRQB"},{"date":"2026-10-09","time":"9:10pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5Z9wQXAy"},{"date":"2026-10-09","time":"10:15pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=7NN6w4eV"},{"date":"2026-10-10","time":"10:40am","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EMnrlxgD"},{"date":"2026-10-10","time":"11:45am","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=56VkMKp4"},{"date":"2026-10-10","time":"1:30pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EvOjqADA"},{"date":"2026-10-10","time":"2:40pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EX0lgrxG"},{"date":"2026-10-10","time":"4:25pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=7VKMgA8P"},{"date":"2026-10-10","time":"5:35pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=7NNr0agg"},{"date":"2026-10-10","time":"7:15pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5QxgwzjK"},{"date":"2026-10-10","time":"8:30pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=7yPopMdn"},{"date":"2026-10-10","time":"10:10pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=ElKkJZWX"},{"date":"2026-10-11","time":"10:35am","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=ExNVMdDK"},{"date":"2026-10-11","time":"11:45am","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=7qZ2d6zD"},{"date":"2026-10-11","time":"1:30pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5Z9qZkMo"},{"date":"2026-10-11","time":"2:55pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EedY6ZQ9"},{"date":"2026-10-11","time":"4:25pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=3PJNdag2"},{"date":"2026-10-11","time":"5:50pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=59eB4a0M"},{"date":"2026-10-11","time":"7:20pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5pL8maXJ"},{"date":"2026-10-12","time":"12:25pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EMn8RKDX"},{"date":"2026-10-12","time":"1:30pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=54dRaP0w"},{"date":"2026-10-12","time":"3:25pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EvOzpQ0v"},{"date":"2026-10-12","time":"4:25pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EbdqpNLM"},{"date":"2026-10-12","time":"7:20pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=54dpJYXm"},{"date":"2026-10-13","time":"12:25pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=7yPopMLn"},{"date":"2026-10-13","time":"1:30pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=3BZVY2v6"},{"date":"2026-10-13","time":"3:25pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EK8LYea6"},{"date":"2026-10-13","time":"4:25pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=3zdM6noG"},{"date":"2026-10-13","time":"7:20pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EaNqZXO8"},{"date":"2026-10-14","time":"12:25pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5QxNLRMv"},{"date":"2026-10-14","time":"1:30pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=3PJXOyv9"},{"date":"2026-10-14","time":"3:25pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5jqYQ0rd"},{"date":"2026-10-14","time":"4:25pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EJ8LPK6V"},{"date":"2026-10-14","time":"7:20pm","format":"Standard Showtimes (Reserved Seating)","url":"https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5DPnQjZ8"}],"dates":["2026-10-07","2026-10-08","2026-10-09","2026-10-10","2026-10-11","2026-10-12","2026-10-13","2026-10-14"],"start":"2026-10-07","end":"2026-10-14","scope":"local","source":"TributeMovies / Fandango","url":"https://www.cinemark.com/theatres/mt-kalispell/cinemark-signature-stadium-kalispell-14","checkedAt":1791405709219}],"checkedAt":1791405709219,"stale":false,"sourceURL":"https://www.tributemovies.com/cinema/Montana/Kalispell/Cinemark-Signature-Stadium-Kalispell-14/10338/"},"events":{"items":[{"id":"event-16019","title":"Cos\u00ec fan tutte","category":"The Met: Live in HD","url":"https://www.fathomentertainment.com/releases/the-metropolitan-opera-cosi-fan-tutte-2026/","poster":"https://media.fathomentertainment.com/image/826249444369/image_4qlpt2meel10v6v5do3rccq67b?content-disposition=inline/-S600-Fwebp","dates":["2026-10-07"],"ranges":[],"start":"2026-10-07","end":"2026-10-07","dateLabel":"Oct 7","scope":"national","source":"Fathom Entertainment","checkedAt":1791405710051},{"id":"event-13780","title":"Adore Him: He is Here","category":"Fathom event","url":"https://www.fathomentertainment.com/releases/adore-him/","poster":"https://media.fathomentertainment.com/image/826249444369/image_6h57l6cfvt5t72rdeno47o8337?content-disposition=inline/-S600-Fwebp","dates":["2026-10-07","2026-10-08"],"ranges":[],"start":"2026-10-07","end":"2026-10-08","dateLabel":"Oct 7 \u00b7 Oct 8","scope":"national","source":"Fathom Entertainment","checkedAt":1791405710051},{"id":"event-13724","title":"The Transformers: The Movie 40th Anniversary","category":"Fathom event","url":"https://www.fathomentertainment.com/releases/the-transformers-the-movie-40th-anniversary/","poster":"https://media.fathomentertainment.com/image/826249444369/image_jt42dogb4l1trbpgp431mbn21q?content-disposition=inline/-S600-Fwebp","dates":["2026-10-07"],"ranges":[],"start":"2026-10-07","end":"2026-10-07","dateLabel":"Oct 7","scope":"national","source":"Fathom Entertainment","checkedAt":1791405710051},{"id":"event-13826","title":"Guillermo del Toro\u2019s Pan\u2019s Labyrinth 20th Anniversary","category":"Fathom event","url":"https://www.fathomentertainment.com/releases/guillermo-del-toro-pans-labyrinth-20th-anniversary/","poster":"https://media.fathomentertainment.com/image/826249444369/image_erbvmrduq90av6klsj4b84uf28?content-disposition=inline/-S600-Fwebp","dates":[],"ranges":[{"start":"2026-10-08","end":"2026-10-15"}],"start":"2026-10-08","end":"2026-10-15","dateLabel":"Oct 8 \u2014 Oct 15","scope":"national","source":"Fathom Entertainment","checkedAt":1791405710051},{"id":"event-13973","title":"Spirited Away: Live on Stage \u2013 Studio Ghibli Fest 2026","category":"Studio Ghibli Fest 2026","url":"https://www.fathomentertainment.com/releases/spirited-away-live-on-stage-studio-ghibli-fest-2026/","poster":"https://media.fathomentertainment.com/image/826249444369/image_gno2ujafjd5rj06413t22slb3n?content-disposition=inline/-S600-Fwebp","dates":["2026-10-08"],"ranges":[],"start":"2026-10-08","end":"2026-10-08","dateLabel":"Oct 8","scope":"national","source":"Fathom Entertainment","checkedAt":1791405710051},{"id":"event-15193","title":"Donnie Darko 25th Anniversary","category":"Fathom event","url":"https://www.fathomentertainment.com/releases/donnie-darko-25th-anniversary/","poster":"https://media.fathomentertainment.com/image/826249444369/image_a7mp25ec491ch93t6npcs3ne5l?content-disposition=inline/-S600-Fwebp","dates":[],"ranges":[{"start":"2026-10-09","end":"2026-10-11"}],"start":"2026-10-09","end":"2026-10-11","dateLabel":"Oct 9 \u2014 Oct 11","scope":"national","source":"Fathom Entertainment","checkedAt":1791405710051},{"id":"event-13647","title":"Gone With The Wind (2026)","category":"Fathom\u2019s Big Screen Classics","url":"https://www.fathomentertainment.com/releases/gone-with-the-wind-2026/","poster":"https://media.fathomentertainment.com/image/826249444369/image_qed8204out1bd5ccjmkaqfor72/-S600-Fwebp","dates":[],"ranges":[{"start":"2026-10-10","end":"2026-10-14"}],"start":"2026-10-10","end":"2026-10-14","dateLabel":"Oct 10 \u2014 Oct 14","scope":"national","source":"Fathom Entertainment","checkedAt":1791405710051},{"id":"event-16021","title":"Macbeth","category":"The Met: Live in HD","url":"https://www.fathomentertainment.com/releases/the-metropolitan-opera-macbeth-2026/","poster":"https://media.fathomentertainment.com/image/826249444369/image_eimq5vh29h25pbd7r49tbu0s0l?content-disposition=inline/-S600-Fwebp","dates":["2026-10-17","2026-10-21"],"ranges":[],"start":"2026-10-17","end":"2026-10-21","dateLabel":"Oct 17 \u00b7 Oct 21","scope":"national","source":"Fathom Entertainment","checkedAt":1791405710051},{"id":"event-13798","title":"Spirited Away 25th Anniversary","category":"Studio Ghibli Fest 2026","url":"https://www.fathomentertainment.com/releases/spirited-away-studio-ghibli-fest-2026/","poster":"https://media.fathomentertainment.com/image/826249444369/image_ae3qmm2ce96l37afciu57a972l/-S600-Fwebp","dates":[],"ranges":[{"start":"2026-10-17","end":"2026-10-21"}],"start":"2026-10-17","end":"2026-10-21","dateLabel":"Oct 17 \u2014 Oct 21","scope":"national","source":"Fathom Entertainment","checkedAt":1791405710051},{"id":"event-13742","title":"Wildwood","category":"Fathom event","url":"https://www.fathomentertainment.com/releases/wildwood/","poster":"https://media.fathomentertainment.com/image/826249444369/image_9c1uh8aps97515ucjgi4agvp6h?content-disposition=inline/-S600-Fwebp","dates":["2026-10-19","2026-10-22","2026-10-23","2026-10-24","2026-10-25","2026-10-26","2026-10-27","2026-10-28","2026-10-29"],"ranges":[],"start":"2026-10-19","end":"2026-10-29","dateLabel":"Oct 19 \u00b7 Oct 22 \u00b7 Oct 23 \u00b7 Oct 24 \u00b7 Oct 25 \u00b7 Oct 26 \u00b7 Oct 27 \u00b7 Oct 28 \u00b7 Oct 29","scope":"national","source":"Fathom Entertainment","checkedAt":1791405710051},{"id":"event-13170","title":"V for Vendetta 20th Anniversary","category":"Fathom event","url":"https://www.fathomentertainment.com/releases/v-for-vendetta/","poster":"https://media.fathomentertainment.com/image/826249444369/image_6c4iq0n27979t68dreuh5gu84n/-S600-Fwebp","dates":["2026-11-01","2026-11-05"],"ranges":[],"start":"2026-11-01","end":"2026-11-05","dateLabel":"Nov 1 \u00b7 Nov 5","scope":"national","source":"Fathom Entertainment","checkedAt":1791405710051},{"id":"event-13744","title":"JIMMY","category":"Fathom event","url":"https://www.fathomentertainment.com/releases/jimmy/","poster":"https://media.fathomentertainment.com/image/826249444369/image_ov0tdrnb5t5rj05jfonup1354u/-S600-Fwebp","dates":[],"ranges":[{"start":"2026-11-05","end":"2026-11-19"}],"start":"2026-11-05","end":"2026-11-19","dateLabel":"Nov 5 \u2014 Nov 19","scope":"national","source":"Fathom Entertainment","checkedAt":1791405710051},{"id":"event-14191","title":"Rocky 50th Anniversary","category":"Fathom event","url":"https://www.fathomentertainment.com/releases/rocky-50th-anniversary/","poster":"https://media.fathomentertainment.com/image/826249444369/image_n1vqv99d0h359bqvlatib4g41v?content-disposition=inline/-S600-Fwebp","dates":[],"ranges":[{"start":"2026-11-07","end":"2026-11-11"}],"start":"2026-11-07","end":"2026-11-11","dateLabel":"Nov 7 \u2014 Nov 11","scope":"national","source":"Fathom Entertainment","checkedAt":1791405710051},{"id":"event-16023","title":"Carmen Encore","category":"The Met: Live in HD","url":"https://www.fathomentertainment.com/releases/the-metropolitan-opera-carmen-encore-2026/","poster":"https://media.fathomentertainment.com/image/826249444369/image_c2h5alnsop5976ml11tocm172b?content-disposition=inline/-S600-Fwebp","dates":["2026-11-14"],"ranges":[],"start":"2026-11-14","end":"2026-11-14","dateLabel":"Nov 14","scope":"national","source":"Fathom Entertainment","checkedAt":1791405710051},{"id":"event-13720","title":"A Beautiful Mind 25th Anniversary","category":"Fathom\u2019s Big Screen Classics","url":"https://www.fathomentertainment.com/releases/a-beautiful-mind-25th-anniversary/","poster":"https://media.fathomentertainment.com/image/826249444369/image_qvmvtnomu57p5887fhjspiv652/-S600-Fwebp","dates":["2026-11-22","2026-11-23"],"ranges":[],"start":"2026-11-22","end":"2026-11-23","dateLabel":"Nov 22 \u00b7 Nov 23","scope":"national","source":"Fathom Entertainment","checkedAt":1791405710051},{"id":"event-16512","title":"Doctor Who: The Satan Pit","category":"Doctor Who Day","url":"https://www.fathomentertainment.com/releases/doctor-who-the-satan-pit/","poster":"https://media.fathomentertainment.com/image/826249444369/image_k6k85ida9h5epadm447ts0oe45?content-disposition=inline/-S600-Fwebp","dates":["2026-11-23"],"ranges":[],"start":"2026-11-23","end":"2026-11-23","dateLabel":"Nov 23","scope":"national","source":"Fathom Entertainment","checkedAt":1791405710051},{"id":"event-15472","title":"Samson et Dalila","category":"The Met: Live in HD","url":"https://www.fathomentertainment.com/releases/the-metropolitan-opera-samson-et-dalila-2026/","poster":"https://media.fathomentertainment.com/image/826249444369/image_va26huf9p95irfn189ed58uq5t?content-disposition=inline/-S600-Fwebp","dates":["2026-12-05","2026-12-09"],"ranges":[],"start":"2026-12-05","end":"2026-12-09","dateLabel":"Dec 5 \u00b7 Dec 9","scope":"national","source":"Fathom Entertainment","checkedAt":1791405710051},{"id":"event-13649","title":"The Maltese Falcon 85th Anniversary","category":"Fathom\u2019s Big Screen Classics","url":"https://www.fathomentertainment.com/releases/the-maltese-falcon-85th-anniversary/","poster":"https://media.fathomentertainment.com/image/826249444369/image_k27oectrft1rpbam6nio2q477r/-S600-Fwebp","dates":["2026-12-06","2026-12-09"],"ranges":[],"start":"2026-12-06","end":"2026-12-09","dateLabel":"Dec 6 \u00b7 Dec 9","scope":"national","source":"Fathom Entertainment","checkedAt":1791405710051},{"id":"event-16025","title":"The Magic Flute Encore","category":"The Met: Live in HD","url":"https://www.fathomentertainment.com/releases/the-metropolitan-opera-the-magic-flute-encore-2026/","poster":"https://media.fathomentertainment.com/image/826249444369/image_03fojj7fn94pbekvons6ijvo1d?content-disposition=inline/-S600-Fwebp","dates":["2026-12-12"],"ranges":[],"start":"2026-12-12","end":"2026-12-12","dateLabel":"Dec 12","scope":"national","source":"Fathom Entertainment","checkedAt":1791405710051},{"id":"event-13626","title":"It\u2019s A Wonderful Life 80th Anniversary","category":"Fathom\u2019s Big Screen Classics","url":"https://www.fathomentertainment.com/releases/its-a-wonderful-life-80th-anniversary/","poster":"https://media.fathomentertainment.com/image/826249444369/image_iqoj6dk8ud5i1aq5qnccb9gg4s/-S600-Fwebp","dates":[],"ranges":[{"start":"2026-12-18","end":"2026-12-25"}],"start":"2026-12-18","end":"2026-12-25","dateLabel":"Dec 18 \u2014 Dec 25","scope":"national","source":"Fathom Entertainment","checkedAt":1791405710051},{"id":"event-16027","title":"La Fanciulla del West","category":"The Met: Live in HD","url":"https://www.fathomentertainment.com/releases/the-metropolitan-opera-la-fanciulla-del-west-2027/","poster":"https://media.fathomentertainment.com/image/826249444369/image_76olost8j5613akmcm7vjret5p?content-disposition=inline/-S600-Fwebp","dates":["2027-01-23","2027-01-27"],"ranges":[],"start":"2027-01-23","end":"2027-01-27","dateLabel":"Jan 23, 2027 \u00b7 Jan 27, 2027","scope":"national","source":"Fathom Entertainment","checkedAt":1791405710051},{"id":"event-16029","title":"Silent Night","category":"The Met: Live in HD","url":"https://www.fathomentertainment.com/releases/the-metropolitan-opera-silent-night-2027/","poster":"https://media.fathomentertainment.com/image/826249444369/image_ka0iitb5gt2jt4o1iat2eod60u?content-disposition=inline/-S600-Fwebp","dates":["2027-03-20","2027-03-24"],"ranges":[],"start":"2027-03-20","end":"2027-03-24","dateLabel":"Mar 20, 2027 \u00b7 Mar 24, 2027","scope":"national","source":"Fathom Entertainment","checkedAt":1791405710051},{"id":"event-16031","title":"Manon","category":"The Met: Live in HD","url":"https://www.fathomentertainment.com/releases/the-metropolitan-opera-manon-2027/","poster":"https://media.fathomentertainment.com/image/826249444369/image_l1j2619ff561daabpqq5lft23m?content-disposition=inline/-S600-Fwebp","dates":["2027-04-03","2027-04-07"],"ranges":[],"start":"2027-04-03","end":"2027-04-07","dateLabel":"Apr 3, 2027 \u00b7 Apr 7, 2027","scope":"national","source":"Fathom Entertainment","checkedAt":1791405710051},{"id":"event-16033","title":"Otello","category":"The Met: Live in HD","url":"https://www.fathomentertainment.com/releases/the-metropolitan-opera-otello-2027/","poster":"https://media.fathomentertainment.com/image/826249444369/image_m6u34k53a55d17e615r83kjs5g?content-disposition=inline/-S600-Fwebp","dates":["2027-04-24","2027-04-28"],"ranges":[],"start":"2027-04-24","end":"2027-04-28","dateLabel":"Apr 24, 2027 \u00b7 Apr 28, 2027","scope":"national","source":"Fathom Entertainment","checkedAt":1791405710051},{"id":"event-16035","title":"Tosca Encore","category":"The Met: Live in HD","url":"https://www.fathomentertainment.com/releases/the-metropolitan-opera-tosca-2026-encore/","poster":"https://media.fathomentertainment.com/image/826249444369/image_k13u13pss528j3l054fnf51b5i?content-disposition=inline/-S600-Fwebp","dates":["2027-05-08"],"ranges":[],"start":"2027-05-08","end":"2027-05-08","dateLabel":"May 8, 2027","scope":"national","source":"Fathom Entertainment","checkedAt":1791405710051},{"id":"event-16037","title":"Parsifal","category":"The Met: Live in HD","url":"https://www.fathomentertainment.com/releases/the-metropolitan-opera-parsifal-2027/","poster":"https://media.fathomentertainment.com/image/826249444369/image_a04o6sf6q97jvbg25armmg5r0l?content-disposition=inline/-S600-Fwebp","dates":["2027-06-05","2027-06-09"],"ranges":[],"start":"2027-06-05","end":"2027-06-09","dateLabel":"Jun 5, 2027 \u00b7 Jun 9, 2027","scope":"national","source":"Fathom Entertainment","checkedAt":1791405710051}],"checkedAt":1791405710051,"stale":false,"sourceURL":"https://www.fathomentertainment.com/releases/"}}
+{
+  "generatedAt": 1791568985635.483,
+  "today": "2026-10-09",
+  "theatre": "Cinemark Signature Stadium Kalispell 14",
+  "theatreURL": "https://www.cinemark.com/theatres/mt-kalispell/cinemark-signature-stadium-kalispell-14",
+  "local": {
+    "items": [
+      {
+        "id": "local:othermommy",
+        "title": "Other Mommy",
+        "poster": "https://www.cinemark.com/papi/media/file/umb---iz2he4bt---mdotmnewposter.jpg?prefix=media",
+        "screenings": [
+          {
+            "date": "2026-10-09",
+            "time": "10:00pm",
+            "startsAt": "2026-10-10T04:00:00.000Z",
+            "format": "Standard",
+            "url": "https://www.cinemark.com/TicketSeatMap/?showtimeId=310983",
+            "source": "Cinemark"
+          },
+          {
+            "date": "2026-10-09",
+            "time": "12:00pm",
+            "startsAt": "2026-10-09T18:00:00.000Z",
+            "format": "Standard",
+            "url": "https://www.cinemark.com/TicketSeatMap/?showtimeId=310984",
+            "source": "Cinemark"
+          },
+          {
+            "date": "2026-10-09",
+            "time": "12:55pm",
+            "startsAt": "2026-10-09T18:55:00.000Z",
+            "format": "Standard",
+            "url": "https://www.cinemark.com/TicketSeatMap/?showtimeId=312081",
+            "source": "Cinemark"
+          },
+          {
+            "date": "2026-10-09",
+            "time": "2:30pm",
+            "startsAt": "2026-10-09T20:30:00.000Z",
+            "format": "Standard",
+            "url": "https://www.cinemark.com/TicketSeatMap/?showtimeId=310980",
+            "source": "Cinemark"
+          },
+          {
+            "date": "2026-10-09",
+            "time": "3:35pm",
+            "startsAt": "2026-10-09T21:35:00.000Z",
+            "format": "Standard",
+            "url": "https://www.cinemark.com/TicketSeatMap/?showtimeId=312082",
+            "source": "Cinemark"
+          },
+          {
+            "date": "2026-10-09",
+            "time": "5:00pm",
+            "startsAt": "2026-10-09T23:00:00.000Z",
+            "format": "Standard",
+            "url": "https://www.cinemark.com/TicketSeatMap/?showtimeId=310981",
+            "source": "Cinemark"
+          },
+          {
+            "date": "2026-10-09",
+            "time": "6:05pm",
+            "startsAt": "2026-10-10T00:05:00.000Z",
+            "format": "Standard",
+            "url": "https://www.cinemark.com/TicketSeatMap/?showtimeId=312083",
+            "source": "Cinemark"
+          },
+          {
+            "date": "2026-10-09",
+            "time": "7:30pm",
+            "startsAt": "2026-10-10T01:30:00.000Z",
+            "format": "Standard",
+            "url": "https://www.cinemark.com/TicketSeatMap/?showtimeId=310982",
+            "source": "Cinemark"
+          },
+          {
+            "date": "2026-10-09",
+            "time": "8:45pm",
+            "startsAt": "2026-10-10T02:45:00.000Z",
+            "format": "Standard",
+            "url": "https://www.cinemark.com/TicketSeatMap/?showtimeId=312084",
+            "source": "Cinemark"
+          }
+        ],
+        "scope": "local",
+        "source": "Cinemark official listings",
+        "url": "https://www.cinemark.com/theatres/mt-kalispell/cinemark-signature-stadium-kalispell-14",
+        "checkedAt": 1791568985635.483,
+        "dates": [
+          "2026-10-09"
+        ],
+        "start": "2026-10-09",
+        "end": "2026-10-09"
+      },
+      {
+        "id": "local:thesocialreckoning",
+        "title": "The Social Reckoning ",
+        "poster": "https://www.cinemark.com/papi/media/file/umb---pjjeong4---mdthesocialreckoningposter.jpg?prefix=media",
+        "screenings": [
+          {
+            "date": "2026-10-09",
+            "time": "1:20pm",
+            "startsAt": "2026-10-09T19:20:00.000Z",
+            "format": "Standard",
+            "url": "https://www.cinemark.com/TicketSeatMap/?showtimeId=311310",
+            "source": "Cinemark"
+          },
+          {
+            "date": "2026-10-09",
+            "time": "10:05pm",
+            "startsAt": "2026-10-10T04:05:00.000Z",
+            "format": "Standard",
+            "url": "https://www.cinemark.com/TicketSeatMap/?showtimeId=311311",
+            "source": "Cinemark"
+          },
+          {
+            "date": "2026-10-09",
+            "time": "4:15pm",
+            "startsAt": "2026-10-09T22:15:00.000Z",
+            "format": "Standard",
+            "url": "https://www.cinemark.com/TicketSeatMap/?showtimeId=311309",
+            "source": "Cinemark"
+          },
+          {
+            "date": "2026-10-09",
+            "time": "7:10pm",
+            "startsAt": "2026-10-10T01:10:00.000Z",
+            "format": "Standard",
+            "url": "https://www.cinemark.com/TicketSeatMap/?showtimeId=311308",
+            "source": "Cinemark"
+          }
+        ],
+        "scope": "local",
+        "source": "Cinemark official listings",
+        "url": "https://www.cinemark.com/theatres/mt-kalispell/cinemark-signature-stadium-kalispell-14",
+        "checkedAt": 1791568985635.483,
+        "dates": [
+          "2026-10-09"
+        ],
+        "start": "2026-10-09",
+        "end": "2026-10-09"
+      },
+      {
+        "id": "local:verity",
+        "title": "Verity",
+        "screenings": [
+          {
+            "date": "2026-10-09",
+            "time": "1:30pm",
+            "startsAt": "2026-10-09T19:30:00.000Z",
+            "format": "Standard",
+            "url": "https://www.cinemark.com/TicketSeatMap/?showtimeId=310153",
+            "source": "Cinemark"
+          },
+          {
+            "date": "2026-10-09",
+            "time": "10:15pm",
+            "startsAt": "2026-10-10T04:15:00.000Z",
+            "format": "Standard",
+            "url": "https://www.cinemark.com/TicketSeatMap/?showtimeId=310151",
+            "source": "Cinemark"
+          },
+          {
+            "date": "2026-10-09",
+            "time": "12:25pm",
+            "startsAt": "2026-10-09T18:25:00.000Z",
+            "format": "Standard",
+            "url": "https://www.cinemark.com/TicketSeatMap/?showtimeId=312067",
+            "source": "Cinemark"
+          },
+          {
+            "date": "2026-10-09",
+            "time": "3:20pm",
+            "startsAt": "2026-10-09T21:20:00.000Z",
+            "format": "Standard",
+            "url": "https://www.cinemark.com/TicketSeatMap/?showtimeId=312068",
+            "source": "Cinemark"
+          },
+          {
+            "date": "2026-10-09",
+            "time": "4:25pm",
+            "startsAt": "2026-10-09T22:25:00.000Z",
+            "format": "Standard",
+            "url": "https://www.cinemark.com/TicketSeatMap/?showtimeId=310152",
+            "source": "Cinemark"
+          },
+          {
+            "date": "2026-10-09",
+            "time": "7:20pm",
+            "startsAt": "2026-10-10T01:20:00.000Z",
+            "format": "Standard",
+            "url": "https://www.cinemark.com/TicketSeatMap/?showtimeId=310150",
+            "source": "Cinemark"
+          },
+          {
+            "date": "2026-10-09",
+            "time": "9:10pm",
+            "startsAt": "2026-10-10T03:10:00.000Z",
+            "format": "Standard",
+            "url": "https://www.cinemark.com/TicketSeatMap/?showtimeId=312069",
+            "source": "Cinemark"
+          },
+          {
+            "date": "2026-10-10",
+            "time": "10:40am",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EMnrlxgD"
+          },
+          {
+            "date": "2026-10-10",
+            "time": "11:45am",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=56VkMKp4"
+          },
+          {
+            "date": "2026-10-10",
+            "time": "1:30pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EvOjqADA"
+          },
+          {
+            "date": "2026-10-10",
+            "time": "2:40pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EX0lgrxG"
+          },
+          {
+            "date": "2026-10-10",
+            "time": "4:25pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=7VKMgA8P"
+          },
+          {
+            "date": "2026-10-10",
+            "time": "5:35pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=7NNr0agg"
+          },
+          {
+            "date": "2026-10-10",
+            "time": "7:15pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5QxgwzjK"
+          },
+          {
+            "date": "2026-10-10",
+            "time": "8:30pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=7yPopMdn"
+          },
+          {
+            "date": "2026-10-10",
+            "time": "10:10pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=ElKkJZWX"
+          },
+          {
+            "date": "2026-10-11",
+            "time": "10:35am",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=ExNVMdDK"
+          },
+          {
+            "date": "2026-10-11",
+            "time": "11:45am",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=7qZ2d6zD"
+          },
+          {
+            "date": "2026-10-11",
+            "time": "1:30pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5Z9qZkMo"
+          },
+          {
+            "date": "2026-10-11",
+            "time": "2:55pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EedY6ZQ9"
+          },
+          {
+            "date": "2026-10-11",
+            "time": "4:25pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=3PJNdag2"
+          },
+          {
+            "date": "2026-10-11",
+            "time": "5:50pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=59eB4a0M"
+          },
+          {
+            "date": "2026-10-11",
+            "time": "7:20pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5pL8maXJ"
+          },
+          {
+            "date": "2026-10-12",
+            "time": "12:25pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EMn8RKDX"
+          },
+          {
+            "date": "2026-10-12",
+            "time": "1:30pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=54dRaP0w"
+          },
+          {
+            "date": "2026-10-12",
+            "time": "3:25pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EvOzpQ0v"
+          },
+          {
+            "date": "2026-10-12",
+            "time": "4:25pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EbdqpNLM"
+          },
+          {
+            "date": "2026-10-12",
+            "time": "7:20pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=54dpJYXm"
+          },
+          {
+            "date": "2026-10-13",
+            "time": "12:25pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=7yPopMLn"
+          },
+          {
+            "date": "2026-10-13",
+            "time": "1:30pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=3BZVY2v6"
+          },
+          {
+            "date": "2026-10-13",
+            "time": "3:25pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EK8LYea6"
+          },
+          {
+            "date": "2026-10-13",
+            "time": "4:25pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=3zdM6noG"
+          },
+          {
+            "date": "2026-10-13",
+            "time": "7:20pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EaNqZXO8"
+          },
+          {
+            "date": "2026-10-14",
+            "time": "12:25pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5QxNLRMv"
+          },
+          {
+            "date": "2026-10-14",
+            "time": "1:30pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=3PJXOyv9"
+          },
+          {
+            "date": "2026-10-14",
+            "time": "3:25pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5jqYQ0rd"
+          },
+          {
+            "date": "2026-10-14",
+            "time": "4:25pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EJ8LPK6V"
+          },
+          {
+            "date": "2026-10-14",
+            "time": "7:20pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5DPnQjZ8"
+          }
+        ],
+        "dates": [
+          "2026-10-09",
+          "2026-10-10",
+          "2026-10-11",
+          "2026-10-12",
+          "2026-10-13",
+          "2026-10-14"
+        ],
+        "start": "2026-10-09",
+        "end": "2026-10-14",
+        "scope": "local",
+        "source": "Cinemark official listings",
+        "url": "https://www.cinemark.com/theatres/mt-kalispell/cinemark-signature-stadium-kalispell-14",
+        "checkedAt": 1791568985635.483,
+        "poster": "https://www.cinemark.com/papi/media/file/umb---5n4bassu---mdverityfinalposter.jpg?prefix=media"
+      },
+      {
+        "id": "local:digger",
+        "title": "Digger",
+        "screenings": [
+          {
+            "date": "2026-10-09",
+            "time": "12:05pm",
+            "startsAt": "2026-10-09T18:05:00.000Z",
+            "format": "Standard",
+            "url": "https://www.cinemark.com/TicketSeatMap/?showtimeId=312063",
+            "source": "Cinemark"
+          },
+          {
+            "date": "2026-10-09",
+            "time": "3:15pm",
+            "startsAt": "2026-10-09T21:15:00.000Z",
+            "format": "Standard",
+            "url": "https://www.cinemark.com/TicketSeatMap/?showtimeId=312064",
+            "source": "Cinemark"
+          },
+          {
+            "date": "2026-10-09",
+            "time": "6:45pm",
+            "startsAt": "2026-10-10T00:45:00.000Z",
+            "format": "Standard",
+            "url": "https://www.cinemark.com/TicketSeatMap/?showtimeId=312065",
+            "source": "Cinemark"
+          },
+          {
+            "date": "2026-10-09",
+            "time": "9:55pm",
+            "startsAt": "2026-10-10T03:55:00.000Z",
+            "format": "Standard",
+            "url": "https://www.cinemark.com/TicketSeatMap/?showtimeId=312066",
+            "source": "Cinemark"
+          },
+          {
+            "date": "2026-10-10",
+            "time": "12:30pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=58OLMYZm"
+          },
+          {
+            "date": "2026-10-10",
+            "time": "3:40pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=3BZVY2yX"
+          },
+          {
+            "date": "2026-10-10",
+            "time": "6:50pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=7LKByaXd"
+          },
+          {
+            "date": "2026-10-10",
+            "time": "10:00pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=ErxzoXwG"
+          },
+          {
+            "date": "2026-10-11",
+            "time": "10:20am",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=3A4QAaXQ"
+          },
+          {
+            "date": "2026-10-11",
+            "time": "1:25pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5m0eDLxO"
+          },
+          {
+            "date": "2026-10-11",
+            "time": "4:30pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EYXYj60N"
+          },
+          {
+            "date": "2026-10-11",
+            "time": "7:35pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EJ8OYnKY"
+          },
+          {
+            "date": "2026-10-12",
+            "time": "1:25pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5jqYQ04k"
+          },
+          {
+            "date": "2026-10-12",
+            "time": "4:30pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5QxNLRAw"
+          },
+          {
+            "date": "2026-10-12",
+            "time": "7:40pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=7VKvXBkK"
+          },
+          {
+            "date": "2026-10-13",
+            "time": "1:25pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EdzYrPMO"
+          },
+          {
+            "date": "2026-10-13",
+            "time": "4:30pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=E1xweMql"
+          },
+          {
+            "date": "2026-10-13",
+            "time": "7:40pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=E2Wbwlyg"
+          },
+          {
+            "date": "2026-10-14",
+            "time": "1:25pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5gJYN4LO"
+          },
+          {
+            "date": "2026-10-14",
+            "time": "4:30pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=7NNr0aQ2"
+          }
+        ],
+        "dates": [
+          "2026-10-09",
+          "2026-10-10",
+          "2026-10-11",
+          "2026-10-12",
+          "2026-10-13",
+          "2026-10-14"
+        ],
+        "start": "2026-10-09",
+        "end": "2026-10-14",
+        "scope": "local",
+        "source": "Cinemark official listings",
+        "url": "https://www.cinemark.com/theatres/mt-kalispell/cinemark-signature-stadium-kalispell-14",
+        "checkedAt": 1791568985635.483,
+        "poster": "https://www.cinemark.com/papi/media/file/umb---2e1fb0ce---mddiggercastposter.jpg?prefix=media"
+      },
+      {
+        "id": "local:residentevil",
+        "title": "Resident Evil",
+        "screenings": [
+          {
+            "date": "2026-10-09",
+            "time": "1:25pm",
+            "startsAt": "2026-10-09T19:25:00.000Z",
+            "format": "Standard",
+            "url": "https://www.cinemark.com/TicketSeatMap/?showtimeId=312059",
+            "source": "Cinemark"
+          },
+          {
+            "date": "2026-10-09",
+            "time": "10:35pm",
+            "startsAt": "2026-10-10T04:35:00.000Z",
+            "format": "Standard",
+            "url": "https://www.cinemark.com/TicketSeatMap/?showtimeId=312073",
+            "source": "Cinemark"
+          },
+          {
+            "date": "2026-10-09",
+            "time": "4:20pm",
+            "startsAt": "2026-10-09T22:20:00.000Z",
+            "format": "Standard",
+            "url": "https://www.cinemark.com/TicketSeatMap/?showtimeId=312060",
+            "source": "Cinemark"
+          },
+          {
+            "date": "2026-10-09",
+            "time": "7:05pm",
+            "startsAt": "2026-10-10T01:05:00.000Z",
+            "format": "Standard",
+            "url": "https://www.cinemark.com/TicketSeatMap/?showtimeId=312061",
+            "source": "Cinemark"
+          },
+          {
+            "date": "2026-10-09",
+            "time": "8:00pm",
+            "startsAt": "2026-10-10T02:00:00.000Z",
+            "format": "Standard",
+            "url": "https://www.cinemark.com/TicketSeatMap/?showtimeId=312072",
+            "source": "Cinemark"
+          },
+          {
+            "date": "2026-10-09",
+            "time": "9:40pm",
+            "startsAt": "2026-10-10T03:40:00.000Z",
+            "format": "Standard",
+            "url": "https://www.cinemark.com/TicketSeatMap/?showtimeId=312062",
+            "source": "Cinemark"
+          },
+          {
+            "date": "2026-10-10",
+            "time": "10:20am",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EkyYVkwe"
+          },
+          {
+            "date": "2026-10-10",
+            "time": "12:55pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5RMgB0vL"
+          },
+          {
+            "date": "2026-10-10",
+            "time": "3:35pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=7yPopMd9"
+          },
+          {
+            "date": "2026-10-10",
+            "time": "6:15pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5ON6kaja"
+          },
+          {
+            "date": "2026-10-10",
+            "time": "7:45pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EkyYVkw4"
+          },
+          {
+            "date": "2026-10-10",
+            "time": "8:50pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=E0Dbqvjr"
+          },
+          {
+            "date": "2026-10-10",
+            "time": "10:25pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5ON6kajW"
+          },
+          {
+            "date": "2026-10-11",
+            "time": "11:00am",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5DPMYdjv"
+          },
+          {
+            "date": "2026-10-11",
+            "time": "1:35pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=3zdmplnK"
+          },
+          {
+            "date": "2026-10-11",
+            "time": "4:20pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EaNYLMXd"
+          },
+          {
+            "date": "2026-10-11",
+            "time": "7:00pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EbdYBlNK"
+          },
+          {
+            "date": "2026-10-11",
+            "time": "7:55pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5wvzWVnV"
+          },
+          {
+            "date": "2026-10-12",
+            "time": "11:55am",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=56VkMKAL"
+          },
+          {
+            "date": "2026-10-12",
+            "time": "2:30pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EX0lgrRk"
+          },
+          {
+            "date": "2026-10-12",
+            "time": "5:05pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=7NNr0a4D"
+          },
+          {
+            "date": "2026-10-12",
+            "time": "8:00pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5gJYN4PM"
+          },
+          {
+            "date": "2026-10-13",
+            "time": "11:55am",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EWRMN8Ob"
+          },
+          {
+            "date": "2026-10-13",
+            "time": "2:30pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=3GMRYaZz"
+          },
+          {
+            "date": "2026-10-13",
+            "time": "5:05pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5wvzWVkV"
+          },
+          {
+            "date": "2026-10-13",
+            "time": "8:00pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=7oYdpKJk"
+          },
+          {
+            "date": "2026-10-14",
+            "time": "11:55am",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EX0lgrb4"
+          },
+          {
+            "date": "2026-10-14",
+            "time": "2:30pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=ErxzoXvR"
+          },
+          {
+            "date": "2026-10-14",
+            "time": "5:05pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=58OLMYKk"
+          },
+          {
+            "date": "2026-10-14",
+            "time": "7:40pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=56VkMKb8"
+          }
+        ],
+        "dates": [
+          "2026-10-09",
+          "2026-10-10",
+          "2026-10-11",
+          "2026-10-12",
+          "2026-10-13",
+          "2026-10-14"
+        ],
+        "start": "2026-10-09",
+        "end": "2026-10-14",
+        "scope": "local",
+        "source": "Cinemark official listings",
+        "url": "https://www.cinemark.com/theatres/mt-kalispell/cinemark-signature-stadium-kalispell-14",
+        "checkedAt": 1791568985635.483,
+        "poster": "https://www.cinemark.com/papi/media/file/umb---dp0pmw2a---mdresidentevilposter.jpg?prefix=media"
+      },
+      {
+        "id": "local:angelandthebadman",
+        "title": "Angel and the Badman",
+        "screenings": [
+          {
+            "date": "2026-10-09",
+            "time": "1:15pm",
+            "startsAt": "2026-10-09T19:15:00.000Z",
+            "format": "Standard",
+            "url": "https://www.cinemark.com/TicketSeatMap/?showtimeId=308421",
+            "source": "Cinemark"
+          },
+          {
+            "date": "2026-10-09",
+            "time": "4:00pm",
+            "startsAt": "2026-10-09T22:00:00.000Z",
+            "format": "Standard",
+            "url": "https://www.cinemark.com/TicketSeatMap/?showtimeId=308420",
+            "source": "Cinemark"
+          },
+          {
+            "date": "2026-10-09",
+            "time": "6:40pm",
+            "startsAt": "2026-10-10T00:40:00.000Z",
+            "format": "Standard",
+            "url": "https://www.cinemark.com/TicketSeatMap/?showtimeId=308419",
+            "source": "Cinemark"
+          },
+          {
+            "date": "2026-10-09",
+            "time": "9:25pm",
+            "startsAt": "2026-10-10T03:25:00.000Z",
+            "format": "Standard",
+            "url": "https://www.cinemark.com/TicketSeatMap/?showtimeId=308422",
+            "source": "Cinemark"
+          },
+          {
+            "date": "2026-10-10",
+            "time": "10:30am",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=Ekyooq88"
+          },
+          {
+            "date": "2026-10-10",
+            "time": "1:15pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5RMOOJZo"
+          },
+          {
+            "date": "2026-10-10",
+            "time": "4:00pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=7yP66YZb"
+          },
+          {
+            "date": "2026-10-10",
+            "time": "6:40pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EK8wwxQ1"
+          },
+          {
+            "date": "2026-10-10",
+            "time": "9:25pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=E0DPPyzY"
+          },
+          {
+            "date": "2026-10-11",
+            "time": "10:35am",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=Erx00JeZ"
+          },
+          {
+            "date": "2026-10-11",
+            "time": "1:15pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=3BZwwxL4"
+          },
+          {
+            "date": "2026-10-11",
+            "time": "4:00pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=7LKwwYVD"
+          },
+          {
+            "date": "2026-10-11",
+            "time": "6:40pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5ONRRDlo"
+          },
+          {
+            "date": "2026-10-12",
+            "time": "1:15pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=7NNyybGN"
+          },
+          {
+            "date": "2026-10-12",
+            "time": "4:00pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EX0XXv8P"
+          },
+          {
+            "date": "2026-10-12",
+            "time": "6:40pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=56VPPBj2"
+          },
+          {
+            "date": "2026-10-13",
+            "time": "1:10pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5ONRRDoB"
+          },
+          {
+            "date": "2026-10-13",
+            "time": "3:55pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EkyooqzL"
+          },
+          {
+            "date": "2026-10-13",
+            "time": "6:40pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=E0DPPy8W"
+          },
+          {
+            "date": "2026-10-14",
+            "time": "1:10pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=56VPPBjr"
+          },
+          {
+            "date": "2026-10-14",
+            "time": "3:55pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=Erx00JeK"
+          },
+          {
+            "date": "2026-10-14",
+            "time": "6:40pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=58ODDrVq"
+          }
+        ],
+        "dates": [
+          "2026-10-09",
+          "2026-10-10",
+          "2026-10-11",
+          "2026-10-12",
+          "2026-10-13",
+          "2026-10-14"
+        ],
+        "start": "2026-10-09",
+        "end": "2026-10-14",
+        "scope": "local",
+        "source": "Cinemark official listings",
+        "url": "https://www.cinemark.com/theatres/mt-kalispell/cinemark-signature-stadium-kalispell-14",
+        "checkedAt": 1791568985635.483,
+        "poster": "https://www.cinemark.com/papi/media/file/umb---jhvodi3g---mdangelandthebadmanposter.jpg?prefix=media"
+      },
+      {
+        "id": "local:9to5",
+        "title": "9 to 5",
+        "poster": "https://www.cinemark.com/papi/media/file/umb---5v3neh2b---md9to5poster.png?prefix=media",
+        "screenings": [
+          {
+            "date": "2026-10-09",
+            "time": "6:30pm",
+            "startsAt": "2026-10-10T00:30:00.000Z",
+            "format": "Standard",
+            "url": "https://www.cinemark.com/TicketSeatMap/?showtimeId=311615",
+            "source": "Cinemark"
+          }
+        ],
+        "scope": "local",
+        "source": "Cinemark official listings",
+        "url": "https://www.cinemark.com/theatres/mt-kalispell/cinemark-signature-stadium-kalispell-14",
+        "checkedAt": 1791568985635.483,
+        "dates": [
+          "2026-10-09"
+        ],
+        "start": "2026-10-09",
+        "end": "2026-10-09"
+      },
+      {
+        "id": "local:guillermodeltorospanslabyrinth20thanniversary",
+        "title": "Guillermo del Toro’s Pan’s Labyrinth 20th Anniversary",
+        "poster": "https://www.cinemark.com/papi/media/file/umb---ypykxe22---mdpansanniveposter.png?prefix=media",
+        "screenings": [
+          {
+            "date": "2026-10-09",
+            "time": "4:00pm",
+            "startsAt": "2026-10-09T22:00:00.000Z",
+            "format": "RealD 3D",
+            "url": "https://www.cinemark.com/TicketSeatMap/?showtimeId=310508",
+            "source": "Cinemark"
+          },
+          {
+            "date": "2026-10-09",
+            "time": "7:00pm",
+            "startsAt": "2026-10-10T01:00:00.000Z",
+            "format": "Standard",
+            "url": "https://www.cinemark.com/TicketSeatMap/?showtimeId=310507",
+            "source": "Cinemark"
+          }
+        ],
+        "scope": "local",
+        "source": "Cinemark official listings",
+        "url": "https://www.cinemark.com/theatres/mt-kalispell/cinemark-signature-stadium-kalispell-14",
+        "checkedAt": 1791568985635.483,
+        "dates": [
+          "2026-10-09"
+        ],
+        "start": "2026-10-09",
+        "end": "2026-10-09"
+      },
+      {
+        "id": "local:heartofthebeast",
+        "title": "Heart of the Beast",
+        "screenings": [
+          {
+            "date": "2026-10-09",
+            "time": "1:05pm",
+            "startsAt": "2026-10-09T19:05:00.000Z",
+            "format": "Standard",
+            "url": "https://www.cinemark.com/TicketSeatMap/?showtimeId=312055",
+            "source": "Cinemark"
+          },
+          {
+            "date": "2026-10-09",
+            "time": "12:10pm",
+            "startsAt": "2026-10-09T18:10:00.000Z",
+            "format": "Standard",
+            "url": "https://www.cinemark.com/TicketSeatMap/?showtimeId=312078",
+            "source": "Cinemark"
+          },
+          {
+            "date": "2026-10-09",
+            "time": "2:50pm",
+            "startsAt": "2026-10-09T20:50:00.000Z",
+            "format": "Standard",
+            "url": "https://www.cinemark.com/TicketSeatMap/?showtimeId=312079",
+            "source": "Cinemark"
+          },
+          {
+            "date": "2026-10-09",
+            "time": "4:05pm",
+            "startsAt": "2026-10-09T22:05:00.000Z",
+            "format": "Standard",
+            "url": "https://www.cinemark.com/TicketSeatMap/?showtimeId=312056",
+            "source": "Cinemark"
+          },
+          {
+            "date": "2026-10-09",
+            "time": "5:30pm",
+            "startsAt": "2026-10-09T23:30:00.000Z",
+            "format": "Standard",
+            "url": "https://www.cinemark.com/TicketSeatMap/?showtimeId=312080",
+            "source": "Cinemark"
+          },
+          {
+            "date": "2026-10-09",
+            "time": "6:50pm",
+            "startsAt": "2026-10-10T00:50:00.000Z",
+            "format": "Standard",
+            "url": "https://www.cinemark.com/TicketSeatMap/?showtimeId=312057",
+            "source": "Cinemark"
+          },
+          {
+            "date": "2026-10-09",
+            "time": "9:50pm",
+            "startsAt": "2026-10-10T03:50:00.000Z",
+            "format": "Standard",
+            "url": "https://www.cinemark.com/TicketSeatMap/?showtimeId=312058",
+            "source": "Cinemark"
+          },
+          {
+            "date": "2026-10-10",
+            "time": "10:30am",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EdzYrPwq"
+          },
+          {
+            "date": "2026-10-10",
+            "time": "11:30am",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EX0lgrxk"
+          },
+          {
+            "date": "2026-10-10",
+            "time": "1:05pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=E2WbwlVw"
+          },
+          {
+            "date": "2026-10-10",
+            "time": "2:20pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5gJYN4vM"
+          },
+          {
+            "date": "2026-10-10",
+            "time": "3:45pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EWRMN8Zg"
+          },
+          {
+            "date": "2026-10-10",
+            "time": "5:00pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=7NNr0agD"
+          },
+          {
+            "date": "2026-10-10",
+            "time": "6:50pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EK8LYe6L"
+          },
+          {
+            "date": "2026-10-10",
+            "time": "9:40pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=E1xweMQP"
+          },
+          {
+            "date": "2026-10-11",
+            "time": "10:55am",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=54dRaPYw"
+          },
+          {
+            "date": "2026-10-11",
+            "time": "11:55am",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=E1xweMzl"
+          },
+          {
+            "date": "2026-10-11",
+            "time": "1:30pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=ExNJpvd2"
+          },
+          {
+            "date": "2026-10-11",
+            "time": "2:35pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EK8LYeP6"
+          },
+          {
+            "date": "2026-10-11",
+            "time": "4:05pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5Z9wQXkG"
+          },
+          {
+            "date": "2026-10-11",
+            "time": "5:15pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EdzYrPjO"
+          },
+          {
+            "date": "2026-10-11",
+            "time": "6:50pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=3PJXOya8"
+          },
+          {
+            "date": "2026-10-12",
+            "time": "12:00pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=ErxzoXDe"
+          },
+          {
+            "date": "2026-10-12",
+            "time": "1:05pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EbdYBlVK"
+          },
+          {
+            "date": "2026-10-12",
+            "time": "2:35pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=7LKByaZo"
+          },
+          {
+            "date": "2026-10-12",
+            "time": "3:50pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EaNYLMQd"
+          },
+          {
+            "date": "2026-10-12",
+            "time": "5:10pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=3BZVY2N6"
+          },
+          {
+            "date": "2026-10-12",
+            "time": "6:30pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=3zdmplBK"
+          },
+          {
+            "date": "2026-10-12",
+            "time": "7:50pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=58OLMYR9"
+          },
+          {
+            "date": "2026-10-13",
+            "time": "12:00pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=59eB4a8M"
+          },
+          {
+            "date": "2026-10-13",
+            "time": "1:10pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=56VkMKOL"
+          },
+          {
+            "date": "2026-10-13",
+            "time": "2:35pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EedY6Zl9"
+          },
+          {
+            "date": "2026-10-13",
+            "time": "3:55pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=ErxzoXAe"
+          },
+          {
+            "date": "2026-10-13",
+            "time": "5:10pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=7qZ2d6mD"
+          },
+          {
+            "date": "2026-10-13",
+            "time": "6:40pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=58OLMYB9"
+          },
+          {
+            "date": "2026-10-13",
+            "time": "7:50pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=7nmnpBDb"
+          },
+          {
+            "date": "2026-10-14",
+            "time": "12:00pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=7LKByagG"
+          },
+          {
+            "date": "2026-10-14",
+            "time": "1:05pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=54dRaPxA"
+          },
+          {
+            "date": "2026-10-14",
+            "time": "2:35pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5ON6kaVQ"
+          },
+          {
+            "date": "2026-10-14",
+            "time": "3:50pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=ExNJpvxo"
+          },
+          {
+            "date": "2026-10-14",
+            "time": "5:10pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EkyYVk6y"
+          },
+          {
+            "date": "2026-10-14",
+            "time": "6:30pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5Z9wQXzj"
+          },
+          {
+            "date": "2026-10-14",
+            "time": "7:50pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=3BZVY20g"
+          }
+        ],
+        "dates": [
+          "2026-10-09",
+          "2026-10-10",
+          "2026-10-11",
+          "2026-10-12",
+          "2026-10-13",
+          "2026-10-14"
+        ],
+        "start": "2026-10-09",
+        "end": "2026-10-14",
+        "scope": "local",
+        "source": "Cinemark official listings",
+        "url": "https://www.cinemark.com/theatres/mt-kalispell/cinemark-signature-stadium-kalispell-14",
+        "checkedAt": 1791568985635.483,
+        "poster": "https://www.cinemark.com/papi/media/file/umb---btnhosj3---mdheartofbeastposter.jpg?prefix=media"
+      },
+      {
+        "id": "local:forgottenisland",
+        "title": "Forgotten Island",
+        "screenings": [
+          {
+            "date": "2026-10-09",
+            "time": "12:45pm",
+            "startsAt": "2026-10-09T18:45:00.000Z",
+            "format": "Standard",
+            "url": "https://www.cinemark.com/TicketSeatMap/?showtimeId=312050",
+            "source": "Cinemark"
+          },
+          {
+            "date": "2026-10-09",
+            "time": "3:40pm",
+            "startsAt": "2026-10-09T21:40:00.000Z",
+            "format": "Standard",
+            "url": "https://www.cinemark.com/TicketSeatMap/?showtimeId=312051",
+            "source": "Cinemark"
+          },
+          {
+            "date": "2026-10-09",
+            "time": "6:35pm",
+            "startsAt": "2026-10-10T00:35:00.000Z",
+            "format": "Standard",
+            "url": "https://www.cinemark.com/TicketSeatMap/?showtimeId=312052",
+            "source": "Cinemark"
+          },
+          {
+            "date": "2026-10-09",
+            "time": "9:30pm",
+            "startsAt": "2026-10-10T03:30:00.000Z",
+            "format": "Standard",
+            "url": "https://www.cinemark.com/TicketSeatMap/?showtimeId=312053",
+            "source": "Cinemark"
+          },
+          {
+            "date": "2026-10-10",
+            "time": "10:25am",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=7oYdpKwP"
+          },
+          {
+            "date": "2026-10-10",
+            "time": "1:10pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=3GMRYaLg"
+          },
+          {
+            "date": "2026-10-10",
+            "time": "7:00pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5wvzWVwA"
+          },
+          {
+            "date": "2026-10-10",
+            "time": "9:45pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=7nmnpBwy"
+          },
+          {
+            "date": "2026-10-10",
+            "time": "4:55pm",
+            "format": "3D Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5jqYQ0pk"
+          },
+          {
+            "date": "2026-10-11",
+            "time": "10:15am",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5pLzprak"
+          },
+          {
+            "date": "2026-10-11",
+            "time": "1:00pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=ElKzYOZW"
+          },
+          {
+            "date": "2026-10-11",
+            "time": "3:45pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EMn8RKxX"
+          },
+          {
+            "date": "2026-10-11",
+            "time": "6:35pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EvOzpQAv"
+          },
+          {
+            "date": "2026-10-12",
+            "time": "12:20pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=E0Dbqval"
+          },
+          {
+            "date": "2026-10-12",
+            "time": "3:25pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EkyYVkP4"
+          },
+          {
+            "date": "2026-10-12",
+            "time": "6:35pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5ON6kabW"
+          },
+          {
+            "date": "2026-10-13",
+            "time": "12:20pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EYXYj6KN"
+          },
+          {
+            "date": "2026-10-13",
+            "time": "3:25pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=3A4QAaVQ"
+          },
+          {
+            "date": "2026-10-13",
+            "time": "6:35pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5m0eDLzO"
+          },
+          {
+            "date": "2026-10-14",
+            "time": "12:20pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=7yPopM4Q"
+          },
+          {
+            "date": "2026-10-14",
+            "time": "3:25pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=E0DbqvlN"
+          },
+          {
+            "date": "2026-10-14",
+            "time": "6:35pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5RMgB0lk"
+          }
+        ],
+        "dates": [
+          "2026-10-09",
+          "2026-10-10",
+          "2026-10-11",
+          "2026-10-12",
+          "2026-10-13",
+          "2026-10-14"
+        ],
+        "start": "2026-10-09",
+        "end": "2026-10-14",
+        "scope": "local",
+        "source": "Cinemark official listings",
+        "url": "https://www.cinemark.com/theatres/mt-kalispell/cinemark-signature-stadium-kalispell-14",
+        "checkedAt": 1791568985635.483,
+        "poster": "https://www.cinemark.com/papi/media/file/umb---2yxhgwhh---mdforgottenislandnewposter.jpg?prefix=media"
+      },
+      {
+        "id": "local:primetime",
+        "title": "Primetime",
+        "screenings": [
+          {
+            "date": "2026-10-09",
+            "time": "1:00pm",
+            "startsAt": "2026-10-09T19:00:00.000Z",
+            "format": "Standard",
+            "url": "https://www.cinemark.com/TicketSeatMap/?showtimeId=312076",
+            "source": "Cinemark"
+          },
+          {
+            "date": "2026-10-09",
+            "time": "10:25pm",
+            "startsAt": "2026-10-10T04:25:00.000Z",
+            "format": "Standard",
+            "url": "https://www.cinemark.com/TicketSeatMap/?showtimeId=312077",
+            "source": "Cinemark"
+          },
+          {
+            "date": "2026-10-09",
+            "time": "4:50pm",
+            "startsAt": "2026-10-09T22:50:00.000Z",
+            "format": "Standard",
+            "url": "https://www.cinemark.com/TicketSeatMap/?showtimeId=312074",
+            "source": "Cinemark"
+          },
+          {
+            "date": "2026-10-09",
+            "time": "7:40pm",
+            "startsAt": "2026-10-10T01:40:00.000Z",
+            "format": "Standard",
+            "url": "https://www.cinemark.com/TicketSeatMap/?showtimeId=312075",
+            "source": "Cinemark"
+          },
+          {
+            "date": "2026-10-10",
+            "time": "10:35am",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=58OLMYZ9"
+          },
+          {
+            "date": "2026-10-10",
+            "time": "1:20pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=7LKByaXo"
+          },
+          {
+            "date": "2026-10-10",
+            "time": "4:10pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=ErxzoXwe"
+          },
+          {
+            "date": "2026-10-10",
+            "time": "6:45pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=56VkMKpL"
+          },
+          {
+            "date": "2026-10-10",
+            "time": "9:20pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=3BZVY2y6"
+          },
+          {
+            "date": "2026-10-11",
+            "time": "10:20am",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EWRMN8yb"
+          },
+          {
+            "date": "2026-10-11",
+            "time": "1:10pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=3GMRYavz"
+          },
+          {
+            "date": "2026-10-11",
+            "time": "4:55pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=E2WbwlDg"
+          },
+          {
+            "date": "2026-10-11",
+            "time": "7:45pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=7oYdpKbk"
+          },
+          {
+            "date": "2026-10-12",
+            "time": "1:15pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=3PJXOym8"
+          },
+          {
+            "date": "2026-10-12",
+            "time": "4:10pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=ExNJpvO2"
+          },
+          {
+            "date": "2026-10-12",
+            "time": "7:45pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5Z9wQX8G"
+          },
+          {
+            "date": "2026-10-13",
+            "time": "12:10pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=7LKByazo"
+          },
+          {
+            "date": "2026-10-13",
+            "time": "3:10pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5ON6kaKW"
+          },
+          {
+            "date": "2026-10-13",
+            "time": "7:45pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EkyYVkb4"
+          },
+          {
+            "date": "2026-10-14",
+            "time": "12:10pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5pLzprQz"
+          },
+          {
+            "date": "2026-10-14",
+            "time": "3:10pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EMn8RKj2"
+          },
+          {
+            "date": "2026-10-14",
+            "time": "7:45pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=ElKzYOXk"
+          }
+        ],
+        "dates": [
+          "2026-10-09",
+          "2026-10-10",
+          "2026-10-11",
+          "2026-10-12",
+          "2026-10-13",
+          "2026-10-14"
+        ],
+        "start": "2026-10-09",
+        "end": "2026-10-14",
+        "scope": "local",
+        "source": "Cinemark official listings",
+        "url": "https://www.cinemark.com/theatres/mt-kalispell/cinemark-signature-stadium-kalispell-14",
+        "checkedAt": 1791568985635.483,
+        "poster": "https://www.cinemark.com/papi/media/file/umb---oznp3rzz---mdprimetimenfinalposter.jpg?prefix=media"
+      },
+      {
+        "id": "local:practicalmagic2",
+        "title": "Practical Magic 2",
+        "screenings": [
+          {
+            "date": "2026-10-09",
+            "time": "12:30pm",
+            "startsAt": "2026-10-09T18:30:00.000Z",
+            "format": "Standard",
+            "url": "https://www.cinemark.com/TicketSeatMap/?showtimeId=312070",
+            "source": "Cinemark"
+          },
+          {
+            "date": "2026-10-09",
+            "time": "9:35pm",
+            "startsAt": "2026-10-10T03:35:00.000Z",
+            "format": "Standard",
+            "url": "https://www.cinemark.com/TicketSeatMap/?showtimeId=312071",
+            "source": "Cinemark"
+          },
+          {
+            "date": "2026-10-10",
+            "time": "10:50am",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=E0Dbqvjl"
+          },
+          {
+            "date": "2026-10-10",
+            "time": "9:35pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5RMgB0vq"
+          },
+          {
+            "date": "2026-10-11",
+            "time": "10:50am",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=7nmnpB4b"
+          },
+          {
+            "date": "2026-10-12",
+            "time": "12:30pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=ElKzYOaW"
+          },
+          {
+            "date": "2026-10-12",
+            "time": "3:45pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5pLzprYk"
+          },
+          {
+            "date": "2026-10-13",
+            "time": "12:30pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=E0DbqvAl"
+          },
+          {
+            "date": "2026-10-13",
+            "time": "3:45pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5RMgB0qq"
+          },
+          {
+            "date": "2026-10-14",
+            "time": "12:30pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EvOzpQPp"
+          },
+          {
+            "date": "2026-10-14",
+            "time": "3:45pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=7VKvXBxN"
+          }
+        ],
+        "dates": [
+          "2026-10-09",
+          "2026-10-10",
+          "2026-10-11",
+          "2026-10-12",
+          "2026-10-13",
+          "2026-10-14"
+        ],
+        "start": "2026-10-09",
+        "end": "2026-10-14",
+        "scope": "local",
+        "source": "Cinemark official listings",
+        "url": "https://www.cinemark.com/theatres/mt-kalispell/cinemark-signature-stadium-kalispell-14",
+        "checkedAt": 1791568985635.483,
+        "poster": "https://www.cinemark.com/papi/media/file/umb---cdpnzqoi---mdpracticalmagic2poster.png?prefix=media"
+      },
+      {
+        "id": "local:avengersendgameencore",
+        "title": "Avengers Endgame: Encore",
+        "screenings": [
+          {
+            "date": "2026-10-09",
+            "time": "12:35pm",
+            "startsAt": "2026-10-09T18:35:00.000Z",
+            "format": "Standard",
+            "url": "https://www.cinemark.com/TicketSeatMap/?showtimeId=312085",
+            "source": "Cinemark"
+          },
+          {
+            "date": "2026-10-09",
+            "time": "3:55pm",
+            "startsAt": "2026-10-09T21:55:00.000Z",
+            "format": "RealD 3D",
+            "url": "https://www.cinemark.com/TicketSeatMap/?showtimeId=312054",
+            "source": "Cinemark"
+          },
+          {
+            "date": "2026-10-09",
+            "time": "8:10pm",
+            "startsAt": "2026-10-10T02:10:00.000Z",
+            "format": "Standard",
+            "url": "https://www.cinemark.com/TicketSeatMap/?showtimeId=312086",
+            "source": "Cinemark"
+          },
+          {
+            "date": "2026-10-10",
+            "time": "10:10am",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=7VKvXBAK"
+          },
+          {
+            "date": "2026-10-10",
+            "time": "7:40pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5QxNLRzw"
+          },
+          {
+            "date": "2026-10-11",
+            "time": "10:10am",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=7yPopMnn"
+          },
+          {
+            "date": "2026-10-11",
+            "time": "6:30pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5RMgB0Dq"
+          },
+          {
+            "date": "2026-10-12",
+            "time": "11:50am",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EJ8OYnbY"
+          },
+          {
+            "date": "2026-10-12",
+            "time": "3:55pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=5DPMYdlv"
+          },
+          {
+            "date": "2026-10-13",
+            "time": "11:50am",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=7NNr0aJD"
+          },
+          {
+            "date": "2026-10-13",
+            "time": "3:55pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EX0lgrLk"
+          },
+          {
+            "date": "2026-10-14",
+            "time": "2:55pm",
+            "format": "Standard Showtimes (Reserved Seating)",
+            "url": "https://tickets.fandango.com/Transaction/Ticketing/ticketboxoffice.aspx?a=13122&showtimehashcode=EbdYBlyl"
+          }
+        ],
+        "dates": [
+          "2026-10-09",
+          "2026-10-10",
+          "2026-10-11",
+          "2026-10-12",
+          "2026-10-13",
+          "2026-10-14"
+        ],
+        "start": "2026-10-09",
+        "end": "2026-10-14",
+        "scope": "local",
+        "source": "Cinemark official listings",
+        "url": "https://www.cinemark.com/theatres/mt-kalispell/cinemark-signature-stadium-kalispell-14",
+        "checkedAt": 1791568985635.483,
+        "poster": "https://www.cinemark.com/papi/media/file/umb---eu2dvsjb---mdavepayoffposter.jpg?prefix=media"
+      }
+    ],
+    "checkedAt": 1791568985635.483,
+    "stale": false,
+    "sourceURL": "https://www.cinemark.com/theatres/mt-kalispell/cinemark-signature-stadium-kalispell-14"
+  },
+  "events": {
+    "items": [
+      {
+        "id": "event-16019",
+        "title": "Così fan tutte",
+        "category": "The Met: Live in HD",
+        "url": "https://www.fathomentertainment.com/releases/the-metropolitan-opera-cosi-fan-tutte-2026/",
+        "poster": "https://media.fathomentertainment.com/image/826249444369/image_4qlpt2meel10v6v5do3rccq67b?content-disposition=inline/-S600-Fwebp",
+        "dates": [
+          "2026-10-07"
+        ],
+        "ranges": [],
+        "start": "2026-10-07",
+        "end": "2026-10-07",
+        "dateLabel": "Oct 7",
+        "scope": "national",
+        "source": "Fathom Entertainment",
+        "checkedAt": 1791405710051
+      },
+      {
+        "id": "event-13780",
+        "title": "Adore Him: He is Here",
+        "category": "Fathom event",
+        "url": "https://www.fathomentertainment.com/releases/adore-him/",
+        "poster": "https://media.fathomentertainment.com/image/826249444369/image_6h57l6cfvt5t72rdeno47o8337?content-disposition=inline/-S600-Fwebp",
+        "dates": [
+          "2026-10-07",
+          "2026-10-08"
+        ],
+        "ranges": [],
+        "start": "2026-10-07",
+        "end": "2026-10-08",
+        "dateLabel": "Oct 7 · Oct 8",
+        "scope": "national",
+        "source": "Fathom Entertainment",
+        "checkedAt": 1791405710051
+      },
+      {
+        "id": "event-13724",
+        "title": "The Transformers: The Movie 40th Anniversary",
+        "category": "Fathom event",
+        "url": "https://www.fathomentertainment.com/releases/the-transformers-the-movie-40th-anniversary/",
+        "poster": "https://media.fathomentertainment.com/image/826249444369/image_jt42dogb4l1trbpgp431mbn21q?content-disposition=inline/-S600-Fwebp",
+        "dates": [
+          "2026-10-07"
+        ],
+        "ranges": [],
+        "start": "2026-10-07",
+        "end": "2026-10-07",
+        "dateLabel": "Oct 7",
+        "scope": "national",
+        "source": "Fathom Entertainment",
+        "checkedAt": 1791405710051
+      },
+      {
+        "id": "event-13826",
+        "title": "Guillermo del Toro’s Pan’s Labyrinth 20th Anniversary",
+        "category": "Fathom event",
+        "url": "https://www.fathomentertainment.com/releases/guillermo-del-toro-pans-labyrinth-20th-anniversary/",
+        "poster": "https://media.fathomentertainment.com/image/826249444369/image_erbvmrduq90av6klsj4b84uf28?content-disposition=inline/-S600-Fwebp",
+        "dates": [],
+        "ranges": [
+          {
+            "start": "2026-10-08",
+            "end": "2026-10-15"
+          }
+        ],
+        "start": "2026-10-08",
+        "end": "2026-10-15",
+        "dateLabel": "Oct 8 — Oct 15",
+        "scope": "national",
+        "source": "Fathom Entertainment",
+        "checkedAt": 1791405710051
+      },
+      {
+        "id": "event-13973",
+        "title": "Spirited Away: Live on Stage – Studio Ghibli Fest 2026",
+        "category": "Studio Ghibli Fest 2026",
+        "url": "https://www.fathomentertainment.com/releases/spirited-away-live-on-stage-studio-ghibli-fest-2026/",
+        "poster": "https://media.fathomentertainment.com/image/826249444369/image_gno2ujafjd5rj06413t22slb3n?content-disposition=inline/-S600-Fwebp",
+        "dates": [
+          "2026-10-08"
+        ],
+        "ranges": [],
+        "start": "2026-10-08",
+        "end": "2026-10-08",
+        "dateLabel": "Oct 8",
+        "scope": "national",
+        "source": "Fathom Entertainment",
+        "checkedAt": 1791405710051
+      },
+      {
+        "id": "event-15193",
+        "title": "Donnie Darko 25th Anniversary",
+        "category": "Fathom event",
+        "url": "https://www.fathomentertainment.com/releases/donnie-darko-25th-anniversary/",
+        "poster": "https://media.fathomentertainment.com/image/826249444369/image_a7mp25ec491ch93t6npcs3ne5l?content-disposition=inline/-S600-Fwebp",
+        "dates": [],
+        "ranges": [
+          {
+            "start": "2026-10-09",
+            "end": "2026-10-11"
+          }
+        ],
+        "start": "2026-10-09",
+        "end": "2026-10-11",
+        "dateLabel": "Oct 9 — Oct 11",
+        "scope": "national",
+        "source": "Fathom Entertainment",
+        "checkedAt": 1791405710051
+      },
+      {
+        "id": "event-13647",
+        "title": "Gone With The Wind (2026)",
+        "category": "Fathom’s Big Screen Classics",
+        "url": "https://www.fathomentertainment.com/releases/gone-with-the-wind-2026/",
+        "poster": "https://media.fathomentertainment.com/image/826249444369/image_qed8204out1bd5ccjmkaqfor72/-S600-Fwebp",
+        "dates": [],
+        "ranges": [
+          {
+            "start": "2026-10-10",
+            "end": "2026-10-14"
+          }
+        ],
+        "start": "2026-10-10",
+        "end": "2026-10-14",
+        "dateLabel": "Oct 10 — Oct 14",
+        "scope": "national",
+        "source": "Fathom Entertainment",
+        "checkedAt": 1791405710051
+      },
+      {
+        "id": "event-16021",
+        "title": "Macbeth",
+        "category": "The Met: Live in HD",
+        "url": "https://www.fathomentertainment.com/releases/the-metropolitan-opera-macbeth-2026/",
+        "poster": "https://media.fathomentertainment.com/image/826249444369/image_eimq5vh29h25pbd7r49tbu0s0l?content-disposition=inline/-S600-Fwebp",
+        "dates": [
+          "2026-10-17",
+          "2026-10-21"
+        ],
+        "ranges": [],
+        "start": "2026-10-17",
+        "end": "2026-10-21",
+        "dateLabel": "Oct 17 · Oct 21",
+        "scope": "national",
+        "source": "Fathom Entertainment",
+        "checkedAt": 1791405710051
+      },
+      {
+        "id": "event-13798",
+        "title": "Spirited Away 25th Anniversary",
+        "category": "Studio Ghibli Fest 2026",
+        "url": "https://www.fathomentertainment.com/releases/spirited-away-studio-ghibli-fest-2026/",
+        "poster": "https://media.fathomentertainment.com/image/826249444369/image_ae3qmm2ce96l37afciu57a972l/-S600-Fwebp",
+        "dates": [],
+        "ranges": [
+          {
+            "start": "2026-10-17",
+            "end": "2026-10-21"
+          }
+        ],
+        "start": "2026-10-17",
+        "end": "2026-10-21",
+        "dateLabel": "Oct 17 — Oct 21",
+        "scope": "national",
+        "source": "Fathom Entertainment",
+        "checkedAt": 1791405710051
+      },
+      {
+        "id": "event-13742",
+        "title": "Wildwood",
+        "category": "Fathom event",
+        "url": "https://www.fathomentertainment.com/releases/wildwood/",
+        "poster": "https://media.fathomentertainment.com/image/826249444369/image_9c1uh8aps97515ucjgi4agvp6h?content-disposition=inline/-S600-Fwebp",
+        "dates": [
+          "2026-10-19",
+          "2026-10-22",
+          "2026-10-23",
+          "2026-10-24",
+          "2026-10-25",
+          "2026-10-26",
+          "2026-10-27",
+          "2026-10-28",
+          "2026-10-29"
+        ],
+        "ranges": [],
+        "start": "2026-10-19",
+        "end": "2026-10-29",
+        "dateLabel": "Oct 19 · Oct 22 · Oct 23 · Oct 24 · Oct 25 · Oct 26 · Oct 27 · Oct 28 · Oct 29",
+        "scope": "national",
+        "source": "Fathom Entertainment",
+        "checkedAt": 1791405710051
+      },
+      {
+        "id": "event-13170",
+        "title": "V for Vendetta 20th Anniversary",
+        "category": "Fathom event",
+        "url": "https://www.fathomentertainment.com/releases/v-for-vendetta/",
+        "poster": "https://media.fathomentertainment.com/image/826249444369/image_6c4iq0n27979t68dreuh5gu84n/-S600-Fwebp",
+        "dates": [
+          "2026-11-01",
+          "2026-11-05"
+        ],
+        "ranges": [],
+        "start": "2026-11-01",
+        "end": "2026-11-05",
+        "dateLabel": "Nov 1 · Nov 5",
+        "scope": "national",
+        "source": "Fathom Entertainment",
+        "checkedAt": 1791405710051
+      },
+      {
+        "id": "event-13744",
+        "title": "JIMMY",
+        "category": "Fathom event",
+        "url": "https://www.fathomentertainment.com/releases/jimmy/",
+        "poster": "https://media.fathomentertainment.com/image/826249444369/image_ov0tdrnb5t5rj05jfonup1354u/-S600-Fwebp",
+        "dates": [],
+        "ranges": [
+          {
+            "start": "2026-11-05",
+            "end": "2026-11-19"
+          }
+        ],
+        "start": "2026-11-05",
+        "end": "2026-11-19",
+        "dateLabel": "Nov 5 — Nov 19",
+        "scope": "national",
+        "source": "Fathom Entertainment",
+        "checkedAt": 1791405710051
+      },
+      {
+        "id": "event-14191",
+        "title": "Rocky 50th Anniversary",
+        "category": "Fathom event",
+        "url": "https://www.fathomentertainment.com/releases/rocky-50th-anniversary/",
+        "poster": "https://media.fathomentertainment.com/image/826249444369/image_n1vqv99d0h359bqvlatib4g41v?content-disposition=inline/-S600-Fwebp",
+        "dates": [],
+        "ranges": [
+          {
+            "start": "2026-11-07",
+            "end": "2026-11-11"
+          }
+        ],
+        "start": "2026-11-07",
+        "end": "2026-11-11",
+        "dateLabel": "Nov 7 — Nov 11",
+        "scope": "national",
+        "source": "Fathom Entertainment",
+        "checkedAt": 1791405710051
+      },
+      {
+        "id": "event-16023",
+        "title": "Carmen Encore",
+        "category": "The Met: Live in HD",
+        "url": "https://www.fathomentertainment.com/releases/the-metropolitan-opera-carmen-encore-2026/",
+        "poster": "https://media.fathomentertainment.com/image/826249444369/image_c2h5alnsop5976ml11tocm172b?content-disposition=inline/-S600-Fwebp",
+        "dates": [
+          "2026-11-14"
+        ],
+        "ranges": [],
+        "start": "2026-11-14",
+        "end": "2026-11-14",
+        "dateLabel": "Nov 14",
+        "scope": "national",
+        "source": "Fathom Entertainment",
+        "checkedAt": 1791405710051
+      },
+      {
+        "id": "event-13720",
+        "title": "A Beautiful Mind 25th Anniversary",
+        "category": "Fathom’s Big Screen Classics",
+        "url": "https://www.fathomentertainment.com/releases/a-beautiful-mind-25th-anniversary/",
+        "poster": "https://media.fathomentertainment.com/image/826249444369/image_qvmvtnomu57p5887fhjspiv652/-S600-Fwebp",
+        "dates": [
+          "2026-11-22",
+          "2026-11-23"
+        ],
+        "ranges": [],
+        "start": "2026-11-22",
+        "end": "2026-11-23",
+        "dateLabel": "Nov 22 · Nov 23",
+        "scope": "national",
+        "source": "Fathom Entertainment",
+        "checkedAt": 1791405710051
+      },
+      {
+        "id": "event-16512",
+        "title": "Doctor Who: The Satan Pit",
+        "category": "Doctor Who Day",
+        "url": "https://www.fathomentertainment.com/releases/doctor-who-the-satan-pit/",
+        "poster": "https://media.fathomentertainment.com/image/826249444369/image_k6k85ida9h5epadm447ts0oe45?content-disposition=inline/-S600-Fwebp",
+        "dates": [
+          "2026-11-23"
+        ],
+        "ranges": [],
+        "start": "2026-11-23",
+        "end": "2026-11-23",
+        "dateLabel": "Nov 23",
+        "scope": "national",
+        "source": "Fathom Entertainment",
+        "checkedAt": 1791405710051
+      },
+      {
+        "id": "event-15472",
+        "title": "Samson et Dalila",
+        "category": "The Met: Live in HD",
+        "url": "https://www.fathomentertainment.com/releases/the-metropolitan-opera-samson-et-dalila-2026/",
+        "poster": "https://media.fathomentertainment.com/image/826249444369/image_va26huf9p95irfn189ed58uq5t?content-disposition=inline/-S600-Fwebp",
+        "dates": [
+          "2026-12-05",
+          "2026-12-09"
+        ],
+        "ranges": [],
+        "start": "2026-12-05",
+        "end": "2026-12-09",
+        "dateLabel": "Dec 5 · Dec 9",
+        "scope": "national",
+        "source": "Fathom Entertainment",
+        "checkedAt": 1791405710051
+      },
+      {
+        "id": "event-13649",
+        "title": "The Maltese Falcon 85th Anniversary",
+        "category": "Fathom’s Big Screen Classics",
+        "url": "https://www.fathomentertainment.com/releases/the-maltese-falcon-85th-anniversary/",
+        "poster": "https://media.fathomentertainment.com/image/826249444369/image_k27oectrft1rpbam6nio2q477r/-S600-Fwebp",
+        "dates": [
+          "2026-12-06",
+          "2026-12-09"
+        ],
+        "ranges": [],
+        "start": "2026-12-06",
+        "end": "2026-12-09",
+        "dateLabel": "Dec 6 · Dec 9",
+        "scope": "national",
+        "source": "Fathom Entertainment",
+        "checkedAt": 1791405710051
+      },
+      {
+        "id": "event-16025",
+        "title": "The Magic Flute Encore",
+        "category": "The Met: Live in HD",
+        "url": "https://www.fathomentertainment.com/releases/the-metropolitan-opera-the-magic-flute-encore-2026/",
+        "poster": "https://media.fathomentertainment.com/image/826249444369/image_03fojj7fn94pbekvons6ijvo1d?content-disposition=inline/-S600-Fwebp",
+        "dates": [
+          "2026-12-12"
+        ],
+        "ranges": [],
+        "start": "2026-12-12",
+        "end": "2026-12-12",
+        "dateLabel": "Dec 12",
+        "scope": "national",
+        "source": "Fathom Entertainment",
+        "checkedAt": 1791405710051
+      },
+      {
+        "id": "event-13626",
+        "title": "It’s A Wonderful Life 80th Anniversary",
+        "category": "Fathom’s Big Screen Classics",
+        "url": "https://www.fathomentertainment.com/releases/its-a-wonderful-life-80th-anniversary/",
+        "poster": "https://media.fathomentertainment.com/image/826249444369/image_iqoj6dk8ud5i1aq5qnccb9gg4s/-S600-Fwebp",
+        "dates": [],
+        "ranges": [
+          {
+            "start": "2026-12-18",
+            "end": "2026-12-25"
+          }
+        ],
+        "start": "2026-12-18",
+        "end": "2026-12-25",
+        "dateLabel": "Dec 18 — Dec 25",
+        "scope": "national",
+        "source": "Fathom Entertainment",
+        "checkedAt": 1791405710051
+      },
+      {
+        "id": "event-16027",
+        "title": "La Fanciulla del West",
+        "category": "The Met: Live in HD",
+        "url": "https://www.fathomentertainment.com/releases/the-metropolitan-opera-la-fanciulla-del-west-2027/",
+        "poster": "https://media.fathomentertainment.com/image/826249444369/image_76olost8j5613akmcm7vjret5p?content-disposition=inline/-S600-Fwebp",
+        "dates": [
+          "2027-01-23",
+          "2027-01-27"
+        ],
+        "ranges": [],
+        "start": "2027-01-23",
+        "end": "2027-01-27",
+        "dateLabel": "Jan 23, 2027 · Jan 27, 2027",
+        "scope": "national",
+        "source": "Fathom Entertainment",
+        "checkedAt": 1791405710051
+      },
+      {
+        "id": "event-16029",
+        "title": "Silent Night",
+        "category": "The Met: Live in HD",
+        "url": "https://www.fathomentertainment.com/releases/the-metropolitan-opera-silent-night-2027/",
+        "poster": "https://media.fathomentertainment.com/image/826249444369/image_ka0iitb5gt2jt4o1iat2eod60u?content-disposition=inline/-S600-Fwebp",
+        "dates": [
+          "2027-03-20",
+          "2027-03-24"
+        ],
+        "ranges": [],
+        "start": "2027-03-20",
+        "end": "2027-03-24",
+        "dateLabel": "Mar 20, 2027 · Mar 24, 2027",
+        "scope": "national",
+        "source": "Fathom Entertainment",
+        "checkedAt": 1791405710051
+      },
+      {
+        "id": "event-16031",
+        "title": "Manon",
+        "category": "The Met: Live in HD",
+        "url": "https://www.fathomentertainment.com/releases/the-metropolitan-opera-manon-2027/",
+        "poster": "https://media.fathomentertainment.com/image/826249444369/image_l1j2619ff561daabpqq5lft23m?content-disposition=inline/-S600-Fwebp",
+        "dates": [
+          "2027-04-03",
+          "2027-04-07"
+        ],
+        "ranges": [],
+        "start": "2027-04-03",
+        "end": "2027-04-07",
+        "dateLabel": "Apr 3, 2027 · Apr 7, 2027",
+        "scope": "national",
+        "source": "Fathom Entertainment",
+        "checkedAt": 1791405710051
+      },
+      {
+        "id": "event-16033",
+        "title": "Otello",
+        "category": "The Met: Live in HD",
+        "url": "https://www.fathomentertainment.com/releases/the-metropolitan-opera-otello-2027/",
+        "poster": "https://media.fathomentertainment.com/image/826249444369/image_m6u34k53a55d17e615r83kjs5g?content-disposition=inline/-S600-Fwebp",
+        "dates": [
+          "2027-04-24",
+          "2027-04-28"
+        ],
+        "ranges": [],
+        "start": "2027-04-24",
+        "end": "2027-04-28",
+        "dateLabel": "Apr 24, 2027 · Apr 28, 2027",
+        "scope": "national",
+        "source": "Fathom Entertainment",
+        "checkedAt": 1791405710051
+      },
+      {
+        "id": "event-16035",
+        "title": "Tosca Encore",
+        "category": "The Met: Live in HD",
+        "url": "https://www.fathomentertainment.com/releases/the-metropolitan-opera-tosca-2026-encore/",
+        "poster": "https://media.fathomentertainment.com/image/826249444369/image_k13u13pss528j3l054fnf51b5i?content-disposition=inline/-S600-Fwebp",
+        "dates": [
+          "2027-05-08"
+        ],
+        "ranges": [],
+        "start": "2027-05-08",
+        "end": "2027-05-08",
+        "dateLabel": "May 8, 2027",
+        "scope": "national",
+        "source": "Fathom Entertainment",
+        "checkedAt": 1791405710051
+      },
+      {
+        "id": "event-16037",
+        "title": "Parsifal",
+        "category": "The Met: Live in HD",
+        "url": "https://www.fathomentertainment.com/releases/the-metropolitan-opera-parsifal-2027/",
+        "poster": "https://media.fathomentertainment.com/image/826249444369/image_a04o6sf6q97jvbg25armmg5r0l?content-disposition=inline/-S600-Fwebp",
+        "dates": [
+          "2027-06-05",
+          "2027-06-09"
+        ],
+        "ranges": [],
+        "start": "2027-06-05",
+        "end": "2027-06-09",
+        "dateLabel": "Jun 5, 2027 · Jun 9, 2027",
+        "scope": "national",
+        "source": "Fathom Entertainment",
+        "checkedAt": 1791405710051
+      }
+    ],
+    "checkedAt": 1791405710051,
+    "stale": false,
+    "sourceURL": "https://www.fathomentertainment.com/releases/"
+  }
+}

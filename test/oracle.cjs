@@ -5,7 +5,7 @@ const crimeFit=H.affinity(crimeFilm,[crimeSeed]),crimeReading=O.reading(crimeFil
 assert.match(crimeReading.text,/The Departed 5\/5/);assert.doesNotMatch(crimeReading.text,/Shares police|You own|watched.*more than once/);
 assert.notEqual(crimeReading.heading,O.reading(m,fit,at).heading,'Film metadata changes the reading');
 assert.equal(O.reading(crimeFilm,crimeFit,at).text,crimeReading.text,'Copy is stable when reopening a reading');
-assert.doesNotMatch(O.reading({id:999,title:'Unknown'},null,at).text,/rated|own|favorite/,'Missing evidence invents no personal history');
+assert.doesNotMatch(O.reading({id:999,title:'Unknown'},null,at).text,/\b(?:rated|own|favorite)\b/,'Missing evidence invents no personal history');
 console.log('Oracle readings: film-specific themes, grounded ratings, stable copy and no invented personal signals passed');
 
 // The displayed contribution ledger must reconcile exactly with the score.

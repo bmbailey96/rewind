@@ -1,0 +1,7 @@
+(function(root,factory){if(typeof module==='object'&&module.exports)module.exports=factory();else root.TasteModel=factory();})(typeof globalThis!=='undefined'?globalThis:this,function(){
+ const themes=[[/\bfound footage\b|\bmockumentary\b|\bfake documentary\b|\banalog horror\b/i,'recovered tapes and unreliable documents',2.5],[/\bsurreal\w*\b|\bexperimental\b|\bdream logic\b|\bdeadpan\b/i,'reality becoming less cooperative',2],[/\barchiv\w*\b|\binternet archaeology\b|\bobsess\w*\b/i,'archives and obsession spirals',1.5],[/\bfolk horror\b|\bwitchcraft\b|\bcosmic horror\b|\bliminal\b/i,'something spiritually off',2],[/\bmicrobudget\b|\boutsider art\b|\bregional filmmaking\b|\bunderground film\b/i,'outsider filmmaking',2]];
+ function affinity(movie){const d=movie.meta||movie,words=[movie.overview,d.overview,...(d.keywords?.keywords||[]).map(k=>k.name||k)].filter(Boolean).join(' '),matches=themes.filter(([p])=>p.test(words));return {score:Math.min(6,matches.reduce((n,r)=>n+r[2],0)),themes:matches.map(r=>r[1]),source:'Your STATIC profile'};}
+ function availableCandidates(movies,history,at=Date.now(),days=30){const recent=new Set((history||[]).filter(r=>at-r.at>=0&&at-r.at<days*86400000).map(r=>r.id));return movies.filter(m=>!recent.has(m.id));}
+ function remember(history,id,at=Date.now()){return [...(history||[]).filter(r=>r.id!==id&&at-r.at<90*86400000),{id,at}].slice(-200);}
+ return {affinity,availableCandidates,remember};
+});
