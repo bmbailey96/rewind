@@ -287,12 +287,12 @@ document.getElementById('gh-connect-btn').addEventListener('click', async () => 
   statusEl.textContent = 'Connecting...';
   try {
     await pullFromGist();
-    statusEl.textContent = 'Connected. Pulled latest synced data.';
+    statusEl.dataset.tone='info';statusEl.textContent = 'Connected. Pulled latest synced data.';
     renderWatchlist();
     renderDiscover();
     await initEmailAlerts();
   } catch (e) {
-    statusEl.textContent = 'Connection failed, check the token has "gist" scope.';
+    statusEl.dataset.tone='error';statusEl.textContent = 'Connection failed, check the token has "gist" scope.';
   }
 });
 
@@ -306,7 +306,7 @@ document.getElementById('gh-sync-now-btn').addEventListener('click', async () =>
   try {
     await pushToGist();
   } catch (e) {
-    statusEl.textContent = 'Push failed.';
+    statusEl.dataset.tone='error';statusEl.textContent = 'Push failed.';
   }
 });
 
