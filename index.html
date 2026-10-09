@@ -39,6 +39,7 @@
     </div>
     <div class="counter-welcome"><div><p class="welcome-kicker">WHAT TO WATCH</p><p>You picked the films. We’ll check the counter.</p></div><button id="choose-tonight">HELP ME CHOOSE</button></div>
     <section id="tonight-shelf" class="tonight-shelf" aria-labelledby="tonight-heading"><div class="panel-head"><h3 id="tonight-heading">Tonight</h3><span class="count-stamp">THREE POSSIBLE ANSWERS</span></div><p id="tonight-status" class="offer-note" role="status"></p><div id="tonight-grid"></div></section>
+    <div class="watchlist-scope" aria-label="Watchlist age"><button data-watchlist-scope="recent" aria-pressed="true">RECENT</button><button data-watchlist-scope="all" aria-pressed="false">ALL</button></div><p id="watchlist-scope-note" class="offer-note"></p><div id="watchlist-import-review" class="source-disclosure"></div>
     <details id="change-drawer" class="change-drawer"><summary id="change-summary">Changes</summary><div id="change-receipts"></div><button id="changes-read" class="secondary">MARK CHANGES READ</button></details>
     <details id="card-options" class="screen-options"><summary id="card-options-label">Filter, sort & refresh</summary><div class="options-body">
     <div class="card-toolbar"><button id="refresh-card-btn" class="secondary">CHECK AVAILABILITY</button><span id="card-check-status" role="status"></span></div>
@@ -54,6 +55,7 @@
     <section id="watch-now-section" class="shelf-group" hidden><h3>Watch now <span id="watch-now-count"></span></h3><p class="group-note">Included with your services, or free.</p><div id="watch-now-grid" class="card-row wrap"></div></section>
     <section id="paid-section" class="shelf-group" hidden><h3>Rent or buy <span id="paid-count"></span></h3><div id="paid-grid" class="card-row wrap"></div></section>
     <section id="waiting-section" class="shelf-group" hidden><h3>Waiting <span id="waiting-count"></span></h3><p class="group-note">Waiting for an included offer or a confirmed listing.</p><div id="waiting-grid" class="card-row wrap"></div></section>
+    <button id="watchlist-more" class="secondary" hidden>SHOW 60 MORE</button>
     <div id="watchlist-grid" hidden></div>
     <p id="watchlist-empty" class="empty-note" hidden>Your watchlist is empty. Browse for a film worth waiting for.</p>
   </section>
@@ -100,7 +102,7 @@
     <div class="import-block">
       <h3>Existing Watchlist</h3>
       <p class="import-note">Upload <code>watchlist.csv</code>. Every title, including older films, gets matched against TMDB and added to your watchlist. Takes a minute for a few hundred titles, don't close the tab.</p>
-      <input type="file" aria-label="Import watchlist" id="import-watchlist" accept=".csv">
+      <input type="file" aria-label="Import watchlist as tracked films" id="import-watchlist" accept=".csv">
       <p id="watchlist-import-status" class="import-status"></p>
     </div>
 
@@ -152,6 +154,7 @@
 <script src="storage-model.js"></script>
 <script src="sync-model.js"></script>
 <script src="static-model.js"></script>
+<script src="watchlist-model.js"></script>
 <script src="app.js"></script>
 <script src="hub.js"></script>
 <script src="static-experience.js"></script>
