@@ -1046,7 +1046,9 @@
 
     /* ─── Album picker ────────────────────────────────── */
     #album-picker { margin-top: 0.5rem; font-size: 0.68rem; color: var(--muted); display: flex; align-items: center; gap: 0.4rem; }
-  </style>
+  
+#dataPanelToggle{width:100%;background:transparent;color:var(--text);border:0;border-radius:0;min-height:44px;padding:8px 0;text-align:left}.arena-data-group{border-top:1px solid var(--border);padding:10px 0}.arena-data-group>summary{color:var(--accent);min-height:40px;padding:10px 0;cursor:pointer;font-size:12px;line-height:1.4}.arena-import-intro p{font-size:12px;color:#aaa492;line-height:1.6}.arena-import-intro button{min-height:42px;padding:10px 16px}.arena-import-intro{padding-bottom:16px}.arena-data-group[open]{padding-bottom:18px}.media-nav,.media-subnav{flex-shrink:0}
+</style>
 <link rel="stylesheet" href="/media-nav.css">
 </head>
 <body>
@@ -1064,10 +1066,10 @@
 
   <main>
     <section class="panel" id="dataPanel">
-      <div class="panel-title" style="display:flex; justify-content:space-between; align-items:center; cursor:pointer;" id="dataPanelToggle">
+      <button type="button" class="panel-title" aria-expanded="true" style="display:flex; justify-content:space-between; align-items:center; cursor:pointer;" id="dataPanelToggle">
         <span>Albums and data</span>
         <span id="dataPanelChevron" style="font-size:0.7rem; color:var(--dim); transition:transform 0.2s;">▲</span>
-      </div>
+      </button>
       <div id="dataPanelContent">
       <div style="display:flex; gap:0.35rem; margin-bottom:0.35rem;">
         <input type="text" id="spUrl" placeholder="open.spotify.com/playlist/…"
@@ -3988,6 +3990,7 @@ Upset rate: ${p.upsetRate.toFixed(1)}%</title></circle>`
     const dataPanelEl = document.getElementById("dataPanel");
 
     function setPanelCollapsed(collapsed) {
+      document.getElementById("dataPanelToggle").setAttribute("aria-expanded",String(!collapsed));
       dataPanelEl.classList.toggle("collapsed", collapsed);
       document.body.classList.toggle("panel-collapsed", collapsed);
       localStorage.setItem(PANEL_COLLAPSED_KEY, collapsed ? "1" : "0");
@@ -4097,5 +4100,6 @@ Upset rate: ${p.upsetRate.toFixed(1)}%</title></circle>`
     })();
   
   </script>
+<script src="arena-layout.js"></script>
 </body>
 </html>
