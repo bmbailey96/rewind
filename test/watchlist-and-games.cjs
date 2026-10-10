@@ -15,3 +15,5 @@ assert.equal(W.match({title:'Fixture',year:'2026'},[{id:1,title:'Fixture',releas
 assert.equal(W.match({title:'Fixture',year:'2026'},[{id:1,title:'Fixture',release_date:'2026-01-01'},{id:2,title:'Fixture',release_date:'2026-02-01'}]),null);
 assert.equal(W.match({title:'Amélie',year:'2001'},[{id:3,title:'Amelie',release_date:'2001-04-25'}]).id,3);
 console.log('Full-collection price sorting and filters before pagination; stale and unknown prices; unique title/year matching passed');
+
+assert.deepEqual(W.releaseYears({results:[{release_dates:[{type:1,release_date:'2011-03-01'},{type:3,release_date:'2012-02-01'},{type:4,release_date:'2010-01-01'}]}]}),['2011','2012']);assert.equal(W.match({title:'Festival film',year:'2011'},[{id:99,title:'Festival film',release_date:'2012-02-01',catalogReleaseYears:['2011','2012']}]).id,99);

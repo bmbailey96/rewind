@@ -913,9 +913,12 @@ async function resolveWatchlistMatches(){
   try{const lookup=async params=>{const data=await tmdbGet('/search/movie',params,controller.signal);if(data.total_pages>5)return [];let candidates=data.results||[];for(let page=2;page<=(data.total_pages||1);page++){const more=await tmdbGet('/search/movie',{...params,page},controller.signal);candidates=candidates.concat(more.results||[]);}return candidates;};
    let candidates=await lookup({query:row.title,primary_release_year:row.year});let match=WatchlistModel.match(row,candidates);
    if(!match){candidates=await lookup({query:row.title});match=WatchlistModel.match(row,candidates);}
+   if(!match){const sameTitle=candidates.filter(f=>[f.title,f.original_title].some(t=>WatchlistModel.titleKey(t)===WatchlistModel.titleKey(row.title))&&Math.abs(Number(String(f.release_date||'').slice(0,4))-Number(row.year))<=2);
+    if(sameTitle.length<=3){const verified=[];for(const candidate of sameTitle){const releases=await tmdbGet('/movie/'+candidate.id+'/release_dates',{},controller.signal);verified.push({...candidate,catalogReleaseYears:WatchlistModel.releaseYears(releases)});}match=WatchlistModel.match(row,verified);}
+   }
    failures=0;
    if(match){const key=WatchlistModel.sourceKey(row);if((hubState.watchlistUnmatched||[]).some(f=>WatchlistModel.sourceKey(f)===key)){
-    const film={id:match.id,title:match.title,sourceTitle:row.title,year:row.year,release_date:match.release_date,poster_path:match.poster_path||null,genre_ids:match.genre_ids||[],addedDate:row.addedDate,letterboxdURL:row.letterboxdURL,source:'Letterboxd watchlist'};
+    const film={id:match.id,title:match.title,sourceTitle:row.title,year:row.year,release_date:match.release_date,poster_path:match.poster_path||null,genre_ids:match.genre_ids||[],catalogReleaseYears:match.catalogReleaseYears||[],addedDate:row.addedDate,letterboxdURL:row.letterboxdURL,source:'Letterboxd watchlist'};
     watchlist=WatchlistModel.merge(watchlist,[film]);hubState.watchlistImportedKeys=[...new Set([...(hubState.watchlistImportedKeys||[]),key])];hubState.watchlistUnmatched=hubState.watchlistUnmatched.filter(f=>WatchlistModel.sourceKey(f)!==key);matched++;saveWatchlist();persistHubState();scheduleSync();
    }}
   }catch{if(++failures>=8)stopped=true;}finally{clearTimeout(timer);checked++;watchlistMatchProgress='Matching Letterboxd titles · '+checked+' of '+pending.length+' · '+matched+' matched';if(checked%8===0){renderImportReview();document.getElementById('watchlist-count').textContent=watchlist.length+' tracked · '+hubState.watchlistUnmatched.length+' awaiting match';}}
