@@ -1109,3 +1109,44 @@ button.text-action:hover,button.secondary:hover{background:#283735;color:#fff;te
 #tab-watchlist[data-collection=physical] .counter-welcome,#tab-watchlist[data-collection=physical] #tonight-shelf,#tab-watchlist[data-collection=physical] #watchlist-count,#tab-watchlist[data-collection=physical] #watchlist-scope-note,#tab-watchlist[data-collection=physical] #watch-now-section,#tab-watchlist[data-collection=physical] #paid-section,#tab-watchlist[data-collection=physical] #waiting-section,#tab-watchlist[data-collection=physical] #watchlist-load-status,#tab-watchlist[data-collection=physical] #watchlist-updates,#tab-watchlist[data-collection=physical] #card-options,#tab-watchlist[data-collection=physical] .watchlist-scope,#tab-watchlist[data-collection=physical] #watchlist-more{display:none!important}
 
 .picker-actions>.text-action{background:transparent!important;border:0!important;color:#b9d0bd!important;box-shadow:none!important;padding:10px 8px!important;min-height:44px;flex:0 0 auto!important;width:auto!important}.picker-actions>.text-action:hover{text-decoration:underline;background:transparent!important}
+
+/* Phone calendar: one week per film, concise dates, and useful tap targets. */
+@media(max-width:700px){
+ .calendar-simple-tools{gap:8px}
+ .calendar-scope-tabs{min-width:0;gap:14px;justify-content:space-between}
+ .calendar-scope-tabs button{font-size:.8rem;min-height:42px;white-space:nowrap}
+ .calendar-simple-tools input{min-width:0;flex:1 1 155px;font-size:16px}
+ .calendar-simple-tools .text-action{min-height:44px;padding:10px 12px}
+ .board-head{padding:12px 0;margin-bottom:10px;gap:8px}
+ .board-head h3{font-size:1rem;line-height:1.35}
+ .board-nav button,.calendar-view-switch button{min-height:42px;padding:8px 10px}
+ #calendar-mobile:not([hidden]){gap:9px}
+ .calendar-mobile-card{padding:12px 13px;border-radius:7px}
+ .calendar-mobile-card .calendar-film-head{display:grid;grid-template-columns:minmax(0,1fr);gap:3px 10px;align-items:start;min-height:0;padding:0;text-align:left;line-height:1.3}
+ .calendar-mobile-card .calendar-film-head:has(> img){grid-template-columns:40px minmax(0,1fr)}
+ .calendar-mobile-card .calendar-film-head img{grid-column:1;grid-row:1 / span 2;float:none;width:40px;height:60px;margin:0}
+ .calendar-mobile-card .calendar-film-head .calendar-poster-placeholder{display:none}
+ .calendar-mobile-card .calendar-film-head .calendar-film-name{font-size:16px;line-height:1.3;font-weight:650;grid-column:1}
+ .calendar-mobile-card .calendar-film-head:has(> img) .calendar-film-name{grid-column:2}
+ .calendar-mobile-card .calendar-film-head .cinema-fit{grid-column:1;font-size:10px;line-height:1.3;letter-spacing:.025em;padding:0;margin:0}
+ .calendar-mobile-card .calendar-film-head:has(> img) .cinema-fit{grid-column:2}
+ .calendar-mobile-card .calendar-film-head:after{content:'Details';font-size:11px;color:#95beaa;grid-column:1;line-height:1.35;margin-top:2px}
+ .calendar-mobile-card .calendar-film-head:has(> img):after{grid-column:2}
+ .calendar-mobile-card .calendar-film-head[aria-expanded=true]:after{content:'Close details'}
+ .calendar-mobile-card .calendar-source-note{font-size:12px;line-height:1.4;margin:8px 0;color:#afc3b5}
+ .calendar-mobile-card .mobile-week-strip{margin:9px 0 7px}
+ .calendar-mobile-card .mobile-week-day{box-sizing:border-box;min-height:46px;width:100%;padding:5px 1px;border-radius:0;font-family:inherit}
+ .calendar-mobile-card button.mobile-week-day{cursor:pointer}
+ .calendar-mobile-card button.mobile-week-day:focus-visible{outline:2px solid #dbb36c;outline-offset:-3px}
+ .calendar-mobile-card .mobile-week-day small{font-size:10px;line-height:1.3}
+ .calendar-mobile-card .mobile-week-day strong{font-size:15px;line-height:1.35}
+ .calendar-mobile-card .calendar-film-actions{display:flex;gap:8px;padding:0;align-items:center}
+ .calendar-mobile-card .calendar-film-actions button,.calendar-mobile-card .calendar-film-actions button:first-child{min-height:42px!important;height:auto!important;grid-column:auto;flex:0 1 auto!important;font-size:12px!important;padding:9px 13px!important}
+ .calendar-mobile-card .calendar-film-actions .hide-action{background:transparent!important;border:0!important;color:#adbfaf!important;padding:9px!important}
+ .calendar-mobile-card .calendar-inline-details{margin-top:10px;padding:12px 0 0;border:0;border-top:1px solid #35483c;background:transparent}
+ .calendar-mobile-card .calendar-inline-details .screening-hero,.calendar-mobile-card .calendar-inline-details .screening-strip{display:none}
+ .calendar-release-facts{font-size:12px;color:#c4d3c7;line-height:1.5}
+ .calendar-release-facts p{margin:5px 0}
+}
+.calendar-release-facts{color:#c4d3c7;font-size:13px;line-height:1.55}
+.calendar-release-facts p{margin:5px 0}
