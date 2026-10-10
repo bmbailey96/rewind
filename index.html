@@ -39,19 +39,17 @@
     </div>
     <div class="counter-welcome"><div><p class="welcome-kicker">WHAT TO WATCH</p><p>You picked the films. We’ll check the counter.</p></div><button id="choose-tonight">HELP ME CHOOSE</button></div>
     <section id="tonight-shelf" class="tonight-shelf" aria-labelledby="tonight-heading"><div class="panel-head"><h3 id="tonight-heading">Tonight</h3><span class="count-stamp">THREE POSSIBLE ANSWERS</span></div><p id="tonight-status" class="offer-note" role="status"></p><div id="tonight-grid"></div></section>
-    <div class="watchlist-scope" aria-label="Watchlist age"><button data-watchlist-scope="recent" aria-pressed="true">RECENT</button><button data-watchlist-scope="all" aria-pressed="false">ALL</button></div><p id="watchlist-scope-note" class="offer-note"></p><div id="watchlist-import-review" class="source-disclosure"></div>
-    <details id="change-drawer" class="change-drawer"><summary id="change-summary">Changes</summary><div id="change-receipts"></div><button id="changes-read" class="secondary">MARK CHANGES READ</button></details>
-    <details id="card-options" class="screen-options"><summary id="card-options-label">Filter, sort & refresh</summary><div class="options-body">
+    <div class="watchlist-toolbar"><div class="watchlist-navigation"><div class="watchlist-scope" aria-label="Watchlist age"><button data-watchlist-scope="recent" aria-pressed="true">RECENT</button><button data-watchlist-scope="all" aria-pressed="false">ALL</button></div><p id="watchlist-scope-note" class="offer-note"></p></div>    <details id="card-options" class="screen-options"><summary id="card-options-label">Filters</summary><div class="options-body">
     <div class="card-toolbar"><button id="refresh-card-btn" class="secondary">CHECK AVAILABILITY</button><span id="card-check-status" role="status"></span></div>
     <div class="cost-filters" aria-label="Filter your card by cost"><button data-cost-filter="all" aria-pressed="true">ALL</button><button data-cost-filter="free" aria-pressed="false">INCLUDED / FREE</button><button data-cost-filter="cheap" aria-pressed="false">AT MY PRICE</button><button data-cost-filter="premium" aria-pressed="false">OVER MY PRICE</button><button data-cost-filter="waiting" aria-pressed="false">WAITING</button></div>
     <div class="card-controls">
       <label for="sort-select">Order</label><select id="sort-select" class="sort-select"><option value="cost">COST: LOW TO HIGH</option><option value="changed">RECENT CHANGES</option><option value="added">RECENTLY TRACKED</option><option value="release">RELEASE DATE</option><option value="az">A-Z</option></select>
       <label for="rental-budget">My usual rental limit ($)</label><input id="rental-budget" type="number" min="0" max="100" step="0.01" value="7.99"><p class="offer-note">Apple TV and Prime Video quotes come first. The headline uses HD or 4K when available; cheaper offers elsewhere stay visible. Your limit groups cards, and does not change existing film alerts.</p>
     </div>
-    </div></details>
+    </div></details><details id="watchlist-updates" class="watchlist-updates"><summary id="watchlist-updates-label">Updates</summary><div class="watchlist-updates-body"><section id="change-drawer" class="change-drawer"><h3 id="change-summary">Changes</h3><div id="change-receipts"></div><button id="changes-read" class="secondary">MARK CHANGES READ</button></section><p id="card-summary" hidden></p><div id="watchlist-import-review" class="source-disclosure"></div></div></details></div>
     <p id="filter-empty" class="empty-note" hidden>No films in this group. <button id="reset-cost-filter" class="secondary">SHOW ALL FILMS</button></p>
     <p id="watchlist-load-status" class="offer-note" role="status"></p>
-    <p id="card-summary" class="card-summary"></p>
+    <p id="storage-status" class="storage-status" role="alert" hidden></p>
     <section id="watch-now-section" class="shelf-group" hidden><h3>Watch now <span id="watch-now-count"></span></h3><p class="group-note">Included with your services, or free.</p><div id="watch-now-grid" class="card-row wrap"></div></section>
     <section id="paid-section" class="shelf-group" hidden><h3>Rent or buy <span id="paid-count"></span></h3><div id="paid-grid" class="card-row wrap"></div></section>
     <section id="waiting-section" class="shelf-group" hidden><h3>Waiting <span id="waiting-count"></span></h3><p class="group-note">Waiting for an included offer or a confirmed listing.</p><div id="waiting-grid" class="card-row wrap"></div></section>

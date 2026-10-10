@@ -1,6 +1,7 @@
 // ---------- letterboxd import ----------
 StorageModel.migrate(localStorage);
-function persistData(key,data){if(StorageModel.save(localStorage,key,data))return true;showToast('This browser could not save the latest change. Your previous saved films are still available. Free some site storage or reconnect sync.');return false;}
+const failedStorageKeys=new Set();
+function persistData(key,data){const saved=StorageModel.save(localStorage,key,data);if(saved)failedStorageKeys.delete(key);else failedStorageKeys.add(key);const status=document.getElementById('storage-status');if(status){status.hidden=!failedStorageKeys.size;status.textContent=failedStorageKeys.size?'Could not save on this device. Your last saved films are safe. Reconnect sync in Settings.':'';}return saved;}
 
 const SEEN_KEY = 'rewind-seen-v1';
 let seenSet = loadSeenSet();
@@ -678,7 +679,7 @@ let watchlistScope='recent',watchlistLimit=60,watchlistResults=[];
 let watchlistMatching=false,watchlistMatchProgress='';
 function repaintWatchlist(){paintWatchlist(watchlistResults.filter(r=>watchlist.some(m=>m.id===r.entry.id)&& (watchlistScope==='all'||WatchlistModel.recent(r.entry))));}
 function scopedWatchlist(){return watchlist.filter(m=>watchlistScope==='all'||WatchlistModel.recent(m));}
-function renderImportReview(){const box=document.getElementById('watchlist-import-review');if(!box)return;const rows=hubState.watchlistUnmatched||[],pending=rows.filter(m=>watchlistScope==='all'||WatchlistModel.recent({addedAt:WatchlistModel.addedAt(m)}));box.replaceChildren();if(!rows.length)return;const details=document.createElement('details'),summary=document.createElement('summary');summary.textContent=watchlistMatching?watchlistMatchProgress:rows.length+' Letterboxd titles awaiting catalog matching';details.appendChild(summary);const note=document.createElement('p');note.textContent='Imported archive dated May 27, 2026. These titles remain saved, but availability is unknown until their film IDs are verified. Added dates are retained; no dates invented.';details.appendChild(note);for(const m of pending){const row=document.createElement('p');row.textContent=m.title+' ('+m.year+') · added '+m.addedDate;details.appendChild(row);}box.appendChild(details);}
+function renderImportReview(){const box=document.getElementById('watchlist-import-review');if(!box)return;const rows=hubState.watchlistUnmatched||[],pending=rows.filter(m=>watchlistScope==='all'||WatchlistModel.recent({addedAt:WatchlistModel.addedAt(m)}));box.replaceChildren();if(!rows.length)return;const details=document.createElement('details'),summary=document.createElement('summary');summary.textContent=watchlistMatching?watchlistMatchProgress:rows.length+' titles need a match';details.appendChild(summary);const note=document.createElement('p');note.textContent='Saved from your May 27, 2026 Letterboxd archive. Availability stays unknown until the film is verified.';details.appendChild(note);for(const m of pending){const row=document.createElement('p');row.textContent=m.title+' ('+m.year+') · added '+m.addedDate;details.appendChild(row);}box.appendChild(details);}
 document.querySelectorAll('[data-watchlist-scope]').forEach(btn=>btn.onclick=()=>{watchlistScope=btn.dataset.watchlistScope;watchlistLimit=60;renderWatchlist();});
 document.getElementById('watchlist-more').onclick=()=>{watchlistLimit+=60;repaintWatchlist();};
 let costFilter='all';
@@ -697,7 +698,7 @@ async function renderWatchlist(force = false, reuse = false) {
   const batch=scopedWatchlist().sort((a,b)=>Number(!!b.pinned)-Number(!!a.pinned)||(b.addedAt||0)-(a.addedAt||0));
   const progress=new Map(batch.map(entry=>[entry.id,{entry,status:entry.availabilitySnapshot?{...entry.availabilitySnapshot,stale:reuse?entry.availabilitySnapshot.stale:true}:{code:'nodata',kind:'unknown',label:reuse?'Availability not checked':'Checking availability',offers:[],pending:!reuse},changed:false}]));let checked=0;
   document.querySelectorAll('[data-watchlist-scope]').forEach(btn=>btn.setAttribute('aria-pressed',String(btn.dataset.watchlistScope===watchlistScope)));
-  document.getElementById('watchlist-scope-note').textContent=watchlistScope==='recent'?'Added in the last six months. Older and undated films stay under All.':'Your full tracked watchlist. Prices are sorted across the collection before showing 60 at a time.';
+  document.getElementById('watchlist-scope-note').textContent=watchlistScope==='recent'?'Added in the last six months.':'Your full watchlist.';
   document.getElementById('watchlist-more').hidden=batch.length<=watchlistLimit;
   renderImportReview();
   if(!watchlist.length){paintWatchlist([]);loading.textContent='';document.getElementById('filter-empty').hidden=true;document.getElementById('card-check-status').textContent='';document.getElementById('card-summary').textContent='';return;}
@@ -748,7 +749,7 @@ function paintWatchlist(results){
   const page=WatchlistModel.page(results,{sort:watchlistSort,filter:costFilter,budget:rentalBudget,limit:watchlistLimit,model:ReleaseModel}),display=page.rows;
   document.getElementById('watchlist-more').hidden=page.total<=watchlistLimit;
   document.getElementById('watchlist-more').textContent='Show more · '+Math.max(0,page.total-display.length)+' remaining';
-  const optionsLabel=document.getElementById('card-options-label');if(optionsLabel)optionsLabel.textContent=costFilter==='all'?'Filter, sort & refresh':'Filter: '+({free:'included / free',cheap:'at my price',premium:'over my price',waiting:'waiting'}[costFilter]||costFilter)+' · sort & refresh';
+  const optionsLabel=document.getElementById('card-options-label');if(optionsLabel)optionsLabel.textContent=costFilter==='all'?'Filters':'Filters: '+({free:'included / free',cheap:'at my price',premium:'over my price',waiting:'waiting'}[costFilter]||costFilter);
   document.querySelectorAll('[data-cost-filter]').forEach(btn=>{btn.classList.toggle('active',btn.dataset.costFilter===costFilter);btn.setAttribute('aria-pressed',String(btn.dataset.costFilter===costFilter));});
   let lastPaidBand=null;
   for(const r of display){const group=ReleaseModel.group(r.status);counts[group]++;const id=groups[group];const changed=r.changed||!!r.entry.lastChange&&r.entry.lastChange.at>previousVisit;if(changed)changedCount++;if(group==='paid'&&watchlistSort==='cost'){const c=ReleaseModel.cost(r.status.offers,rentalBudget);const band=c.band;if(band!==lastPaidBand){const divider=document.createElement('h4');divider.className='cost-divider';divider.textContent=band==='cheap'?'AT YOUR PRICE · $'+rentalBudget.toFixed(2)+' OR LESS':band==='premium'?'OVER YOUR PRICE':band==='buy'?'PURCHASE ONLY':'PRICE NOT CHECKED';document.getElementById(id+'-grid').appendChild(divider);lastPaidBand=band;}}document.getElementById(id+'-grid').appendChild(renderCard(r.entry,{context:'watchlist',status:r.status,changed,prevLabel:r.entry.lastChange?.from}));}
