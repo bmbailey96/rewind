@@ -82,9 +82,9 @@ const Hub = (()=>{
  let occasionsPromise;function loadOccasions(){return occasionsPromise||(occasionsPromise=fetch('film-occasions.json',{cache:'no-cache'}).then(r=>r.ok?r.json():null).catch(()=>null));}
  async function pickFilm(){const request=++pickRequest;$('pick-film').disabled=true;$('pick-again').disabled=true;$('picker-status').textContent=findMode==='oracle'?'Reading the moment…':'Finding one film and checking where to watch…';$('picker-results').replaceChildren();try{
  await loadTasteBaseline();const seeds=findMode==='oracle'?await prepareSeeds():[];let oracleContext=null;if(findMode==='oracle'){try{const response=await fetch('https://transmissionalbum.netlify.app/.netlify/functions/rewind-oracle-context');if(response.ok)oracleContext=await response.json();}catch{}oracleContext={...oracleContext,occasions:await loadOccasions()};}let candidates=[];
- const shelfOnly=$('picker-cost').value==='physical';
+ const collectionSource=$('picker-source')?.value||'all';const shelfOnly=collectionSource==='physical'||$('picker-cost').value==='physical';
  if(shelfOnly)candidates=hubState.taste.filter(m=>m.owned);
- else if(findMode==='roulette')candidates=[...watchlist];
+ else if(findMode==='roulette'||collectionSource==='watchlist')candidates=[...watchlist];
  else if(seeds.length){const results=await mapLimited(HubModel.shuffle(seeds).slice(0,8),3,async s=>{try{return (await tmdbGet('/movie/'+s.id+'/recommendations')).results||[];}catch{return [];}});candidates=[...new Map(results.flat().map(m=>[m.id,m])).values()];}
  else candidates=[];
  let recommendationHistory=[];try{recommendationHistory=JSON.parse(localStorage.getItem('rewind-recommendations-v1')||'[]');}catch{}
@@ -93,7 +93,7 @@ const Hub = (()=>{
   const intended=HubModel.orderWatchlist(TasteModel.availableCandidates(watchlist.filter(m=>!isSeen(m)&&!skipSet.has(m.id)&&!dealt.has(m.id)),recommendationHistory),'smart').map(m=>({...m,oracleSource:'watchlist'}));
   const discoveries=HubModel.shuffle(candidates.filter(m=>!isSeen(m)&&!watchlist.some(w=>w.id===m.id))).map(m=>({...m,oracleSource:'discovery'}));
   const repeats=HubModel.shuffle(known).sort((a,b)=>Number(b.occasionRewatch)-Number(a.occasionRewatch)).map(m=>({...m,oracleSource:'rewatch'}));
-  candidates=[...intended.slice(0,16),...discoveries.slice(0,12),...repeats.slice(0,4)];
+  candidates=collectionSource==='watchlist'?intended:[...intended.slice(0,16),...discoveries.slice(0,12),...repeats.slice(0,4)];
  }
  if(findMode==='oracle')candidates=TasteModel.availableCandidates(candidates,recommendationHistory);
  candidates=candidates.filter(m=>!skipSet.has(m.id)&&(m.oracleRewatch||shelfOnly||!isSeen(m))&&!deferred(m,m.availabilitySnapshot,findMode,true)&&!dealt.has(m.id));
@@ -196,5 +196,5 @@ const Hub = (()=>{
   }
   $('feedback-seen').onclick=()=>correctPick('seen');$('feedback-familiar').onclick=()=>correctPick('familiar');$('feedback-tonight').onclick=()=>correctPick('tonight');$('feedback-weak').onclick=()=>correctPick('weak');$('changes-read').onclick=()=>{hubState.receiptsReadAt=Date.now();save();renderReceipts();};$('physical-format').onchange=renderPhysicalShelf;$('shelf-import-link').onclick=()=>{document.querySelector('[data-tab=import]').click();$('taste-import-kind').value='owned';const group=$('import-taste').closest('details');if(group)group.open=true;$('import-taste').scrollIntoView({block:'center'});$('import-taste').focus();};describeCalendar();$('calendar-recommendations').checked=false;$('calendar-theaters').checked=true;const currentScope=['personal','local','all'].includes(scope.value)?scope.value:'personal';scope.value=currentScope;const selectScope=value=>{scope.value=value;document.querySelectorAll('[data-calendar-scope]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.calendarScope===value)));remember('calendarScope',value);renderCalendar();};document.querySelectorAll('[data-calendar-scope]').forEach(b=>b.onclick=()=>selectScope(b.dataset.calendarScope));$('calendar-quick-search').oninput=()=>{$('calendar-search').value=$('calendar-quick-search').value;renderCalendar();};$('calendar-refresh-simple').onclick=()=> $('cinema-refresh').click();selectScope(currentScope);renderCalendar();renderTonight();renderPhysicalShelf();renderReceipts();renderAsides();
  }
- init();initCalmControls();return {watched,stateChanged,loadTasteBaseline,setFindMode,loadOccasions};
+ init();initCalmControls();return {watched,stateChanged,loadTasteBaseline,setFindMode,loadOccasions,renderPhysicalShelf};
 })();
