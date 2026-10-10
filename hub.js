@@ -64,7 +64,7 @@ const Hub = (()=>{
    const inline=node('div',null,'calendar-inline-details');inline.hidden=true;
    const head=makeHead(r,'calendar-film-head');head.setAttribute('aria-expanded','false');
    const showMobile=(selectedDay=null)=>{
-    if(!inline.hidden&&openCalendarEvent===r.id&&inline.dataset.selectedDay===(selectedDay||'')){
+    if(!inline.hidden&&openCalendarEvent===r.id&&(selectedDay===null||inline.dataset.selectedDay===selectedDay)){
      inline.hidden=true;openCalendarEvent=null;head.setAttribute('aria-expanded','false');return;
     }
     for(const other of mobile.querySelectorAll('.calendar-inline-details'))other.hidden=true;
