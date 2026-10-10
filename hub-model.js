@@ -13,7 +13,26 @@
  function roulettePass(m,opts={}){const tags=(m.tags||[]).join(' '),tone=m.tones||{};if(opts.maxRuntime&&(!m.runtime||m.runtime>opts.maxRuntime))return false;if(opts.genre&&!(m.genre_ids||[]).includes(Number(opts.genre)))return false;if(opts.theme&&opts.theme!=='all'&&!tags.includes(opts.theme))return false;if(opts.noGore&&(/\bgore\b|extreme-gore/.test(tags)||!m.tags?.length))return false;if(opts.noSV&&(/sexual-violence|\bsv\b/.test(tags)||!m.tags?.length))return false;if(opts.noKids&&(/kids-in-peril|\bkids\b/.test(tags)||!m.tags?.length))return false;if(opts.preset==='cozy'&&!(tone.cozy>=50&&!/gore|sexual-violence/.test(tags)))return false;if(opts.preset==='folk'&&!/folk|witch/.test(tags))return false;if(opts.preset==='midnight'&&!/cult|neon|body|found|witch|gore/.test(tags))return false;return true;}
  function rouletteWeight(m,target,variety='medium'){const t=m.tones||{},sum=(t.cursed||0)+(t.spooky||0)+(t.cozy||0)||1,ts=(target.cursed||0)+(target.spooky||0)+(target.cozy||0)||1;const dist=Math.sqrt(['cursed','spooky','cozy'].reduce((s,k)=>s+((t[k]||0)/sum-(target[k]||0)/ts)**2,0));const band={tight:0.18,medium:0.32,wide:0.55}[variety]||0.32;return Math.exp(-0.5*(dist/band)**2);}
  function weightedPick(pool,weight,random=Math.random){if(!pool.length)return null;const weights=pool.map(m=>Math.max(0,weight(m)||0)),sum=weights.reduce((a,b)=>a+b,0);if(!sum)return pool[Math.floor(random()*pool.length)];let n=random()*sum;for(let i=0;i<pool.length;i++){n-=weights[i];if(n<=0)return pool[i];}return pool.at(-1);}
- function upcoming(movie,today){const status=movie.availabilitySnapshot||{},rows=[];for(const a of status.announcements||[])if(a.date>=today)rows.push({movie,date:a.date,label:a.provider?'Arrives on '+a.provider:'Digital release',theatrical:false,certainty:'Announced',url:a.sourceUrl||a.sourceURL||a.url});for(const a of status.calendar||[]){const date=a.source_release_date?.slice(0,10);if(date>=today)rows.push({movie,date,label:'Arrives on '+a.source_name,theatrical:false,certainty:'Listed'});}for(const r of (status.details||movie.releaseFile?.details)?.release_dates?.results?.find(r=>r.iso_3166_1==='US')?.release_dates||[]){const date=r.release_date?.slice(0,10);if(date>=today&&[2,3,4].includes(r.type))rows.push({movie,date,label:r.type===4?'Digital release':'US theatrical release',theatrical:r.type!==4,certainty:'Listed'});}for(const r of movie.releaseFile?.screenings||[])if(r.date>=today&&Number.isFinite(r.checkedAt)&&Date.now()-r.checkedAt<7*86400000)rows.push({movie,date:r.date,label:r.label+' · '+r.location+' · '+r.time+' MT',theatrical:true,certainty:r.stale?'Previous check':'Listed regional screening',url:safeLink(r.sourceURL),regional:true,stale:!!r.stale});return [...new Map(rows.map(r=>[r.date+'|'+r.label,r])).values()].sort((a,b)=>a.date.localeCompare(b.date));}
+ function upcoming(movie,today){
+  const status=movie.availabilitySnapshot||{},rows=[];
+  for(const a of status.announcements||[]){
+    if(!a.date||a.date<today||a.kind==='price')continue;
+    const theatrical=a.kind==='theatrical',platform=theatrical?null:(a.provider||null);
+    rows.push({movie,date:a.date,label:theatrical?'US theatrical release':platform?'Arrives on '+platform:'Digital release',theatrical,platform,sourceKind:'announcement',announcementKind:a.kind||'digital',certainty:'Announced',url:a.sourceUrl||a.sourceURL||a.url});
+  }
+  for(const a of status.calendar||[]){
+    const date=a.source_release_date?.slice(0,10);
+    if(date>=today)rows.push({movie,date,label:a.source_name?'Arrives on '+a.source_name:'Digital release',theatrical:false,platform:a.source_name||null,sourceKind:'watchmode',certainty:'Listed'});
+  }
+  for(const r of (status.details||movie.releaseFile?.details)?.release_dates?.results?.find(r=>r.iso_3166_1==='US')?.release_dates||[]){
+    const date=r.release_date?.slice(0,10);
+    if(date>=today&&[2,3,4].includes(r.type))rows.push({movie,date,label:r.type===4?'Digital release':'US theatrical release',theatrical:r.type!==4,platform:null,sourceKind:'tmdb',certainty:'Listed'});
+  }
+  for(const r of movie.releaseFile?.screenings||[])if(r.date>=today&&Number.isFinite(r.checkedAt)&&Date.now()-r.checkedAt<7*86400000)rows.push({movie,date:r.date,label:r.label+' · '+r.location+' · '+r.time+' MT',theatrical:true,sourceKind:'regional',certainty:r.stale?'Previous check':'Listed regional screening',url:safeLink(r.sourceURL),regional:true,stale:!!r.stale});
+  // A verified provider listing supersedes a generic digital date for the same day.
+  const specificDates=new Set(rows.filter(r=>r.platform&&!r.theatrical).map(r=>r.date));
+  return [...new Map(rows.filter(r=>!(r.sourceKind==='tmdb'&&!r.theatrical&&specificDates.has(r.date))).map(r=>[r.date+'|'+r.label,r])).values()].sort((a,b)=>a.date.localeCompare(b.date));
+ }
  function isIncluded(status){return !status?.stale&&(status?.offers||[]).some(o=>o.kind==='free'||o.kind==='subscription'&&o.included);}
  function watchlistPriority(movie,at=Date.now()){const arrived=Number(movie.includedSince),age=at-arrived;return (movie.pinned?2:0)+(arrived>0&&age>=0&&age<=14*86400000&&isIncluded(movie.availabilitySnapshot)?1:0);}
  function shuffle(items,random=Math.random){const copy=[...items];for(let i=copy.length-1;i>0;i--){const j=Math.floor(random()*(i+1));[copy[i],copy[j]]=[copy[j],copy[i]];}return copy;}
