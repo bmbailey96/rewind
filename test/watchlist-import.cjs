@@ -1,0 +1,16 @@
+const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm'),W=require('../watchlist-model');
+const source=fs.readFileSync(__dirname+'/../app.js','utf8');
+const row=(title,year='2001')=>({title,year,addedDate:'2026-05-27',letterboxdURL:'https://boxd.it/fixture'});
+const original={id:2,title:'Fresh',year:'2001',pinned:true,manualNote:'Keep this',addedAt:123,availabilitySnapshot:{offers:[{kind:'physical'}]}};
+let baseline={version:'v2',films:[{...row('Removed'),id:1},{...row('Fresh'),id:2},row('Exact'),row('Wrong year'),row('Ambiguous')]},refreshes=0;
+const context={WatchlistModel:W,hubState:{watchlistBaselineVersion:'v1',watchlistUnmatched:[row('Fresh'),row('Exact'),row('Wrong year'),row('Ambiguous')]},watchlist:[original],watchlistMatching:false,watchlistMatchProgress:'',REGION:'US',AbortController,setTimeout,clearTimeout,saveWatchlist(){},persistHubState(){},scheduleSync(){},renderImportReview(){},showToast(){},document:{getElementById:()=>({textContent:''})},renderWatchlist:async()=>{refreshes++;},fetch:async()=>({ok:true,json:async()=>baseline}),tmdbGet:async(_path,p)=>({total_pages:1,results:p.query==='Exact'?[{id:3,title:'Exact',release_date:'2001-04-01',poster_path:'/verified.jpg'}]:p.query==='Wrong year'?[{id:9,title:'Wrong year',release_date:'2002-01-01'}]:[{id:8,title:'Ambiguous',release_date:'2001-01-01'},{id:9,title:'Ambiguous',release_date:'2001-02-01'}]})};
+vm.createContext(context);
+vm.runInContext(source.slice(source.indexOf('async function mapLimited'),source.indexOf('async function fetchDiscover'))+source.slice(source.indexOf('async function loadWatchlistBaseline'),source.indexOf('// ---------- init')).replace('}catch{ /* Existing tracked films remain available. */ }','}catch(error){throw error;}'),context);
+(async()=>{
+ await context.loadWatchlistBaseline();assert.equal(context.watchlist.length,1,'A baseline update must not re-add a removed source film');assert.equal(context.watchlist[0],original);assert(context.hubState.watchlistImportedKeys.includes(W.sourceKey(row('Removed'))));
+ await context.resolveWatchlistMatches();assert.equal(context.watchlist.length,2);assert.equal(context.watchlist[0],original);assert.equal(context.watchlist[1].addedAt,W.addedAt(row('Exact')));assert.equal(context.watchlist[1].poster_path,'/verified.jpg');assert.equal(context.hubState.watchlistUnmatched.length,2);assert.equal(refreshes,1);assert.equal(context.watchlistMatching,false);
+ context.watchlist=context.watchlist.filter(f=>f.id!==3);await context.loadWatchlistBaseline();await context.resolveWatchlistMatches();assert.equal(context.watchlist.length,1,'Finished imports stay finished after the film is removed');
+ baseline={version:'v3',films:[...baseline.films.filter(f=>f.title!=='Exact'),{...row('Exact'),id:3},{...row('New'),id:4}]};await context.loadWatchlistBaseline();assert.equal(context.watchlist.some(f=>f.id===3),false,'A later catalog update must not resurrect a removed matched film');assert.equal(context.watchlist.some(f=>f.id===4),true);
+ assert.equal(W.match(row('日本'),[{id:5,title:'中国',release_date:'2001-01-01'}]),null);
+ console.log('Resumable import preserves dates, posters and edits; removed films stay removed; wrong-year and ambiguous matches retained');
+})().catch(e=>{console.error(e);process.exitCode=1});

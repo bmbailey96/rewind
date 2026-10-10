@@ -205,7 +205,7 @@ function applySyncData(data) {
   if(data.ui&&typeof data.ui==='object')localStorage.setItem('rewind-ui-v1',JSON.stringify(data.ui));
   if(Array.isArray(data.recommendations))localStorage.setItem('rewind-recommendations-v1',JSON.stringify(data.recommendations));
   if(typeof data.rentalBudget==='number'&&data.rentalBudget>=0&&data.rentalBudget<=100){rentalBudget=data.rentalBudget;localStorage.setItem('rewind-rental-budget-v1',String(rentalBudget));document.getElementById('rental-budget').value=rentalBudget;}
-  if(data.hub&&typeof data.hub==='object'){const restores=[...(hubState.theaterHideRestores||[]),...(data.hub.theaterHideRestores||[])];hubState.hiddenTheaterFilms=CounterModel.mergeHiddenFilms(hubState.hiddenTheaterFilms,data.hub.hiddenTheaterFilms,restores);hubState.theaterHideRestores=[...new Map(restores.map(r=>[r.key+':'+r.at,r])).values()];for(const key of ['taste','hidden','muted','followed','knownEvents','suggestions','dismissedSuggestions','ignoredTaste','ignoredOwnership','setAsides','feedback','changeReceipts','calendarBaseline'])if(Array.isArray(data.hub[key]))hubState[key]=data.hub[key];if(Number.isFinite(data.hub.receiptsReadAt))hubState.receiptsReadAt=Math.max(hubState.receiptsReadAt||0,data.hub.receiptsReadAt);if(Number.isFinite(data.hub.suggestionsVersion))hubState.suggestionsVersion=data.hub.suggestionsVersion;if(Number.isFinite(data.hub.suggestionsCheckedAt))hubState.suggestionsCheckedAt=data.hub.suggestionsCheckedAt;if(typeof data.hub.watchlistBaselineVersion==='string')hubState.watchlistBaselineVersion=data.hub.watchlistBaselineVersion;if(Array.isArray(data.hub.watchlistUnmatched))hubState.watchlistUnmatched=data.hub.watchlistUnmatched;if(typeof data.hub.eventAlerts==='boolean')hubState.eventAlerts=data.hub.eventAlerts;persistHubState();}
+  if(data.hub&&typeof data.hub==='object'){const restores=[...(hubState.theaterHideRestores||[]),...(data.hub.theaterHideRestores||[])];hubState.hiddenTheaterFilms=CounterModel.mergeHiddenFilms(hubState.hiddenTheaterFilms,data.hub.hiddenTheaterFilms,restores);hubState.theaterHideRestores=[...new Map(restores.map(r=>[r.key+':'+r.at,r])).values()];for(const key of ['taste','hidden','muted','followed','knownEvents','suggestions','dismissedSuggestions','ignoredTaste','ignoredOwnership','setAsides','feedback','changeReceipts','calendarBaseline'])if(Array.isArray(data.hub[key]))hubState[key]=data.hub[key];if(Number.isFinite(data.hub.receiptsReadAt))hubState.receiptsReadAt=Math.max(hubState.receiptsReadAt||0,data.hub.receiptsReadAt);if(Number.isFinite(data.hub.suggestionsVersion))hubState.suggestionsVersion=data.hub.suggestionsVersion;if(Number.isFinite(data.hub.suggestionsCheckedAt))hubState.suggestionsCheckedAt=data.hub.suggestionsCheckedAt;if(typeof data.hub.watchlistBaselineVersion==='string')hubState.watchlistBaselineVersion=data.hub.watchlistBaselineVersion;if(Array.isArray(data.hub.watchlistUnmatched))hubState.watchlistUnmatched=data.hub.watchlistUnmatched;if(Array.isArray(data.hub.watchlistImportedKeys))hubState.watchlistImportedKeys=data.hub.watchlistImportedKeys;if(typeof data.hub.eventAlerts==='boolean')hubState.eventAlerts=data.hub.eventAlerts;persistHubState();}
   watchlist = data.watchlist || [];
   if (Array.isArray(data.services)) {myServices = data.services;localStorage.setItem('rewind-services-v1',JSON.stringify(myServices));renderServiceSettings();}
   seenSet = new Set(data.seen || []);
@@ -321,11 +321,11 @@ function saveWatchlist() {
 
 // ---------- tmdb calls ----------
 
-async function tmdbGet(path, params = {}) {
+async function tmdbGet(path, params = {}, signal) {
   const url = new URL(TMDB_BASE + path);
   url.searchParams.set('api_key', TMDB_KEY);
   for (const [k, v] of Object.entries(params)) url.searchParams.set(k, v);
-  const res = await fetch(url);
+  const res = await fetch(url, signal ? {signal} : undefined);
   if (!res.ok) throw new Error('TMDB request failed: ' + path);
   return res.json();
 }
@@ -674,11 +674,13 @@ for(const id of ['discover-grid','search-grid'])browseObserver.observe(document.
 updateBrowseDismissControl();
 
 let watchlistSort = 'cost';
-let watchlistScope='recent',watchlistLimit=60;
+let watchlistScope='recent',watchlistLimit=60,watchlistResults=[];
+let watchlistMatching=false,watchlistMatchProgress='';
+function repaintWatchlist(){paintWatchlist(watchlistResults.filter(r=>watchlist.some(m=>m.id===r.entry.id)&& (watchlistScope==='all'||WatchlistModel.recent(r.entry))));}
 function scopedWatchlist(){return watchlist.filter(m=>watchlistScope==='all'||WatchlistModel.recent(m));}
-function renderImportReview(){const box=document.getElementById('watchlist-import-review');if(!box)return;const rows=hubState.watchlistUnmatched||[],pending=rows.filter(m=>watchlistScope==='all'||WatchlistModel.recent({addedAt:WatchlistModel.addedAt(m)}));box.replaceChildren();if(!rows.length)return;const details=document.createElement('details'),summary=document.createElement('summary');summary.textContent=rows.length+' Letterboxd titles awaiting catalog matching';details.appendChild(summary);const note=document.createElement('p');note.textContent='Imported archive dated May 27, 2026. These titles remain saved, but availability is unknown until their film IDs are verified. Added dates are retained; no dates invented.';details.appendChild(note);for(const m of pending){const row=document.createElement('p');row.textContent=m.title+' ('+m.year+') · added '+m.addedDate;details.appendChild(row);}box.appendChild(details);}
+function renderImportReview(){const box=document.getElementById('watchlist-import-review');if(!box)return;const rows=hubState.watchlistUnmatched||[],pending=rows.filter(m=>watchlistScope==='all'||WatchlistModel.recent({addedAt:WatchlistModel.addedAt(m)}));box.replaceChildren();if(!rows.length)return;const details=document.createElement('details'),summary=document.createElement('summary');summary.textContent=watchlistMatching?watchlistMatchProgress:rows.length+' Letterboxd titles awaiting catalog matching';details.appendChild(summary);const note=document.createElement('p');note.textContent='Imported archive dated May 27, 2026. These titles remain saved, but availability is unknown until their film IDs are verified. Added dates are retained; no dates invented.';details.appendChild(note);for(const m of pending){const row=document.createElement('p');row.textContent=m.title+' ('+m.year+') · added '+m.addedDate;details.appendChild(row);}box.appendChild(details);}
 document.querySelectorAll('[data-watchlist-scope]').forEach(btn=>btn.onclick=()=>{watchlistScope=btn.dataset.watchlistScope;watchlistLimit=60;renderWatchlist();});
-document.getElementById('watchlist-more').onclick=()=>{watchlistLimit+=60;renderWatchlist();};
+document.getElementById('watchlist-more').onclick=()=>{watchlistLimit+=60;repaintWatchlist();};
 let costFilter='all';
 let rentalBudget=Number(localStorage.getItem('rewind-rental-budget-v1')??7.99);
 if(!Number.isFinite(rentalBudget)||rentalBudget<0||rentalBudget>100)rentalBudget=7.99;
@@ -692,15 +694,17 @@ async function renderWatchlist(force = false, reuse = false) {
   const loading=document.getElementById('watchlist-load-status');
   document.getElementById('watchlist-count').textContent=watchlist.length+' tracked'+((hubState.watchlistUnmatched||[]).length?' · '+hubState.watchlistUnmatched.length+' awaiting match':'');
   empty.hidden=watchlist.length>0;
-  const selected=scopedWatchlist().sort((a,b)=>Number(!!b.pinned)-Number(!!a.pinned)||(b.addedAt||0)-(a.addedAt||0)),batch=selected.slice(0,watchlistLimit);
+  const batch=scopedWatchlist().sort((a,b)=>Number(!!b.pinned)-Number(!!a.pinned)||(b.addedAt||0)-(a.addedAt||0));
+  const progress=new Map(batch.map(entry=>[entry.id,{entry,status:entry.availabilitySnapshot?{...entry.availabilitySnapshot,stale:reuse?entry.availabilitySnapshot.stale:true}:{code:'nodata',kind:'unknown',label:reuse?'Availability not checked':'Checking availability',offers:[],pending:!reuse},changed:false}]));let checked=0;
   document.querySelectorAll('[data-watchlist-scope]').forEach(btn=>btn.setAttribute('aria-pressed',String(btn.dataset.watchlistScope===watchlistScope)));
-  document.getElementById('watchlist-scope-note').textContent=watchlistScope==='recent'?'Added in the last six months. Older and undated films stay under All.':'Your full tracked watchlist. Checked in batches of 60.';
-  document.getElementById('watchlist-more').hidden=selected.length<=watchlistLimit;
+  document.getElementById('watchlist-scope-note').textContent=watchlistScope==='recent'?'Added in the last six months. Older and undated films stay under All.':'Your full tracked watchlist. Prices are sorted across the collection before showing 60 at a time.';
+  document.getElementById('watchlist-more').hidden=batch.length<=watchlistLimit;
   renderImportReview();
   if(!watchlist.length){paintWatchlist([]);loading.textContent='';document.getElementById('filter-empty').hidden=true;document.getElementById('card-check-status').textContent='';document.getElementById('card-summary').textContent='';return;}
-  if(!reuse){paintWatchlist(batch.map(entry=>({entry,status:entry.availabilitySnapshot?{...entry.availabilitySnapshot,stale:true}:{code:'nodata',kind:'unknown',label:'Checking availability',offers:[],pending:true},changed:false})));loading.textContent='Checking offers and prices for '+batch.length+' film'+(batch.length===1?'':'s')+'…';}
+  watchlistResults=[...progress.values()];repaintWatchlist();if(!reuse)loading.textContent='Checking offers and prices across '+batch.length+' film'+(batch.length===1?'':'s')+'…';
   document.getElementById('card-check-status').textContent=reuse?'Showing saved availability.':'Checking US providers…';
   const results = (await mapLimited(batch,4,async entry=>{
+    if(request!==watchlistRequest)return null;
     let status;
     const lookupMovie={...entry};const beforeAvailability=entry.availabilityBaseline||(!entry.availabilitySnapshot?.stale?entry.availabilitySnapshot:null);
     try {
@@ -708,7 +712,7 @@ async function renderWatchlist(force = false, reuse = false) {
         const cached=entry.availabilitySnapshot;
         const owned=hubState.taste.find(m=>m.id===entry.id&&m.owned);const remote=(cached.offers||[]).filter(o=>o.kind!=='physical').map(o=>o.kind==='subscription'?{...o,included:RewindModel.included(o.provider,myServices)}:o);
         const offers=[...(owned?HubModel.shelfStatus(owned).offers:[]),...remote];status={...cached,...(owned?HubModel.shelfStatus(owned):RewindModel.summary(offers)||{code:'nodata',kind:'unknown',label:'No current offer'}),physical:!!owned,offers,stale:owned?false:cached.physical?!!cached.remoteStale:cached.stale};lookupMovie.availabilitySnapshot=status;
-      }else status=await deriveStatus(lookupMovie,force);
+      }else if(reuse){status=progress.get(entry.id).status;lookupMovie.availabilitySnapshot=entry.availabilitySnapshot;}else status=await deriveStatus(lookupMovie,force);
     }
     catch {status={code:'nodata',kind:'unknown',label:'Availability could not be checked',offers:[],stale:true};}
     if(request !== watchlistRequest) return {entry,status,changed:false,prevLabel:entry.lastStatusLabel};
@@ -726,23 +730,24 @@ async function renderWatchlist(force = false, reuse = false) {
       if(changed)entry.lastChange={at:Date.now(),from:prevLabel,to:status.label};
       entry.lastStatusCode=status.code;entry.lastStatusLabel=status.label;entry.lastAvailabilityKey=fingerprint;
     }
-    return {entry,status,changed,prevLabel};
-  })).filter(r=>watchlist.some(m=>m.id===r.entry.id));
+    const result={entry,status,changed,prevLabel};progress.set(entry.id,result);checked++;
+    if(!reuse){loading.textContent='Checking prices · '+checked+' of '+batch.length;if(checked%8===0){watchlistResults=[...progress.values()];repaintWatchlist();saveWatchlist();}}
+    return result;
+  })).filter(r=>r&&watchlist.some(m=>m.id===r.entry.id));
   if (request !== watchlistRequest) return;
   document.getElementById('card-check-status').textContent=reuse?'Showing saved availability. Check availability to refresh.':'US providers checked '+new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'})+(results.some(r=>r.status.stale)?' · '+results.filter(r=>r.status.stale).length+' previous checks':'');
   saveWatchlist();
 
-  paintWatchlist(results);
+  watchlistResults=results;repaintWatchlist();
   document.getElementById('watchlist-load-status').textContent='';
 }
 function paintWatchlist(results){
   for(const id of ['watch-now','paid','waiting']){document.getElementById(id+'-grid').replaceChildren();document.getElementById(id+'-section').hidden=true;}
-  const sorters={cost:(a,b)=>(ReleaseModel.cost(a.status.offers,rentalBudget).price??Infinity)-(ReleaseModel.cost(b.status.offers,rentalBudget).price??Infinity),changed:(a,b)=>(b.entry.statusChangedAt||0)-(a.entry.statusChangedAt||0),added:(a,b)=>(b.entry.addedAt||0)-(a.entry.addedAt||0),release:(a,b)=>(b.entry.release_date||'').localeCompare(a.entry.release_date||''),az:(a,b)=>a.entry.title.localeCompare(b.entry.title)};
-  const costRanks={free:0,cheap:1,premium:2,unknown:3,buy:4,waiting:5};
-  results.sort((a,b)=>Number(!!b.entry.pinned)-Number(!!a.entry.pinned)||(watchlistSort==='cost'?(costRanks[ReleaseModel.cost(a.status.offers,rentalBudget,a.status.stale).band]-costRanks[ReleaseModel.cost(b.status.offers,rentalBudget,b.status.stale).band]||sorters.cost(a,b)):Number(!!b.entry.pinned)-Number(!!a.entry.pinned)||(sorters[watchlistSort]||sorters.changed)(a,b)));
   const groups={now:'watch-now',paid:'paid',waiting:'waiting'};
   const counts={now:0,paid:0,waiting:0};let changedCount=0;
-  const display=results.filter(r=>{const c=ReleaseModel.cost(r.status.offers,rentalBudget,r.status.stale);return costFilter==='all'||costFilter===c.band;});
+  const page=WatchlistModel.page(results,{sort:watchlistSort,filter:costFilter,budget:rentalBudget,limit:watchlistLimit,model:ReleaseModel}),display=page.rows;
+  document.getElementById('watchlist-more').hidden=page.total<=watchlistLimit;
+  document.getElementById('watchlist-more').textContent='Show more · '+Math.max(0,page.total-display.length)+' remaining';
   const optionsLabel=document.getElementById('card-options-label');if(optionsLabel)optionsLabel.textContent=costFilter==='all'?'Filter, sort & refresh':'Filter: '+({free:'included / free',cheap:'at my price',premium:'over my price',waiting:'waiting'}[costFilter]||costFilter)+' · sort & refresh';
   document.querySelectorAll('[data-cost-filter]').forEach(btn=>{btn.classList.toggle('active',btn.dataset.costFilter===costFilter);btn.setAttribute('aria-pressed',String(btn.dataset.costFilter===costFilter));});
   let lastPaidBand=null;
@@ -753,10 +758,10 @@ function paintWatchlist(results){
   window.dispatchEvent(new Event('rewind:card-rendered'));
 }
 document.getElementById('rental-budget').value=rentalBudget;
-document.getElementById('rental-budget').onchange=e=>{const value=Number(e.target.value);if(e.target.value===''||!Number.isFinite(value)||value<0||value>100)return;rentalBudget=value;localStorage.setItem('rewind-rental-budget-v1',String(value));scheduleSync();renderWatchlist(false,true);};
-document.getElementById('reset-cost-filter').onclick=()=>{costFilter='all';renderWatchlist(false,true);};
-document.querySelectorAll('[data-cost-filter]').forEach(btn=>btn.onclick=()=>{costFilter=btn.dataset.costFilter;renderWatchlist(false,true);});
-document.getElementById('sort-select').addEventListener('change',e=>{watchlistSort=e.target.value;renderWatchlist(false,true);});
+document.getElementById('rental-budget').onchange=e=>{const value=Number(e.target.value);if(e.target.value===''||!Number.isFinite(value)||value<0||value>100)return;rentalBudget=value;localStorage.setItem('rewind-rental-budget-v1',String(value));scheduleSync();watchlistLimit=60;repaintWatchlist();};
+document.getElementById('reset-cost-filter').onclick=()=>{costFilter='all';watchlistLimit=60;repaintWatchlist();};
+document.querySelectorAll('[data-cost-filter]').forEach(btn=>btn.onclick=()=>{costFilter=btn.dataset.costFilter;watchlistLimit=60;repaintWatchlist();});
+document.getElementById('sort-select').addEventListener('change',e=>{watchlistSort=e.target.value;watchlistLimit=60;repaintWatchlist();});
 
 function renderReleaseFile(movie,status){
  const facts=DiscoveryModel.facts(movie,status,discoveryWindow().today),box=document.createElement('div');box.className='release-file';
@@ -889,7 +894,35 @@ document.getElementById('prune-btn').addEventListener('click', () => {
   renderWatchlist();
 });
 
-async function loadWatchlistBaseline(){try{const response=await fetch('watchlist-baseline.json',{cache:'no-cache'});if(!response.ok)return;const data=await response.json();if(!Array.isArray(data.films)||hubState.watchlistBaselineVersion===data.version)return;watchlist=WatchlistModel.merge(watchlist,data.films);hubState.watchlistUnmatched=data.films.filter(f=>!f.id);hubState.watchlistBaselineVersion=data.version;saveWatchlist();persistHubState();scheduleSync();}catch{ /* Existing tracked films remain available. */ }}
+async function loadWatchlistBaseline(){
+ try{const response=await fetch('watchlist-baseline.json',{cache:'no-cache'});if(!response.ok)return;const data=await response.json();if(!Array.isArray(data.films))return;
+  if(hubState.watchlistBaselineVersion===data.version){if(!Array.isArray(hubState.watchlistImportedKeys)){const pending=new Set((hubState.watchlistUnmatched||[]).map(WatchlistModel.sourceKey));hubState.watchlistImportedKeys=data.films.filter(f=>!pending.has(WatchlistModel.sourceKey(f))).map(WatchlistModel.sourceKey);persistHubState();}return;}
+  const oldPending=new Set((hubState.watchlistUnmatched||[]).map(WatchlistModel.sourceKey));
+  const imported=new Set(hubState.watchlistImportedKeys|| (hubState.watchlistBaselineVersion?data.films.filter(f=>!oldPending.has(WatchlistModel.sourceKey(f))).map(WatchlistModel.sourceKey):[]));
+  const fresh=data.films.filter(f=>!imported.has(WatchlistModel.sourceKey(f)));watchlist=WatchlistModel.merge(watchlist,fresh);
+  for(const film of fresh.filter(f=>f.id))imported.add(WatchlistModel.sourceKey(film));
+  hubState.watchlistUnmatched=fresh.filter(f=>!f.id);hubState.watchlistImportedKeys=[...imported];hubState.watchlistBaselineVersion=data.version;saveWatchlist();persistHubState();scheduleSync();
+ }catch{ /* Existing tracked films remain available. */ }
+}
+async function resolveWatchlistMatches(){
+ if(watchlistMatching||!(hubState.watchlistUnmatched||[]).length)return;
+ watchlistMatching=true;const pending=[...hubState.watchlistUnmatched];let checked=0,matched=0,failures=0,stopped=false;
+ watchlistMatchProgress='Matching Letterboxd titles · 0 of '+pending.length;renderImportReview();
+ await mapLimited(pending,4,async row=>{
+  if(stopped)return;const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),20000);
+  try{const data=await tmdbGet('/search/movie',{query:row.title,primary_release_year:row.year,region:REGION},controller.signal);let candidates=data.results||[];
+   if(data.total_pages>5)throw Error('Too many candidates');
+   for(let page=2;page<=(data.total_pages||1);page++){const more=await tmdbGet('/search/movie',{query:row.title,primary_release_year:row.year,region:REGION,page},controller.signal);candidates=candidates.concat(more.results||[]);}
+   failures=0;const match=WatchlistModel.match(row,candidates);
+   if(match){const key=WatchlistModel.sourceKey(row);if((hubState.watchlistUnmatched||[]).some(f=>WatchlistModel.sourceKey(f)===key)){
+    const film={id:match.id,title:match.title,sourceTitle:row.title,year:row.year,release_date:match.release_date,poster_path:match.poster_path||null,genre_ids:match.genre_ids||[],addedDate:row.addedDate,letterboxdURL:row.letterboxdURL,source:'Letterboxd watchlist'};
+    watchlist=WatchlistModel.merge(watchlist,[film]);hubState.watchlistImportedKeys=[...new Set([...(hubState.watchlistImportedKeys||[]),key])];hubState.watchlistUnmatched=hubState.watchlistUnmatched.filter(f=>WatchlistModel.sourceKey(f)!==key);matched++;saveWatchlist();persistHubState();scheduleSync();
+   }}
+  }catch{if(++failures>=8)stopped=true;}finally{clearTimeout(timer);checked++;watchlistMatchProgress='Matching Letterboxd titles · '+checked+' of '+pending.length+' · '+matched+' matched';if(checked%8===0){renderImportReview();document.getElementById('watchlist-count').textContent=watchlist.length+' tracked · '+hubState.watchlistUnmatched.length+' awaiting match';}}
+ });
+ watchlistMatching=false;renderImportReview();if(matched)renderWatchlist().catch(()=>{});
+ if(stopped)showToast('Catalog matching paused. Saved progress will resume next time you open Rewind.');
+}
 
 // ---------- init ----------
 
@@ -913,6 +946,7 @@ async function init() {
   await loadWatchlistBaseline();
   renderWatchlist().catch(err=>showToast(err.message));
   renderDiscover().catch(err=>showToast(err.message));
+  resolveWatchlistMatches().catch(()=>{watchlistMatching=false;renderImportReview();});
 }
 
 // Alert and browse controls are initialized below before the first render.

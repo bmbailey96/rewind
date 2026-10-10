@@ -2,5 +2,9 @@
  function addedAt(row){const date=row.addedDate||row.Date||row['Added Date'];return /^\d{4}-\d{2}-\d{2}$/.test(date||'')?Date.parse(date+'T12:00:00Z'):null;}
  function recent(film,now=Date.now()){const d=new Date(now);d.setUTCMonth(d.getUTCMonth()-6);return !!film.addedAt&&film.addedAt>=d.getTime();}
  function merge(existing,films){const byId=new Map(existing.map(f=>[f.id,f]));for(const f of films)if(f.id&&!byId.has(f.id))byId.set(f.id,{...f,addedAt:addedAt(f),importedAt:Date.now(),pinned:false,manualNote:'',lastStatusCode:null,lastStatusLabel:null,statusChangedAt:null});return [...byId.values()];}
- return {addedAt,recent,merge};
+ function titleKey(title){return String(title||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^\p{L}\p{N}]/gu,'');}
+ function sourceKey(film){return titleKey(film.sourceTitle||film.title)+'|'+(film.year||String(film.release_date||'').slice(0,4));}
+ function match(row,candidates){const hits=new Map();for(const film of candidates||[])if(film.id&&String(film.release_date||'').slice(0,4)===String(row.year)&&[film.title,film.original_title].some(t=>titleKey(t)===titleKey(row.title)))hits.set(film.id,film);return hits.size===1?[...hits.values()][0]:null;}
+ function page(results,{sort='cost',filter='all',budget=7.99,limit=60,model}){const ranks={free:0,cheap:1,premium:2,unknown:3,buy:4,waiting:5};const rows=results.map(r=>({...r,cost:model.cost(r.status.offers,budget,r.status.stale)})).filter(r=>filter==='all'||filter===r.cost.band);const compare={changed:(a,b)=>(b.entry.statusChangedAt||0)-(a.entry.statusChangedAt||0),added:(a,b)=>(b.entry.addedAt||0)-(a.entry.addedAt||0),release:(a,b)=>String(b.entry.release_date||'').localeCompare(a.entry.release_date||''),az:(a,b)=>a.entry.title.localeCompare(b.entry.title)};rows.sort((a,b)=>Number(!!b.entry.pinned)-Number(!!a.entry.pinned)||(sort==='cost'?ranks[a.cost.band]-ranks[b.cost.band]||(a.cost.price??Infinity)-(b.cost.price??Infinity):(compare[sort]||compare.changed)(a,b))||a.entry.title.localeCompare(b.entry.title));return {rows:rows.slice(0,limit),total:rows.length};}
+ return {addedAt,recent,merge,titleKey,sourceKey,match,page};
 });

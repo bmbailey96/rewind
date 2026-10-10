@@ -2,7 +2,7 @@
   "name": "rewind",
   "private": true,
   "scripts": {
-    "test": "node test/counter-model.cjs && node test/model.cjs && node test/hub-model.cjs && node test/taste-baseline.cjs && node test/oracle.cjs && node test/discovery-model.cjs && node test/hub-flow.cjs && node --check app.js && node --check hub.js && node --check availability-ui.js && node --check release-model.js && node --check oracle.js && node test/static-and-sync.cjs && node --check static-experience.js && node test/storage-and-occasions.cjs && node test/combined-media.cjs && node test/watchlist-and-games.cjs"
+    "test": "node test/counter-model.cjs && node test/model.cjs && node test/hub-model.cjs && node test/taste-baseline.cjs && node test/oracle.cjs && node test/discovery-model.cjs && node test/hub-flow.cjs && node --check app.js && node --check hub.js && node --check availability-ui.js && node --check release-model.js && node --check oracle.js && node test/static-and-sync.cjs && node --check static-experience.js && node test/storage-and-occasions.cjs && node test/combined-media.cjs && node test/watchlist-and-games.cjs && node test/watchlist-import.cjs"
   },
   "devDependencies": {
     "jsdom": "24.1.3"
