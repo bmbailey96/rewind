@@ -25,3 +25,13 @@ assert.equal(H.sameTheaterFilm({id:1091,title:'The Thing',year:'1982'},{id:60935
 assert.equal(H.sameTheaterFilm({id:1091,title:'The Thing',year:'1982'},{title:'The Thing',year:'1982'}),true);
 assert.equal(H.theaterIdentity({title:'The Thing 40th Anniversary'},{id:1091,release_date:'1982-06-25'}).title,'The Thing');
 assert.equal(H.shelfStatus({physicalFormats:['DVD','VHS']}).offers.length,2);
+
+const listedDigital=H.upcoming({id:12,availabilitySnapshot:{details:{release_dates:{results:[{iso_3166_1:'US',release_dates:[{type:4,release_date:'2026-10-14T00:00:00Z'}]}]}}}},'2026-10-10')[0];
+assert.equal(listedDigital.platform,null,'A digital date alone does not identify a store');
+assert.equal(listedDigital.sourceKind,'tmdb');
+const joined=H.upcoming({id:13,availabilitySnapshot:{announcements:[{date:'2026-10-14',provider:'Shudder',kind:'subscription'}],details:{release_dates:{results:[{iso_3166_1:'US',release_dates:[{type:4,release_date:'2026-10-14T00:00:00Z'}]}]}}}},'2026-10-10');
+assert.equal(joined.length,1,'An announced service replaces a generic digital date for the same day');
+assert.equal(joined[0].platform,'Shudder');
+assert.equal(joined[0].announcementKind,'subscription');
+assert.equal(H.upcoming({availabilitySnapshot:{announcements:[{date:'2026-10-14',kind:'theatrical'}]}},'2026-10-10')[0].theatrical,true);
+assert.equal(H.upcoming({availabilitySnapshot:{announcements:[{date:'2026-10-14',kind:'price'}]}},'2026-10-10').length,0,'A price announcement is not a release date');
