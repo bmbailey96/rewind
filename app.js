@@ -910,9 +910,9 @@ async function resolveWatchlistMatches(){
  watchlistMatchProgress='Matching Letterboxd titles · 0 of '+pending.length;renderImportReview();
  await mapLimited(pending,4,async row=>{
   if(stopped)return;const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),20000);
-  try{const data=await tmdbGet('/search/movie',{query:row.title,primary_release_year:row.year,region:REGION},controller.signal);let candidates=data.results||[];
+  try{const data=await tmdbGet('/search/movie',{query:row.title,primary_release_year:row.year},controller.signal);let candidates=data.results||[];
    if(data.total_pages>5)throw Error('Too many candidates');
-   for(let page=2;page<=(data.total_pages||1);page++){const more=await tmdbGet('/search/movie',{query:row.title,primary_release_year:row.year,region:REGION,page},controller.signal);candidates=candidates.concat(more.results||[]);}
+   for(let page=2;page<=(data.total_pages||1);page++){const more=await tmdbGet('/search/movie',{query:row.title,primary_release_year:row.year,page},controller.signal);candidates=candidates.concat(more.results||[]);}
    failures=0;const match=WatchlistModel.match(row,candidates);
    if(match){const key=WatchlistModel.sourceKey(row);if((hubState.watchlistUnmatched||[]).some(f=>WatchlistModel.sourceKey(f)===key)){
     const film={id:match.id,title:match.title,sourceTitle:row.title,year:row.year,release_date:match.release_date,poster_path:match.poster_path||null,genre_ids:match.genre_ids||[],addedDate:row.addedDate,letterboxdURL:row.letterboxdURL,source:'Letterboxd watchlist'};
