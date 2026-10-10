@@ -1057,3 +1057,17 @@ button.text-action:hover,button.secondary:hover{background:#283735;color:#fff;te
 #tab-discover .hub-mode-buttons button{min-height:44px;flex:0 0 auto;padding:11px 0;line-height:20px;border:0;border-bottom:2px solid transparent;background:transparent;color:#a8bbb0;font-size:12px}
 #tab-discover .hub-mode-buttons button[aria-pressed=true]{border-bottom-color:#d8a45b;color:#e1c47b}
 @media(max-width:700px){#tab-discover .hub-mode-buttons{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px 12px}#tab-discover .hub-mode-buttons button{font-size:11px;text-align:left;white-space:normal}}
+
+/* Intent navigation and subordinate collection choices. */
+.discover-intents{display:flex;gap:24px;border-bottom:1px solid var(--rule);margin:20px 0 14px}
+.discover-intents button,.picker-methods button,.picker-sources button{background:transparent;color:#a8bbb0;border:0;border-bottom:2px solid transparent;border-radius:0;min-height:44px;padding:10px 0;line-height:22px;font-size:13px;letter-spacing:0}
+.discover-intents button[aria-pressed=true],.picker-methods button[aria-pressed=true],.picker-sources button[aria-pressed=true]{color:#e1c47b;border-bottom-color:#d8a45b}
+.picker-methods,.picker-sources{display:flex;gap:24px;flex-wrap:wrap}.picker-sources{margin:4px 0 16px}.picker-sources button{font-size:12px;color:#93aa9d}
+.flow-note{font-size:13px;color:#a8bbb0;line-height:1.6;margin:14px 0 20px;max-width:52ch}
+.hub-mode-buttons[hidden],.picker-methods[hidden],.picker-sources[hidden],.discovery-stages[hidden]{display:none!important}
+.counter-welcome{display:grid;grid-template-columns:1fr auto;gap:12px 20px}.counter-welcome>div{grid-column:1/-1}.counter-welcome .collection-link{min-height:44px;padding:10px 0;border:0;background:transparent;color:#a8bbb0;text-align:right;font-size:12px}
+@media(max-width:700px){.discover-intents{gap:20px}.discover-intents button{font-size:12px}.picker-methods,.picker-sources{gap:20px}.counter-welcome{gap:8px 16px}.counter-welcome button{font-size:12px}.flow-note{margin-bottom:16px}}
+
+.card-actions .secondary-track{background:transparent;color:#b5d1c1;border:1px solid #52645b;flex:0 1 auto}
+.rental-card>.discovery-reason{font-size:12px;line-height:1.5;padding:10px 12px;margin:8px 0 12px;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:4;overflow:hidden}
+.full-discovery-reason{color:#b5c9bc;font-size:13px;line-height:1.6;border-left:2px solid #52645b;padding-left:12px}

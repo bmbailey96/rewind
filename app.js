@@ -532,6 +532,7 @@ function renderCard(movie, opts = {}) {
     if(context==='watchlist'){const alert=document.createElement('details');alert.className='source-disclosure';const title=document.createElement('summary');title.textContent='Alert settings';alert.append(title,renderAlertPreference(movie));body.appendChild(alert);}
     const extra=document.createElement('p');extra.className='card-meta';extra.textContent=[movie.runtime?movie.runtime+' min':'',movie.director].filter(Boolean).join(' · ');body.appendChild(extra);
     if(opts.onRemovePhysical){const remove=document.createElement('button');remove.className='secondary';remove.textContent='REMOVE FROM PHYSICAL SHELF';remove.onclick=opts.onRemovePhysical;body.appendChild(remove);}
+    const recommendation=card.querySelector('.discovery-reason');if(recommendation){const fullReason=document.createElement('p');fullReason.className='full-discovery-reason';fullReason.textContent=recommendation.textContent;body.appendChild(fullReason);}
     if(movie.overview){const synopsis=document.createElement('p');synopsis.textContent=movie.overview;body.appendChild(synopsis);}
     const filmLinks=document.createElement('div');filmLinks.className='film-links';const lb=document.createElement('a');lb.textContent='LETTERBOXD';lb.href=HubModel.letterboxd(movie);lb.target='_blank';lb.rel='noopener';filmLinks.appendChild(lb);body.appendChild(filmLinks);
     if(context==='watchlist'){
@@ -550,7 +551,7 @@ function renderCard(movie, opts = {}) {
   }else{
     const next=!status?.stale?costInfo?.offer:null;if(next?.link){const watch=document.createElement('a');watch.className='watch-link';watch.textContent=next.kind==='rent'?'RENT':next.kind==='buy'?'BUY':'WATCH';watch.href=next.link;watch.target='_blank';watch.rel='noopener noreferrer';actions.appendChild(watch);}
     if(context==='physical'){const watched=document.createElement('button');watched.className='secondary';watched.textContent='MARK WATCHED';watched.onclick=()=>markMovieWatched(movie);secondaryActions.appendChild(watched);}
-    const inList=watchlist.some(w=>w.id===movie.id);const track=document.createElement('button');track.textContent=inList?('TRACKED'):'TRACK';track.disabled=inList;
+    const inList=watchlist.some(w=>w.id===movie.id);const track=document.createElement('button');track.textContent=inList?('TRACKED'):'TRACK';track.className=next?.link?'track-action secondary-track':'track-action';track.disabled=inList;
     track.onclick=()=>{addToWatchlist(movie);if(context==='discover'&&!movie.releaseFile)card.remove();else{track.textContent='TRACKED';track.disabled=true;card.classList.add('film-tracked');}};actions.appendChild(track);
     if((context==='discover'||context==='search')&&!inList){const skip=document.createElement('button');skip.className='text-action hide-action';skip.textContent='HIDE';skip.onclick=()=>{skipMovie(movie.id);card.remove();updateBrowseDismissControl();};actions.appendChild(skip);}
   }
