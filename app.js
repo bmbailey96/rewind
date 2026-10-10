@@ -523,21 +523,25 @@ function renderCard(movie, opts = {}) {
   if(status){const upcoming=(status.announcements||[]).filter(a=>a.kind==='subscription'&&a.date&&a.date>discoveryWindow().today).sort((a,b)=>a.date.localeCompare(b.date))[0];if(upcoming){const note=document.createElement('p');note.className='wait-advice';note.textContent=upcoming.provider+' on '+formatFilmDate(upcoming.date)+' · announced';card.appendChild(note);}else if(costInfo?.band==='premium'){const note=document.createElement('p');note.className='wait-advice';const pref=ReleaseModel.preference(movie.alert);const estimate=ReleaseModel.priceEstimate(movie,status.offers,watchlist,discoveryWindow().today,pref.mode==='rental'?pref.maxPrice:rentalBudget);note.textContent=estimate&&!estimate.overdue?'Cheaper rental estimate: '+formatFilmDate(estimate.start)+' to '+formatFilmDate(estimate.end):'Above your $'+rentalBudget.toFixed(2)+' limit. No drop date announced.';card.appendChild(note);}}
 
   const details=document.createElement('details');details.className='film-details';
-  const summary=document.createElement('summary');summary.textContent='Details & options';details.appendChild(summary);
+  const summary=document.createElement('summary');summary.textContent='Film details';details.appendChild(summary);
   const body=document.createElement('div');body.className='film-details-body';details.appendChild(body);card.appendChild(details);
   const secondaryActions=document.createElement('div');secondaryActions.className='card-actions secondary-actions';
   let current=status;
   const fillDetails=()=>{
-    body.replaceChildren();body.appendChild(secondaryActions);if(current)body.appendChild(renderAvailability(movie,{...current,previousLabel:opts.prevLabel},{details:[...observedDetails.values()],movies:watchlist}));
-    if(context==='watchlist'){const alert=document.createElement('details');alert.className='source-disclosure';const title=document.createElement('summary');title.textContent='Alert settings';alert.append(title,renderAlertPreference(movie));body.appendChild(alert);}
-    const extra=document.createElement('p');extra.className='card-meta';extra.textContent=[movie.runtime?movie.runtime+' min':'',movie.director].filter(Boolean).join(' · ');body.appendChild(extra);
-    if(opts.onRemovePhysical){const remove=document.createElement('button');remove.className='secondary';remove.textContent='REMOVE FROM PHYSICAL SHELF';remove.onclick=opts.onRemovePhysical;body.appendChild(remove);}
-    const recommendation=card.querySelector('.discovery-reason');if(recommendation){const fullReason=document.createElement('p');fullReason.className='full-discovery-reason';fullReason.textContent=recommendation.textContent;body.appendChild(fullReason);}
-    if(movie.overview){const synopsis=document.createElement('p');synopsis.textContent=movie.overview;body.appendChild(synopsis);}
-    const filmLinks=document.createElement('div');filmLinks.className='film-links';const lb=document.createElement('a');lb.textContent='LETTERBOXD';lb.href=HubModel.letterboxd(movie);lb.target='_blank';lb.rel='noopener';filmLinks.appendChild(lb);body.appendChild(filmLinks);
-    if(context==='watchlist'){
-      const tools=document.createElement('div');tools.className='card-actions';
-      for(const [name,fn] of [[movie.pinned?'UNPIN':'PIN',()=>togglePin(movie.id)],['REMOVE FROM WATCHLIST',()=>removeFromWatchlist(movie.id)]]){const btn=document.createElement('button');btn.className='secondary';btn.textContent=name;btn.onclick=fn;tools.appendChild(btn);}body.appendChild(tools);
+    body.replaceChildren();if(current)body.appendChild(renderAvailability(movie,{...current,previousLabel:opts.prevLabel},{details:[...observedDetails.values()],movies:watchlist}));
+    const about=document.createElement('section');about.className='film-about';
+    if(movie.overview){const heading=document.createElement('h4');heading.textContent='About the film';const synopsis=document.createElement('p');synopsis.textContent=movie.overview;about.append(heading,synopsis);}
+    const recommendation=card.querySelector('.discovery-reason');if(recommendation){const heading=document.createElement('h4');heading.textContent='Why this film';const fullReason=document.createElement('p');fullReason.className='full-discovery-reason';fullReason.textContent=recommendation.textContent;about.append(heading,fullReason);}
+    const filmLinks=document.createElement('div');filmLinks.className='film-links';const lb=document.createElement('a');lb.textContent='View on Letterboxd ↗';lb.href=HubModel.letterboxd(movie);lb.target='_blank';lb.rel='noopener noreferrer';filmLinks.appendChild(lb);about.appendChild(filmLinks);body.appendChild(about);
+    if(context==='watchlist'||context==='physical'){
+      const collection=document.createElement('section');collection.className='film-collection';const heading=document.createElement('h4');heading.textContent='Your collection';collection.append(heading,secondaryActions);
+      if(context==='watchlist'){
+        const tools=document.createElement('div');tools.className='card-actions collection-tools';
+        for(const [name,fn] of [[movie.pinned?'Unpin':'Pin this film',()=>togglePin(movie.id)],['Remove from watchlist',()=>removeFromWatchlist(movie.id)]]){const btn=document.createElement('button');btn.className='secondary';btn.textContent=name;btn.onclick=fn;tools.appendChild(btn);}collection.appendChild(tools);
+        const alert=document.createElement('details');alert.className='source-disclosure film-notifications';const title=document.createElement('summary');title.textContent='Notifications';alert.append(title,renderAlertPreference(movie));collection.appendChild(alert);
+      }
+      if(opts.onRemovePhysical){const remove=document.createElement('button');remove.className='secondary';remove.textContent='Remove from physical shelf';remove.onclick=opts.onRemovePhysical;collection.appendChild(remove);}
+      body.appendChild(collection);
     }
   };
   if(current)fillDetails();
@@ -559,7 +563,7 @@ function renderCard(movie, opts = {}) {
   card.appendChild(actions);
   if(!status&&['discover','search'].includes(context))observeCardOffers(card,async()=>{
    try{const found=await deriveStatus(movie);if(!card.isConnected)return;current=found;if(movie.releaseFile)card.querySelector('.release-file')?.replaceWith(renderReleaseFile(movie,found));costInfo=ReleaseModel.cost(found.offers,rentalBudget,found.stale);card.querySelector('.cost-block')?.remove();if(!(movie.releaseFile&&costInfo.band==='waiting'))details.before(renderCostHeadline(costInfo));
-    const next=!found.stale?costInfo.offer:null;if(next?.link&&!actions.querySelector('.watch-link')){const watch=document.createElement('a');watch.className='watch-link';watch.textContent=next.kind==='rent'?'RENT':next.kind==='buy'?'BUY':'WATCH';watch.href=next.link;watch.target='_blank';watch.rel='noopener noreferrer';actions.prepend(watch);}if(details.open)fillDetails();
+    const next=!found.stale?costInfo.offer:null;if(next?.link&&!actions.querySelector('.watch-link')){const watch=document.createElement('a');watch.className='watch-link';watch.textContent=next.kind==='rent'?'RENT':next.kind==='buy'?'BUY':'WATCH';watch.href=next.link;watch.target='_blank';watch.rel='noopener noreferrer';actions.prepend(watch);actions.querySelector('.track-action')?.classList.add('secondary-track');}if(details.open)fillDetails();
    }catch{if(card.isConnected&&!card.querySelector('.cost-block')){const note=document.createElement('p');note.className='offer-note';note.textContent='Viewing options could not refresh. Open Details to retry.';details.before(note);}}
   });
   return card;

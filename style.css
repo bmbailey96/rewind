@@ -1071,3 +1071,26 @@ button.text-action:hover,button.secondary:hover{background:#283735;color:#fff;te
 .card-actions .secondary-track{background:transparent;color:#b5d1c1;border:1px solid #52645b;flex:0 1 auto}
 .rental-card>.discovery-reason{font-size:12px;line-height:1.5;padding:10px 12px;margin:8px 0 12px;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:4;overflow:hidden}
 .full-discovery-reason{color:#b5c9bc;font-size:13px;line-height:1.6;border-left:2px solid #52645b;padding-left:12px}
+
+/* Film details read as three sections, with one useful opening action. */
+.rental-card>.film-details[open]{clear:both;width:100%;margin-top:16px}
+.film-details>summary{box-sizing:border-box;min-height:44px;font-size:12px;padding:12px 0!important;line-height:20px}
+.film-details[open]>summary{color:#e2c493}
+.film-details-body{clear:both;padding-top:4px;font-size:13px;line-height:1.6}
+.film-details-body h4{color:#e1e8df;font-size:14px;font-weight:600;line-height:1.4;margin:18px 0 12px}
+.film-details-body .offer-row{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:start;gap:12px;padding:12px 0;font-size:12px;line-height:1.5}
+.film-details-body .offer-row a{color:#a0d4bd;text-decoration:underline;text-underline-offset:3px;overflow-wrap:anywhere;min-height:32px;display:flex;align-items:center}
+.film-details-body .offer-row strong{font-weight:500;color:#e2c493;max-width:180px;text-align:right;overflow-wrap:anywhere;padding:6px 0}
+.film-details-body .source-disclosure{margin:12px 0;border-top:1px solid #34443b;padding:0}
+.film-details-body .source-disclosure>summary{box-sizing:border-box;min-height:44px;padding:12px 0;font-size:12px;line-height:20px}
+.film-about,.film-collection{border-top:1px solid #34443b;margin-top:20px;padding-top:2px}
+.film-about>p{color:#b9c9be;margin:0 0 16px;font-size:13px;line-height:1.65}
+.film-details-body .film-links{margin:8px 0}.film-details-body .film-links a{border:0!important;min-height:44px;display:inline-flex;align-items:center;padding:8px 0;font-size:12px;color:#a0d4bd}
+.film-collection .card-actions{margin:8px 0;gap:8px 16px;flex-wrap:wrap}
+.film-collection .card-actions button{font-size:12px;min-height:44px;padding:10px 0;text-align:left;background:transparent;color:#b4c8ba;border:0}
+.film-collection .secondary-actions{margin-top:0}.film-collection .secondary-actions button:first-child{color:#e2c493}
+.film-notifications .alert-preference{margin:8px 0 16px;padding:12px;border:1px solid #34443b;border-radius:3px;min-width:0}
+.film-notifications select,.film-notifications input{box-sizing:border-box;width:100%;min-height:44px;font-size:13px;max-width:100%}
+.film-notifications .alert-preference legend{font-size:12px;color:#adbdaf}
+.film-details-body .checked-note{font-size:11px;color:#8fa497;margin:10px 0}
+@media(max-width:450px){.film-details-body .offer-row{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.film-details-body .offer-row strong{max-width:none}.rental-card:has(.film-details[open]){box-sizing:border-box}.rental-card:has(.film-details[open])>.cost-block{margin-left:0!important;clear:both}}

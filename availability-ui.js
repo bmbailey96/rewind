@@ -4,15 +4,17 @@ function renderAvailability(movie,status,context={}) {
   const wrap=document.createElement('div');wrap.className='availability';
   if(status.stale)appendNote(wrap,'Could not refresh. Previous availability may have changed.','lookup-warning');
   if(status.previousLabel&&status.previousLabel!==status.label)appendNote(wrap,'Previously: '+status.previousLabel);
-  wrap.appendChild(renderReleaseTimeline(movie,status,context));
   const all=ReleaseModel.compactOffers(status.offers),cost=ReleaseModel.cost(status.offers,rentalBudget,status.stale);
   const chosen=all.filter(o=>o.kind==='physical'||o.kind==='free'||o.kind==='subscription'&&o.included||o.kind==='rent'&&['apple','amazon'].includes(ReleaseModel.storeKey(o.provider)));
   if(!chosen.length&&cost.offer)chosen.push(cost.offer);
   const rows=(root,offers)=>{for(const o of offers){const row=document.createElement('div');row.className='offer-row';const name=document.createElement(o.link?'a':'span');name.textContent=o.provider;if(o.link){name.href=o.link;name.target='_blank';name.rel='noopener noreferrer';}const price=document.createElement('strong');price.textContent=o.kind==='physical'?(o.format||'Physical copy')+' · owned':o.kind==='subscription'?(o.included?'Included':'Subscription'):o.kind==='free'?'Free'+(o.adSupported?' with ads':''):typeof o.price==='number'?(o.kind==='buy'?'Buy ':'Rent ')+'$'+o.price.toFixed(2)+(o.format?' · '+o.format:''):'Price not supplied';row.append(name,price);root.appendChild(row);}};
   const heading=document.createElement('h4');heading.textContent='Where to watch';wrap.appendChild(heading);rows(wrap,chosen.slice(0,3));
   if(!all.length)appendNote(wrap,'No confirmed viewing option yet.');
-  const more=document.createElement('details');more.className='source-disclosure';const summary=document.createElement('summary');summary.textContent='All viewing options & sources';more.appendChild(summary);rows(more,all);more.appendChild(renderReleaseEvidence(movie,status,context));
-  if(status.priceWarning)appendNote(more,status.priceWarning,'lookup-warning');if(status.checkedAt)appendNote(more,'Availability checked '+new Date(status.checkedAt).toLocaleString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}));appendNote(more,'US listings: JustWatch. '+(status.priceSources?.length?'Price sources: '+status.priceSources.join(' / ')+'.':'No current dollar quote supplied.'));if(status.quoteCheckedAt)appendNote(more,'Prices checked '+new Date(status.quoteCheckedAt).toLocaleString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'})+'. Store checkout is final.');wrap.appendChild(more);
+  const remaining=all.filter(o=>!chosen.slice(0,3).includes(o));
+  if(remaining.length){const more=document.createElement('details');more.className='source-disclosure viewing-options';const summary=document.createElement('summary');summary.textContent='More viewing options · '+remaining.length;more.appendChild(summary);rows(more,remaining);wrap.appendChild(more);}
+  if(status.checkedAt)appendNote(wrap,(status.stale?'Previous check · ':'Checked · ')+new Date(status.checkedAt).toLocaleString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}),'checked-note');
+  const sources=document.createElement('details');sources.className='source-disclosure release-sources';const summary=document.createElement('summary');summary.textContent='Release dates & sources';sources.append(summary,renderReleaseTimeline(movie,status,context),renderReleaseEvidence(movie,status,context));
+  if(status.priceWarning)appendNote(sources,status.priceWarning,'lookup-warning');appendNote(sources,'US listings: JustWatch. '+(status.priceSources?.length?'Price sources: '+status.priceSources.join(' / ')+'.':'No current dollar quote supplied.'));if(status.quoteCheckedAt)appendNote(sources,'Prices checked '+new Date(status.quoteCheckedAt).toLocaleString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'})+'. Store checkout is final.');wrap.appendChild(sources);
   return wrap;
 }
 function renderReleaseEvidence(movie,status,context={}){
