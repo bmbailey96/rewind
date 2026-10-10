@@ -9,3 +9,5 @@ body .card-btn,body .mobile-tab-btn,body .view-tab{min-height:44px}body .sync-pa
 @media(max-width:520px){body .tabs .tab{font-size:11px;padding:10px 0}.media-nav{gap:32px}}
 
 body .tap-btn.active{color:#f5c451}body .tap-btn{font-size:12px}body .go-btn{min-height:48px}
+
+body .match-buttons button,body .arena-data-group button{min-height:44px}body button.view-tab{background:transparent;border:0;border-bottom:2px solid transparent;border-radius:0}body button.view-tab.active{border-bottom-color:var(--accent,#e8c582);color:var(--accent,#e8c582)}

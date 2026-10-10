@@ -190,7 +190,7 @@ const wait=()=>new Promise(r=>setTimeout(r,100));
  w.document.querySelector('[data-discover-intent=pick]').click();assert.equal(w.document.getElementById('hub-picker').hidden,false);assert.ok(w.document.querySelector('.pick-adjust #picker-source'));assert.ok(w.document.querySelector('.pick-adjust #picker-cost'));
  const trackedBefore=w.testState.movies().length;
  w.document.querySelector('[data-collection=physical]').click();assert.equal(w.document.getElementById('physical-shelf').hidden,false);assert.equal(w.document.getElementById('watch-now-section').hidden,true);assert.equal(w.testState.movies().length,trackedBefore,'Switching collection never changes films');
- w.document.querySelector('[data-collection=tracked]').click();assert.equal(w.document.getElementById('watch-now-section').hidden,false);assert.equal(w.document.getElementById('physical-shelf').hidden,true);
+ w.document.querySelector('[data-collection=tracked]').click();assert.equal(w.document.querySelector('.watchlist-scope').hidden,false);assert.equal(w.document.getElementById('physical-shelf').hidden,true);
  w.document.querySelector('[data-discover-intent=explore]').click();assert.equal(w.document.getElementById('discovery-stages').hidden,false);
  assert.equal(flowErrors.length,0,'Navigation has no runtime errors');
  console.log('Rewind hub flow: three shelves, source timeline, no vote floor, thresholds persist/sync, real price drops, stale checks, watched undo, inline search passed');
