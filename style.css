@@ -1205,3 +1205,46 @@ html{scrollbar-gutter:stable}body.film-dialog-open{overflow:hidden}
  .film-detail-dialog{width:calc(100vw - 24px);max-height:calc(100dvh - 32px);padding:0 18px 18px}.film-detail-head h2{font-size:20px}.film-detail-dialog .film-details-body .offer-row{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
 }
 @media(prefers-reduced-motion:no-preference){.film-detail-dialog[open]{animation:film-details-enter .15s ease-out}@keyframes film-details-enter{from{opacity:.5;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}}
+
+/* Every discovery shelf follows the same card geometry. */
+#signal-shelf>.card-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px;align-items:start}
+.rental-card{box-sizing:border-box;min-width:0;max-width:100%}
+.rental-card>.card-title{overflow-wrap:normal;word-break:normal}
+.cost-block,.cost-badge,.cost-caption{min-width:0;max-width:100%;white-space:normal;overflow-wrap:break-word}
+.signal-actions{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0 18px}
+.signal-actions button{min-height:44px;padding:10px 16px}
+.discover-intents{flex-wrap:wrap;gap:8px 24px}
+.rental-forecast>a{display:inline-flex;align-items:center;min-height:44px;color:#a0d4bd;font-size:12px;text-underline-offset:3px}
+
+/* Native details must occupy the toolbar cell, not an anonymous narrow box. */
+.watchlist-toolbar{display:flex;flex-wrap:wrap;align-items:flex-start;gap:10px 16px}
+.watchlist-navigation{flex:1 1 200px}
+.watchlist-toolbar>.collection-link{flex:0 0 auto}
+#card-options,#watchlist-updates{display:block;margin:0;min-width:0;border:0;background:transparent}
+#card-options>summary,#watchlist-updates>summary{box-sizing:border-box;width:max-content;max-width:100%;margin:0}
+#card-options[open],#watchlist-updates{flex:1 0 100%;width:100%}
+#card-options[open]>summary{margin-left:auto}
+#card-options>.options-body,.watchlist-updates-body{box-sizing:border-box;width:100%;margin:8px 0 0}
+.card-controls{grid-template-columns:minmax(120px,auto) minmax(0,1fr)}
+.cost-filters{display:grid;grid-template-columns:repeat(5,minmax(0,1fr))}
+.cost-filters button{min-width:0;white-space:normal;line-height:1.4}
+@media(max-width:600px){
+ #signal-shelf>.card-row,#physical-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:12px}
+ #signal-shelf .rental-card,#physical-grid .rental-card{width:100%}
+ #signal-shelf .rental-card>.signal-category{grid-column:2;margin:4px 0;font-size:11px;line-height:1.4;letter-spacing:.04em}
+ #signal-shelf .signal-head{display:block}#signal-shelf .signal-head h3{font-size:20px;line-height:1.4}
+ #signal-shelf .signal-head>button{display:none}
+ .signal-status{font-size:13px;line-height:1.6}
+ .watchlist-toolbar{gap:8px 12px}.watchlist-navigation{flex:1 1 100%}
+ .watchlist-toolbar>.collection-link,#card-options{flex:1 1 calc(50% - 12px)}
+ .watchlist-toolbar>.collection-link,#card-options>summary{width:100%;text-align:center;min-height:44px}
+ #card-options[open]{flex-basis:100%}#card-options[open]>summary{width:calc(50% - 6px)}
+ .cost-filters{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.cost-filters button:first-child{grid-column:1/-1}
+ .card-controls{grid-template-columns:minmax(0,1fr);gap:6px}.card-controls .offer-note{grid-column:1}
+ .card-toolbar{display:flex;flex-direction:column;align-items:stretch}.card-toolbar button{width:100%}
+ .card-toolbar [role=status]{font-size:11px;line-height:1.5}
+ .discover-intents{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+ .discover-intents button{font-size:12px;text-align:center;min-width:0}
+ .rental-card>.cost-block .cost-badge{font-size:20px!important;line-height:1.25}
+ .rental-card>.card-actions{gap:8px}.rental-card>.card-actions .hide-action{margin-left:auto}
+}
