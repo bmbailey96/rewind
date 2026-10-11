@@ -250,8 +250,39 @@ const Hub = (()=>{
   }
  }
  function watched(movie,undo){$('return-stamp').textContent='RETURNED '+new Date().toLocaleDateString('en-US',{timeZone:'America/Denver',month:'short',day:'numeric',year:'numeric'}).toUpperCase();$('watched-film-name').textContent=movie.title;$('watched-letterboxd').href=HubModel.letterboxd(movie);$('watched-undo').onclick=()=>{undo();$('watched-dialog').close();};$('watched-dialog').showModal();}
+ async function refreshCalendarReleases(){
+  // Only the currently relevant future films are rechecked. Don't spam hundreds of
+  // watched or old watchlist titles every time the user taps Refresh.
+  const end=addDays(anchor,28);
+  const targets=watchlist.filter(m=>m.pinned||HubModel.upcoming(m,today()).some(r=>r.date>=today()&&r.date<=end)).slice(0,30);
+  let updated=0,failed=0;
+  await mapLimited(targets,3,async movie=>{
+   const current=watchlist.find(m=>m.id===movie.id);if(!current)return;
+   const draft={...current};
+   try{
+    const status=await deriveStatus(draft,true);
+    if(!status||status.stale&&!status.physical){failed++;return;}
+    Object.assign(current,draft);updated++;
+   }catch{failed++;}
+  });
+  if(updated)saveWatchlist();
+  return {total:targets.length,updated,failed};
+ }
  function stateChanged(){renderCalendar();renderNews();decorateCards();renderTonight();renderPhysicalShelf();renderReceipts();renderAsides();}
- function init(){const news=node('details',null,'hub-news');news.id='hub-news';news.hidden=true;$('card-summary').after(news);document.querySelectorAll('[data-tab]').forEach(b=>b.addEventListener('click',()=>{if(b.dataset.tab==='upcoming'){loadCinema();renderCalendar();scanSuggestions();}if(b.dataset.tab==='import'){renderTaste();$('event-email-alerts').checked=!!hubState.eventAlerts;}}));document.querySelectorAll('[data-find-mode]').forEach(b=>b.onclick=()=>setFindMode(b.dataset.findMode));$('calendar-view').onclick=()=>{calendarView='calendar';renderCalendar();};$('calendar-list').onclick=()=>{calendarView='list';renderCalendar();};$('calendar-prev').onclick=()=>{anchor=addDays(anchor,-7);renderCalendar();};$('calendar-next').onclick=()=>{anchor=addDays(anchor,7);renderCalendar();};$('calendar-today').onclick=()=>{anchor=today();renderCalendar();};$('calendar-scope').onchange=renderCalendar;$('calendar-search').oninput=renderCalendar;$('cinema-refresh').onclick=async()=>{const btn=$('cinema-refresh');btn.disabled=true;try{await loadCinema(true);await scanSuggestions(true);}finally{btn.disabled=false;}};$('pick-film').onclick=pickFilm;$('pick-again').onclick=pickFilm;$('banish-pick').onclick=()=>setAsideCurrent('forever');$('undo-banish').onclick=undoLastAside;$('import-taste').onchange=importTaste;$('event-email-alerts').checked=!!hubState.eventAlerts;$('event-email-alerts').onchange=()=>{hubState.eventAlerts=$('event-email-alerts').checked;save();showToast('Event email preference saved');};$('watched-close').onclick=()=>$('watched-dialog').close();renderTaste();loadTasteBaseline();fetch('taste-profile.json',{cache:'no-cache'}).then(r=>r.json()).then(p=>{$('written-taste').textContent=p.profile||'';}).catch(()=>{});loadCinema();refreshTrackedReleases().catch(()=>{});
+ function init(){const news=node('details',null,'hub-news');news.id='hub-news';news.hidden=true;$('card-summary').after(news);document.querySelectorAll('[data-tab]').forEach(b=>b.addEventListener('click',()=>{if(b.dataset.tab==='upcoming'){loadCinema();renderCalendar();scanSuggestions();}if(b.dataset.tab==='import'){renderTaste();$('event-email-alerts').checked=!!hubState.eventAlerts;}}));document.querySelectorAll('[data-find-mode]').forEach(b=>b.onclick=()=>setFindMode(b.dataset.findMode));$('calendar-view').onclick=()=>{calendarView='calendar';renderCalendar();};$('calendar-list').onclick=()=>{calendarView='list';renderCalendar();};$('calendar-prev').onclick=()=>{anchor=addDays(anchor,-7);renderCalendar();};$('calendar-next').onclick=()=>{anchor=addDays(anchor,7);renderCalendar();};$('calendar-today').onclick=()=>{anchor=today();renderCalendar();};$('calendar-scope').onchange=renderCalendar;$('calendar-search').oninput=renderCalendar;$('cinema-refresh').onclick=async()=>{
+  const btn=$('cinema-refresh'),simple=$('calendar-refresh-simple');if(btn.disabled)return;
+  btn.disabled=true;simple.disabled=true;
+  const note=$('cinema-status');note.textContent='Refreshing theater dates and upcoming tracked releases…';
+  try{
+   horizonFeed=null;announcementPromise=null;calendarCache=null;calendarFailure=null;
+   await loadCinema(true);
+   await refreshTrackedReleases().catch(()=>{});
+   const result=await refreshCalendarReleases();
+   await scanSuggestions(true);
+   renderCalendar();
+   if(result.total)note.textContent+=' | Film checks: '+result.updated+'/'+result.total+(result.failed?' · '+result.failed+' unavailable':'');
+  }finally{btn.disabled=false;simple.disabled=false;}
+ };$('pick-film').onclick=pickFilm;$('pick-again').onclick=pickFilm;$('banish-pick').onclick=()=>setAsideCurrent('forever');$('undo-banish').onclick=undoLastAside;$('import-taste').onchange=importTaste;$('event-email-alerts').checked=!!hubState.eventAlerts;$('event-email-alerts').onchange=()=>{hubState.eventAlerts=$('event-email-alerts').checked;save();showToast('Event email preference saved');};$('watched-close').onclick=()=>$('watched-dialog').close();renderTaste();loadTasteBaseline();fetch('taste-profile.json',{cache:'no-cache'}).then(r=>r.json()).then(p=>{$('written-taste').textContent=p.profile||'';}).catch(()=>{});loadCinema();refreshTrackedReleases().catch(()=>{});
  const legacy=$('legacy-links');for(const [name,url] of [['KALISPELL SHOWTIMES','https://github.com/bmbailey96/kalispell-showtimes'],['MOVIE ORACLE','https://github.com/bmbailey96/movie-oracle'],['MOVIE ROULETTE','https://github.com/bmbailey96/movie-roulette']])legacy.appendChild(link(name,url));window.addEventListener('rewind:state',stateChanged);window.addEventListener('rewind:card-rendered',()=>{decorateCards();renderTonight();renderReceipts();});}
  function initCalmControls(){
   const viewSwitch=node('div',null,'calendar-view-switch');viewSwitch.setAttribute('aria-label','Calendar layout');for(const [id,label] of [['calendar-view','Timeline'],['calendar-list','List']]){const control=$(id);control.textContent=label;viewSwitch.appendChild(control);}document.querySelector('.board-head').insertBefore(viewSwitch,document.querySelector('.board-nav'));
