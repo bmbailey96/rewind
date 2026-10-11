@@ -1167,3 +1167,16 @@ button.text-action:hover,button.secondary:hover{background:#283735;color:#fff;te
  .calendar-mobile-card .calendar-film-head:after{content:'⌄';position:absolute;right:0;top:0;grid-column:auto;font-size:18px;line-height:1.1;margin:0;color:#95beaa}
  .calendar-mobile-card .calendar-film-head[aria-expanded=true]:after{content:'⌃'}
 }
+
+/* iOS Safari scrolls document content underneath its transparent status area.
+   Keep the clock readable instead of allowing calendar tabs under it. */
+@supports (-webkit-touch-callout: none){
+ @media(max-width:700px){
+  body:has(#tab-upcoming){padding-top:max(48px,env(safe-area-inset-top))}
+  body:has(#tab-upcoming)::before{
+   content:'';position:fixed;inset:0 0 auto 0;
+   height:max(48px,env(safe-area-inset-top));background:#101415;
+   z-index:999;pointer-events:none
+  }
+ }
+}
