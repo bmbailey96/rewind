@@ -169,7 +169,17 @@ const wait=()=>new Promise(r=>setTimeout(r,100));
  const openCoyote=()=>[...w.document.querySelectorAll('#calendar-bars .board-label')].find(b=>b.textContent.includes('Coyote')).click();
  openCoyote();[...w.document.querySelectorAll('#event-detail button')].find(b=>b.textContent==='HIDE').click();
  assert.equal(w.document.querySelectorAll('#calendar-bars .run-bar.local').length,0);
- assert.doesNotMatch(w.document.getElementById('calendar-listings').textContent,/Arrives on Apple TV/);
+ assert.match(w.document.getElementById('calendar-listings').textContent,/Arrives on Apple TV/,'Hiding theater listings must not remove an independent digital date');
+ const digitalToHide=[...w.document.querySelectorAll('#calendar-mobile .calendar-mobile-card')].find(c=>c.querySelector('.calendar-source-note')?.textContent.includes('On Apple TV'));
+ assert.ok(digitalToHide,'Digital release remains after its local theater listing is hidden');
+ digitalToHide.querySelector('.hide-action').click();
+ assert.doesNotMatch(w.document.getElementById('calendar-listings').textContent,/Arrives on Apple TV/,'Hiding a digital date works independently');
+ assert.equal(JSON.parse(w.localStorage.getItem('rewind-hub-v1')).hiddenTheaterFilms.length,1,'Digital hide does not clear theater hide');
+ const restoreDigital=[...w.document.querySelectorAll('#cinema-hidden button')].find(b=>b.textContent.startsWith('SHOW ')&&b.textContent.includes('Coyote'));
+ assert.ok(restoreDigital,'A hidden digital date has a named restore control');
+ restoreDigital.click();
+ assert.match(w.document.getElementById('calendar-listings').textContent,/Arrives on Apple TV/,'Restoring the digital date does not restore theater listings');
+
  assert.equal(JSON.parse(w.localStorage.getItem('rewind-hub-v1')).hiddenTheaterFilms.length,1,'Hide always persists and syncs');
  [...w.document.querySelectorAll('#cinema-hidden button')].find(b=>b.textContent.startsWith('RESTORE')).click();assert.equal(w.document.querySelectorAll('#calendar-bars .run-bar.local').length,2);
  openCoyote();[...w.document.querySelectorAll('#event-detail button')].find(b=>b.textContent==='HIDE').click();
