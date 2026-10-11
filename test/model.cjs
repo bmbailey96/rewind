@@ -47,3 +47,12 @@ assert.equal(r.cost([{kind:'subscription',included:true,provider:'Shudder'},...c
 assert.equal(r.cost([{kind:'rent',provider:'Apple TV',price:7.99,format:'HD'}],7.99).band,'cheap');assert.equal(r.cost([{kind:'buy',provider:'Apple TV',price:7.99,format:'HD'}],7.99).band,'buy');assert.equal(r.cost([{kind:'rent',provider:'Apple TV',price:null}]).price,null);assert.equal(r.cost(costs,7.99,true).band,'waiting');
 const rows=r.compactOffers([{...costs[0],format:'SD'},costs[0],{...costs[0],format:'4K'}]);assert.equal(rows.length,1);assert.match(rows[0].format,/4K/);assert.match(rows[0].format,/HD/);
 console.log('Cost cards: Apple/Prime priority, HD/4K comparisons, cheaper alternatives, included vs free, purchase separation, unknown prices, compact format rows passed');
+
+const company={id:99,priceHistory:current.priceHistory,detailsSnapshot:{production_companies:[{id:8,name:'Test Company'}]}};
+const companyDrops=drops.map(m=>({...m,detailsSnapshot:{production_companies:[{id:8,name:'Test Company'}]}}));
+const slower=[11,12,13,14,15].map(id=>({id,priceHistory:r.recordQuotes(r.recordQuotes([],[paid],Date.parse('2026-08-01')),[{...paid,price:5.99}],Date.parse('2026-08-08'))}));
+const companyForecast=r.priceEstimate(company,[paid],[...companyDrops,...slower,companyDrops[0]],'2026-09-28',5.99);
+assert.equal(companyForecast.companyMatched,true);assert.equal(companyForecast.samples,5,'Production-company cohort is deduplicated');assert.equal(companyForecast.likely,'2026-10-02');assert.equal(companyForecast.confidence,'Low');
+assert.equal(r.priceEstimate(company,[paid],slower,'2026-09-28',5.99).companyMatched,false,'No invented studio cohort without matching data');
+
+assert.deepEqual(require('../storage-model').compact({detailsSnapshot:{production_companies:[{id:8,name:'Test Company',logo_path:'huge cached art'}]}}).detailsSnapshot.production_companies,[{id:8,name:'Test Company'}],'Forecast company identity survives compact saving without artwork payloads');

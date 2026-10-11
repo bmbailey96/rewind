@@ -17,10 +17,22 @@
     return next.sort((a,b)=>a.at-b.at).slice(-240);
   }
   function latestPriceChange(history,offers){for(const o of offers||[]){if(o.kind!=='rent'||typeof o.price!=='number')continue;const rows=(history||[]).filter(r=>r.key===quoteIdentity(o)).sort((a,b)=>b.at-a.at);const previous=rows.find(r=>r.price!==o.price);if(previous&&previous.price>o.price)return {from:previous.price,to:o.price,provider:o.provider,format:o.format,at:rows[0]?.at};}return null;}
-  function priceEstimate(movie,offers,comparables,today,threshold=9.99){const premium=(offers||[]).filter(o=>o.kind==='rent'&&typeof o.price==='number'&&o.price>=15&&o.price>threshold).sort((a,b)=>a.price-b.price)[0];if(!premium)return null;
-    const key=quoteIdentity(premium);const initial=(movie.priceHistory||[]).filter(r=>r.key===key&&r.price>=15).sort((a,b)=>a.at-b.at)[0];if(!initial)return null;
-    const samples=[],ids=new Set();for(const m of comparables){if(m.id===movie.id||ids.has(m.id))continue;ids.add(m.id);const rows=(m.priceHistory||[]).filter(r=>r.key===key).sort((a,b)=>a.at-b.at);const first=rows.find(r=>r.price>=15),drop=first&&rows.find(r=>r.at>first.at&&r.price<=threshold);if(!drop)continue;const prior=rows.filter(r=>r.at<drop.at).at(-1);if(!prior||drop.at-prior.at>10*DAY||drop.at-first.at>120*DAY)continue;samples.push(Math.ceil((drop.at-first.at)/DAY));}
-    const estimate=windowFor(new Date(initial.at).toISOString().slice(0,10),samples,today);return estimate?{...estimate,provider:premium.provider,format:premium.format,threshold}:null;
+  function priceEstimate(movie,offers,comparables,today,threshold=9.99){
+    const premium=(offers||[]).filter(o=>o.kind==='rent'&&Number.isFinite(o.price)&&o.price>=15&&o.price>threshold).sort((a,b)=>a.price-b.price)[0];if(!premium)return null;
+    const key=quoteIdentity(premium),cutoff=Date.parse(today+'T23:59:59Z');
+    const rowsFor=m=>(m.priceHistory||[]).filter(r=>r.key===key&&Number.isFinite(r.at)&&r.at<=cutoff&&Number.isFinite(r.price)).sort((a,b)=>a.at-b.at);
+    const initial=rowsFor(movie).find(r=>r.price>=15);if(!initial)return null;
+    const companyIds=new Set((movie.detailsSnapshot?.production_companies||[]).map(c=>c.id).filter(Boolean));
+    const samples=[],companySamples=[],ids=new Set();
+    for(const m of comparables||[]){
+      if(m.id===movie.id||ids.has(m.id))continue;ids.add(m.id);
+      const rows=rowsFor(m),first=rows.find(r=>r.price>=15),drop=first&&rows.find(r=>r.at>first.at&&r.price<=threshold),prior=drop&&rows.filter(r=>r.at<drop.at).at(-1);
+      if(!prior||cutoff-first.at>730*DAY||drop.at-prior.at>10*DAY||drop.at-first.at>120*DAY)continue;
+      const gap=Math.ceil((drop.at-first.at)/DAY);samples.push(gap);
+      if((m.detailsSnapshot?.production_companies||[]).some(c=>companyIds.has(c.id)))companySamples.push(gap);
+    }
+    const matched=companySamples.length>=5,used=matched?companySamples:samples,anchor=new Date(initial.at).toISOString().slice(0,10),estimate=windowFor(anchor,used,today);
+    return estimate?{...estimate,likely:addDays(anchor,quantile(used,.5)),provider:premium.provider,format:premium.format,threshold,confidence:matched&&used.length>=10?'Moderate':'Low',basis:matched?'shared production company, store and format':'same store and format',anchor,basisLabel:'Since the first premium-price check',companyMatched:matched}:null;
   }
   function matchingAnnouncements(feed,id){return (feed?.announcements||[]).filter(r=>r.tmdbId===id&&r.region==='US'&&['subscription','digital','theatrical','price'].includes(r.kind)&&r.sourceUrl&&/^https:\/\//.test(r.sourceUrl)&&(!r.date||date(r.date))&&(!r.expires||r.expires>=feed.today));}
   function group(status){if(status?.stale)return 'waiting';if((status?.offers||[]).some(o=>o.kind==='physical'||o.kind==='free'||o.kind==='subscription'&&o.included))return 'now';if((status?.offers||[]).some(o=>['rent','buy'].includes(o.kind)))return 'paid';return 'waiting';}

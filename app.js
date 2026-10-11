@@ -439,7 +439,7 @@ async function deriveRemoteStatus(movie, force = false) {
   const results = await Promise.allSettled([fetchWatchProviders(movie.id),fetchMovieDetails(movie.id,force),fetchAnnouncements(),fetchStreamingCalendar(),checkStorePricesCached(movie,force)]);
   const p = results[0];const d = results[1];
   const fullDetails=d.status==='fulfilled'?d.value:null;
-  const details=fullDetails?{id:fullDetails.id,runtime:fullDetails.runtime,release_dates:fullDetails.release_dates}:movie.detailsSnapshot;
+  const details=fullDetails?{id:fullDetails.id,runtime:fullDetails.runtime,release_dates:fullDetails.release_dates,production_companies:fullDetails.production_companies}:movie.detailsSnapshot;
   if(fullDetails){movie.detailsSnapshot=details;Object.assign(movie,{runtime:fullDetails.runtime,director:(fullDetails.credits?.crew||[]).filter(c=>c.job==='Director').map(c=>c.name).join(', '),overview:fullDetails.overview||movie.overview||''});}
   const releaseDates = ReleaseModel.datesFor(details);
   const timeline={details,announcements:ReleaseModel.matchingAnnouncements({...((results[2].status==='fulfilled'?results[2].value:null)||{}),today:discoveryWindow().today},movie.id),calendar:(results[3].status==='fulfilled'?results[3].value:[]).filter(r=>r.tmdb_id===movie.id&&r.tmdb_type==='movie')};
@@ -507,6 +507,17 @@ function observeCardOffers(card,check){
  card.offerCheck=async()=>{if(card.isConnected)await check();};observedOfferCards.add(card);offerObserver.observe(card);
 }
 function drainOfferChecks(){while(offerChecks<4&&visibleOfferJobs.length){const job=visibleOfferJobs.shift();offerChecks++;Promise.resolve().then(job).catch(()=>{}).finally(()=>{offerChecks--;drainOfferChecks();});}}
+function openFilmDetails(movie,body,trigger,load){
+  let dialog=document.getElementById('film-detail-dialog');
+  if(!dialog){
+    dialog=document.createElement('dialog');dialog.id='film-detail-dialog';dialog.className='film-detail-dialog';dialog.setAttribute('aria-labelledby','film-detail-title');document.body.appendChild(dialog);
+    dialog.addEventListener('close',()=>{document.body.classList.remove('film-dialog-open');if(dialog._returnFocus?.isConnected)dialog._returnFocus.focus({preventScroll:true});});
+    dialog.addEventListener('click',e=>{if(e.target===dialog){const r=dialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)dialog.close();}});
+  }
+  const head=document.createElement('header');head.className='film-detail-head';const title=document.createElement('h2');title.id='film-detail-title';title.textContent=movie.title;
+  const close=document.createElement('button');close.type='button';close.className='film-detail-close';close.textContent='×';close.setAttribute('aria-label','Close film details');close.onclick=()=>dialog.close();head.append(title,close);
+  dialog.replaceChildren(head,body);dialog._returnFocus=trigger;document.body.classList.add('film-dialog-open');if(!dialog.open)dialog.showModal();dialog.scrollTop=0;load();
+}
 function renderCard(movie, opts = {}) {
   const {context='discover',status=null,changed=false}=opts;
   const card=document.createElement('article');card.className='rental-card'+(movie.releaseFile?' release-card':'');card.dataset.movieId=movie.id;
@@ -522,9 +533,8 @@ function renderCard(movie, opts = {}) {
   if(movie.discoveryFit||movie.requestedInterest){const reason=document.createElement('p');reason.className='discovery-reason';reason.textContent=movie.requestedInterest?'You asked to keep an eye on this one.':movie.discoveryFit.connection?.directors?.length?'From '+movie.discoveryFit.connection.directors.join(' and ')+', behind '+movie.discoveryFit.connection.seedTitle+'.':FilmOracle.reading(movie,{connection:null}).text;card.appendChild(reason);}if(movie.releaseFile)card.appendChild(renderReleaseFile(movie,status));
   if(status){const upcoming=(status.announcements||[]).filter(a=>a.kind==='subscription'&&a.date&&a.date>discoveryWindow().today).sort((a,b)=>a.date.localeCompare(b.date))[0];if(upcoming){const note=document.createElement('p');note.className='wait-advice';note.textContent=upcoming.provider+' on '+formatFilmDate(upcoming.date)+' · announced';card.appendChild(note);}else if(costInfo?.band==='premium'){const note=document.createElement('p');note.className='wait-advice';const pref=ReleaseModel.preference(movie.alert);const estimate=ReleaseModel.priceEstimate(movie,status.offers,watchlist,discoveryWindow().today,pref.mode==='rental'?pref.maxPrice:rentalBudget);note.textContent=estimate&&!estimate.overdue?'Cheaper rental estimate: '+formatFilmDate(estimate.start)+' to '+formatFilmDate(estimate.end):'Above your $'+rentalBudget.toFixed(2)+' limit. No drop date announced.';card.appendChild(note);}}
 
-  const details=document.createElement('details');details.className='film-details';
-  const summary=document.createElement('summary');summary.textContent='Film details';details.appendChild(summary);
-  const body=document.createElement('div');body.className='film-details-body';details.appendChild(body);card.appendChild(details);
+  const details=document.createElement('button');details.type='button';details.className='film-details-trigger';details.textContent='Film details';details.setAttribute('aria-haspopup','dialog');details.setAttribute('aria-controls','film-detail-dialog');
+  const body=document.createElement('div');body.className='film-details-body';
   const secondaryActions=document.createElement('div');secondaryActions.className='card-actions secondary-actions';
   let current=status;
   const fillDetails=()=>{
@@ -540,30 +550,29 @@ function renderCard(movie, opts = {}) {
         for(const [name,fn] of [[movie.pinned?'Unpin':'Pin this film',()=>togglePin(movie.id)],['Remove from watchlist',()=>removeFromWatchlist(movie.id)]]){const btn=document.createElement('button');btn.className='secondary';btn.textContent=name;btn.onclick=fn;tools.appendChild(btn);}collection.appendChild(tools);
         const alert=document.createElement('details');alert.className='source-disclosure film-notifications';const title=document.createElement('summary');title.textContent='Notifications';alert.append(title,renderAlertPreference(movie));collection.appendChild(alert);
       }
-      if(opts.onRemovePhysical){const remove=document.createElement('button');remove.className='secondary';remove.textContent='Remove from physical shelf';remove.onclick=opts.onRemovePhysical;collection.appendChild(remove);}
+      if(opts.onRemovePhysical){const remove=document.createElement('button');remove.className='secondary';remove.textContent='Remove from physical shelf';remove.onclick=()=>{document.getElementById('film-detail-dialog')?.close();opts.onRemovePhysical();};collection.appendChild(remove);}
       body.appendChild(collection);
     }
   };
-  if(current)fillDetails();
-  details.addEventListener('toggle',async()=>{if(!details.open)return;if(current){fillDetails();return;}body.textContent='Checking releases and viewing options…';try{current=await deriveStatus(movie);fillDetails();}catch{body.textContent='Could not load this film. Close and reopen to retry.';}});
+  details.onclick=()=>openFilmDetails(movie,body,details,async()=>{if(current){fillDetails();return;}body.textContent='Checking releases and viewing options…';try{current=await deriveStatus(movie);fillDetails();}catch{body.replaceChildren();const note=document.createElement('p');note.textContent='Could not load this film.';const retry=document.createElement('button');retry.textContent='Try again';retry.onclick=()=>details.click();body.append(note,retry);}});
   const actions=document.createElement('div');actions.className='card-actions';
   if(context==='watchlist'){
-    const watched=document.createElement('button');watched.className='secondary';watched.textContent='MARK WATCHED';watched.onclick=()=>markMovieWatched(movie);secondaryActions.appendChild(watched);
+    const watched=document.createElement('button');watched.className='secondary';watched.textContent='MARK WATCHED';watched.onclick=()=>{document.getElementById('film-detail-dialog')?.close();markMovieWatched(movie);};secondaryActions.appendChild(watched);
     const next=!status?.stale?costInfo?.offer:null;
     if(next?.link){const link=document.createElement('a');link.className='watch-link';link.textContent=next.kind==='buy'?'BUY':next.kind==='rent'?'RENT':'WATCH';link.href=next.link;link.target='_blank';link.rel='noopener noreferrer';actions.prepend(link);}
     if(costInfo?.band==='premium'){const wait=document.createElement('button');wait.className='secondary wait-button';const pref=ReleaseModel.preference(movie.alert);wait.textContent=pref.mode==='rental'?'WAITING FOR $'+pref.maxPrice.toFixed(2):'WAIT FOR $'+rentalBudget.toFixed(2);wait.onclick=()=>{movie.alert={mode:'rental',maxPrice:rentalBudget};saveWatchlist();scheduleSync();showToast('Watching for a rental at $'+rentalBudget.toFixed(2)+' or less');renderWatchlist();};secondaryActions.appendChild(wait);}
   }else{
     const next=!status?.stale?costInfo?.offer:null;if(next?.link){const watch=document.createElement('a');watch.className='watch-link';watch.textContent=next.kind==='rent'?'RENT':next.kind==='buy'?'BUY':'WATCH';watch.href=next.link;watch.target='_blank';watch.rel='noopener noreferrer';actions.appendChild(watch);}
-    if(context==='physical'){const watched=document.createElement('button');watched.className='secondary';watched.textContent='MARK WATCHED';watched.onclick=()=>markMovieWatched(movie);secondaryActions.appendChild(watched);}
+    if(context==='physical'){const watched=document.createElement('button');watched.className='secondary';watched.textContent='MARK WATCHED';watched.onclick=()=>{document.getElementById('film-detail-dialog')?.close();markMovieWatched(movie);};secondaryActions.appendChild(watched);}
     const inList=watchlist.some(w=>w.id===movie.id);const track=document.createElement('button');track.textContent=inList?('TRACKED'):'TRACK';track.className=next?.link?'track-action secondary-track':'track-action';track.disabled=inList;
     track.onclick=()=>{addToWatchlist(movie);if(context==='discover'&&!movie.releaseFile)card.remove();else{track.textContent='TRACKED';track.disabled=true;card.classList.add('film-tracked');}};actions.appendChild(track);
     if((context==='discover'||context==='search')&&!inList){const skip=document.createElement('button');skip.className='text-action hide-action';skip.textContent='HIDE';skip.onclick=()=>{skipMovie(movie.id);card.remove();updateBrowseDismissControl();};actions.appendChild(skip);}
   }
   if(!current)body.appendChild(secondaryActions);
-  card.appendChild(actions);
+  card.append(actions,details);
   if(!status&&['discover','search'].includes(context))observeCardOffers(card,async()=>{
-   try{const found=await deriveStatus(movie);if(!card.isConnected)return;current=found;if(movie.releaseFile)card.querySelector('.release-file')?.replaceWith(renderReleaseFile(movie,found));costInfo=ReleaseModel.cost(found.offers,rentalBudget,found.stale);card.querySelector('.cost-block')?.remove();if(!(movie.releaseFile&&costInfo.band==='waiting'))details.before(renderCostHeadline(costInfo));
-    const next=!found.stale?costInfo.offer:null;if(next?.link&&!actions.querySelector('.watch-link')){const watch=document.createElement('a');watch.className='watch-link';watch.textContent=next.kind==='rent'?'RENT':next.kind==='buy'?'BUY':'WATCH';watch.href=next.link;watch.target='_blank';watch.rel='noopener noreferrer';actions.prepend(watch);actions.querySelector('.track-action')?.classList.add('secondary-track');}if(details.open)fillDetails();
+   try{const found=await deriveStatus(movie);if(!card.isConnected)return;current=found;if(movie.releaseFile)card.querySelector('.release-file')?.replaceWith(renderReleaseFile(movie,found));costInfo=ReleaseModel.cost(found.offers,rentalBudget,found.stale);card.querySelector('.cost-block')?.remove();if(!(movie.releaseFile&&costInfo.band==='waiting'))actions.before(renderCostHeadline(costInfo));
+    const next=!found.stale?costInfo.offer:null;if(next?.link&&!actions.querySelector('.watch-link')){const watch=document.createElement('a');watch.className='watch-link';watch.textContent=next.kind==='rent'?'RENT':next.kind==='buy'?'BUY':'WATCH';watch.href=next.link;watch.target='_blank';watch.rel='noopener noreferrer';actions.prepend(watch);actions.querySelector('.track-action')?.classList.add('secondary-track');}if(body.closest('dialog')?.open)fillDetails();
    }catch{if(card.isConnected&&!card.querySelector('.cost-block')){const note=document.createElement('p');note.className='offer-note';note.textContent='Viewing options could not refresh. Open Details to retry.';details.before(note);}}
   });
   return card;

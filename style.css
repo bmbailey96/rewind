@@ -1180,3 +1180,28 @@ button.text-action:hover,button.secondary:hover{background:#283735;color:#fff;te
   }
  }
 }
+
+/* Film detail dialogs preserve the shelf's dimensions and scroll position. */
+html{scrollbar-gutter:stable}body.film-dialog-open{overflow:hidden}
+.film-detail-dialog{box-sizing:border-box;width:min(680px,calc(100vw - 32px));max-height:calc(100dvh - 48px);padding:0 24px 24px;border:1px solid #52645b;border-radius:10px;background:#17211d;color:#e1e8df;overflow-y:auto;overscroll-behavior:contain;box-shadow:0 24px 80px #0008}
+.film-detail-dialog::backdrop{background:#060c0bd1}
+.film-detail-head{position:sticky;top:0;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:16px;background:#17211d;padding:18px 0 14px;border-bottom:1px solid #34443b}
+.film-detail-head h2{font-size:22px;line-height:1.3;margin:0;overflow-wrap:anywhere}.film-detail-close{flex:none;width:44px;height:44px;padding:0;background:transparent;border:1px solid #52645b;color:#dbe8de;font-size:26px;border-radius:4px;cursor:pointer}
+.film-details-trigger{display:block;width:100%;min-height:44px;margin:8px 0 0;padding:10px 0;text-align:left;background:transparent!important;border:0!important;border-top:1px solid #34443b!important;color:#b5c9bc!important;font-size:12px;line-height:22px;cursor:pointer;clear:both}
+.film-details-trigger:after{content:' ↗';color:#91c9ae}.film-details-trigger:hover{color:#f0dbac!important}
+.rental-card>.cost-block{padding:8px 0;margin:8px 0}.rental-card>.card-title{min-height:0}.rental-card>.card-meta{min-height:0}.rental-card>.card-actions{margin-top:auto;padding-top:8px}
+.rental-forecast{padding:2px 16px 12px;margin-top:18px;border-left:2px solid #d8b56e;background:#202b23}.rental-forecast .forecast-date{font-size:18px;color:#e6cc97;line-height:1.4;margin:0 0 8px}.rental-forecast .forecast-basis{color:#aac8b3;font-size:12px}.rental-forecast p{font-size:12px;line-height:1.6}
+.release-milestones{list-style:none;padding:0;margin:16px 0 20px}.release-milestone{position:relative;display:grid;grid-template-columns:86px minmax(0,1fr);gap:22px;padding:0 0 18px;font-size:13px;line-height:1.4}.release-milestone:before{content:'';position:absolute;left:95px;top:5px;width:7px;height:7px;border-radius:50%;background:#91c9ae}.release-milestone:not(:last-child):after{content:'';position:absolute;left:98px;top:14px;bottom:0;width:1px;background:#44594c}.release-milestone time{font-size:12px;color:#acbfb2}.release-milestone strong,.release-milestone small{display:block}.release-milestone small{font-size:11px;color:#9ab2a2;margin-top:3px}.release-milestone.estimated:before{background:#d8b56e}.release-milestone.is-today strong{color:#e6cc97}.release-milestone a{display:inline-flex;min-height:32px;align-items:center;color:#9ed4b9;font-size:11px}.film-detail-dialog .release-chips{gap:8px}.film-detail-dialog .release-chip{font-size:12px}
+@media(max-width:600px){
+ #watch-now-grid,#paid-grid,#waiting-grid,#discover-grid,#search-grid{grid-template-columns:minmax(0,1fr);gap:12px}
+ #tab-watchlist .rental-card:not(.release-card),#discover-grid>.rental-card:not(.release-card),#search-grid>.rental-card:not(.release-card),#signal-shelf .rental-card:not(.release-card){display:grid;grid-template-columns:96px minmax(0,1fr);gap:4px 14px;padding:14px;align-content:start}
+ #tab-watchlist .rental-card>.card-poster,#discover-grid>.rental-card:not(.release-card)>.card-poster,#search-grid>.rental-card:not(.release-card)>.card-poster,#signal-shelf .rental-card>.card-poster{grid-column:1;grid-row:1 / span 5;width:96px;height:144px;max-width:96px;max-height:144px;margin:0;float:none;aspect-ratio:2/3;object-fit:cover}
+ #tab-watchlist .rental-card>.card-title,#discover-grid>.rental-card:not(.release-card)>.card-title,#search-grid>.rental-card:not(.release-card)>.card-title,#signal-shelf .rental-card>.card-title{grid-column:2;font-size:17px;line-height:1.3;margin:0}
+ #tab-watchlist .rental-card>.card-meta,#discover-grid>.rental-card:not(.release-card)>.card-meta,#search-grid>.rental-card:not(.release-card)>.card-meta,#signal-shelf .rental-card>.card-meta{grid-column:2;font-size:12px;line-height:1.5;margin:0}
+ #tab-watchlist .rental-card>.cost-block,#discover-grid>.rental-card:not(.release-card)>.cost-block,#search-grid>.rental-card:not(.release-card)>.cost-block,#signal-shelf .rental-card>.cost-block{grid-column:2;border:0;padding:4px 0;margin:0}
+ .rental-card>.discovery-reason,.rental-card>.new-tag{grid-column:2}.rental-card>.wait-advice,.rental-card>.offer-note,.rental-card>.local-card-note,.rental-card>.release-file,.rental-card>.card-actions,.rental-card>.film-details-trigger{grid-column:1/-1}
+ .rental-card>.card-actions{justify-content:flex-start;flex-wrap:wrap;margin:8px 0 0;padding:0}.rental-card>.card-actions button,.rental-card>.card-actions .watch-link{flex:0 0 auto;padding:10px 16px;font-size:12px}.rental-card>.film-details-trigger{margin:4px 0 0}
+ .rental-card .cost-badge{font-size:1.5rem!important}.rental-card .cost-caption{font-size:12px;line-height:1.5;margin:4px 0 0}
+ .film-detail-dialog{width:calc(100vw - 24px);max-height:calc(100dvh - 32px);padding:0 18px 18px}.film-detail-head h2{font-size:20px}.film-detail-dialog .film-details-body .offer-row{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+}
+@media(prefers-reduced-motion:no-preference){.film-detail-dialog[open]{animation:film-details-enter .15s ease-out}@keyframes film-details-enter{from{opacity:.5;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}}
