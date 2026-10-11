@@ -645,6 +645,7 @@ function browseCandidates(grid){return [...grid.querySelectorAll('.rental-card')
 function updateBrowseDismissControl(){
   const grid=document.getElementById('search-grid').hidden?document.getElementById('discover-grid'):document.getElementById('search-grid');
   const count=browseCandidates(grid).length,button=document.getElementById('browse-dismiss');
+  document.getElementById('browse-dismiss-bar').hidden=!count||grid.hidden;
   if(button){button.disabled=!count;button.textContent=count?'PASS OVER THESE '+count+' FILMS':'PASS OVER THESE FILMS';}
   const note=document.getElementById('dismissed-count');if(note)note.textContent=skipSet.size+' films passed over. These stay off Browse until restored.';
   const restore=document.getElementById('restore-dismissed');if(restore)restore.hidden=!skipSet.size;
