@@ -1219,10 +1219,12 @@ html{scrollbar-gutter:stable}body.film-dialog-open{overflow:hidden}
 /* Native details must occupy the toolbar cell, not an anonymous narrow box. */
 .watchlist-toolbar{display:flex;flex-wrap:wrap;align-items:flex-start;gap:10px 16px}
 .watchlist-navigation{flex:1 1 200px}
+.watchlist-navigation{order:0}.watchlist-toolbar>.collection-link{order:1}#watchlist-filter-toggle{order:2}#watchlist-updates{order:3}#card-options{order:4}
 .watchlist-toolbar>.collection-link{flex:0 0 auto}
 #card-options,#watchlist-updates{display:block;margin:0;min-width:0;border:0;background:transparent}
 #card-options>summary,#watchlist-updates>summary{box-sizing:border-box;width:max-content;max-width:100%;margin:0}
 #card-options[open],#watchlist-updates{flex:1 0 100%;width:100%}
+#card-options:not([open]){display:none}#card-options>summary{display:none}#watchlist-filter-toggle[aria-expanded=true]{border-color:#d8a45b;color:#e1c47b;background:#202b25}
 #card-options[open]>summary{margin-left:auto}
 #card-options>.options-body,.watchlist-updates-body{box-sizing:border-box;width:100%;margin:8px 0 0}
 .card-controls{grid-template-columns:minmax(120px,auto) minmax(0,1fr)}
