@@ -1208,6 +1208,8 @@ html{scrollbar-gutter:stable}body.film-dialog-open{overflow:hidden}
 
 /* Every discovery shelf follows the same card geometry. */
 #signal-shelf>.card-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px;align-items:start}
+#signal-shelf>.card-row>.rental-card{width:100%}
+#signal-shelf .signal-head>button{display:none}
 .rental-card{box-sizing:border-box;min-width:0;max-width:100%}
 .rental-card>.card-title{overflow-wrap:normal;word-break:normal}
 .cost-block,.cost-badge,.cost-caption{min-width:0;max-width:100%;white-space:normal;overflow-wrap:break-word}
