@@ -1224,7 +1224,7 @@
   </main>
 
   <div id="albumPopupBackdrop"></div>
-  <div id="albumPopup">
+  <div id="albumPopup" role="dialog" aria-modal="true" aria-labelledby="popupAlbumTitle">
     <div id="albumPopupInner"></div>
   </div>
 
@@ -1294,7 +1294,7 @@
         sec.classList.toggle("view-active", active);
       });
       viewTabs.forEach(tab => {
-        tab.classList.toggle("active", tab.dataset.view === which);
+        tab.classList.toggle("active", tab.dataset.view === which);tab.setAttribute("aria-pressed",String(tab.dataset.view===which));
       });
     }
 
@@ -1632,7 +1632,7 @@
     // ─── Build matchup UI ─────────────────────────────────────
     function buildNextMatchup() {
       if (albums.length < 2) {
-        matchArea.innerHTML = '<div class="hint">You need at least two albums. Add more on the left.</div>';
+        lastRenderedPair=null;matchArea.innerHTML = '<div class="hint">You need at least two albums to compare.</div><button class="soft" id="arenaAddAlbums">Add or import albums</button>';document.getElementById('arenaAddAlbums').onclick=()=>{if(isMobile())setMobileTab('data');setPanelCollapsed(false);albumInput.focus();};
         return;
       }
 
@@ -1896,7 +1896,7 @@
       // Update for next render
       lastRanks = {};
       sorted.forEach((a, idx) => { lastRanks[a.id] = idx + 1; });
-      rankingList.innerHTML = "";
+      rankingList.innerHTML = "";document.getElementById("btnExportText").disabled=!albums.length;if(!albums.length){const empty=document.createElement("li");empty.className="hint";empty.textContent="No albums ranked yet. Open Data to add albums or import your saved Arena JSON.";rankingList.appendChild(empty);}
 
       sliced.forEach((a, idx) => {
         const li  = document.createElement("li");
@@ -2327,13 +2327,15 @@
     const popupInner    = document.getElementById("albumPopupInner");
     const popupBackdrop = document.getElementById("albumPopupBackdrop");
 
+    let popupReturnFocus=null,popupOverflow="";
     function closeAlbumPopup() {
+      const wasOpen=popupEl.offsetParent!==null;
       popupEl.style.display       = "none";
-      popupBackdrop.style.display = "none";
+      popupBackdrop.style.display = "none";if(wasOpen){document.body.style.overflow=popupOverflow;if(popupReturnFocus?.isConnected)popupReturnFocus.focus({preventScroll:true});}
     }
 
     popupBackdrop.addEventListener("click", closeAlbumPopup);
-    document.addEventListener("keydown", e => { if (e.key === "Escape") closeAlbumPopup(); });
+    document.addEventListener("keydown", e => {if(popupEl.offsetParent===null)return;if(e.key==="Escape"){e.preventDefault();closeAlbumPopup();}if(e.key==="Tab"){const controls=[...popupEl.querySelectorAll("button,a[href],input,select,textarea,[tabindex]")].filter(el=>!el.disabled&&el.offsetParent!==null),first=controls[0],last=controls.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();last?.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first?.focus();}}});
 
     function positionPopup(e) {
       if (isMobile()) return; // CSS handles mobile popup positioning
@@ -2503,10 +2505,10 @@
         : `<div class="popup-cover-empty" id="popupNoCover">+ set cover</div>`;
 
       popupInner.innerHTML = `
-        <button class="popup-close" id="popupCloseBtn">✕</button>
+        <button class="popup-close" id="popupCloseBtn" aria-label="Close album details">✕</button>
         ${coverHtml}
 
-        <div class="popup-title">${escapeHtml(album.title)}</div>
+        <div class="popup-title" id="popupAlbumTitle">${escapeHtml(album.title)}</div>
         <div class="popup-artist">${album.artist ? escapeHtml(album.artist) : "Unknown"} · Rank ${rankStr}</div>
 
         <div class="popup-stat-row">
@@ -2555,10 +2557,11 @@
         });
       }
 
+      if(popupEl.offsetParent===null){popupReturnFocus=document.activeElement;popupOverflow=document.body.style.overflow;}document.body.style.overflow="hidden";
       positionPopup(evt);
       popupEl.style.display       = "block";
       popupBackdrop.style.display = "block";
-      popupEl.scrollTop = 0;
+      popupEl.scrollTop = 0;document.getElementById("popupCloseBtn").focus({preventScroll:true});
     }
 
     // ─── Weirdness panels ─────────────────────────────────────
@@ -4013,7 +4016,7 @@ Upset rate: ${p.upsetRate.toFixed(1)}%</title></circle>`
       document.body.classList.remove("m-match", "m-rank", "m-data");
       document.body.classList.add(`m-${tab}`);
       document.querySelectorAll(".mobile-tab-btn").forEach(btn => {
-        btn.classList.toggle("active", btn.dataset.tab === tab);
+        btn.classList.toggle("active", btn.dataset.tab === tab);btn.setAttribute("aria-pressed",String(btn.dataset.tab===tab));
       });
       // If switching to rank, default to ranking view
       if (tab === "rank") showView("ranking");
@@ -4029,7 +4032,7 @@ Upset rate: ${p.upsetRate.toFixed(1)}%</title></circle>`
     // ─── Keyboard shortcuts ───────────────────────────────────
     document.addEventListener("keydown", e => {
       // Don't fire when typing in an input/textarea
-      if (["INPUT","TEXTAREA","SELECT"].includes(e.target.tagName)) return;
+      if (e.target.closest("input,textarea,select,button,a,[contenteditable=true]") || popupEl.offsetParent!==null || !matchArea.getClientRects().length) return;
       // Don't fire when modifier keys held (browser shortcuts)
       if (e.metaKey || e.ctrlKey || e.altKey) return;
 
@@ -4060,7 +4063,7 @@ Upset rate: ${p.upsetRate.toFixed(1)}%</title></circle>`
           "Sharp Pins – Radio DDR",
         ].join("\n");
         albumInput.value = seed;
-        matchArea.innerHTML = '<div class="hint">Import your existing Arena JSON, connect your previous cloud save, or add albums to begin. The text field contains examples, not a ranking.</div>';
+        buildNextMatchup();
       }
 
       if(isMobile()&&!albums.length)setMobileTab('data');

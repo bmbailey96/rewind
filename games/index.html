@@ -83,7 +83,7 @@ body::after {
 
   <div class="weather-strip" id="weatherStrip">reading the sky&hellip;</div>
 
-  <button class="go-btn" id="goBtn" disabled>Pick a game</button>
+  <p id="game-choice-hint" class="footer-note">Choose a time and a workload above.</p><button class="go-btn" id="goBtn" aria-describedby="game-choice-hint" disabled>Pick a game</button>
 
   <div class="card hidden" id="resultCard">
     <div class="mode-tag" id="modeTag"></div>
@@ -94,13 +94,13 @@ body::after {
     <div id="passedBlock"></div>
     <div class="card-actions">
       <button class="card-btn" id="rerollBtn">Pick another</button>
-      <button class="card-btn" id="switchModeBtn">Change pace</button>
+      <button class="card-btn" id="switchModeBtn">Try a different approach</button>
     </div>
   </div>
 
   <div class="footer-note" id="footerNote"></div>
 
-  <button class="card-btn" id="syncBtn" style="width:100%; margin-top:18px;">PS5 sync status</button>
+  <button class="card-btn" id="syncBtn" aria-controls="syncPanel" aria-expanded="false" style="width:100%; margin-top:18px;">PS5 sync status</button>
   <div id="syncPanel" class="sync-panel hidden"></div>
 </div>
 
@@ -143,7 +143,7 @@ initTaps('timeRow', 'time');
 initTaps('weekRow', 'week');
 
 function checkReady() {
-  document.getElementById('goBtn').disabled = !(state.time && state.week);
+  document.getElementById('goBtn').disabled = !(state.time && state.week);document.getElementById('game-choice-hint').hidden=!!(state.time&&state.week);
 }
 
 function daylightMinutesLeft(sunsetIso, tz) {
@@ -479,14 +479,15 @@ function renderSyncPanel() {
     const warn = document.createElement('div');
     warn.className = 'sync-err';
     warn.style.marginTop = '10px';
-    warn.textContent = 'Token rotated, update PSN_REFRESH_TOKEN in Netlify with the new value (check function logs).';
+    warn.textContent = 'Token rotated, update PSN_REFRESH_TOKEN in Netlify with the new value using the secure server settings.';
     panel.appendChild(warn);
-    console.log('NEW REFRESH TOKEN:', lastPsnData.rotatedRefreshToken);
+    // Credentials are never written to the browser console.
   }
 }
 
 document.getElementById('syncBtn').addEventListener('click', async () => {
-  const panel = document.getElementById('syncPanel');
+  const panel = document.getElementById('syncPanel'),syncButton=document.getElementById('syncBtn');
+  syncButton.disabled=true;syncButton.setAttribute('aria-expanded','true');panel.setAttribute('role','status');
   panel.classList.remove('hidden');
   panel.textContent = 'pulling the full library, this takes a bit…';
   try {
@@ -496,7 +497,9 @@ document.getElementById('syncBtn').addEventListener('click', async () => {
     lastPsnData = data;
     renderSyncPanel();
   } catch (e) {
-    panel.innerHTML = `<div class="sync-err">Sync failed: ${e.message}. Refresh token may need renewing.</div>`;
+    panel.textContent = e.message || "Live PlayStation sync could not connect. Your imported game shelf remains available.";
+  } finally {
+    syncButton.disabled=false;
   }
 });
 </script>

@@ -1252,3 +1252,6 @@ html{scrollbar-gutter:stable}body.film-dialog-open{overflow:hidden}
  .rental-card>.cost-block .cost-badge{font-size:20px!important;line-height:1.25}
  .rental-card>.card-actions{gap:8px}.rental-card>.card-actions .hide-action{margin-left:auto}
 }
+
+/* The collection drawer stays useful before film 250. */
+.drawer-genre-fold{margin:12px 0;border-bottom:1px solid #34443b}.drawer-genre-fold>summary{min-height:44px;box-sizing:border-box;padding:12px 0;color:#d8bd80;font-size:13px;cursor:pointer}.drawer-genres{padding:0 0 14px}.film-drawer>input[type=search]{box-sizing:border-box;width:100%;min-height:44px;padding:12px;background:#101916;border:1px solid #52645b;border-radius:4px;color:#e1e8df;font-size:14px}.film-drawer>.drawer-note[role=status]{font-size:12px;margin:10px 0;color:#aabbb0}.drawer-actions .signal-button{min-height:44px!important}
