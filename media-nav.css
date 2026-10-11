@@ -11,3 +11,8 @@ body .card-btn,body .mobile-tab-btn,body .view-tab{min-height:44px}body .sync-pa
 body .tap-btn.active{color:#f5c451}body .tap-btn{font-size:12px}body .go-btn{min-height:48px}
 
 body .match-buttons button,body .arena-data-group button{min-height:44px}body button.view-tab{background:transparent;border:0;border-bottom:2px solid transparent;border-radius:0}body button.view-tab.active{border-bottom-color:var(--accent,#e8c582);color:var(--accent,#e8c582)}
+
+/* Pace choices are controls, not destination tabs. Keep their game-panel shape. */
+body .tap-btn{border:1px solid #5b4b79;border-radius:3px;background:#1d1638;color:#eae6ff;font-size:13px;padding:12px 10px;min-height:48px}
+body .tap-btn.active{border-color:#f5c451;background:#f5c451;color:#120e24}
+body .go-btn:disabled{opacity:1;background:#35253b;color:#b8a9bf;cursor:not-allowed}
