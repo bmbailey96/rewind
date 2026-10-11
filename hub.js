@@ -257,7 +257,7 @@ const Hub = (()=>{
   $('calendar-recommendations').checked=preferences.calendarRecommendations===true;$('calendar-theaters').checked=preferences.calendarTheaters!==false;
   for(const [id,key] of [['calendar-recommendations','calendarRecommendations'],['calendar-theaters','calendarTheaters']])$(id).onchange=()=>{remember(key,$(id).checked);$('event-detail').hidden=true;openCalendarEvent=null;renderCalendar();if(id==='calendar-recommendations')scanSuggestions();};
   calendarView=preferences.calendarView==='list'?'list':'calendar';
-  const describeCalendar=()=>{$('calendar-options-label').textContent=scope.value==='all'?'Filter & view options':'Showing '+scope.selectedOptions[0].text.toLowerCase()+' · view options';};
+  const describeCalendar=()=>{$('calendar-options-label').textContent=['personal','local','all'].includes(scope.value)?'More filters':'More filters · '+scope.selectedOptions[0].text.toLowerCase();};
   picker.addEventListener('change',()=>{remember('pickerCost',picker.value);++pickRequest;currentPick=null;$('picker-results').replaceChildren();$('picker-status').textContent='Viewing source changed. Make a fresh pick.';$('pick-film').disabled=false;$('pick-again').disabled=false;updatePickActions();});
   scope.addEventListener('change',()=>{remember('calendarScope',scope.value);describeCalendar();document.querySelectorAll('[data-calendar-scope]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.calendarScope===scope.value)));if(scope.value==='recommended')scanSuggestions();});
   for(const [id,value] of [['calendar-view','calendar'],['calendar-list','list']])$(id).addEventListener('click',()=>remember('calendarView',value));
