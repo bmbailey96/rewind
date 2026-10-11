@@ -26,3 +26,12 @@
   from = "/games-psn"
   to = "/.netlify/functions/game-psn"
   status = 200
+
+[functions.game-psn-hourly]
+  schedule = "17 * * * *"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+[functions]
+  node_bundler = "esbuild"
