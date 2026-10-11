@@ -35,6 +35,17 @@
     return estimate?{...estimate,likely:addDays(anchor,quantile(used,.5)),provider:premium.provider,format:premium.format,threshold,confidence:matched&&used.length>=10?'Moderate':'Low',basis:matched?'shared production company, store and format':'same store and format',anchor,basisLabel:'Since the first premium-price check',companyMatched:matched}:null;
   }
   function matchingAnnouncements(feed,id){return (feed?.announcements||[]).filter(r=>r.tmdbId===id&&r.region==='US'&&['subscription','digital','theatrical','price'].includes(r.kind)&&r.sourceUrl&&/^https:\/\//.test(r.sourceUrl)&&(!r.date||date(r.date))&&(!r.expires||r.expires>=feed.today));}
+  function rentalForecast(movie,status,comparables,today,threshold=7.99){
+    const observed=priceEstimate(movie,status.offers,comparables,today,threshold);if(observed)return {...observed,kind:'observed'};
+    const premium=(status.offers||[]).filter(o=>o.kind==='rent'&&Number.isFinite(o.price)&&o.price>=14.99&&o.price>threshold).sort((a,b)=>a.price-b.price)[0];if(!premium)return null;
+    const announced=(status.announcements||[]).filter(a=>a.kind==='digital'&&date(a.date)&&a.date<=today).sort((a,b)=>a.date.localeCompare(b.date))[0];
+    const digital=announced?.date||stages(status.details||movie.detailsSnapshot,today).digital;
+    const first=(movie.priceHistory||[]).filter(r=>r.kind==='rent'&&Number.isFinite(r.at)&&r.at<=Date.parse(today+'T23:59:59Z')&&r.price>=14.99).sort((a,b)=>a.at-b.at)[0];
+    const listed=digital&&digital<=today,anchor=listed?digital:first?new Date(first.at).toISOString().slice(0,10):null;if(!anchor)return null;
+    // A published industry prior, not synthetic observations or a studio promise.
+    const start=addDays(anchor,14),end=addDays(anchor,28);
+    return {kind:'provisional',start,end,likely:addDays(anchor,21),overdue:end<today,anchor,anchorLabel:listed?'listed US digital release':'first premium rental check',provider:premium.provider,format:premium.format,threshold,confidence:'Low',samples:0,sourceUrl:'https://franchisere.substack.com/p/the-wednesday-charts-theatrical-windows-disney-universal-the-netflix-warner-bros-deal',sourceLabel:'FranchiseRe · Jan 28, 2026',basis:'Typical two-to-four-week premium rental period',targetSupported:threshold>=5.99};
+  }
   function group(status){if(status?.stale)return 'waiting';if((status?.offers||[]).some(o=>o.kind==='physical'||o.kind==='free'||o.kind==='subscription'&&o.included))return 'now';if((status?.offers||[]).some(o=>['rent','buy'].includes(o.kind)))return 'paid';return 'waiting';}
   function storeKey(name){const n=String(name||'').toLowerCase().replace(/[^a-z0-9]/g,'');if(['appletv','appletvstore','itunes'].includes(n))return 'apple';if(['amazon','amazonvideo','primevideo','amazonprimevideo'].includes(n))return 'amazon';return n;}
   function storeLabel(name){const key=storeKey(name);return key==='apple'?'Apple TV':key==='amazon'?'Prime Video':name;}
@@ -59,5 +70,5 @@
   }
   function compactOffers(offers){const groups=new Map();for(const o of offers||[]){const key=[o.kind,storeKey(o.provider),o.channel,typeof o.price==='number'?o.price:'?',o.included].join(':');if(!groups.has(key))groups.set(key,{...o,provider:['rent','buy'].includes(o.kind)?storeLabel(o.provider):o.provider,formats:[]});const row=groups.get(key);if(o.format&&!row.formats.includes(o.format))row.formats.push(o.format);if(qualityRank(o.format)<qualityRank(row.format)){row.format=o.format;row.link=o.link||row.link;}}return [...groups.values()].map(o=>({...o,format:o.formats.sort((a,b)=>qualityRank(a)-qualityRank(b)).join(' / ')||null}));}
   function preference(raw){return {mode:['any','mine','rental'].includes(raw?.mode)?raw.mode:'any',maxPrice:typeof raw?.maxPrice==='number'&&Number.isFinite(raw.maxPrice)&&raw.maxPrice>=0&&raw.maxPrice<=100?raw.maxPrice:7.99};}
-  return {date,days,addDays,datesFor,stages,digitalEstimate,quoteIdentity,recordQuotes,latestPriceChange,priceEstimate,matchingAnnouncements,group,preference,storeKey,storeLabel,qualityRank,cost,compactOffers};
+  return {date,days,addDays,datesFor,stages,digitalEstimate,quoteIdentity,recordQuotes,latestPriceChange,priceEstimate,rentalForecast,matchingAnnouncements,group,preference,storeKey,storeLabel,qualityRank,cost,compactOffers};
 });

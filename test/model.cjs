@@ -56,3 +56,12 @@ assert.equal(companyForecast.companyMatched,true);assert.equal(companyForecast.s
 assert.equal(r.priceEstimate(company,[paid],slower,'2026-09-28',5.99).companyMatched,false,'No invented studio cohort without matching data');
 
 assert.deepEqual(require('../storage-model').compact({detailsSnapshot:{production_companies:[{id:8,name:'Test Company',logo_path:'huge cached art'}]}}).detailsSnapshot.production_companies,[{id:8,name:'Test Company'}],'Forecast company identity survives compact saving without artwork payloads');
+
+const launched={id:101,detailsSnapshot:{release_dates:{results:[{iso_3166_1:'US',release_dates:[{type:4,release_date:'2026-09-29'}]}]}}};
+const provisional=r.rentalForecast(launched,{offers:[paid]},[],'2026-10-11',7.99);
+assert.equal(provisional.kind,'provisional');assert.equal(provisional.likely,'2026-10-20');assert.equal(provisional.start,'2026-10-13');assert.equal(provisional.end,'2026-10-27');assert.equal(provisional.samples,0);
+assert.equal(r.rentalForecast(launched,{offers:[paid]},[],'2026-11-01',7.99).overdue,true,'Missed provisional windows never slide forward');
+assert.equal(r.rentalForecast(launched,{offers:[paid]},[],'2026-10-11',2.99).targetSupported,false,'A standard-rental forecast cannot promise a custom sale price');
+assert.equal(r.rentalForecast({}, {offers:[paid]},[],'2026-10-11',7.99),null,'No invented launch anchor');
+assert.equal(r.rentalForecast(launched,{offers:[{...paid,kind:'buy'}]},[],'2026-10-11',7.99),null,'Purchase prices cannot trigger rental forecasts');
+assert.equal(r.rentalForecast(current,{offers:[paid]},drops,'2026-09-28',5.99).kind,'observed','Observed history outranks the broad prior');
