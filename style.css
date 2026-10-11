@@ -1150,3 +1150,14 @@ button.text-action:hover,button.secondary:hover{background:#283735;color:#fff;te
 }
 .calendar-release-facts{color:#c4d3c7;font-size:13px;line-height:1.55}
 .calendar-release-facts p{margin:5px 0}
+
+/* Advanced sources stay available without duplicating the calendar's primary controls. */
+#calendar-options{margin:4px 0 10px}
+#calendar-options>summary{font-size:12px;min-height:42px;padding:10px 2px}
+#calendar-options .calendar-controls>.segmented,
+#calendar-options .calendar-controls>label:has(#calendar-search),
+#calendar-options #cinema-refresh{display:none}
+#calendar-options .options-body{padding:10px 0 14px}
+#calendar-options .calendar-controls{display:flex;align-items:flex-start;margin:0}
+#calendar-options .calendar-controls>label{flex:1;max-width:420px}
+#calendar-options .calendar-visibility{margin-top:8px}
