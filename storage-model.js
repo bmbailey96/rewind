@@ -23,5 +23,7 @@
  function read(storage,key,fallback=null){const text=storage.getItem(key);return text?JSON.parse(decode(text)):fallback;}
  function migrate(storage,compress=false){for(const key of keys){const text=storage.getItem(key);if(!text)continue;try{const small=JSON.stringify(compact(JSON.parse(decode(text)))),value=compress||text.startsWith(prefix)||small.length>=100000?encode(small):small;if(value.length<text.length)storage.setItem(key,value);}catch{ /* Existing saved data remains available if migration cannot write. */ }}}
  function save(storage,key,value){const small=JSON.stringify(compact(value));try{const previous=storage.getItem(key)||'';storage.setItem(key,previous.startsWith(prefix)||small.length>=100000?encode(small):small);return true;}catch(error){if(error.name!=='QuotaExceededError'&&error.name!=='NS_ERROR_DOM_QUOTA_REACHED')return false;migrate(storage,true);try{storage.setItem(key,encode(small));return true;}catch{return false;}}}
- return {compact,migrate,save,read,encode,decode};
+ function syncContent(value){const text=JSON.stringify(value);return text.length<500000?text:JSON.stringify({format:'rewind-packed-v1',payload:encode(text)});}
+ function parseSync(text){const value=JSON.parse(text);if(value?.format!=='rewind-packed-v1')return value;if(typeof value.payload!=='string')throw Error('Invalid sync payload');return JSON.parse(decode(value.payload));}
+ return {compact,migrate,save,read,encode,decode,syncContent,parseSync};
 });

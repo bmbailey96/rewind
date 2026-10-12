@@ -88,6 +88,8 @@ document.getElementById('import-watched').addEventListener('change', async (e) =
   renderDiscover();
 });
 
+document.getElementById('letterboxd-export-additions').onclick=()=>{const rows=WatchlistModel.rewindAdditions(watchlist,hubState.watchlistImportedKeys);const note=document.getElementById('letterboxd-export-note');if(!rows.length){note.textContent='No Rewind additions to export. Your imported Letterboxd films are already accounted for.';return;}const url=URL.createObjectURL(new Blob([WatchlistModel.exportCSV(watchlist,hubState.watchlistImportedKeys)],{type:'text/csv;charset=utf-8'})),a=document.createElement('a');a.href=url;a.download='Rewind-additions-for-Letterboxd.csv';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);note.textContent=rows.length+' additions exported. Import this CSV into your Letterboxd watchlist, then bring the updated watchlist.csv back here. Exporting does not change either list.';};
+
 document.getElementById('import-watchlist').addEventListener('change', async (e) => {
   const file = e.target.files[0];
   if (!file) return;
@@ -101,6 +103,7 @@ document.getElementById('import-watchlist').addEventListener('change', async (e)
     const year = rows[i].Year || rows[i].year;
     statusEl.textContent = `Matching ${i + 1} / ${rows.length}... (${matched} added so far)`;
     try {
+      const existing=watchlist.find(m=>HubModel.norm(m.title)===HubModel.norm(name)&&(!year||(m.year||m.release_date?.slice(0,4))===String(year)));if(existing){existing.letterboxdWatchlist=true;existing.source='Letterboxd watchlist';continue;}
       const results = await searchMovies(name);
       const exact=results.filter(m=>HubModel.norm(m.title)===HubModel.norm(name)&&(!year||(m.release_date||'').slice(0,4)===String(year)));
       const best=exact.length===1?exact[0]:null;
@@ -112,7 +115,7 @@ document.getElementById('import-watchlist').addEventListener('change', async (e)
           release_date: best.release_date || '',
           genre_ids: best.genre_ids || [],
           addedAt: WatchlistModel.addedAt(rows[i]),
-          importedAt: Date.now(),source: 'Letterboxd watchlist',
+          importedAt: Date.now(),source: 'Letterboxd watchlist',letterboxdWatchlist:true,
           lastStatusCode: null,
           lastStatusLabel: null,
           statusChangedAt: null,
@@ -121,16 +124,17 @@ document.getElementById('import-watchlist').addEventListener('change', async (e)
         });
         matched++;
       } else {
-        skipped++;
+        skipped++;const pending={title:name,year:String(year||''),addedDate:rows[i].Date||rows[i]['Added Date']||'',letterboxdURL:HubModel.safeLink(rows[i]['Letterboxd URI']||rows[i].URI)};if(!hubState.watchlistUnmatched.some(m=>WatchlistModel.sourceKey(m)===WatchlistModel.sourceKey(pending)))hubState.watchlistUnmatched.push(pending);
       }
     } catch (err) {
-      skipped++;
+      skipped++;const pending={title:name,year:String(year||''),addedDate:rows[i].Date||rows[i]['Added Date']||''};if(!hubState.watchlistUnmatched.some(m=>WatchlistModel.sourceKey(m)===WatchlistModel.sourceKey(pending)))hubState.watchlistUnmatched.push(pending);
     }
     // gentle pacing so we don't hammer TMDB
     await new Promise(res => setTimeout(res, 120));
   }
   saveWatchlist();
-  statusEl.textContent = `Done. ${matched} added to your watchlist, ${skipped} skipped (already tracked, ambiguous, or unmatched). Undated additions are under All.`;
+  persistHubState();
+  statusEl.textContent = `Done. ${matched} added to your watchlist, ${skipped} need review or were unmatched. Undated additions are under All.`;
   scheduleSync();
   renderWatchlist();
 });
@@ -224,11 +228,11 @@ function applySyncData(data) {
 async function findOrCreateGist() {
   const existing=localStorage.getItem(GH_GIST_KEY);if(existing){const r=await ghFetch('/gists/'+existing);if(r.ok)return existing;if(r.status!==404)throw Error('Could not access your saved sync connection. Check the token.');}
   for(let page=1;page<=10;page++){const list=await ghJSON('/gists?per_page=100&page='+page),found=list.find(g=>g.description===GIST_DESC&&g.files?.[GIST_FILENAME]);if(found){localStorage.setItem(GH_GIST_KEY,found.id);return found.id;}if(list.length<100)break;}
-  const data=collectSyncData(),created=await ghJSON('/gists',{method:'POST',body:JSON.stringify({description:GIST_DESC,public:false,files:{[GIST_FILENAME]:{content:JSON.stringify(data)}}})});if(!created.id)throw Error('GitHub returned no sync ID.');localStorage.setItem(GH_GIST_KEY,created.id);rememberSync(data);return created.id;
+  const data=collectSyncData(),created=await ghJSON('/gists',{method:'POST',body:JSON.stringify({description:GIST_DESC,public:false,files:{[GIST_FILENAME]:{content:StorageModel.syncContent(data)}}})});if(!created.id)throw Error('GitHub returned no sync ID.');localStorage.setItem(GH_GIST_KEY,created.id);rememberSync(data);return created.id;
 }
-async function readGist(id){const gist=await ghJSON('/gists/'+id),file=gist.files?.[GIST_FILENAME];let content=file?.content;if(file?.truncated){const rawURL=new URL(file.raw_url);if(rawURL.protocol!=='https:'||rawURL.hostname!=='gist.githubusercontent.com')throw Error('Unexpected sync file address.');let response;try{response=await fetch(rawURL.href,{cache:'no-store',credentials:'omit',referrerPolicy:'no-referrer',signal:AbortSignal.timeout(20000)});}catch{throw Error('Could not download your full saved profile from GitHub. Your local films were kept. Check your connection and try Sync now.');}if(!response.ok)throw Error('Could not read the full saved film profile.');content=await response.text();}let data;try{data=JSON.parse(content);}catch{throw Error('Saved sync data could not be read. Local films were kept.');}if(!data||!Array.isArray(data.watchlist)||!Array.isArray(data.seen)||!Array.isArray(data.skipped))throw Error('Saved sync data is incomplete. Local films were kept.');return data;}
+async function readGist(id){const gist=await ghJSON('/gists/'+id),file=gist.files?.[GIST_FILENAME];let content=file?.content;if(file?.truncated){const rawURL=new URL(file.raw_url);if(rawURL.protocol!=='https:'||rawURL.hostname!=='gist.githubusercontent.com')throw Error('Unexpected sync file address.');let response;try{response=await fetch(rawURL.href,{cache:'no-store',credentials:'omit',referrerPolicy:'no-referrer',signal:AbortSignal.timeout(20000)});}catch{throw Error('Could not download your full saved profile from GitHub. Your local films were kept. Check your connection and try Sync now.');}if(!response.ok)throw Error('Could not read the full saved film profile.');content=await response.text();}let data;try{data=StorageModel.parseSync(content);}catch{throw Error('Saved sync data could not be read. Local films were kept.');}if(!data||!Array.isArray(data.watchlist)||!Array.isArray(data.seen)||!Array.isArray(data.skipped))throw Error('Saved sync data is incomplete. Local films were kept.');return data;}
 async function pullFromGist(){const id=await findOrCreateGist(),remote=await readGist(id),base=syncBase(),local=collectSyncData(),merged=SyncModel.merge(base||{},local,remote);applySyncData(merged);rememberSync(remote);window.dispatchEvent(new Event('rewind:state'));return merged;}
-async function pushToGist(){if(syncFlight)return syncFlight;syncFlight=(async()=>{const id=await findOrCreateGist(),remote=await readGist(id),local=collectSyncData(),merged=SyncModel.merge(syncBase()||{},local,remote);merged.updatedAt=Date.now();await ghJSON('/gists/'+id,{method:'PATCH',body:JSON.stringify({files:{[GIST_FILENAME]:{content:JSON.stringify(merged)}}})});const current=collectSyncData(),after=SyncModel.merge(local,current,merged);applySyncData(after);rememberSync(merged);const changed=JSON.stringify({...current,updatedAt:0})!==JSON.stringify({...local,updatedAt:0});if(changed){localStorage.setItem(SYNC_DIRTY_KEY,'1');scheduleSync();}else localStorage.removeItem(SYNC_DIRTY_KEY);window.dispatchEvent(new Event('rewind:state'));syncNotice('Synced '+new Date().toLocaleTimeString()+'. '+(failedStorageKeys.size?'GitHub saved your changes; this device still has a local storage problem.':'Ready on your connected devices.'));})().catch(e=>{syncNotice(e.message,true);throw e;}).finally(()=>{syncFlight=null;});return syncFlight;}
+async function pushToGist(){if(syncFlight)return syncFlight;syncFlight=(async()=>{const id=await findOrCreateGist(),remote=await readGist(id),local=collectSyncData(),merged=SyncModel.merge(syncBase()||{},local,remote);merged.updatedAt=Date.now();await ghJSON('/gists/'+id,{method:'PATCH',body:JSON.stringify({files:{[GIST_FILENAME]:{content:StorageModel.syncContent(merged)}}})});const current=collectSyncData(),after=SyncModel.merge(local,current,merged);applySyncData(after);rememberSync(merged);const changed=JSON.stringify({...current,updatedAt:0})!==JSON.stringify({...local,updatedAt:0});if(changed){localStorage.setItem(SYNC_DIRTY_KEY,'1');scheduleSync();}else localStorage.removeItem(SYNC_DIRTY_KEY);window.dispatchEvent(new Event('rewind:state'));syncNotice('Synced '+new Date().toLocaleTimeString()+'. '+(failedStorageKeys.size?'GitHub saved your changes; this device still has a local storage problem.':'Ready on your connected devices.'));})().catch(e=>{syncNotice(e.message,true);throw e;}).finally(()=>{syncFlight=null;});return syncFlight;}
 function scheduleSync(){scheduleEmailSync();localStorage.setItem(SYNC_DIRTY_KEY,'1');if(!localStorage.getItem(GH_TOKEN_KEY))return;clearTimeout(syncTimer);syncNotice('Saving changes across devices…');syncTimer=setTimeout(()=>pushToGist().catch(()=>{}),1500);}
 let lastSyncPull=0;
 async function refreshDeviceSync(){if(!localStorage.getItem(GH_TOKEN_KEY)||document.hidden||syncFlight||Date.now()-lastSyncPull<30000)return;lastSyncPull=Date.now();try{if(localStorage.getItem(SYNC_DIRTY_KEY))await pushToGist();else{await pullFromGist();syncNotice('Synced '+new Date().toLocaleTimeString()+'. Connected devices share this film memory.');}renderWatchlist(false,true);}catch(e){syncNotice(e.message,true);}}
@@ -320,9 +324,9 @@ function loadWatchlist() {
   }
 }
 
-function saveWatchlist() {
+function saveWatchlist(notify=true) {
   persistData(STORAGE_KEY,watchlist);
-  window.dispatchEvent(new Event('rewind:state'));
+  if(notify)window.dispatchEvent(new Event('rewind:state'));
 }
 
 // ---------- tmdb calls ----------
@@ -570,8 +574,8 @@ function renderCard(movie, opts = {}) {
   }else{
     const next=!status?.stale?costInfo?.offer:null;if(next?.link){const watch=document.createElement('a');watch.className='watch-link';watch.textContent=next.kind==='rent'?'RENT':next.kind==='buy'?'BUY':'WATCH';watch.href=next.link;watch.target='_blank';watch.rel='noopener noreferrer';actions.appendChild(watch);}
     if(context==='physical'){const watched=document.createElement('button');watched.className='secondary';watched.textContent='MARK WATCHED';watched.onclick=()=>{document.getElementById('film-detail-dialog')?.close();markMovieWatched(movie);};secondaryActions.appendChild(watched);}
-    const inList=watchlist.some(w=>w.id===movie.id);const track=document.createElement('button');track.textContent=inList?('TRACKED'):'TRACK';track.className=next?.link?'track-action secondary-track':'track-action';track.disabled=inList;
-    track.onclick=()=>{addToWatchlist(movie);if(context==='discover'&&!movie.releaseFile)card.remove();else{track.textContent='TRACKED';track.disabled=true;card.classList.add('film-tracked');}};actions.appendChild(track);
+    const inList=watchlist.some(w=>w.id===movie.id);const track=document.createElement('button');track.textContent=inList?('SAVED'):'SAVE';track.className=next?.link?'track-action secondary-track':'track-action';track.disabled=inList;
+    track.onclick=()=>{addToWatchlist(movie);if(context==='discover'&&!movie.releaseFile)card.remove();else{track.textContent='SAVED';track.disabled=true;card.classList.add('film-tracked');}};actions.appendChild(track);
     if((context==='discover'||context==='search')&&!inList){const skip=document.createElement('button');skip.className='text-action hide-action';skip.textContent='HIDE';skip.onclick=()=>{skipMovie(movie.id);card.remove();updateBrowseDismissControl();};actions.appendChild(skip);}
   }
   if(!current)body.appendChild(secondaryActions);
@@ -612,7 +616,7 @@ function addToWatchlist(movie) {
     availabilitySnapshot:movie.availabilitySnapshot || null,watchmodeCache:movie.watchmodeCache || null,storePriceCache:movie.storePriceCache||null,
     release_date: movie.release_date || movie.primary_release_date || '',
     genre_ids: movie.genre_ids || [],letterboxdURL:movie.letterboxdURL||null,releaseFile:movie.releaseFile||null,tags:movie.tags||[],tones:movie.tones||null,tagline:movie.tagline||'',
-    addedAt: Date.now(),
+    addedAt: Date.now(),source:'Rewind watchlist',
     lastStatusCode: null,
     lastStatusLabel: null,
     statusChangedAt: null,
@@ -714,10 +718,10 @@ async function renderWatchlist(force = false, reuse = false) {
   const request = ++watchlistRequest;
   const empty=document.getElementById('watchlist-empty');
   const loading=document.getElementById('watchlist-load-status');
-  document.getElementById('watchlist-count').textContent=watchlist.length+' tracked'+((hubState.watchlistUnmatched||[]).length?' · '+hubState.watchlistUnmatched.length+' awaiting match':'');
+  document.getElementById('watchlist-count').textContent=watchlist.length+' on your watchlist'+((hubState.watchlistUnmatched||[]).length?' · '+hubState.watchlistUnmatched.length+' awaiting match':'');
   empty.hidden=watchlist.length>0;
   const batch=scopedWatchlist().sort((a,b)=>Number(!!b.pinned)-Number(!!a.pinned)||(b.addedAt||0)-(a.addedAt||0));
-  const progress=new Map(batch.map(entry=>[entry.id,{entry,status:entry.availabilitySnapshot?{...entry.availabilitySnapshot,stale:reuse?entry.availabilitySnapshot.stale:true}:{code:'nodata',kind:'unknown',label:reuse?'Availability not checked':'Checking availability',offers:[],pending:!reuse},changed:false}]));let checked=0;
+  const progress=new Map(batch.map(entry=>[entry.id,{entry,status:entry.availabilitySnapshot?{...entry.availabilitySnapshot,stale:reuse||!force&&WatchlistModel.freshSnapshot(entry)?entry.availabilitySnapshot.stale:true}:{code:'nodata',kind:'unknown',label:reuse?'Availability not checked':'Checking availability',offers:[],pending:!reuse},changed:false}]));let checked=0,networkChecks=0,lastPaintAt=Date.now();
   document.querySelectorAll('[data-watchlist-scope]').forEach(btn=>btn.setAttribute('aria-pressed',String(btn.dataset.watchlistScope===watchlistScope)));
   document.getElementById('watchlist-scope-note').textContent=watchlistScope==='recent'?'Added in the last six months.':'Your full watchlist.';
   document.getElementById('watchlist-more').hidden=batch.length<=watchlistLimit;
@@ -730,11 +734,11 @@ async function renderWatchlist(force = false, reuse = false) {
     let status;
     const lookupMovie={...entry};const beforeAvailability=entry.availabilityBaseline||(!entry.availabilitySnapshot?.stale?entry.availabilitySnapshot:null);
     try {
-      if(reuse&&entry.availabilitySnapshot){
+      if((reuse||!force&&WatchlistModel.freshSnapshot(entry))&&entry.availabilitySnapshot){
         const cached=entry.availabilitySnapshot;
         const owned=hubState.taste.find(m=>m.id===entry.id&&m.owned);const remote=(cached.offers||[]).filter(o=>o.kind!=='physical').map(o=>o.kind==='subscription'?{...o,included:RewindModel.included(o.provider,myServices)}:o);
         const offers=[...(owned?HubModel.shelfStatus(owned).offers:[]),...remote];status={...cached,...(owned?HubModel.shelfStatus(owned):RewindModel.summary(offers)||{code:'nodata',kind:'unknown',label:'No current offer'}),physical:!!owned,offers,stale:owned?false:cached.physical?!!cached.remoteStale:cached.stale};lookupMovie.availabilitySnapshot=status;
-      }else if(reuse){status=progress.get(entry.id).status;lookupMovie.availabilitySnapshot=entry.availabilitySnapshot;}else status=await deriveStatus(lookupMovie,force);
+      }else if(reuse){status=progress.get(entry.id).status;lookupMovie.availabilitySnapshot=entry.availabilitySnapshot;}else{networkChecks++;status=await deriveStatus(lookupMovie,force);}
     }
     catch {status={code:'nodata',kind:'unknown',label:'Availability could not be checked',offers:[],stale:true};}
     if(request !== watchlistRequest) return {entry,status,changed:false,prevLabel:entry.lastStatusLabel};
@@ -753,14 +757,14 @@ async function renderWatchlist(force = false, reuse = false) {
       entry.lastStatusCode=status.code;entry.lastStatusLabel=status.label;entry.lastAvailabilityKey=fingerprint;
     }
     const result={entry,status,changed,prevLabel};progress.set(entry.id,result);checked++;
-    if(!reuse){loading.textContent='Checking prices · '+checked+' of '+batch.length;if(checked%8===0){watchlistResults=[...progress.values()];repaintWatchlist();saveWatchlist();}}
+    if(!reuse){loading.textContent='Checking prices · '+checked+' of '+batch.length;if(checked%8===0&&Date.now()-lastPaintAt>=500){watchlistResults=[...progress.values()];repaintWatchlist();lastPaintAt=Date.now();}if(checked%20===0)saveWatchlist(false);}
     return result;
   })).filter(r=>r&&watchlist.some(m=>m.id===r.entry.id));
   if (request !== watchlistRequest) return;
   document.getElementById('card-check-status').textContent=reuse?'Showing saved availability. Check availability to refresh.':'US providers checked '+new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'})+(results.some(r=>r.status.stale)?' · '+results.filter(r=>r.status.stale).length+' previous checks':'');
   saveWatchlist();
 
-  watchlistResults=results;repaintWatchlist();
+  watchlistResults=results;repaintWatchlist();if(!reuse&&networkChecks)scheduleSync();
   document.getElementById('watchlist-load-status').textContent='';
 }
 function paintWatchlist(results){
@@ -786,7 +790,7 @@ document.querySelectorAll('[data-cost-filter]').forEach(btn=>btn.onclick=()=>{co
 document.getElementById('sort-select').addEventListener('change',e=>{watchlistSort=e.target.value;watchlistLimit=60;repaintWatchlist();});
 
 function renderTrackingNote(movie,status){
- const section=document.createElement('section');section.className='film-tracking-note';const heading=document.createElement('h4');heading.textContent=watchlist.some(m=>m.id===movie.id)?'What we’re watching for':'Track the next development';section.appendChild(heading);
+ const section=document.createElement('section');section.className='film-tracking-note';const heading=document.createElement('h4');heading.textContent=watchlist.some(m=>m.id===movie.id)?'What we’re watching for':'Next development';section.appendChild(heading);
  const recent=hubState.changeReceipts.filter(r=>r.movieId===movie.id).sort((a,b)=>b.at-a.at)[0];if(recent){const p=document.createElement('p');p.textContent='Latest observed change: '+recent.text+' · '+formatFilmDate(new Date(recent.at).toISOString().slice(0,10));section.appendChild(p);}
  const cost=ReleaseModel.cost(status?.offers,rentalBudget,status?.stale),dates=(status?.announcements||[]).filter(r=>r.date>=discoveryWindow().today).sort((a,b)=>a.date.localeCompare(b.date));let text;
  if(status?.physical)text='Your copy is ready. Streaming availability can still change.';

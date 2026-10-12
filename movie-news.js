@@ -24,8 +24,8 @@ const MovieNews=(()=>{
   try{
    if(item.project){const movie=await catalogFilm(item.project,item.fit.maker);if(movie){addToWatchlist(movie);record.movieId=movie.id;}}
    hubState.newsFollows=[...follows().filter(f=>f.articleId!==item.id&&(!item.project||MovieNewsModel.norm(f.title)!==MovieNewsModel.norm(item.project))),record];save();
-   showToast(record.movieId?record.title+' tracked for news and viewing options':record.title+' followed. Catalog and release date are still unverified.');render();
-  }catch{b.disabled=false;b.textContent=item.project?'TRACK FILM':'FOLLOW PROJECT';showToast('Could not save this project. Try again.');}
+   showToast(record.movieId?record.title+' saved for news and viewing options':record.title+' followed. Catalog and release date are still unverified.');render();
+  }catch{b.disabled=false;b.textContent=item.project?'SAVE FILM':'FOLLOW PROJECT';showToast('Could not save this project. Try again.');}
  }
  async function resolveFollowed(){let changed=false;for(const f of follows().filter(f=>f.filmTitle&&!f.movieId&&Date.now()-(f.matchCheckedAt||0)>86400000).slice(0,4)){f.matchCheckedAt=Date.now();const movie=await catalogFilm(f.filmTitle,f.filmMaker);if(movie){addToWatchlist(movie);f.movieId=movie.id;}changed=true;}if(changed)save();}
  function renderFollows(){
@@ -41,7 +41,7 @@ const MovieNews=(()=>{
    card.append(meta,el('p',MovieNewsModel.label(item.status),'news-certainty '+item.status),el('h3',item.headline));
    if(!['tracked','followed'].includes(item.fit.scope))card.append(el('p','BEYOND YOUR WATCHLIST','news-discovery-label'));const summary=MovieNewsModel.summary(item);if(summary)card.append(el('p',summary,'news-summary'));card.append(el('p',item.fit.reason,'news-connection'));
    const actions=el('div',null,'news-actions');actions.append(link('Read report ↗',item.url,'news-read'));
-   const known=followFor(item)||isTracked(item),b=button(known?'TRACKING':item.project?'TRACK FILM':'FOLLOW PROJECT',()=>track(item,b));b.disabled=!!known;actions.append(b);card.append(actions);
+   const known=followFor(item)||isTracked(item),b=button(known?(known.movieId||isTracked(item)?'SAVED':'FOLLOWING'):item.project?'SAVE FILM':'FOLLOW PROJECT',()=>track(item,b));b.disabled=!!known;actions.append(b);card.append(actions);
    if(item.aggregated)card.append(el('small','Indexed report. The link opens the publisher through Google News.','news-index-note'));
    grid.append(card);
   }

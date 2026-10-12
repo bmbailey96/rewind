@@ -44,7 +44,7 @@ const Hub = (()=>{
  }
  function directCalendarActions(r,container){
   const actions=node('div',null,'calendar-film-actions'),identityFilm=cinemaArt.get(r.id)||r.art||r.film,tracked=identityFilm&&watchlist.some(m=>m.id===identityFilm.id)||hubState.followed.includes(r.id);
-  const track=button(tracked?'TRACKED':'TRACK',async()=>{track.disabled=true;try{let film=identityFilm;if(!film){await resolveCinemaArt(r);film=cinemaArt.get(r.id);}if(film?.id)addToWatchlist(film);else{hubState.followed=[...new Set([...hubState.followed,r.id])];save();showToast('Tracking '+r.title+' screenings');}renderCalendar();}catch{track.disabled=false;showToast('Could not track this film. Try again.');}});track.disabled=!!tracked;track.className='track-action';track.setAttribute('aria-label',(tracked?'Tracked: ':'Track: ')+r.title);actions.appendChild(track);
+  const track=button(tracked?'SAVED':'SAVE',async()=>{track.disabled=true;try{let film=identityFilm;if(!film){await resolveCinemaArt(r);film=cinemaArt.get(r.id);}if(film?.id)addToWatchlist(film);else{hubState.followed=[...new Set([...hubState.followed,r.id])];save();showToast('Tracking '+r.title+' screenings');}renderCalendar();}catch{track.disabled=false;showToast('Could not track this film. Try again.');}});track.disabled=!!tracked;track.className='track-action';track.setAttribute('aria-label',(tracked?'Tracked: ':'Track: ')+r.title);actions.appendChild(track);
   const hide=button('HIDE',()=>hideTheater(r,true));hide.className='text-action hide-action';hide.setAttribute('aria-label','Hide: '+r.title);actions.appendChild(hide);container.appendChild(actions);
  }
  function paintCinemaArt(r){const art=cinemaArt.get(r.id);if(!art)return;for(const holder of document.querySelectorAll('[data-calendar-id]'))if(holder.dataset.calendarId===r.id){const head=holder.querySelector('.calendar-film-head')||holder.querySelector('.board-label')||holder.querySelector('.cinema-title');for(const bar of holder.querySelectorAll('.run-bar'))if(art.backdrop_path||art.poster_path)bar.style.setProperty('--screening-art',art?.backdrop_path||art?.poster_path?'url(https://image.tmdb.org/t/p/w780'+(art.backdrop_path||art.poster_path)+')':'url('+HubModel.safeLink(r.poster)+')');if(head&&art.poster_path&&!head.querySelector('img')){head.querySelector('.calendar-poster-placeholder')?.remove();const img=node('img');img.src=posterUrl(art.poster_path);img.alt='';img.loading='lazy';head.prepend(img);}}}
@@ -146,7 +146,7 @@ const Hub = (()=>{
   const actions=node('div',null,'screening-actions');
   const actionLabel=r.kind==='local'?'CINEMARK TICKETS':r.kind==='stream'?(r.sourceKind==='announcement'?'ANNOUNCEMENT SOURCE':'RELEASE RECORD'):'EVENT & TICKETS';
   actions.appendChild(link(actionLabel,r.url,'watch-link'));
-  if(!host&&!watchlist.some(m=>m.id===art?.id)&&!hubState.followed.includes(r.id))actions.appendChild(button('TRACK',()=>{if(art?.id)addToWatchlist(art);else{hubState.followed.push(r.id);save();}renderCalendar();showEvent(r);}));
+  if(!host&&!watchlist.some(m=>m.id===art?.id)&&!hubState.followed.includes(r.id))actions.appendChild(button(art?.id?'SAVE':'FOLLOW EVENT',()=>{if(art?.id)addToWatchlist(art);else{hubState.followed.push(r.id);save();}renderCalendar();showEvent(r);}));
   out.appendChild(actions);
   if(!host){const hideActions=node('div',null,'screening-hide-actions');hideActions.appendChild(button('HIDE',()=>hideTheater(r,true)));out.appendChild(hideActions);}
   if(r.kind!=='stream'){
