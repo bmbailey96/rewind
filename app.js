@@ -175,16 +175,19 @@ function rememberSync(data){persistData(SYNC_BASE_KEY,data);}
 function syncNotice(text,error=false){const e=document.getElementById('sync-status');if(e){e.dataset.tone=error?'error':'info';e.textContent=text;}}
 async function ghJSON(path,options){const r=await ghFetch(path,options);if(!r.ok)throw Error(r.status===401||r.status===403?'GitHub did not accept this token. Check its gist permission.':'GitHub sync failed (HTTP '+r.status+'). Your changes remain on this device.');return r.json();}
 
-function ghFetch(path, opts = {}) {
+async function ghFetch(path, opts = {}) {
   const token = localStorage.getItem(GH_TOKEN_KEY);
-  return fetch(GITHUB_API + path, {
+  try { return await fetch(GITHUB_API + path, {
     ...opts,
     headers: {
       'Authorization': 'token ' + token,
       'Accept': 'application/vnd.github+json',
+      ...(opts.body ? {'Content-Type':'application/json'} : {}),
       ...(opts.headers || {}),
     },
-  });
+    cache:'no-store',
+    signal:opts.signal||AbortSignal.timeout(20000),
+  }); } catch {throw Error('Could not reach GitHub. Your changes remain on this device and will retry when you reconnect. Check your connection, then try Sync now.');}
 }
 
 function collectSyncData() {
@@ -221,7 +224,7 @@ async function findOrCreateGist() {
   for(let page=1;page<=10;page++){const list=await ghJSON('/gists?per_page=100&page='+page),found=list.find(g=>g.description===GIST_DESC&&g.files?.[GIST_FILENAME]);if(found){localStorage.setItem(GH_GIST_KEY,found.id);return found.id;}if(list.length<100)break;}
   const data=collectSyncData(),created=await ghJSON('/gists',{method:'POST',body:JSON.stringify({description:GIST_DESC,public:false,files:{[GIST_FILENAME]:{content:JSON.stringify(data)}}})});if(!created.id)throw Error('GitHub returned no sync ID.');localStorage.setItem(GH_GIST_KEY,created.id);rememberSync(data);return created.id;
 }
-async function readGist(id){const gist=await ghJSON('/gists/'+id),file=gist.files?.[GIST_FILENAME];let content=file?.content;if(file?.truncated){const rawURL=new URL(file.raw_url);if(rawURL.protocol!=='https:'||rawURL.hostname!=='gist.githubusercontent.com')throw Error('Unexpected sync file address.');const response=await fetch(rawURL.href,{headers:{Authorization:'token '+localStorage.getItem(GH_TOKEN_KEY)},cache:'no-store'});if(!response.ok)throw Error('Could not read the full saved film profile.');content=await response.text();}let data;try{data=JSON.parse(content);}catch{throw Error('Saved sync data could not be read. Local films were kept.');}if(!data||!Array.isArray(data.watchlist)||!Array.isArray(data.seen)||!Array.isArray(data.skipped))throw Error('Saved sync data is incomplete. Local films were kept.');return data;}
+async function readGist(id){const gist=await ghJSON('/gists/'+id),file=gist.files?.[GIST_FILENAME];let content=file?.content;if(file?.truncated){const rawURL=new URL(file.raw_url);if(rawURL.protocol!=='https:'||rawURL.hostname!=='gist.githubusercontent.com')throw Error('Unexpected sync file address.');let response;try{response=await fetch(rawURL.href,{cache:'no-store',credentials:'omit',referrerPolicy:'no-referrer',signal:AbortSignal.timeout(20000)});}catch{throw Error('Could not download your full saved profile from GitHub. Your local films were kept. Check your connection and try Sync now.');}if(!response.ok)throw Error('Could not read the full saved film profile.');content=await response.text();}let data;try{data=JSON.parse(content);}catch{throw Error('Saved sync data could not be read. Local films were kept.');}if(!data||!Array.isArray(data.watchlist)||!Array.isArray(data.seen)||!Array.isArray(data.skipped))throw Error('Saved sync data is incomplete. Local films were kept.');return data;}
 async function pullFromGist(){const id=await findOrCreateGist(),remote=await readGist(id),base=syncBase(),local=collectSyncData(),merged=SyncModel.merge(base||{},local,remote);applySyncData(merged);rememberSync(remote);window.dispatchEvent(new Event('rewind:state'));return merged;}
 async function pushToGist(){if(syncFlight)return syncFlight;syncFlight=(async()=>{const id=await findOrCreateGist(),remote=await readGist(id),local=collectSyncData(),merged=SyncModel.merge(syncBase()||{},local,remote);merged.updatedAt=Date.now();await ghJSON('/gists/'+id,{method:'PATCH',body:JSON.stringify({files:{[GIST_FILENAME]:{content:JSON.stringify(merged)}}})});const current=collectSyncData(),after=SyncModel.merge(local,current,merged);applySyncData(after);rememberSync(merged);const changed=JSON.stringify({...current,updatedAt:0})!==JSON.stringify({...local,updatedAt:0});if(changed){localStorage.setItem(SYNC_DIRTY_KEY,'1');scheduleSync();}else localStorage.removeItem(SYNC_DIRTY_KEY);window.dispatchEvent(new Event('rewind:state'));syncNotice('Synced '+new Date().toLocaleTimeString()+'. Ready on your connected devices.');})().catch(e=>{syncNotice(e.message,true);throw e;}).finally(()=>{syncFlight=null;});return syncFlight;}
 function scheduleSync(){scheduleEmailSync();localStorage.setItem(SYNC_DIRTY_KEY,'1');if(!localStorage.getItem(GH_TOKEN_KEY))return;clearTimeout(syncTimer);syncNotice('Saving changes across devices…');syncTimer=setTimeout(()=>pushToGist().catch(()=>{}),1500);}
@@ -530,7 +533,7 @@ function renderCard(movie, opts = {}) {
   let costInfo=status?.pending?{band:'waiting',badge:'CHECKING',caption:'Getting current offers and prices.'}:status?ReleaseModel.cost(status.offers,rentalBudget,status.stale):null;
   if(costInfo&&!(movie.releaseFile&&costInfo.band==='waiting'))card.appendChild(renderCostHeadline(costInfo));
 
-  if(movie.discoveryFit||movie.requestedInterest){const reason=document.createElement('p');reason.className='discovery-reason';reason.textContent=movie.requestedInterest?'You asked to keep an eye on this one.':movie.discoveryFit.connection?.directors?.length?'From '+movie.discoveryFit.connection.directors.join(' and ')+', behind '+movie.discoveryFit.connection.seedTitle+'.':FilmOracle.reading(movie,{connection:null}).text;card.appendChild(reason);}if(movie.releaseFile)card.appendChild(renderReleaseFile(movie,status));
+  if(movie.discoveryFit||movie.requestedInterest){const reason=document.createElement('p');reason.className='discovery-reason';reason.textContent=movie.requestedInterest?'You asked to keep an eye on this one.':movie.discoveryFit.connection?.directors?.length?'From '+movie.discoveryFit.connection.directors.join(' and ')+', behind '+movie.discoveryFit.connection.seedTitle+'.':FilmOracle.reading(movie,{connection:null}).text;card.appendChild(reason);}if(movie.releaseFile)card.appendChild(renderReleaseFile(movie,status,true));
   if(status){const upcoming=(status.announcements||[]).filter(a=>a.kind==='subscription'&&a.date&&a.date>discoveryWindow().today).sort((a,b)=>a.date.localeCompare(b.date))[0];if(upcoming){const note=document.createElement('p');note.className='wait-advice';note.textContent=upcoming.provider+' on '+formatFilmDate(upcoming.date)+' · announced';card.appendChild(note);}else if(costInfo?.band==='premium'){const note=document.createElement('p');note.className='wait-advice';const pref=ReleaseModel.preference(movie.alert);const estimate=ReleaseModel.rentalForecast(movie,status,watchlist,discoveryWindow().today,pref.mode==='rental'?pref.maxPrice:rentalBudget);note.textContent=estimate&&!estimate.overdue?(estimate.kind==='provisional'?'Provisional cheaper rental: ':'Cheaper rental estimate: ')+formatFilmDate(estimate.start)+' to '+formatFilmDate(estimate.end):'Above your $'+rentalBudget.toFixed(2)+' limit. No drop date announced.';card.appendChild(note);}}
 
   const details=document.createElement('button');details.type='button';details.className='film-details-trigger';details.textContent='Film details';details.setAttribute('aria-haspopup','dialog');details.setAttribute('aria-controls','film-detail-dialog');
@@ -538,7 +541,7 @@ function renderCard(movie, opts = {}) {
   const secondaryActions=document.createElement('div');secondaryActions.className='card-actions secondary-actions';
   let current=status;
   const fillDetails=()=>{
-    body.replaceChildren();if(current)body.appendChild(renderAvailability(movie,{...current,previousLabel:opts.prevLabel},{details:[...observedDetails.values()],movies:watchlist}));
+    body.replaceChildren();if(current)body.appendChild(renderAvailability(movie,{...current,previousLabel:opts.prevLabel},{details:[...observedDetails.values()],movies:watchlist}));if(movie.releaseFile)body.appendChild(renderReleaseFile(movie,current));
     const about=document.createElement('section');about.className='film-about';
     if(movie.overview){const heading=document.createElement('h4');heading.textContent='About the film';const synopsis=document.createElement('p');synopsis.textContent=movie.overview;about.append(heading,synopsis);}
     const recommendation=card.querySelector('.discovery-reason');if(recommendation){const heading=document.createElement('h4');heading.textContent='Why this film';const fullReason=document.createElement('p');fullReason.className='full-discovery-reason';fullReason.textContent=recommendation.textContent;about.append(heading,fullReason);}
@@ -572,7 +575,7 @@ function renderCard(movie, opts = {}) {
   if(!current)body.appendChild(secondaryActions);
   card.append(actions,details);
   if(!status&&['discover','search'].includes(context))observeCardOffers(card,async()=>{
-   try{const found=await deriveStatus(movie);if(!card.isConnected)return;current=found;if(movie.releaseFile)card.querySelector('.release-file')?.replaceWith(renderReleaseFile(movie,found));costInfo=ReleaseModel.cost(found.offers,rentalBudget,found.stale);card.querySelector('.cost-block')?.remove();if(!(movie.releaseFile&&costInfo.band==='waiting'))actions.before(renderCostHeadline(costInfo));
+   try{const found=await deriveStatus(movie);if(!card.isConnected)return;current=found;if(movie.releaseFile)card.querySelector('.release-file')?.replaceWith(renderReleaseFile(movie,found,true));costInfo=ReleaseModel.cost(found.offers,rentalBudget,found.stale);card.querySelector('.cost-block')?.remove();if(!(movie.releaseFile&&costInfo.band==='waiting'))actions.before(renderCostHeadline(costInfo));
     const next=!found.stale?costInfo.offer:null;if(next?.link&&!actions.querySelector('.watch-link')){const watch=document.createElement('a');watch.className='watch-link';watch.textContent=next.kind==='rent'?'RENT':next.kind==='buy'?'BUY':'WATCH';watch.href=next.link;watch.target='_blank';watch.rel='noopener noreferrer';actions.prepend(watch);actions.querySelector('.track-action')?.classList.add('secondary-track');}if(body.closest('dialog')?.open)fillDetails();
    }catch{if(card.isConnected&&!card.querySelector('.cost-block')){const note=document.createElement('p');note.className='offer-note';note.textContent='Viewing options could not refresh. Open Details to retry.';details.before(note);}}
   });
@@ -780,11 +783,12 @@ document.getElementById('reset-cost-filter').onclick=()=>{costFilter='all';watch
 document.querySelectorAll('[data-cost-filter]').forEach(btn=>btn.onclick=()=>{costFilter=btn.dataset.costFilter;watchlistLimit=60;repaintWatchlist();});
 document.getElementById('sort-select').addEventListener('change',e=>{watchlistSort=e.target.value;watchlistLimit=60;repaintWatchlist();});
 
-function renderReleaseFile(movie,status){
+function renderReleaseFile(movie,status,compact=false){
  const facts=DiscoveryModel.facts(movie,status,discoveryWindow().today),box=document.createElement('div');box.className='release-file';
  const badge=document.createElement('strong');badge.className='release-stage';badge.textContent=facts.badge;box.appendChild(badge);
  for(const text of [facts.theatrical,facts.home]){const p=document.createElement('p');p.textContent=text.replace(/\d{4}-\d{2}-\d{2}/g,formatFilmDate);box.appendChild(p);}
  if(facts.screening){const p=document.createElement('p');p.className='regional-screening';p.textContent=facts.screening.label+' · '+facts.screening.location+' · '+formatFilmDate(facts.screening.date)+' at '+facts.screening.time+' MT'+(facts.screening.stale?' · previous check':'');box.appendChild(p);}
+ if(compact)return box;
  const url=HubModel.safeLink(movie.releaseFile.sourceURL);if(url){const a=document.createElement('a');a.href=url;a.target='_blank';a.rel='noopener noreferrer';a.textContent=movie.releaseFile.source+(movie.releaseFile.news?.length?' report':' film page');box.appendChild(a);const p=document.createElement('p');p.className='offer-note';p.textContent=(movie.releaseFile.stale?'Previous source check ':'Source checked ')+formatFilmDate(new Date(movie.releaseFile.checkedAt).toISOString().slice(0,10));box.appendChild(p);}for(const news of movie.releaseFile.news||[]){const url=HubModel.safeLink(news.url);if(!url)continue;const p=document.createElement('p'),a=document.createElement('a');a.href=url;a.target='_blank';a.rel='noopener noreferrer';a.textContent=news.title;p.appendChild(a);box.appendChild(p);}for(const source of movie.releaseFile.releaseSources||[]){if(source.url===movie.releaseFile.sourceURL)continue;const a=document.createElement('a');a.href=HubModel.safeLink(source.url);a.textContent=source.name+' · additional source';a.target='_blank';a.rel='noopener noreferrer';box.appendChild(a);}return box;
 }
 function updateDiscoveryGuide(){
