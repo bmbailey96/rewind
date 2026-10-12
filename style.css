@@ -1297,3 +1297,31 @@ button:focus-visible,a:focus-visible,summary:focus-visible{outline:2px solid #db
  .panel-head{align-items:flex-start}.watchlist-navigation{flex-basis:100%}.calendar-view-switch button,.board-nav button{padding:8px;font-size:10px}.board-nav button{min-width:36px}.board-head{padding:12px 9px;gap:8px}.tonight-card{grid-template-columns:56px minmax(0,1fr);gap:10px}.tonight-card>img,.tonight-poster-missing{width:56px!important;height:84px!important}.tonight-actions .watch-link{padding:9px 12px}
  .film-detail-dialog{width:calc(100vw - 16px);padding:0 14px 14px}.film-detail-head h2{font-size:18px}.film-detail-dialog .offer-row{grid-template-columns:minmax(0,1fr)!important;gap:0}.film-detail-dialog .offer-row strong{text-align:left;padding-top:0}
 }
+
+/* A reading surface for reports, not another shelf of poster cards. */
+.movie-news-heading{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:24px 0 12px}
+.movie-news-heading h3{font-family:var(--serif,Georgia,serif);font-size:clamp(24px,3vw,34px);line-height:1.15;margin:0;color:#e9eee5}
+.news-kicker{color:#d8b877;font-size:11px;letter-spacing:.16em;margin:0 0 8px}
+.movie-news-intro{max-width:650px;color:#acbdb3;font-size:15px;line-height:1.6;margin:0 0 24px}
+#movie-news-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;align-items:start}
+.movie-news-card{min-width:0;padding:24px;background:#15221f;border:1px solid #34443e;border-top:3px solid #d8b877;border-radius:5px;color:#e5ece4}
+.movie-news-card h3{font-family:var(--serif,Georgia,serif);font-size:24px;font-weight:600;line-height:1.25;margin:14px 0;overflow-wrap:break-word}
+.news-byline{color:#9eb2a7;font-size:12px;line-height:1.5;margin:0 0 12px}
+.news-certainty{font-size:10px;line-height:1.5;letter-spacing:.08em;color:#a6d4c2;margin:0}
+.news-certainty.rumor,.news-certainty.audience{color:#e4bd7c}
+.news-summary{font-size:14px;line-height:1.6;color:#c0cfc5;margin:0 0 14px}
+.news-connection{font-size:13px;line-height:1.5;color:#88c3ac;padding-left:12px;border-left:2px solid #6e9b87;margin:0 0 16px}
+.news-project{font-size:12px;color:#d5c396;margin:0 0 14px}
+.news-actions{display:flex;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid #34443e;padding-top:12px}
+.news-actions .news-read{display:inline-flex;align-items:center;min-height:44px;color:#a1d2be;font-size:13px;text-decoration:underline;text-underline-offset:4px}
+.news-actions button{font-size:11px;letter-spacing:.03em;min-height:44px;padding:10px 14px;margin:0;flex-shrink:0;border-radius:4px;white-space:normal;line-height:1.3}
+.news-actions button:disabled{opacity:1;color:#9cb1a4;background:transparent;border-color:#44594d;cursor:default}
+.news-index-note{display:block;color:#8fa399;font-size:11px;line-height:1.5;margin-top:12px}
+.news-sources,#news-followed{margin:20px 0;color:#a8bcb0;border-top:1px solid #34443e;padding-top:12px}
+.news-sources summary,#news-followed summary{min-height:44px;display:list-item;font-size:13px;cursor:pointer}
+.news-sources p{font-size:13px;line-height:1.6;max-width:740px}.news-sources a,#news-followed a{color:#a1d2be;text-underline-offset:3px}
+.news-followed-row{display:flex;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid #34443e;align-items:center}
+.news-followed-row>div{min-width:0}.news-followed-row a{overflow-wrap:anywhere}.news-followed-row p{margin:5px 0 0;font-size:12px}.news-followed-row button{min-height:44px;flex-shrink:0}
+#movie-news-panel[hidden]{display:none!important}.discover-intents{gap:8px 24px}
+#movie-news-panel button:focus-visible,#movie-news-panel a:focus-visible,#movie-news-panel summary:focus-visible{outline:2px solid #d8b877;outline-offset:4px}
+@media(max-width:700px){.discover-intents{grid-template-columns:repeat(2,minmax(0,1fr))}.movie-news-heading{margin-top:20px}.movie-news-heading h3{font-size:25px}.movie-news-intro{font-size:14px;line-height:1.6}#movie-news-grid{grid-template-columns:minmax(0,1fr);gap:16px}.movie-news-card{padding:20px}.movie-news-card h3{font-size:23px}.news-actions{gap:10px}.news-actions button{max-width:48%}.news-byline{font-size:12px}.news-sources p{font-size:13px}}
