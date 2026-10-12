@@ -16,7 +16,7 @@ const MovieNews=(()=>{
  }
  function appendArt(card,item){
   const movie=item.film,image=item.imageURL?{url:item.imageURL,label:'Publisher image · '+item.source,kind:'publisher'}:movie?.backdrop_path?{url:'https://image.tmdb.org/t/p/w780'+movie.backdrop_path,label:movie.title+' · catalog still',kind:'still'}:movie?.poster_path?{url:posterUrl(movie.poster_path),label:movie.title+((movie.release_date||'').slice(0,4)?' ('+movie.release_date.slice(0,4)+')':'')+' · catalog poster',kind:'poster'}:null;
-  if(!image||!HubModel.safeLink(image.url))return;const figure=el('figure',null,'news-art '+image.kind),photo=el('img');photo.src=image.url;photo.alt=image.kind==='poster'?movie.title+' poster':'';photo.loading='lazy';photo.decoding='async';photo.onerror=()=>figure.remove();figure.append(photo,el('figcaption',image.label));card.append(figure);
+  if(!image||!HubModel.safeLink(image.url))return;const figure=el('figure',null,'news-art '+image.kind),photo=el('img');photo.src=image.url;photo.alt=image.kind==='poster'?movie.title+' poster':'';photo.loading='lazy';photo.decoding='async';photo.onerror=()=>figure.remove();figure.append(photo);if(image.kind==='still'&&movie.poster_path){const cover=el('img',null,'news-poster-inset');cover.src=posterUrl(movie.poster_path);cover.alt=movie.title+' poster';cover.loading='lazy';cover.decoding='async';cover.onerror=()=>cover.remove();figure.append(cover);}figure.append(el('figcaption',image.label));card.append(figure);
  }
  async function track(item,b){
   b.disabled=true;b.textContent='Saving…';
