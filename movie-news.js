@@ -9,7 +9,7 @@ const MovieNews=(()=>{
  function followFor(item){return follows().find(f=>f.articleId===item.id||item.project&&MovieNewsModel.norm(f.title)===MovieNewsModel.norm(item.project));}
  function isTracked(item){return item.project&&watchlist.some(m=>MovieNewsModel.norm(m.title)===MovieNewsModel.norm(item.project));}
  async function catalogFilm(title,maker=null){const key=MovieNewsModel.norm(title)+':'+MovieNewsModel.norm(maker);if(catalogCache.has(key))return catalogCache.get(key);const pending=(async()=>{try{const match=MovieNewsModel.catalogMatch(title,await searchMovies(title));if(!match)return null;const full=await fetchMovieDetails(match.id);if(MovieNewsModel.norm(full.title)!==MovieNewsModel.norm(title))return null;if(maker&&!(full.credits?.crew||[]).some(p=>['Director','Writer','Screenplay','Story'].includes(p.job)&&MovieNewsModel.norm(p.name)===MovieNewsModel.norm(maker)))return null;return {...match,...full};}catch{return null;}})();catalogCache.set(key,pending);return pending;}
- async function prepareNews(){
+ async function prepareNews(){feed.items=feed.items.map(item=>({...item,project:item.project||MovieNewsModel.project(item.headline)}));
   const eligible=feed.items.filter(MovieNewsModel.candidate),known=MovieNewsModel.select(eligible,context()).slice(0,12),recent=[...eligible].sort((a,b)=>Date.parse(b.publishedAt)-Date.parse(a.publishedAt));
   const candidates=[...new Map([...known,...recent].map(i=>[MovieNewsModel.norm(i.project),i])).values()].slice(0,28);
   await mapLimited(candidates,4,async item=>{const fit=MovieNewsModel.relevance(item,context());const film=await catalogFilm(item.project,fit?.maker);if(film)for(const row of feed.items)if(MovieNewsModel.norm(row.project)===MovieNewsModel.norm(item.project))row.film=film;});

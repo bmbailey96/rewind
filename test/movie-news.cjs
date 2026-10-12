@@ -4,6 +4,7 @@ const xml=(title,url='https://indiewire.com/news/1',date='Mon, 12 Oct 2026 15:00
 assert.equal(M.project('‘Don’t Breathe 3’: Fede Álvarez Announces New Script'),'Don’t Breathe 3');
 assert.equal(M.project('Mike Flanagan’s ‘The Exorcist: Martyrs’ Releases Full Trailer'),'The Exorcist: Martyrs');
 assert.equal(M.project('Sofia Coppola Plans Return to Film, But Her Mother’s ‘Making Marie Antoinette’ Comes First'),null);
+assert.equal(M.project('Is That Regan in ‘The Exorcist: Martyrs’? Another Trailer Photo'),'The Exorcist: Martyrs');
 assert.equal(M.kind('Evil Dead Wrath test screening rumor'),'rumor');assert.equal(M.kind('Test screening reactions'),'audience');
 assert.equal(N.parseFeed(xml('‘A Film’ Announced &amp; Casting'),source,at)[0].headline,'‘A Film’ Announced & Casting');
 assert.equal(N.parseFeed(xml('Film announced','javascript:alert(1)'),source,at).length,0);
