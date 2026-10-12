@@ -1347,3 +1347,9 @@ button:focus-visible,a:focus-visible,summary:focus-visible{outline:2px solid #db
  #discover-grid>.release-card>.card-meta,#search-grid>.release-card>.card-meta,#tab-watchlist .release-card>.card-meta{grid-column:2;font-size:12px;line-height:1.5;margin:0}
  #discover-grid>.release-card>.cost-block,#search-grid>.release-card>.cost-block,#tab-watchlist .release-card>.cost-block{grid-column:2;border:0;padding:4px 0;margin:0}
 }
+
+/* Changes carry actual prices; the Oracle keeps its argument in one paragraph. */
+.rental-card>.useful-change{white-space:normal;font-size:12px;line-height:1.5;letter-spacing:0;text-transform:none;padding:7px 9px;margin:4px 0 8px;color:#c9e3d2;background:#25372e;border-left:2px solid #83b49b}
+.film-tracking-note{border-top:1px solid var(--rule);padding-top:10px;margin-top:18px}.film-tracking-note p{font-size:14px;line-height:1.6}
+.oracle-verdict{max-width:65ch;line-height:1.65}.picker-actions{align-items:center;flex-wrap:wrap;gap:10px}.picker-actions #picker-more{margin:0}.picker-actions button{min-height:44px}
+@media(max-width:600px){.rental-card>.useful-change{grid-column:1/-1}.picker-actions #pick-again,.picker-actions #picker-more{flex:0 1 auto}.picker-actions #picker-more button{padding:10px 14px}.film-tracking-note p{font-size:13px}}

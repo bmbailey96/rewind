@@ -8,7 +8,20 @@
   const out={};for(const [k,v] of Object.entries(value)){if(refreshable.has(k))continue;if(k==='release_dates'&&v?.results){out[k]={results:v.results.map(country=>({iso_3166_1:country.iso_3166_1,release_dates:(country.release_dates||[]).map(r=>({type:r.type,release_date:r.release_date}))}))};}else if(k==='meta'||k==='detailsSnapshot'){ out[k]={};for(const field of ['id','title','release_date','runtime','overview','genres','genre_ids','keywords','credits','poster_path','backdrop_path','release_dates','production_companies'])if(v?.[field]!=null)out[k][field]=compact(v[field],field);}else out[k]=compact(v,k);}return out;
  }
  const keys=['rewind-watchlist-v1','rewind-hub-v1','rewind-sync-base-v1'];
- function migrate(storage){for(const key of keys){const text=storage.getItem(key);if(!text)continue;try{const small=JSON.stringify(compact(JSON.parse(text)));if(small.length<text.length)storage.setItem(key,small);}catch{ /* Existing saved data remains available if migration cannot write. */ }}}
- function save(storage,key,value){const small=compact(value);try{storage.setItem(key,JSON.stringify(small));return true;}catch(error){if(error.name!=='QuotaExceededError'&&error.name!=='NS_ERROR_DOM_QUOTA_REACHED')throw error;migrate(storage);try{storage.setItem(key,JSON.stringify(small));return true;}catch{return false;}}}
- return {compact,migrate,save};
+ const prefix='rwz1:';
+ // Bounded LZW over UTF-8 bytes. Local storage counts UTF-16 units; one code per
+ // phrase keeps repeated catalog fields small without dropping personal records.
+ function encode(text){
+  const bytes=unescape(encodeURIComponent(text)),dictionary=new Map();let next=256,phrase='',codes=[];
+  for(const char of bytes){const joined=phrase+char;if(phrase===''||dictionary.has(joined)){phrase=joined;continue;}codes.push(phrase.length===1?phrase.charCodeAt(0):dictionary.get(phrase));if(next<65535)dictionary.set(joined,next++);phrase=char;}
+  if(phrase)codes.push(phrase.length===1?phrase.charCodeAt(0):dictionary.get(phrase));let packed=prefix;for(let i=0;i<codes.length;i+=8192)packed+=String.fromCharCode(...codes.slice(i,i+8192));return packed.length<text.length?packed:text;
+ }
+ function decode(text){
+  if(!text.startsWith(prefix))return text;const codes=text.slice(prefix.length),dictionary=Array.from({length:256},(_,i)=>String.fromCharCode(i));if(!codes)return '';let next=256,previous=dictionary[codes.charCodeAt(0)];if(previous===undefined)throw Error('Invalid saved record');const parts=[previous];
+  for(let i=1;i<codes.length;i++){const code=codes.charCodeAt(i),entry=dictionary[code]??(code===next?previous+previous[0]:undefined);if(entry===undefined)throw Error('Invalid saved record');parts.push(entry);if(next<65535)dictionary[next++]=previous+entry[0];previous=entry;}return decodeURIComponent(escape(parts.join('')));
+ }
+ function read(storage,key,fallback=null){const text=storage.getItem(key);return text?JSON.parse(decode(text)):fallback;}
+ function migrate(storage,compress=false){for(const key of keys){const text=storage.getItem(key);if(!text)continue;try{const small=JSON.stringify(compact(JSON.parse(decode(text)))),value=compress||text.startsWith(prefix)||small.length>=100000?encode(small):small;if(value.length<text.length)storage.setItem(key,value);}catch{ /* Existing saved data remains available if migration cannot write. */ }}}
+ function save(storage,key,value){const small=JSON.stringify(compact(value));try{const previous=storage.getItem(key)||'';storage.setItem(key,previous.startsWith(prefix)||small.length>=100000?encode(small):small);return true;}catch(error){if(error.name!=='QuotaExceededError'&&error.name!=='NS_ERROR_DOM_QUOTA_REACHED')return false;migrate(storage,true);try{storage.setItem(key,encode(small));return true;}catch{return false;}}}
+ return {compact,migrate,save,read,encode,decode};
 });
