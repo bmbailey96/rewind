@@ -12,6 +12,7 @@ const wait=()=>new Promise(r=>setTimeout(r,100));
   constructor(...args){super(...(args.length?args:['2026-10-05T18:00:00Z']));}
   static now(){return NativeDate.parse('2026-10-05T18:00:00Z');}
  };
+ w.document.getElementById('letterboxd-export-additions').remove();w.document.getElementById('letterboxd-export-note').remove(); // A cached pre-export page must still boot with the new script.
  w.IntersectionObserver=class {constructor(callback){this.callback=callback;w.offerObserver=this;}observe(){}unobserve(){}};
  w.HTMLElement.prototype.scrollIntoView=function(){};w.HTMLDialogElement.prototype.showModal=function(){this.open=true};w.HTMLDialogElement.prototype.close=function(){this.open=false;this.dispatchEvent(new this.ownerDocument.defaultView.Event('close'))};
  w.localStorage.setItem('rewind-ui-v1',JSON.stringify({pickerCost:'included',pickerMode:'oracle'}));
