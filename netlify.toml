@@ -38,3 +38,6 @@
 
 [functions.movie-news-hourly]
   schedule = "37 */3 * * *"
+
+[functions.letterboxd-diary-refresh]
+  schedule = "53 */3 * * *"

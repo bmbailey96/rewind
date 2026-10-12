@@ -22,4 +22,8 @@ assert.equal(M.select([row('‘Chronovisor’ directors announce a film'),row('�
 assert.equal(M.select([{...row('Evil Dead Wrath rumor'),publishedAt:'2025-01-01'}],context,at).length,0);
 assert.equal(M.catalogMatch('Thing',[{id:1,title:'Thing'},{id:2,title:'Thing'}]),null,'Ambiguous catalog matches stay leads');
 assert.equal(M.catalogMatch('Thing',[{id:1,title:'Thing'}]).id,1);
+assert.equal(N.articleImage('<meta content="https://www.indiewire.com/photo.jpg?a=1&amp;b=2" property="og:image">'),'https://www.indiewire.com/photo.jpg?a=1&b=2');
+assert.equal(N.articleImage('<meta property="og:image" content="https://127.0.0.1/image">'),null);
+const mixed=M.balance([...Array.from({length:8},(_,i)=>({id:'t'+i,project:'Tracked '+i,fit:{scope:'tracked'}})),...Array.from({length:8},(_,i)=>({id:'d'+i,project:'Discovery '+i,fit:{scope:'maker'}}))]);assert.equal(mixed[0].fit.scope,'maker');assert.ok(mixed.slice(0,8).filter(r=>r.fit.scope==='maker').length>=4,'Tracked updates cannot consume the first screen');
+assert.equal(M.relevance({...row('‘Untracked Film’ Acquired'),film:{credits:{crew:[{job:'Director',name:'A Real Director'}]}}},context).scope,'maker','Verified filmmaker metadata can discover an unsaved film');
 (async()=>{const previous={checkedAt:at-10000,items:[row('Evil Dead Wrath rumor')]};const result=await N.refresh(previous,async()=>{throw Error('Outage');},at);assert.equal(result.stale,true);assert.equal(result.checkedAt,previous.checkedAt);assert.ok(result.items.some(i=>i.id===previous.items[0].id));assert.ok(result.sources.every(s=>s.unavailable));console.log('Movie news: source parsing, claim labels, positive evidence, ambiguity, duplicates, and outage retention passed');})().catch(e=>{console.error(e);process.exitCode=1;});

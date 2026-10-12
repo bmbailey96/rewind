@@ -74,7 +74,7 @@
       <details id="news-followed" hidden><summary id="news-followed-count">Following projects</summary><div id="news-followed-list"></div></details>
       <p id="movie-news-status" role="status" class="offer-note"></p>
       <div id="movie-news-grid"></div><button id="movie-news-more" class="btn-more" hidden>MORE REPORTS</button>
-      <details class="news-sources"><summary>Sources & how this works</summary><p>Your tracked titles, followed projects, and filmmakers from positive ratings, ownership, favorites, and rewatches come first. Strange production and restoration stories can also make the cut. A saved film is interest, not a thumbs-up.</p><div id="movie-news-sources-list"></div><p>Checked every three hours without AI. Publisher feeds and indexed public reports only. Private newsletters and the separate ChatGPT radar are not connected to this feed. Headlines link to their publishers; dates and claims stay attached to those sources. Named project follows are checked against the catalog again when you open News, at most once a day. A unique title match is required; known filmmakers must match too. Unfollowing a project keeps any film already added to My films. Tracking an unconfirmed project does not add its rumored dates to the calendar.</p></details>
+      <details class="news-sources"><summary>Sources & how this works</summary><p>The page mixes new discoveries with tracked-film updates. Filmmakers from positive ratings, ownership, favorites, and rewatches help find projects you have not saved. Strange production and restoration stories can also make the cut. A saved film is interest, not a thumbs-up.</p><div id="movie-news-sources-list"></div><p>Checked every three hours without AI. Publisher feeds and indexed public reports only. Private newsletters and the separate ChatGPT radar are not connected to this feed. Headlines link to their publishers; dates and claims stay attached to those sources. Named project follows are checked against the catalog again when you open News, at most once a day. A unique title match is required; known filmmakers must match too. Unfollowing a project keeps any film already added to My films. Tracking an unconfirmed project does not add its rumored dates to the calendar.</p></details>
     </section>
     <section id="physical-shelf" hidden><h3>Your physical shelf</h3><p class="offer-note">Already paid for. DVDs, Blu-rays, and VHS copies count equally in the chooser. Watched films stay here for another round.</p><div class="shelf-tools"><label>Format<select id="physical-format"><option value="all">All formats</option></select></label><button id="shelf-import-link" class="secondary">IMPORT SHELF CSV</button></div><p id="physical-count" role="status" class="offer-note"></p><div id="physical-grid" class="card-row wrap"></div></section>
     <form id="search-form" class="search-form"><label class="sr-only" for="search-input">Find a film</label><input id="search-input" type="search" placeholder="Any film, any release stage…" autocomplete="off"><button type="submit">SEARCH</button><button id="search-clear-btn" type="button" class="secondary" hidden>BACK TO BROWSE</button></form>
@@ -105,6 +105,7 @@
       <input type="file" aria-label="Import watched films" id="import-watched" accept=".csv">
       <p id="watched-status" class="import-status"></p>
     </div>
+    <div class="import-block"><h3>Letterboxd diary</h3><p class="import-note">Your public diary keeps watched films, ratings, likes, and rewatch flags current. Full watchlist additions/removals and private entries still need an export.</p><label><input type="checkbox" id="letterboxd-diary-auto" checked> Import new diary activity automatically</label><p id="letterboxd-diary-status" class="import-status" role="status"></p><button id="letterboxd-diary-check" class="text-action">Check now</button><a href="https://letterboxd.com/bmbailey124/" target="_blank" rel="noopener noreferrer">bmbailey124 ↗</a></div>
     <div class="import-block">
       <h3>Existing Watchlist</h3>
       <p class="import-note">Upload <code>watchlist.csv</code>. Every title, including older films, gets matched against TMDB and added to your watchlist. Takes a minute for a few hundred titles, don't close the tab.</p>
@@ -167,5 +168,6 @@
 <script src="static-experience.js"></script>
 <script src="flow.js"></script>
 <script src="movie-news.js"></script>
+<script src="letterboxd-diary.js"></script>
 </body>
 </html>

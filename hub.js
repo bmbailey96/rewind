@@ -318,7 +318,7 @@ const Hub = (()=>{
   const settingsGroups=new Map([...document.querySelectorAll('#tab-import>.settings-group')].map(g=>[g.querySelector('summary').textContent,g]));
   for(const [section,items] of [
    ['Watching',[['Your streaming services','Streaming services'],['Email alerts','Email alerts']]],
-   ['Your collection',[['Existing Watchlist','Import watchlist'],['Already Seen','Import watched films'],['Your taste','Taste & physical shelf']]],
+   ['Your collection',[['Letterboxd diary','Letterboxd diary'],['Existing Watchlist','Import watchlist'],['Already Seen','Import watched films'],['Your taste','Taste & physical shelf']]],
    ['Connections',[['Sync Across Devices','Sync across devices']]],
    ['Advanced',[['Live rental and purchase prices','Optional price connection'],['Project sources','Project sources']]]
   ]){const heading=node('h3',section,'settings-section-title');$('tab-import').append(heading);for(const [old,label] of items){const group=settingsGroups.get(old);if(group){group.querySelector('summary').textContent=label;$('tab-import').append(group);}}}
@@ -326,5 +326,5 @@ const Hub = (()=>{
   $('feedback-seen').onclick=()=>correctPick('seen');$('feedback-familiar').onclick=()=>correctPick('familiar');$('feedback-tonight').onclick=()=>correctPick('tonight');$('feedback-weak').onclick=()=>correctPick('weak');$('changes-read').onclick=()=>{hubState.receiptsReadAt=Date.now();save();renderReceipts();};$('physical-format').onchange=renderPhysicalShelf;$('shelf-import-link').onclick=()=>{document.querySelector('[data-tab=import]').click();$('taste-import-kind').value='owned';const group=$('import-taste').closest('details');if(group)group.open=true;$('import-taste').scrollIntoView({block:'center'});$('import-taste').focus();};describeCalendar();const currentScope=[...scope.options].some(o=>o.value===scope.value)?scope.value:'personal';scope.value=currentScope;const selectScope=value=>{scope.value=value;document.querySelectorAll('[data-calendar-scope]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.calendarScope===value)));remember('calendarScope',value);describeCalendar();renderCalendar();};document.querySelectorAll('[data-calendar-scope]').forEach(b=>b.onclick=()=>selectScope(b.dataset.calendarScope));$('calendar-quick-search').oninput=()=>{$('calendar-search').value=$('calendar-quick-search').value;renderCalendar();};$('calendar-refresh-simple').onclick=()=> $('cinema-refresh').click();selectScope(currentScope);renderCalendar();renderTonight();renderPhysicalShelf();renderReceipts();renderAsides();
  }
  $('watched-dialog').addEventListener('close',()=>{if(!document.querySelector('dialog[open]'))document.body.classList.remove('film-dialog-open');});
- init();initCalmControls();return {watched,stateChanged,loadTasteBaseline,setFindMode,loadOccasions,renderPhysicalShelf};
+ init();initCalmControls();return {watched,stateChanged,loadTasteBaseline,setFindMode,loadOccasions,renderPhysicalShelf,renderTaste};
 })();

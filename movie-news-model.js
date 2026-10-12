@@ -12,15 +12,18 @@
  function relevance(item,{tracked=[],taste=[],follows=[]}={}){
   const text=item.headline||'',titleMention=title=>item.project&&norm(item.project)===norm(title)||norm(title).split(' ').length>=2&&mentions(text,title),wanted=tracked.find(m=>titleMention(m.title)),follow=follows.find(f=>f.articleId===item.id||titleMention(f.title)||f.maker&&mentions(text,f.maker));
   if(noise.test(text))return null;
-  if(follow)return {score:12,reason:'You’re following this project.'};
-  if(wanted)return {score:11,reason:'On your tracked list: '+wanted.title+'.'};
-  const requested=explicit.find(t=>mentions(text,t));if(requested)return {score:10,reason:'A project you specifically asked to keep an eye on.'};
+  if(follow)return {score:12,scope:'followed',reason:'You’re following this project.'};
+  if(wanted)return {score:11,scope:'tracked',reason:'On your tracked list: '+wanted.title+'.'};
+  const requested=explicit.find(t=>mentions(text,t));if(requested)return {score:10,scope:'requested',reason:'A project you specifically asked to keep an eye on.'};
   if(!development.test(text))return null;
   const positive=taste.filter(m=>m.owned||m.favorite||Number(m.rating)>=4||Number(m.rewatches)>=2);
-  for(const film of positive){const makers=(film.meta?.credits?.crew||[]).filter(p=>['Director','Writer','Screenplay','Story'].includes(p.job));for(const maker of makers)if(mentions(text,maker.name)||(/\bDaniels\b/.test(text)&&['Daniel Kwan','Daniel Scheinert'].includes(maker.name)))return {score:8,maker:maker.name,reason:'Following '+maker.name+' beyond '+film.title+'.'};}
-  const theme=themes.find(([re])=>re.test(text.replace(/[‘“].*?[’”]|'.*?'/g,'')));return theme?{score:4,reason:theme[1]}:null;
+  const currentMakers=(item.film?.credits?.crew||[]).filter(p=>['Director','Writer','Screenplay','Story'].includes(p.job)).map(p=>norm(p.name));
+  for(const film of positive){const makers=(film.meta?.credits?.crew||[]).filter(p=>['Director','Writer','Screenplay','Story'].includes(p.job));for(const maker of makers)if(mentions(text,maker.name)||currentMakers.includes(norm(maker.name))||(/\bDaniels\b/.test(text)&&['Daniel Kwan','Daniel Scheinert'].includes(maker.name)))return {score:8,scope:'maker',maker:maker.name,reason:'Following '+maker.name+' beyond '+film.title+'.'};}
+  const words=[text.replace(/[‘“].*?[’”]|'.*?'/g,''),item.film?.overview,...(item.film?.keywords?.keywords||[]).map(k=>k.name)].filter(Boolean).join(' '),theme=themes.find(([re])=>re.test(words));return theme?{score:4,scope:'discovery',reason:theme[1]}:null;
  }
- function select(items,context,at=Date.now()){const seen=new Set(),projects=new Map();return (items||[]).filter(i=>{const stamp=Date.parse(i.publishedAt);return i.id&&i.headline&&/^https:\/\//.test(i.url)&&Number.isFinite(stamp)&&stamp<=at+300000&&at-stamp<=60*86400000;}).map(i=>({...i,status:i.status==='rumor'?'rumor':kind(i.headline,i.status==='official'),fit:relevance(i,context)})).filter(i=>{if(!i.fit)return false;const key=norm(i.headline);if(seen.has(key))return false;seen.add(key);return true;}).sort((a,b)=>b.fit.score-a.fit.score||Date.parse(b.publishedAt)-Date.parse(a.publishedAt)).filter(i=>{if(!i.project)return true;const key=norm(i.project),n=projects.get(key)||0;projects.set(key,n+1);return n<2;});}
+ function balance(rows){const updates=rows.filter(r=>['tracked','followed'].includes(r.fit.scope)),finds=rows.filter(r=>!['tracked','followed'].includes(r.fit.scope)),mixed=[];while(updates.length||finds.length){const group=mixed.length%4===1?updates:finds;mixed.push((group.length?group:group===finds?updates:finds).shift());}const seen=new Set(),first=[],repeat=[];for(const row of mixed){const key=row.project?norm(row.project):row.id;(seen.has(key)?repeat:first).push(row);seen.add(key);}return [...first,...repeat];}
+ function select(items,context,at=Date.now()){const seen=new Set(),projects=new Map();const rows=(items||[]).filter(i=>{const stamp=Date.parse(i.publishedAt);return i.id&&i.headline&&/^https:\/\//.test(i.url)&&Number.isFinite(stamp)&&stamp<=at+300000&&at-stamp<=60*86400000;}).map(i=>({...i,status:i.status==='rumor'?'rumor':kind(i.headline,i.status==='official'),fit:relevance(i,context)})).filter(i=>{if(!i.fit)return false;const key=norm(i.headline);if(seen.has(key))return false;seen.add(key);return true;}).sort((a,b)=>b.fit.score-a.fit.score||Date.parse(b.publishedAt)-Date.parse(a.publishedAt)).filter(i=>{if(!i.project)return true;const key=norm(i.project),n=projects.get(key)||0;projects.set(key,n+1);return n<2;});return balance(rows);}
+ function candidate(item){return !!item.project&&!noise.test(item.headline)&&development.test(item.headline);}
  function catalogMatch(title,results){if(!title)return null;const matches=(results||[]).filter(m=>norm(m.title)===norm(title)&&!m.adult);return matches.length===1?matches[0]:null;}
- return {norm,mentions,project,kind,label,summary,relevance,select,catalogMatch,explicit};
+ return {norm,mentions,project,kind,label,summary,relevance,select,catalogMatch,candidate,balance,explicit};
 });
