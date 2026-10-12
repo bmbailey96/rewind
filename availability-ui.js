@@ -7,7 +7,7 @@ function renderAvailability(movie,status,context={}) {
   const all=ReleaseModel.compactOffers(status.offers),cost=ReleaseModel.cost(status.offers,rentalBudget,status.stale);
   const chosen=all.filter(o=>o.kind==='physical'||o.kind==='free'||o.kind==='subscription'&&o.included||o.kind==='rent'&&['apple','amazon'].includes(ReleaseModel.storeKey(o.provider)));
   if(!chosen.length&&cost.offer)chosen.push(cost.offer);
-  const rows=(root,offers)=>{for(const o of offers){const row=document.createElement('div');row.className='offer-row';const name=document.createElement(o.link?'a':'span');name.textContent=o.provider;if(o.link){name.href=o.link;name.target='_blank';name.rel='noopener noreferrer';}const price=document.createElement('strong');price.textContent=o.kind==='physical'?(o.format||'Physical copy')+' · owned':o.kind==='subscription'?(o.included?'Included':'Subscription'):o.kind==='free'?'Free'+(o.adSupported?' with ads':''):typeof o.price==='number'?(o.kind==='buy'?'Buy ':'Rent ')+'$'+o.price.toFixed(2)+(o.format?' · '+o.format:''):'Price not supplied';row.append(name,price);root.appendChild(row);}};
+  const rows=(root,offers)=>{for(const o of offers){const row=document.createElement('div');row.className='offer-row';const name=document.createElement(o.link?'a':'span');name.textContent=o.provider;if(o.link){name.href=o.link;name.target='_blank';name.rel='noopener noreferrer';}const price=document.createElement('strong');price.textContent=o.kind==='physical'?(o.format||'Physical copy')+' · owned':o.kind==='subscription'?(o.included?'Included':'Subscription'):o.kind==='free'?'Free'+(o.adSupported?' with ads':''):typeof o.price==='number'?(o.kind==='buy'?'Buy ':'Rent ')+'$'+o.price.toFixed(2)+(o.format?' · '+o.format:''):(o.kind==='buy'?'Buy':o.kind==='rent'?'Rent':'Viewing option')+' · price not supplied';row.append(name,price);root.appendChild(row);}};
   const heading=document.createElement('h4');heading.textContent='Where to watch';wrap.appendChild(heading);rows(wrap,chosen.slice(0,3));
   if(!all.length)appendNote(wrap,'No confirmed viewing option yet.');
   const remaining=all.filter(o=>!chosen.slice(0,3).includes(o));
@@ -24,7 +24,7 @@ function renderRentalForecast(movie,status,context={}){
   const announced=(status.announcements||[]).filter(a=>a.kind==='price'&&Number.isFinite(a.price)&&a.price<=threshold&&a.date).sort((a,b)=>a.date.localeCompare(b.date))[0];
   if(announced){appendNote(root,'$'+announced.price.toFixed(2)+' on '+announced.provider+' · '+formatFilmDate(announced.date),'forecast-date');appendNote(root,'Announced price change. Check the store when the date arrives.');releaseSource(root,announced.source||'Announcement source',announced.sourceUrl);return root;}
   const cost=ReleaseModel.cost(status.offers,threshold,status.stale);
-  if(!status.stale&&['free','cheap'].includes(cost.band)){appendNote(root,'Already within your price.','forecast-date');return root;}
+  if(!status.stale&&['free','cheap'].includes(cost.band))return document.createDocumentFragment();
   if(!status.offers?.some(o=>o.kind==='rent'))return document.createDocumentFragment();
   const e=ReleaseModel.rentalForecast(movie,status,context.movies||[],discoveryWindow().today,threshold);
   if(!e){appendNote(root,cost.price===null?'Rental price not checked yet.':'No scheduled sale to wait for.','forecast-date');appendNote(root,cost.price===null?'A current rental quote is needed before estimating a drop.':'This is outside the premium rental period we can estimate. We’ll keep checking your price.');return root;}
@@ -39,7 +39,7 @@ function renderRentalForecast(movie,status,context={}){
   appendNote(root,e.confidence+' confidence · '+e.samples+' films · '+e.basis+'.','forecast-basis');appendNote(root,'Median and middle 60% of observed drop timings, measured from the first premium-price check. Checks can lag the actual change. Production-company matching is not verified US-distributor matching. This estimate will not trigger an alert.');return root;
 }
 function renderReleaseEvidence(movie,status,context={}){
-  const root=document.createElement('section');root.className='release-timeline';const heading=document.createElement('h4');heading.textContent='Release timeline';root.appendChild(heading);
+  const root=document.createElement('section');root.className='release-timeline';const heading=document.createElement('h4');heading.textContent='Date sources & pricing';root.appendChild(heading);
   const today=discoveryWindow().today;const details=status.details||movie.detailsSnapshot;const stage=ReleaseModel.stages(details,today);
   const row=(label,text,certainty,sourceLabel,sourceUrl)=>{const item=document.createElement('div');item.className='timeline-item';const name=document.createElement('strong');name.textContent=label;item.appendChild(name);const badge=document.createElement('span');badge.className='certainty '+certainty.toLowerCase();badge.textContent=certainty;item.appendChild(badge);appendNote(item,text,'timeline-text');if(sourceUrl)releaseSource(item,sourceLabel,sourceUrl);root.appendChild(item);return item;};
   const tmdbUrl=`https://www.themoviedb.org/movie/${movie.id}/releases`;

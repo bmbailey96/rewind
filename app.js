@@ -511,17 +511,17 @@ function openFilmDetails(movie,body,trigger,load){
   let dialog=document.getElementById('film-detail-dialog');
   if(!dialog){
     dialog=document.createElement('dialog');dialog.id='film-detail-dialog';dialog.className='film-detail-dialog';dialog.setAttribute('aria-labelledby','film-detail-title');document.body.appendChild(dialog);
-    dialog.addEventListener('close',()=>{document.body.classList.remove('film-dialog-open');if(dialog._returnFocus?.isConnected)dialog._returnFocus.focus({preventScroll:true});});
+    dialog.addEventListener('close',()=>{if(!document.querySelector('dialog[open]'))document.body.classList.remove('film-dialog-open');if(dialog._returnFocus?.isConnected)dialog._returnFocus.focus({preventScroll:true});});
     dialog.addEventListener('click',e=>{if(e.target===dialog){const r=dialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)dialog.close();}});
   }
   const head=document.createElement('header');head.className='film-detail-head';const title=document.createElement('h2');title.id='film-detail-title';title.textContent=movie.title;
-  const close=document.createElement('button');close.type='button';close.className='film-detail-close';close.textContent='×';close.setAttribute('aria-label','Close film details');close.onclick=()=>dialog.close();head.append(title,close);
+  const close=document.createElement('button');close.type='button';close.className='film-detail-close';close.textContent='×';close.setAttribute('aria-label','Close film details');close.onclick=()=>dialog.close();const identity=document.createElement('div');identity.className='film-detail-identity';const meta=document.createElement('p');meta.className='film-detail-meta';meta.textContent=[String(movie.release_date||'').slice(0,4),movie.runtime?movie.runtime+' min':null,movie.director].filter(Boolean).join(' · ');identity.append(title,meta);head.append(identity,close);
   dialog.replaceChildren(head,body);dialog._returnFocus=trigger;document.body.classList.add('film-dialog-open');if(!dialog.open)dialog.showModal();dialog.scrollTop=0;load();
 }
 function renderCard(movie, opts = {}) {
   const {context='discover',status=null,changed=false}=opts;
   const card=document.createElement('article');card.className='rental-card'+(movie.releaseFile?' release-card':'');card.dataset.movieId=movie.id;
-  const image=posterUrl(movie.poster_path);const poster=document.createElement(image?'img':'div');poster.className='card-poster'+(image?'':' poster-missing');if(image){poster.loading='lazy';poster.src=image;poster.alt=movie.title+' poster';poster.onerror=()=>{const fallback=document.createElement('div');fallback.className='card-poster poster-missing';fallback.textContent='NO POSTER ON FILE';poster.replaceWith(fallback);};}else{poster.textContent='NO POSTER ON FILE';}card.appendChild(poster);
+  const image=posterUrl(movie.poster_path);const poster=document.createElement(image?'img':'div');poster.className='card-poster'+(image?'':' poster-missing');if(image){poster.loading='lazy';poster.src=image;poster.alt=movie.title+' poster';poster.onerror=()=>{const fallback=document.createElement('div');fallback.className='card-poster poster-missing';fallback.textContent='POSTER UNAVAILABLE';poster.replaceWith(fallback);};}else{poster.textContent='NO POSTER ON FILE';}card.appendChild(poster);
   const title=document.createElement('h3');title.className='card-title';title.textContent=movie.title;card.appendChild(title);
   const meta=document.createElement('p');meta.className='card-meta';meta.textContent=[(movie.release_date||'').slice(0,4),movie.runtime?movie.runtime+' min':'Runtime not listed',movie.director].filter(Boolean).join(' · ');card.appendChild(meta);
   if(movie.pinned){const pinned=document.createElement('span');pinned.className='new-tag';pinned.textContent='PINNED';card.appendChild(pinned);}
@@ -554,6 +554,7 @@ function renderCard(movie, opts = {}) {
       body.appendChild(collection);
     }
   };
+  const artControl=element=>{element.tabIndex=0;element.setAttribute('role','button');element.setAttribute('aria-label','Film details: '+movie.title);element.setAttribute('aria-haspopup','dialog');element.setAttribute('aria-controls','film-detail-dialog');element.classList.add('poster-action');element.onclick=()=>details.click();element.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();details.click();}};};artControl(poster);if(poster.tagName==='IMG'){const failure=poster.onerror;poster.onerror=()=>{failure();artControl(card.querySelector('.card-poster'));};}
   details.onclick=()=>openFilmDetails(movie,body,details,async()=>{if(current){fillDetails();return;}body.textContent='Checking releases and viewing options…';try{current=await deriveStatus(movie);fillDetails();}catch{body.replaceChildren();const note=document.createElement('p');note.textContent='Could not load this film.';const retry=document.createElement('button');retry.textContent='Try again';retry.onclick=()=>details.click();body.append(note,retry);}});
   const actions=document.createElement('div');actions.className='card-actions';
   if(context==='watchlist'){
@@ -895,7 +896,7 @@ function showToast(msg,undo) {
   if(undo){const btn=document.createElement('button');btn.textContent='UNDO';btn.onclick=()=>{undo();el.hidden=true;};el.appendChild(btn);}
   el.hidden = false;
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => { el.hidden = true; }, undo ? 10000 : 3500);
+  toastTimer = setTimeout(() => { el.hidden = true; }, undo ? 20000 : 3500);
 }
 
 document.getElementById('prune-btn').addEventListener('click', () => {

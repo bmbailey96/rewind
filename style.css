@@ -1255,3 +1255,45 @@ html{scrollbar-gutter:stable}body.film-dialog-open{overflow:hidden}
 
 /* The collection drawer stays useful before film 250. */
 .drawer-genre-fold{margin:12px 0;border-bottom:1px solid #34443b}.drawer-genre-fold>summary{min-height:44px;box-sizing:border-box;padding:12px 0;color:#d8bd80;font-size:13px;cursor:pointer}.drawer-genres{padding:0 0 14px}.film-drawer>input[type=search]{box-sizing:border-box;width:100%;min-height:44px;padding:12px;background:#101916;border:1px solid #52645b;border-radius:4px;color:#e1e8df;font-size:14px}.film-drawer>.drawer-note[role=status]{font-size:12px;margin:10px 0;color:#aabbb0}.drawer-actions .signal-button{min-height:44px!important}
+
+/* Film interface audit: compact choices, readable controls, and stable dialogs. */
+.counter-welcome{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:14px 0 20px}
+.counter-welcome>div{flex:1;min-width:0}.counter-welcome #choose-tonight{flex:0 0 auto;width:auto;min-height:44px;margin:0;padding:12px 18px;border-radius:4px;background:#8abda4;color:#101b17}
+.tonight-card{align-items:start}.tonight-card-body{min-width:0}.tonight-actions{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin-top:10px}
+.tonight-actions .watch-link{margin:0;min-height:44px;display:inline-flex;align-items:center;padding:9px 15px}
+.tonight-actions .film-details-trigger{width:auto;min-height:44px;margin:0;padding:9px 0;border:0!important;clear:none;font-size:12px}
+.tonight-reason{margin:6px 0 0}.tonight-card-body .tonight-price{display:block;line-height:1.5}
+.rental-card>.poster-action{cursor:pointer}.poster-action:focus-visible{outline:3px solid #dbb36c;outline-offset:3px}.poster-action:hover{filter:brightness(1.07)}
+button:focus-visible,a:focus-visible,summary:focus-visible{outline:2px solid #dbb36c;outline-offset:3px}
+.card-actions .watch-link,.card-actions .track-action{border-radius:4px}.card-actions .hide-action{color:#bfcdc2!important}
+.film-detail-dialog{overflow:hidden}.film-detail-dialog[open]{display:flex;flex-direction:column}.film-detail-head{flex:0 0 auto;position:relative;top:auto;margin:0;min-width:0}
+.film-detail-identity{min-width:0}.film-detail-meta{font-size:12px;color:#b2c3b7;margin:5px 0 0;line-height:1.5}.film-detail-meta:empty{display:none}
+.film-detail-dialog>.film-details-body{min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:0 6px 0 0;margin-top:8px;scrollbar-width:thin}
+.film-detail-dialog .offer-row{padding:12px 0;min-height:44px;align-items:start;gap:12px;font-size:13px;line-height:1.5}
+.film-detail-dialog .offer-row a{min-height:32px;display:flex;align-items:center;text-underline-offset:3px}.film-detail-dialog .offer-row strong{font-size:12px;line-height:1.5;padding-top:6px}
+.film-detail-dialog summary{min-height:44px;box-sizing:border-box;display:list-item;padding:12px 2px;font-size:13px;line-height:1.5}.film-detail-dialog h4{font-size:15px;margin:20px 0 10px}.film-detail-dialog p{line-height:1.6}
+.film-drawer{padding:0 20px 20px}.drawer-head{position:sticky;top:0;z-index:3;margin:0 -20px;padding:16px 20px;background:#151b19;border-bottom:1px solid #34443b}.drawer-head h2{min-width:0;font-size:16px;line-height:1.4;margin:0}.drawer-head button{min-height:44px;flex:none}
+.drawer-film{align-items:start}.drawer-film .drawer-actions{display:flex;flex-wrap:wrap;gap:8px}.drawer-genre-fold>summary{min-height:44px}
+.settings-section-title{font-size:12px;font-weight:650;letter-spacing:.08em;text-transform:uppercase;color:#d8bc7d;margin:28px 0 10px}.settings-group{margin:8px 0}.settings-group>summary{padding:13px 14px!important;line-height:1.4}.settings-group[open]>summary{background:#18221e}.settings-group .import-block{padding:16px!important}.settings-group .import-note{font-size:13px;line-height:1.65}
+.calendar-empty{padding:22px 16px 26px;grid-column:1/-1}.calendar-empty .board-empty{padding:0;margin:0 0 14px;font-size:14px;line-height:1.55}.calendar-empty button{min-height:44px;font-size:12px;padding:10px 16px}
+.anniversary-film:not(:has(img)){grid-template-columns:minmax(0,1fr)!important}.anniversary-film:not(:has(img)) .occasion-caption{grid-column:1;margin:0;min-width:0}
+.anniversary-film .occasion-caption>span{overflow-wrap:normal;word-break:normal}.anniversary-day .anniversary-film{padding:7px 5px}.anniversary-day .occasion-caption>small:first-child{letter-spacing:.025em;line-height:1.4}.occasion-more{min-height:36px;padding:8px 4px}
+.anniversary-dialog{padding:0 20px 20px}.anniversary-dialog>.film-detail-head{position:sticky;top:0;background:#17211d;z-index:3}.anniversary-dialog>.film-detail-head h2{font-size:20px}.anniversary-dialog>.anniversary-film{width:100%;box-sizing:border-box;padding:12px 0;border-bottom:1px solid #34443b;text-align:left}
+.anniversary-dialog>.signal-category{margin:20px 0 10px}.anniversary-dialog>.watch-link,.anniversary-dialog>.signal-button{display:inline-flex;min-height:44px;align-items:center;margin:8px 8px 0 0}
+.earlier-occasions{margin-top:22px;border-top:1px solid #34443b}.earlier-occasions>summary{min-height:44px;padding:12px 0;box-sizing:border-box;color:#adc4b5;cursor:pointer}
+.anniversary-agenda-day.is-today{border-left:2px solid #dbb36c;padding-left:12px}.anniversary-agenda-day.is-today>h4:after{content:' · Today';color:#dbb36c}
+@media(max-width:700px){
+ .counter{padding-top:18px!important}.counter-inner{padding-bottom:0}.shop-name{font-size:34px!important;line-height:1.1;margin-bottom:10px}.shop-tag{margin:0 0 20px!important;font-size:12px}.tabs{gap:12px;margin-top:0}.tabs .tab-btn{min-height:44px;padding:12px 10px}.header-settings{top:12px!important;right:14px;min-width:44px;min-height:44px}
+ .panel-head{align-items:center;gap:10px;margin-bottom:14px}.panel-head h2{font-size:23px}.panel-head .count-stamp{font-size:9px;line-height:1.5;text-align:right}.hub-lead{font-size:13px;line-height:1.5;margin:0 0 16px}
+ .counter-welcome{display:flex;flex-wrap:wrap;gap:12px;padding:8px 0 16px}.counter-welcome #choose-tonight{margin:0;font-size:11px;padding:11px 14px}
+ #tonight-shelf{padding:14px}.tonight-card{padding:12px;grid-template-columns:64px minmax(0,1fr);gap:12px}.tonight-card>img,.tonight-poster-missing{width:64px!important;height:96px!important;max-width:64px;max-height:96px}.tonight-card h4{font-size:16px;line-height:1.3;margin-bottom:5px}.tonight-price{font-size:12px!important}.tonight-card-body .card-meta{font-size:11px}.tonight-reason{font-size:12px;line-height:1.5}.tonight-actions{gap:8px 12px;margin-top:8px}
+ .discover-intents{gap:4px}.discover-intents button{font-size:12px;padding:11px 8px;min-height:44px}.discovery-stages{gap:4px 14px;margin:14px 0}.discovery-stages button{padding:10px 0;font-size:11px;min-height:44px}.flow-note{font-size:13px;line-height:1.5;margin:10px 0 16px}
+ .calendar-kind-switch{gap:16px;margin:8px 0 12px}.calendar-kind{padding:10px 0;min-height:44px;font-size:11px}.calendar-simple-tools{gap:8px 12px}.calendar-scope-tabs button{min-height:44px;padding:10px 4px;font-size:12px}.calendar-simple-tools input{font-size:14px}.calendar-simple-tools .text-action{min-height:44px;font-size:12px}
+ .board-head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;padding:14px 12px}.board-head>div:first-child{grid-column:1/-1}.board-head h3{font-size:16px;line-height:1.4}.calendar-view-switch{margin:0;gap:4px}.calendar-view-switch button,.board-nav button{box-sizing:border-box;min-height:44px;margin:0;padding:8px 11px;font-size:11px}.board-nav{display:flex;gap:4px}.board-nav button{min-width:40px}.board-nav #calendar-today{padding-left:10px;padding-right:10px}
+ .calendar-mobile-card{padding:13px}.calendar-mobile-card .calendar-film-name{font-size:16px}.calendar-mobile-card .calendar-source-note{margin:7px 0;font-size:12px}.calendar-mobile-card .calendar-film-actions button{min-height:44px!important}.calendar-inline-details>button{min-height:44px}
+ .anniversary-head{gap:10px;flex-wrap:wrap}.anniversary-head h3{font-size:19px}.anniversary-nav{display:flex;gap:4px}.anniversary-nav button{min-height:44px;padding:10px 12px;font-size:11px}.anniversary-agenda .anniversary-film:not(:has(img)){min-height:0;padding:6px 0}.anniversary-agenda .occasion-caption>span{font-size:17px;line-height:1.4}.anniversary-agenda .occasion-caption>small{line-height:1.5}.anniversary-agenda-day{padding:12px 0}
+}
+@media(max-width:360px){
+ .panel-head{align-items:flex-start}.watchlist-navigation{flex-basis:100%}.calendar-view-switch button,.board-nav button{padding:8px;font-size:10px}.board-nav button{min-width:36px}.board-head{padding:12px 9px;gap:8px}.tonight-card{grid-template-columns:56px minmax(0,1fr);gap:10px}.tonight-card>img,.tonight-poster-missing{width:56px!important;height:84px!important}.tonight-actions .watch-link{padding:9px 12px}
+ .film-detail-dialog{width:calc(100vw - 16px);padding:0 14px 14px}.film-detail-head h2{font-size:18px}.film-detail-dialog .offer-row{grid-template-columns:minmax(0,1fr)!important;gap:0}.film-detail-dialog .offer-row strong{text-align:left;padding-top:0}
+}
