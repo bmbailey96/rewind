@@ -5,7 +5,7 @@ const MovieNews=(()=>{
  const follows=()=>hubState.newsFollows||[],context=()=>({tracked:watchlist,taste:hubState.taste,follows:follows()});
  function save(){persistHubState();scheduleSync();window.dispatchEvent(new Event('rewind:state'));}
  function button(text,fn,cls='secondary'){const b=el('button',text,cls);b.type='button';b.onclick=fn;return b;}
- function link(text,url,cls){const a=el('a',text,cls);a.href=HubModel.safeLink(url);a.target='_blank';a.rel='noopener noreferrer';return a;}
+ function link(text,url,cls){const a=el('a',text,cls);a.href=HubModel.safeLink(url)||'#';a.target='_blank';a.rel='noopener noreferrer';return a;}
  function followFor(item){return follows().find(f=>f.articleId===item.id||item.project&&MovieNewsModel.norm(f.title)===MovieNewsModel.norm(item.project));}
  function isTracked(item){return item.project&&watchlist.some(m=>MovieNewsModel.norm(m.title)===MovieNewsModel.norm(item.project));}
  async function catalogFilm(title,maker=null){try{const match=MovieNewsModel.catalogMatch(title,await searchMovies(title));if(!match)return null;const full=await fetchMovieDetails(match.id);if(MovieNewsModel.norm(full.title)!==MovieNewsModel.norm(title))return null;if(maker&&!(full.credits?.crew||[]).some(p=>['Director','Writer','Screenplay','Story'].includes(p.job)&&MovieNewsModel.norm(p.name)===MovieNewsModel.norm(maker)))return null;return {...match,...full};}catch{return null;}}

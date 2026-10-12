@@ -13,6 +13,8 @@ const row=(headline)=>({id:headline,headline,url:'https://indiewire.com/news/1',
 assert.equal(M.relevance(row('A Real Director announces a new film'),context).score,8);
 assert.equal(M.relevance(row('A Real Director announces a new film'),{taste:[{...taste[0],rating:2}]}),null,'Low rating is not used as positive evidence');
 assert.equal(M.relevance(row('NEON announces an ordinary movie'),context),null,'Distributor alone is not taste');
+assert.equal(M.relevance(row('41 Things We Learned from a Film Commentary'),{tracked:[{title:'Things'}]}),null,'An ordinary word is not a film title match');
+assert.equal(M.kind('A trailer may be hiding a connection'),'rumor','Speculation is not promoted to reporting');
 assert.equal(M.relevance(row("New 'The Restoration at Grayson Manor' Trailer"),context),null,'Film title is not evidence of a restoration');
 assert.equal(M.relevance(row('A Real Director revisiting old film'),context),null);
 assert.equal(M.relevance(row('‘Waiting’ gets distribution'),{tracked:[{title:'Waiting'}]}).score,11,'Watchlist conveys interest, not affection');
