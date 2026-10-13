@@ -701,13 +701,15 @@ for(const id of ['discover-grid','search-grid'])browseObserver.observe(document.
 updateBrowseDismissControl();
 
 let watchlistSort = 'cost';
-let watchlistScope='recent',watchlistLimit=60,watchlistResults=[];
+const WATCHLIST_PAGE_SIZE=24, WATCHLIST_BACKGROUND_CHECKS=6;
+let watchlistScope='recent',watchlistLimit=WATCHLIST_PAGE_SIZE,watchlistResults=[];
+const watchlistBackgroundChecked=new Set();
 let watchlistMatching=false,watchlistMatchProgress='';
 function repaintWatchlist(){paintWatchlist(watchlistResults.filter(r=>watchlist.some(m=>m.id===r.entry.id)&& (watchlistScope==='all'||WatchlistModel.recent(r.entry))));}
 function scopedWatchlist(){return watchlist.filter(m=>watchlistScope==='all'||WatchlistModel.recent(m));}
 function renderImportReview(){const box=document.getElementById('watchlist-import-review');if(!box)return;const rows=hubState.watchlistUnmatched||[],pending=rows.filter(m=>watchlistScope==='all'||WatchlistModel.recent({addedAt:WatchlistModel.addedAt(m)}));box.replaceChildren();if(!rows.length)return;const details=document.createElement('details'),summary=document.createElement('summary');summary.textContent=watchlistMatching?watchlistMatchProgress:rows.length+' titles need a match';details.appendChild(summary);const note=document.createElement('p');note.textContent='Saved from your May 27, 2026 Letterboxd archive. Availability stays unknown until the film is verified.';details.appendChild(note);for(const m of pending){const row=document.createElement('p');row.textContent=m.title+' ('+m.year+') · added '+m.addedDate;details.appendChild(row);}box.appendChild(details);}
-document.querySelectorAll('[data-watchlist-scope]').forEach(btn=>btn.onclick=()=>{watchlistScope=btn.dataset.watchlistScope;watchlistLimit=60;renderWatchlist();});
-document.getElementById('watchlist-more').onclick=()=>{watchlistLimit+=60;repaintWatchlist();};
+document.querySelectorAll('[data-watchlist-scope]').forEach(btn=>btn.onclick=()=>{watchlistScope=btn.dataset.watchlistScope;watchlistLimit=WATCHLIST_PAGE_SIZE;renderWatchlist();});
+document.getElementById('watchlist-more').onclick=()=>{watchlistLimit+=WATCHLIST_PAGE_SIZE;renderWatchlist();};
 let costFilter='all';
 let rentalBudget=Number(localStorage.getItem('rewind-rental-budget-v1')??7.99);
 if(!Number.isFinite(rentalBudget)||rentalBudget<0||rentalBudget>100)rentalBudget=7.99;
@@ -716,58 +718,99 @@ localStorage.setItem('rewind-last-visit-v1',String(Date.now()));
 let watchlistRequest = 0;
 
 async function renderWatchlist(force = false, reuse = false) {
-  const request = ++watchlistRequest;
+  const request=++watchlistRequest;
   const empty=document.getElementById('watchlist-empty');
   const loading=document.getElementById('watchlist-load-status');
+  const statusEl=document.getElementById('card-check-status');
   document.getElementById('watchlist-count').textContent=watchlist.length+' on your watchlist'+((hubState.watchlistUnmatched||[]).length?' · '+hubState.watchlistUnmatched.length+' awaiting match':'');
   empty.hidden=watchlist.length>0;
   const batch=scopedWatchlist().sort((a,b)=>Number(!!b.pinned)-Number(!!a.pinned)||(b.addedAt||0)-(a.addedAt||0));
-  const progress=new Map(batch.map(entry=>[entry.id,{entry,status:entry.availabilitySnapshot?{...entry.availabilitySnapshot,stale:reuse||!force&&WatchlistModel.freshSnapshot(entry)?entry.availabilitySnapshot.stale:true}:{code:'nodata',kind:'unknown',label:reuse?'Availability not checked':'Checking availability',offers:[],pending:!reuse},changed:false}]));let checked=0,networkChecks=0,lastPaintAt=Date.now(),lastCheckpointAt=Date.now(),receiptsDirty=false;
+  // Sorting and filters still consider the entire collection. Fetching does not.
+  const progress=new Map(batch.map(entry=>{
+    const saved=entry.availabilitySnapshot;
+    return [entry.id,{entry,status:saved?{...saved,stale:!WatchlistModel.freshSnapshot(entry)}:{code:'nodata',kind:'unknown',label:'Not checked yet',offers:[],stale:true},changed:false}];
+  }));
   document.querySelectorAll('[data-watchlist-scope]').forEach(btn=>btn.setAttribute('aria-pressed',String(btn.dataset.watchlistScope===watchlistScope)));
   document.getElementById('watchlist-scope-note').textContent=watchlistScope==='recent'?'Added in the last six months.':'Your full watchlist.';
-  document.getElementById('watchlist-more').hidden=batch.length<=watchlistLimit;
   renderImportReview();
-  if(!watchlist.length){paintWatchlist([]);loading.textContent='';document.getElementById('filter-empty').hidden=true;document.getElementById('card-check-status').textContent='';document.getElementById('card-summary').textContent='';return;}
-  watchlistResults=[...progress.values()];repaintWatchlist();if(!reuse)loading.textContent='Checking offers and prices across '+batch.length+' film'+(batch.length===1?'':'s')+'…';
-  document.getElementById('card-check-status').textContent=reuse?'Showing saved availability.':'Checking US providers…';
-  const results = (await mapLimited(batch,4,async entry=>{
+  watchlistResults=[...progress.values()];
+  repaintWatchlist(); // First paint uses local data, without waiting on GitHub or film APIs.
+  if(!batch.length){
+    loading.textContent='';
+    statusEl.textContent='Saved results · no films in this view.';
+    window.dispatchEvent(new Event('rewind:watchlist-ready'));
+    return;
+  }
+  const page=WatchlistModel.page(watchlistResults,{sort:watchlistSort,filter:costFilter,budget:rentalBudget,limit:watchlistLimit,model:ReleaseModel});
+  const displayed=page.rows.map(r=>r.entry);
+  const targets=force?displayed:reuse?[]:displayed.filter(entry=>!WatchlistModel.freshSnapshot(entry)&&!watchlistBackgroundChecked.has(entry.id)).slice(0,WATCHLIST_BACKGROUND_CHECKS);
+  if(!targets.length){
+    loading.textContent='';
+    statusEl.textContent='Showing saved results. Check shown films for current availability.';
+    window.dispatchEvent(new Event('rewind:watchlist-ready'));
+    return;
+  }
+  if(!force)targets.forEach(entry=>watchlistBackgroundChecked.add(entry.id));
+  loading.textContent=(force?'Checking shown films':'Updating a few saved films')+' · 0 of '+targets.length;
+  statusEl.textContent=force?'Checking '+targets.length+' displayed films, not the whole watchlist.':'Loading saved films first · limited background checks.';
+  // Give iOS Safari a frame to draw the cards before beginning any API work.
+  if(!force){
+    await new Promise(resolve=>setTimeout(resolve,700));
+    if(request!==watchlistRequest)return;
+  }
+  let checked=0,receiptsDirty=false;
+  const results=await mapLimited(targets,force?3:2,async entry=>{
     if(request!==watchlistRequest)return null;
     let status;
-    const lookupMovie={...entry};const beforeAvailability=entry.availabilityBaseline||(!entry.availabilitySnapshot?.stale?entry.availabilitySnapshot:null);
-    try {
-      if((reuse||!force&&WatchlistModel.freshSnapshot(entry))&&entry.availabilitySnapshot){
-        const cached=entry.availabilitySnapshot;
-        const owned=hubState.taste.find(m=>m.id===entry.id&&m.owned);const remote=(cached.offers||[]).filter(o=>o.kind!=='physical').map(o=>o.kind==='subscription'?{...o,included:RewindModel.included(o.provider,myServices)}:o);
-        const offers=[...(owned?HubModel.shelfStatus(owned).offers:[]),...remote];status={...cached,...(owned?HubModel.shelfStatus(owned):RewindModel.summary(offers)||{code:'nodata',kind:'unknown',label:'No current offer'}),physical:!!owned,offers,stale:owned?false:cached.physical?!!cached.remoteStale:cached.stale};lookupMovie.availabilitySnapshot=status;
-      }else if(reuse){status=progress.get(entry.id).status;lookupMovie.availabilitySnapshot=entry.availabilitySnapshot;}else{networkChecks++;status=await deriveStatus(lookupMovie,force);}
+    const lookupMovie={...entry};
+    const beforeAvailability=entry.availabilityBaseline||(!entry.availabilitySnapshot?.stale?entry.availabilitySnapshot:null);
+    try{
+      status=await deriveStatus(lookupMovie,force);
+    }catch{
+      status=entry.availabilitySnapshot?{...entry.availabilitySnapshot,stale:true}:{code:'nodata',kind:'unknown',label:'Availability could not be checked',offers:[],stale:true};
+      lookupMovie.availabilitySnapshot=status;
     }
-    catch {status={code:'nodata',kind:'unknown',label:'Availability could not be checked',offers:[],stale:true};}
-    if(request !== watchlistRequest) return {entry,status,changed:false,prevLabel:entry.lastStatusLabel};
-    if(!reuse&&!status.stale){let receiptChanged=false;for(const receipt of CounterModel.changes(beforeAvailability,status,Date.now())){const record={...receipt,movieId:entry.id,title:entry.title,id:[entry.id,receipt.type,receipt.key,status.quoteCheckedAt||status.checkedAt].join(':')};if(!hubState.changeReceipts.some(r=>r.id===record.id)){hubState.changeReceipts.push(record);receiptChanged=true;}}entry.availabilityBaseline={...status};if(receiptChanged)receiptsDirty=true;}
+    if(request!==watchlistRequest)return null;
+    if(!status.stale){
+      let receiptChanged=false;
+      for(const receipt of CounterModel.changes(beforeAvailability,status,Date.now())){
+        const record={...receipt,movieId:entry.id,title:entry.title,id:[entry.id,receipt.type,receipt.key,status.quoteCheckedAt||status.checkedAt].join(':')};
+        if(!hubState.changeReceipts.some(r=>r.id===record.id)){hubState.changeReceipts.push(record);receiptChanged=true;}
+      }
+      entry.availabilityBaseline={...status};
+      if(receiptChanged)receiptsDirty=true;
+    }
     const priorIncluded=typeof entry.lastFreshIncluded==='boolean'?entry.lastFreshIncluded:entry.availabilitySnapshot&&!entry.availabilitySnapshot.stale?HubModel.isIncluded(entry.availabilitySnapshot):null;
-    Object.assign(entry,{availabilitySnapshot:lookupMovie.availabilitySnapshot,watchmodeCache:lookupMovie.watchmodeCache,storePriceCache:lookupMovie.storePriceCache,detailsSnapshot:lookupMovie.detailsSnapshot,priceHistory:lookupMovie.priceHistory,runtime:lookupMovie.runtime??entry.runtime,director:lookupMovie.director||entry.director,overview:lookupMovie.overview||entry.overview});
-    const fingerprint = status.offers?.map(o=>`${o.kind}:${o.provider}:${o.format || ''}:${o.price ?? ''}`).sort().join('|') || status.label;
-    const changed = !status.stale && entry.lastAvailabilityKey != null && entry.lastAvailabilityKey !== fingerprint;
+    Object.assign(entry,{availabilitySnapshot:lookupMovie.availabilitySnapshot||status,watchmodeCache:lookupMovie.watchmodeCache,storePriceCache:lookupMovie.storePriceCache,detailsSnapshot:lookupMovie.detailsSnapshot,priceHistory:lookupMovie.priceHistory,runtime:lookupMovie.runtime??entry.runtime,director:lookupMovie.director||entry.director,overview:lookupMovie.overview||entry.overview});
+    const fingerprint=status.offers?.map(o=>`${o.kind}:${o.provider}:${o.format||''}:${o.price??''}`).sort().join('|')||status.label;
+    const changed=!status.stale&&entry.lastAvailabilityKey!=null&&entry.lastAvailabilityKey!==fingerprint;
     const prevLabel=entry.lastStatusLabel;
-    if (!status.stale) {
+    if(!status.stale){
       const included=HubModel.isIncluded(status);
       if(priorIncluded===false&&included)entry.includedSince=Date.now();
       entry.lastFreshIncluded=included;
-      if(changed || !entry.lastStatusLabel) entry.statusChangedAt=Date.now();
+      if(changed||!entry.lastStatusLabel)entry.statusChangedAt=Date.now();
       if(changed)entry.lastChange={at:Date.now(),from:prevLabel,to:status.label};
       entry.lastStatusCode=status.code;entry.lastStatusLabel=status.label;entry.lastAvailabilityKey=fingerprint;
     }
-    const result={entry,status,changed,prevLabel};progress.set(entry.id,result);checked++;
-    if(!reuse){loading.textContent='Checking prices · '+checked+' of '+batch.length;if(checked%8===0&&Date.now()-lastPaintAt>=500){watchlistResults=[...progress.values()];repaintWatchlist();lastPaintAt=Date.now();}if(networkChecks&&Date.now()-lastCheckpointAt>=15000){saveWatchlist(false);if(receiptsDirty){persistHubState();receiptsDirty=false;}lastCheckpointAt=Date.now();}}
+    const result={entry,status,changed,prevLabel};
+    progress.set(entry.id,result);
+    checked++;
+    loading.textContent=(force?'Checking shown films':'Updating a few saved films')+' · '+checked+' of '+targets.length;
     return result;
-  })).filter(r=>r&&watchlist.some(m=>m.id===r.entry.id));
-  if (request !== watchlistRequest) return;
-  document.getElementById('card-check-status').textContent=reuse?'Showing saved availability. Check availability to refresh.':'US providers checked '+new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'})+(results.some(r=>r.status.stale)?' · '+results.filter(r=>r.status.stale).length+' previous checks':'');
+  });
+  if(request!==watchlistRequest)return;
+  // Repaint once at the end. Rebuilding cards after every few network responses
+  // was repeatedly resetting image loads and scroll positions on mobile.
+  watchlistResults=[...progress.values()];
+  repaintWatchlist();
+  const failed=results.filter(r=>r?.status?.stale).length;
+  statusEl.textContent=checked+' film'+(checked===1?'':'s')+' checked'+(failed?' · '+failed+' previous or unavailable results':'')+' · remaining films use saved data.';
   if(receiptsDirty)persistHubState();
   saveWatchlist();
-
-  watchlistResults=results;repaintWatchlist();window.dispatchEvent(new Event('rewind:watchlist-ready'));if(!reuse&&networkChecks)scheduleSync();
-  document.getElementById('watchlist-load-status').textContent='';
+  window.dispatchEvent(new Event('rewind:watchlist-ready'));
+  if(checked)scheduleSync();
+  loading.textContent='';
 }
 function paintWatchlist(results){
   for(const id of ['watch-now','paid','waiting']){document.getElementById(id+'-grid').replaceChildren();document.getElementById(id+'-section').hidden=true;}
@@ -786,10 +829,10 @@ function paintWatchlist(results){
   window.dispatchEvent(new Event('rewind:card-rendered'));
 }
 document.getElementById('rental-budget').value=rentalBudget;
-document.getElementById('rental-budget').onchange=e=>{const value=Number(e.target.value);if(e.target.value===''||!Number.isFinite(value)||value<0||value>100)return;rentalBudget=value;localStorage.setItem('rewind-rental-budget-v1',String(value));scheduleSync();watchlistLimit=60;repaintWatchlist();};
-document.getElementById('reset-cost-filter').onclick=()=>{costFilter='all';watchlistLimit=60;repaintWatchlist();};
-document.querySelectorAll('[data-cost-filter]').forEach(btn=>btn.onclick=()=>{costFilter=btn.dataset.costFilter;watchlistLimit=60;repaintWatchlist();});
-document.getElementById('sort-select').addEventListener('change',e=>{watchlistSort=e.target.value;watchlistLimit=60;repaintWatchlist();});
+document.getElementById('rental-budget').onchange=e=>{const value=Number(e.target.value);if(e.target.value===''||!Number.isFinite(value)||value<0||value>100)return;rentalBudget=value;localStorage.setItem('rewind-rental-budget-v1',String(value));scheduleSync();watchlistLimit=WATCHLIST_PAGE_SIZE;repaintWatchlist();};
+document.getElementById('reset-cost-filter').onclick=()=>{costFilter='all';watchlistLimit=WATCHLIST_PAGE_SIZE;repaintWatchlist();};
+document.querySelectorAll('[data-cost-filter]').forEach(btn=>btn.onclick=()=>{costFilter=btn.dataset.costFilter;watchlistLimit=WATCHLIST_PAGE_SIZE;repaintWatchlist();});
+document.getElementById('sort-select').addEventListener('change',e=>{watchlistSort=e.target.value;watchlistLimit=WATCHLIST_PAGE_SIZE;repaintWatchlist();});
 
 function renderTrackingNote(movie,status){
  const section=document.createElement('section');section.className='film-tracking-note';const heading=document.createElement('h4');heading.textContent=watchlist.some(m=>m.id===movie.id)?'What we’re watching for':'Next development';section.appendChild(heading);
@@ -946,7 +989,7 @@ async function loadWatchlistBaseline(){
 }
 async function resolveWatchlistMatches(){
  if(watchlistMatching||!(hubState.watchlistUnmatched||[]).length)return;
- watchlistMatching=true;const pending=[...hubState.watchlistUnmatched];let checked=0,matched=0,failures=0,stopped=false;
+ watchlistMatching=true;const pending=[...hubState.watchlistUnmatched].slice(0,12);let checked=0,matched=0,failures=0,stopped=false;
  watchlistMatchProgress='Matching Letterboxd titles · 0 of '+pending.length;renderImportReview();
  await mapLimited(pending,4,async row=>{
   if(stopped)return;const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),20000);
@@ -970,6 +1013,7 @@ async function resolveWatchlistMatches(){
 // ---------- init ----------
 
 async function init() {
+  renderWatchlist(false,true); // Do not block the first screen on cross-device sync.
   if (localStorage.getItem(GH_TOKEN_KEY)) {
     const statusEl = document.getElementById('sync-status');
     if (statusEl) statusEl.textContent = 'Syncing...';
@@ -991,7 +1035,7 @@ async function init() {
   // Discover is loaded on first entry, not alongside the initial price scan.
   const discoverTab=document.querySelector('[data-tab=discover]');
   discoverTab.addEventListener('click',()=>{if(!document.getElementById('discover-grid').children.length)renderDiscover().catch(err=>showToast(err.message));},{once:true});
-  resolveWatchlistMatches().catch(()=>{watchlistMatching=false;renderImportReview();});
+  setTimeout(()=>resolveWatchlistMatches().catch(()=>{watchlistMatching=false;renderImportReview();}),2200);
 }
 
 // Alert and browse controls are initialized below before the first render.
