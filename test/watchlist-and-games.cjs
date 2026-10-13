@@ -64,6 +64,13 @@ assert.equal(legacyManual.followRelease,true);
 assert.equal(imported.followRelease,undefined,'Letterboxd alone never starts special monitoring');
 assert.equal(declined.followRelease,false,'Do not resurrect an intentional unfollow');
 assert.equal(ambiguous.followRelease,undefined,'Do not guess a follow from a recent release date');
+const reclassifiedManual={id:17,source:'Letterboxd watchlist',letterboxdWatchlist:true,addedAt:Date.parse('2026-09-01')};
+const importedReclassified={id:18,source:'Letterboxd watchlist',letterboxdWatchlist:true,importedAt:Date.parse('2026-10-12'),addedAt:Date.parse('2026-09-01')};
+assert.equal(W.backfillReleaseFollows([reclassifiedManual,importedReclassified]),1,'Recover old Rewind saves whose source was overwritten by CSV import');
+assert.equal(reclassifiedManual.followRelease,true);
+assert.equal(importedReclassified.followRelease,undefined,'CSV-only additions are not assumed to have been manually followed');
+assert.equal(W.backfillReleaseFollows([{id:1204680,source:'Rewind watchlist',addedAt:Date.now()}]),0,'Do not auto-follow seeded catalog entry');
+
 const day=86400000,releaseWatchToday=new Date().toISOString().slice(0,10);
 const tomorrowWatch=new Date(Date.now()+2*day).toISOString().slice(0,10);
 const theatricalWatch=new Date(Date.now()+20*day).toISOString().slice(0,10);
