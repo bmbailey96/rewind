@@ -1,6 +1,6 @@
 const assert=require('assert/strict'),fs=require('fs'),vm=require('vm'),W=require('../watchlist-model'),G=require('../games/game-history');
 const now=Date.parse('2026-10-09T18:00:00Z');
-assert(W.recent({addedAt:W.addedAt({Date:'2026-05-27'})},now));assert(!W.recent({addedAt:W.addedAt({Date:'2025-09-02'})},now));assert.equal(W.addedAt({}),null);assert(!W.recent({addedAt:null},now));
+assert.equal(W.addedAt({Date:'2026-05-27'}),Date.parse('2026-05-27T12:00:00Z'));assert.equal(W.addedAt({}),null);
 const old={id:1,pinned:true,addedAt:12,availabilitySnapshot:{offers:[{price:3}]}};const merged=W.merge([old],[{id:1,title:'Fixture',addedDate:'2026-01-01'},{id:2,title:'Second',addedDate:'2025-01-01'},{title:'Ambiguous',unresolved:true}]);assert.equal(merged.length,2);assert.equal(merged[0],old);assert.equal(merged[1].addedAt,Date.parse('2025-01-01T12:00:00Z'));assert.equal(merged[1].rating,undefined);
 const fixture=[{name:'Fixture',bucket:'Never Started',genre:'Surreal puzzle',type:'Puzzle',energy:'low'},{name:'Second',bucket:'Never Started',genre:'Surreal puzzle',type:'Puzzle',energy:'low'}];const pool=G.merge(fixture,[{name:'Fixture™',platform:'PS5',minutes:600,lastPlayed:'2021-01-01'},{name:'Fixture',platform:'PS5',minutes:10},{name:'Fixture',platform:'PS4',minutes:60},{name:'Netflix',platform:'PS5',minutes:10000}]);assert.equal(pool.length,2);assert.equal(pool[0].history.minutes,660);assert.equal(pool[0].bucket,'Played · progress unknown');assert.equal(pool[0].history.duplicateEntries,1);assert(G.evidence(pool[1],pool).score>0);assert(!pool[0].finished);assert.equal(G.key('The Stanley Parable: Ultra Deluxe'),G.key('Stanley Parable: Ultra Deluxe'));
 const c={window:{}};vm.runInNewContext(fs.readFileSync(__dirname+'/../games/playstation-stats.js','utf8'),c);assert.equal(c.window.PlayStationStats.records.length,127);const data=c.window.PlayStationStats.records;assert.equal(data.filter(r=>r.lastPlayed&&r.firstPlayed).length,127);assert.equal(data.find(r=>r.name==='Stray').minutes,5100);assert(data.find(r=>r.name==='CONTROL Resonant').cover.startsWith('https://image.api.playstation.com/'));
@@ -27,12 +27,27 @@ const cacheAt=Date.now(),cacheFilm={availabilitySnapshot:{checkedAt:cacheAt,quot
 const importedFilm={id:80,title:'Imported',release_date:'2001-01-01',source:'Letterboxd watchlist'},baselineFilm={id:81,title:'Baseline',release_date:'2002-01-01'},newFilm={id:82,title:'The "Odd", Film',release_date:'2027-01-01',source:'Rewind watchlist'};assert.deepEqual(W.rewindAdditions([importedFilm,baselineFilm,newFilm],[W.sourceKey(baselineFilm)]),[newFilm]);const csv=W.exportCSV([importedFilm,baselineFilm,newFilm],[W.sourceKey(baselineFilm)]);assert.match(csv,/^tmdbID,Title,Year\r\n82,/);assert.match(csv,/"The ""Odd"", Film",2027/);assert.doesNotMatch(csv,/Rating|Watched/);assert.deepEqual(W.genreIds({detailsSnapshot:{genres:[{id:27,name:'Horror'}]}}),[27]);
 const sixHundred=Array.from({length:600},(_,i)=>({entry:{id:i+1,title:'Film '+i},status:{checkedAt:cacheAt,offers:[{kind:'rent',price:600-i}]}}));assert.equal(W.page(sixHundred,{model:R,limit:60}).rows[0].entry.id,600);assert.equal(W.page(sixHundred,{model:R,limit:60}).rows.length,60);
 console.log('600-film sorting, fresh-cache boundaries, cached genres and exact-ID Letterboxd addition exports passed');
-const recentSource=Array.from({length:600},(_,i)=>({id:i+1,title:'Archived film '+i,addedAt:i<200?Date.parse('2025-01-01'):Date.parse('2026-10-01')+i,importedAt:Date.parse('2026-10-13')}));
-const recent=W.recentEntries(recentSource,30);
-assert.equal(recent.length,30,'Recent is a finite shelf even when hundreds were added within six months');
-assert.equal(recent[0].id,600,'Latest original added date wins');
-assert.equal(recent.at(-1).id,571,'Bulk import timestamp does not decide recency');
-assert.equal(recentSource.length,600,'Recent selection does not modify All');
-assert.deepEqual(W.recentEntries([{id:1,importedAt:Date.now()},{id:2,addedAt:Date.parse('2026-09-20')}]),[{id:2,addedAt:Date.parse('2026-09-20')}],'Unknown addition date is not silently treated as today');
-console.log('Latest 30 selection honors original add dates across 600 films and ignores bulk import timestamp');
-
+const releaseToday='2026-10-12';
+const releaseFilms=[
+ {id:1,title:'Lower boundary',release_date:'2025-10-12',addedAt:Date.parse('2020-01-01')},
+ {id:2,title:'Released yesterday',release_date:'2026-10-11',importedAt:Date.parse('2026-10-12')},
+ {id:3,title:'Latest',release_date:'2026-10-12'},
+ {id:4,title:'Already watched',release_date:'2026-02-01'},
+ {id:5,title:'Older',release_date:'2025-10-11',addedAt:Date.now()},
+ {id:6,title:'Future',release_date:'2026-10-13'},
+ {id:7,title:'Unknown'},
+ {id:8,title:'Just a year',release_date:'2026'},
+ {id:9,title:'Invalid calendar',release_date:'2026-02-30'},
+ {id:10,title:'US release fallback',usReleaseDate:'2026-04-03'}
+];
+const eligible=W.recentReleases(releaseFilms,releaseToday,m=>m.id===4);
+assert.deepEqual(eligible.map(m=>m.id),[1,2,3,10],'Include only dated last-year releases and exclude known watched titles');
+assert.equal(W.recentRelease(releaseFilms[4],releaseToday),false,'An old movie added today is not a new release');
+assert.equal(W.recentRelease(releaseFilms[5],releaseToday),false,'A future title is not recently released');
+assert.equal(W.recentRelease(releaseFilms[7],releaseToday),false,'Do not turn a release year into a date');
+assert.equal(W.recentRelease({release_date:'2025-02-28'},'2026-02-28'),true,'Calendar-year cutoff handles February');
+assert.equal(W.recentRelease({release_date:'2023-02-28'},'2024-02-29'),true,'Leap-day cutoff clamps to February 28');
+const hugeReleaseList=Array.from({length:600},(_,i)=>({id:10000+i,title:'Film '+i,release_date:i<520?'2026-04-01':'2020-04-01',addedAt:Date.parse('2026-10-12')}));
+assert.equal(W.recentReleases(hugeReleaseList,releaseToday).length,520,'Recent is not artificially limited to 30 or 24 films');
+assert.equal(hugeReleaseList.length,600,'All retains older films, future titles, and watched entries');
+console.log('Recent includes only unwatched dated releases in the last twelve months, with no artificial cap or import-date contamination');
