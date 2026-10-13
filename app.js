@@ -968,60 +968,85 @@ async function renderCircuit(request){
 
 let discoverRequest = 0;
 async function renderDiscover(append = false) {
-  const request = ++discoverRequest;
+  const request=++discoverRequest;
   const filter={stage:discoveryStage,window:discoveryWindow(),scope:document.getElementById('discover-scope').value,genre:document.getElementById('discover-genre').value,rereleases:document.getElementById('include-rereleases').checked,sort:document.getElementById('discover-sort').value};
-  const statusEl=document.getElementById('discover-status'),loadButton=document.getElementById('discover-more');loadButton.disabled=true;statusEl.textContent=discoveryStage==='circuit'?'Checking independent release listings…':discoveryStage==='coming'?'Finding forthcoming films…':'Finding recent releases…';
-  const grid = document.getElementById('discover-grid');
-  grid.dataset.stage=discoveryStage;grid.setAttribute('aria-busy','true');if(!append)grid.replaceChildren();
-  try{
-  if(filter.stage==='circuit'){await renderCircuit(request);return;}
-  // always clear any previous empty-state message before deciding whether to show a new one
-  grid.querySelectorAll('.empty-note').forEach(el => el.remove());
-
-  const MIN_RESULTS = 12;
-  const MAX_PAGES_PER_LOAD = 6; // safety cap so a fully-triaged profile doesn't spam TMDB forever
-
-  let filtered = [];
-  let pagesChecked = 0;
-  let totalPages = Infinity;
-
-  while (filtered.length < MIN_RESULTS && pagesChecked < MAX_PAGES_PER_LOAD && discoverPage <= totalPages) {
-    const data = await fetchDiscover(discoverPage,filter);
-    if(discoverPage===1&&filter.stage==='coming'&&filter.sort==='taste'){if(typeof Hub!=='undefined')await Hub.loadTasteBaseline();const seeds=HubModel.evidence(hubState.taste).sort((a,b)=>(Number(!!b.owned)+Number(!!b.favorite)+(b.rating||0))-(Number(!!a.owned)+Number(!!a.favorite)+(a.rating||0))).slice(0,6);const related=await mapLimited(seeds,3,async seed=>{try{return (await tmdbGet('/movie/'+seed.id+'/recommendations')).results||[];}catch{return [];}});data.results=[...new Map([...related.flat().filter(m=>!m.release_date||m.release_date>=filter.window.today),...data.results].map(m=>[m.id,m])).values()];}
-    if (request !== discoverRequest) return;
-    totalPages = data.total_pages || totalPages;
-    const candidates = data.results.filter(m =>
-      !isSeen(m) && !skipSet.has(m.id) && !watchlist.some(w => w.id === m.id)
-    );
-    const verified=await mapLimited(candidates,4,async m=>{try{const details=await fetchMovieDetails(m.id);return filter.stage==='coming'?DiscoveryModel.futureMovie(m,details,filter.window.today,ReleaseModel.addDays(filter.window.today,365)):RewindModel.discoveryMovie(m,details,filter.window,filter.rereleases);}catch{return null;}});
-    if(request !== discoverRequest) return;
-    filtered=filtered.concat(verified.filter(m=>m&&!isSeen(m)&&!skipSet.has(m.id)&&!watchlist.some(w=>w.id===m.id)));
-    pagesChecked++;
-    discoverPage++;
-  }
-
-  filtered=await rankDiscovery([...new Map(filtered.map(m=>[m.id,m])).values()]);if(request!==discoverRequest)return;
-  if(append)filtered=filtered.filter(m=>!lastDiscoverResults.some(prior=>prior.id===m.id));
-  lastDiscoverResults = append ? lastDiscoverResults.concat(filtered) : filtered;
-  statusEl.textContent=filter.stage==='coming'?lastDiscoverResults.length+' films with forthcoming listings · US and first-release dates are labeled separately':`${lastDiscoverResults.length} films · TMDB-listed US theatrical dates · ${filter.scope==='small'?'smaller releases':'recent feature releases'}`;
+  const statusEl=document.getElementById('discover-status'),more=document.getElementById('discover-more'),grid=document.getElementById('discover-grid');
+  more.disabled=true;
+  statusEl.textContent=filter.stage==='circuit'?'Loading independent release leads…':'Loading catalog listings…';
+  grid.dataset.stage=discoveryStage;grid.setAttribute('aria-busy','true');
   if(!append)grid.replaceChildren();
-  filtered.forEach(m => grid.appendChild(renderCard(m, { context: 'discover' })));
-
-  const loadMoreBtn = document.getElementById('discover-more');
-  const exhausted = discoverPage > totalPages;
-  loadMoreBtn.disabled = exhausted;
-  loadMoreBtn.textContent = exhausted ? 'NO MORE MATCHES' : 'MORE FILMS';
-
-  updateBrowseDismissControl();
-  if (filtered.length === 0) {
-    const note = document.createElement('p');
-    note.className = 'empty-note';
-    note.textContent = exhausted
-      ? "No more matching feature releases in this window. Try another month or genre."
-      : "No matches on these pages. Load more, change the month, or include smaller releases.";
-    grid.appendChild(note);
+  try{
+    if(filter.stage==='circuit'){await renderCircuit(request);return;}
+    grid.querySelectorAll('.empty-note').forEach(el=>el.remove());
+    // One catalog page per action, not six pages of per-film detail/keyword calls.
+    // Never wait for all availability checks just to show a poster.
+    const pageNumber=discoverPage;
+    const data=await fetchDiscover(pageNumber,filter);
+    if(request!==discoverRequest)return;
+    const seen=new Set(append?lastDiscoverResults.map(m=>m.id):[]);
+    const catalog=(data.results||[]).filter(m=>m.id&&!seen.has(m.id)&&!isSeen(m)&&!skipSet.has(m.id)&&
+      (filter.stage!=='coming'||!m.release_date||m.release_date>=filter.window.today)&&
+      (filter.stage!=='recent'||!m.release_date||(m.release_date>=filter.window.start&&m.release_date<=filter.window.end))&&
+      (!Number.isFinite(m.runtime)||m.runtime>=60));
+    const filtered=await rankDiscovery(catalog);
+    if(request!==discoverRequest)return;
+    discoverPage=pageNumber+1;
+    lastDiscoverResults=append?[...lastDiscoverResults,...filtered]:filtered;
+    if(!append)grid.replaceChildren();
+    for(const movie of filtered){
+      // First paint is a catalog lead; details are verified when opened.
+      const card=renderCard(movie,{context:'discover'});
+      if(!movie.detailsSnapshot&&!movie.releaseFile){
+        const note=document.createElement('p');note.className='offer-note discover-unverified';
+        note.textContent='Catalog listing · release and watch options not yet checked';
+        card.querySelector('.film-details-trigger')?.before(note);
+      }
+      grid.appendChild(card);
+    }
+    const exhausted=discoverPage>(data.total_pages||1);
+    more.disabled=exhausted;more.textContent=exhausted?'NO MORE MATCHES':'MORE FILMS';
+    statusEl.textContent=lastDiscoverResults.length+' catalog leads · first page loaded. Open Film details to check releases and availability.';
+    if(!filtered.length){
+      const note=document.createElement('p');note.className='empty-note';
+      note.textContent=exhausted?'No more catalog results for this selection.':'No new results on this page. Try More Films or change the filters.';
+      grid.appendChild(note);
+    }
+    updateBrowseDismissControl();
+    // Validate only a tiny initial sample after first paint; do not make this
+    // network work part of renderDiscover's completion or reset the whole grid.
+    const sample=filtered.filter(m=>!m.detailsSnapshot&&!m.releaseFile).slice(0,3);
+    setTimeout(()=>{
+      if(request!==discoverRequest)return;
+      mapLimited(sample,2,async movie=>{
+        try{
+          const details=await fetchMovieDetails(movie.id);
+          if(request!==discoverRequest)return;
+          const verified=filter.stage==='coming'
+            ?DiscoveryModel.futureMovie(movie,details,filter.window.today,ReleaseModel.addDays(filter.window.today,365))
+            :RewindModel.discoveryMovie(movie,details,filter.window,filter.rereleases);
+          const card=[...grid.querySelectorAll('.rental-card')].find(el=>Number(el.dataset.movieId)===movie.id);
+          if(!card||!card.isConnected)return;
+          if(verified){
+            const next={...movie,...verified,detailsSnapshot:details};
+            const i=lastDiscoverResults.findIndex(m=>m.id===movie.id);
+            if(i>=0)lastDiscoverResults[i]=next;
+            card.replaceWith(renderCard(next,{context:'discover'}));
+          }else{
+            lastDiscoverResults=lastDiscoverResults.filter(m=>m.id!==movie.id);
+            card.remove();
+          }
+        }catch{ /* Keep a clearly labeled provisional catalog lead on failed verification. */ }
+      }).catch(()=>{});
+    },250);
+  }catch(err){
+    if(request===discoverRequest){
+      statusEl.textContent='Catalog request failed. Change a filter or try More Films.';
+      if(!grid.children.length){const note=document.createElement('p');note.className='empty-note';note.textContent='Discover could not reach its catalog. Your watchlist is still available.';grid.appendChild(note);}
+    }
+    throw err;
+  }finally{
+    if(request===discoverRequest){grid.setAttribute('aria-busy','false');if(more.textContent!=='NO MORE MATCHES')more.disabled=false;}
   }
-  }catch(err){if(request===discoverRequest)statusEl.textContent='Could not load this shelf. Try More films or change a filter.';throw err;}finally{if(request===discoverRequest){grid.setAttribute('aria-busy','false');if(loadButton.textContent!=='NO MORE MATCHES')loadButton.disabled=false;}}
 }
 
 document.getElementById('discover-more').addEventListener('click', async () => {
