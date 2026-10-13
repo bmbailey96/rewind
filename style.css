@@ -1370,3 +1370,17 @@ button:focus-visible,a:focus-visible,summary:focus-visible{outline:2px solid #db
 
 /* Offscreen film cards keep their layout without painting their contents. */
 /* Watchlist cards now render in small pages. Avoid intrinsic-size placeholders that produce blank, oversized cards on mobile Safari. */
+
+
+/* Release Watch is a status board; All Watchlist keeps the old cost categories. */
+#tab-watchlist[data-scope="release"] .card-controls label[for="sort-select"],
+#tab-watchlist[data-scope="release"] #sort-select{display:none}
+#tab-watchlist .watchlist-scope{display:flex;flex-wrap:wrap;gap:8px}
+#tab-watchlist .watchlist-scope button{white-space:normal;line-height:1.25}
+#tab-watchlist .release-stage-line{font-size:12px;line-height:1.45;color:#bacbc0;margin:8px 0;padding:7px 0;border-top:1px solid #334641}
+#tab-watchlist #rw-arrived-section h3{color:#d7ba81}
+#tab-watchlist .shelf-group .group-note{max-width:65ch}
+@media(max-width:600px){
+ #tab-watchlist .watchlist-scope button{font-size:11px;padding:10px 12px;min-height:42px}
+ #tab-watchlist .release-stage-line{grid-column:1/-1}
+}
