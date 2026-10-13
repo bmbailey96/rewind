@@ -793,6 +793,11 @@ localStorage.setItem('rewind-last-visit-v1',String(Date.now()));
 let watchlistRequest = 0;
 
 async function renderWatchlist(force = false, reuse = false) {
+  if(watchlistScope==='release'&&!document.getElementById('rw-arrived-grid')){
+    watchlistScope='all';
+    const notice=document.getElementById('watchlist-load-status');
+    if(notice)notice.textContent='Updating the saved page files. All Watchlist remains available. Reload to restore Release Watch.';
+  }
   const request=++watchlistRequest;
   const empty=document.getElementById('watchlist-empty');
   const loading=document.getElementById('watchlist-load-status');
@@ -1151,7 +1156,7 @@ async function resolveWatchlistMatches(){
 async function init() {
   // The page must be usable even when sync and catalog requests take minutes.
   if(WatchlistModel.backfillReleaseFollows(watchlist)){saveWatchlist(false);scheduleSync();}
-  renderWatchlist(false,true);
+  renderWatchlist(false,true).catch(err=>{const notice=document.getElementById('watchlist-load-status');if(notice)notice.textContent='My Films could not finish drawing. Try All Watchlist or reload.';});
   const discoverTab=document.querySelector('[data-tab=discover]');
   discoverTab.addEventListener('click',()=>{
     if(!document.getElementById('discover-grid').querySelector('.rental-card')&&
