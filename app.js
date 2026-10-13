@@ -338,7 +338,8 @@ async function tmdbGet(path, params = {}, signal) {
   const url = new URL(TMDB_BASE + path);
   url.searchParams.set('api_key', TMDB_KEY);
   for (const [k, v] of Object.entries(params)) url.searchParams.set(k, v);
-  const res = await fetch(url, signal ? {signal} : undefined);
+  const requestSignal=signal||(typeof AbortSignal!=='undefined'&&typeof AbortSignal.timeout==='function'?AbortSignal.timeout(12000):undefined);
+  const res = await fetch(url, requestSignal ? {signal:requestSignal} : undefined);
   if (!res.ok) throw new Error('TMDB request failed: ' + path);
   return res.json();
 }
@@ -972,7 +973,7 @@ function updateDiscoveryGuide(){
 }
 async function fetchHorizon(){
  if(horizonFeed)return horizonFeed;if(horizonPromise)return horizonPromise;
- horizonPromise=(async()=>{let data;try{const r=await fetch('https://transmissionalbum.netlify.app/.netlify/functions/rewind-horizon');if(!r.ok)throw Error();data=await r.json();if(!Array.isArray(data.items))throw Error();}catch{const r=await fetch('horizon-snapshot.json',{cache:'no-cache'});if(!r.ok)throw Error('Independent listings unavailable');data={...await r.json(),stale:true};}if(!Number.isFinite(data.checkedAt)||Date.now()-data.checkedAt>7*86400000)data.items=[];horizonFeed=data;return data;})();try{return await horizonPromise;}finally{horizonPromise=null;}
+ horizonPromise=(async()=>{let data;try{const r=await fetch('https://transmissionalbum.netlify.app/.netlify/functions/rewind-horizon',typeof AbortSignal!=='undefined'&&typeof AbortSignal.timeout==='function'?{signal:AbortSignal.timeout(8000)}:undefined);if(!r.ok)throw Error();data=await r.json();if(!Array.isArray(data.items))throw Error();}catch{const r=await fetch('horizon-snapshot.json',{cache:'no-cache'});if(!r.ok)throw Error('Independent listings unavailable');data={...await r.json(),stale:true};}if(!Number.isFinite(data.checkedAt)||Date.now()-data.checkedAt>7*86400000)data.items=[];horizonFeed=data;return data;})();try{return await horizonPromise;}finally{horizonPromise=null;}
 }
 async function refreshTrackedReleases(){const feed=await fetchHorizon();let changed=false;for(const tracked of watchlist){const row=feed.items.find(m=>m.id===tracked.id);if(!row||!tracked.releaseFile)continue;const file=DiscoveryModel.sourceMovie(row)?.releaseFile;if(file){tracked.releaseFile={...file,screenings:file.screenings.map(r=>({...r,stale:feed.stale||r.stale}))};changed=true;}}if(changed){saveWatchlist();window.dispatchEvent(new Event('rewind:state'));}}
 async function rankDiscovery(movies){
