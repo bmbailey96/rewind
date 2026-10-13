@@ -635,7 +635,7 @@ function addToWatchlist(movie,options={}) {
     availabilitySnapshot:movie.availabilitySnapshot || null,watchmodeCache:movie.watchmodeCache || null,storePriceCache:movie.storePriceCache||null,
     release_date: movie.release_date || movie.primary_release_date || '',
     genre_ids: movie.genre_ids || [],letterboxdURL:movie.letterboxdURL||null,releaseFile:movie.releaseFile||null,tags:movie.tags||[],tones:movie.tones||null,tagline:movie.tagline||'',
-    addedAt: Date.now(),source:options.origin==='discover'?'Rewind discover':options.origin==='calendar'?'Rewind calendar':'Rewind watchlist',
+    addedAt: Date.now(),source:options.origin==='discover'?'Rewind discover':options.origin==='calendar'?'Rewind calendar':options.origin==='seed'?'Rewind seed':'Rewind watchlist',
     followRelease:!!options.followRelease,followReleaseAt:options.followRelease?Date.now():null,followReleaseOrigin:options.origin||null,
     lastStatusCode: null,
     lastStatusLabel: null,
@@ -1111,7 +1111,7 @@ async function init() {
   }
   if (!localStorage.getItem('rewind-coyote-seeded-v1')) {
     try {
-      if (!watchlist.some(m=>m.id === 1204680)) addToWatchlist(await tmdbGet('/movie/1204680'));
+      if (!watchlist.some(m=>m.id === 1204680)) addToWatchlist(await tmdbGet('/movie/1204680'),{origin:'seed'});
       localStorage.setItem('rewind-coyote-seeded-v1','1');
     } catch (err) { showToast('Could not add Coyote vs. Acme. Search the catalog to try again.'); }
   }
