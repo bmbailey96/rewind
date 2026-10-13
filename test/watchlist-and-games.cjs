@@ -51,3 +51,37 @@ const hugeReleaseList=Array.from({length:600},(_,i)=>({id:10000+i,title:'Film '+
 assert.equal(W.recentReleases(hugeReleaseList,releaseToday).length,520,'Recent is not artificially limited to 30 or 24 films');
 assert.equal(hugeReleaseList.length,600,'All retains older films, future titles, and watched entries');
 console.log('Recent includes only unwatched dated releases in the last twelve months, with no artificial cap or import-date contamination');
+
+
+const legacyManual={id:11,source:'Rewind watchlist',title:'Hand saved',addedAt:Date.parse('2026-01-01')};
+const imported={id:12,source:'Letterboxd watchlist',title:'Imported',addedAt:Date.parse('2026-01-01')};
+const declined={id:13,source:'Rewind watchlist',title:'Unfollowed',addedAt:Date.now(),followRelease:false};
+const ambiguous={id:14,title:'Unknown origin',release_date:'2026-01-01',addedAt:Date.now()};
+const migrated=[legacyManual,imported,declined,ambiguous];
+assert.equal(W.backfillReleaseFollows(migrated),1,'Migrate only explicit manual Rewind records');
+assert.equal(W.backfillReleaseFollows(migrated),0,'Migration is idempotent');
+assert.equal(legacyManual.followRelease,true);
+assert.equal(imported.followRelease,undefined,'Letterboxd alone never starts special monitoring');
+assert.equal(declined.followRelease,false,'Do not resurrect an intentional unfollow');
+assert.equal(ambiguous.followRelease,undefined,'Do not guess a follow from a recent release date');
+const day=86400000,releaseWatchToday=new Date().toISOString().slice(0,10);
+const tomorrowWatch=new Date(Date.now()+2*day).toISOString().slice(0,10);
+const theatricalWatch=new Date(Date.now()+20*day).toISOString().slice(0,10);
+const checkedWatch=Date.now();
+const group=(id,title,offers=[],extra={})=>({entry:{id,title,followRelease:true,addedAt:checkedWatch-id*1000},status:{checkedAt:checkedWatch,offers,...extra}});
+const rows=[
+ group(1,'Waiting'),
+ group(2,'Theaters',[],{details:{release_dates:{results:[{iso_3166_1:'US',release_dates:[{type:3,release_date:theatricalWatch+'T00:00:00Z'}]}]}}}),
+ group(3,'Coming',[],{announcements:[{kind:'subscription',date:tomorrowWatch,provider:'Shudder',sourceUrl:'https://example.org/announcement'}]}),
+ group(4,'Available',[{kind:'subscription',provider:'Shudder',included:true}]),
+ group(5,'Arrival',[{kind:'subscription',provider:'Shudder',included:true}])
+];
+const arrivals=[{movieId:5,at:checkedWatch-1000,type:'included',provider:'Shudder'}];
+const releasePage=W.releaseWatchPage(rows,{model:R,budget:7.99,today:releaseWatchToday,receipts:arrivals});
+assert.deepEqual(releasePage.rows.map(r=>r.stage.group),['arrived','available','coming','theater','waiting']);
+assert.equal(W.releaseStage(rows[3].entry,rows[3].status,releaseWatchToday,7.99,[]).group,'available','A first check is not an arrival');
+assert.equal(W.releaseStage(rows[4].entry,{...rows[4].status,stale:true},releaseWatchToday,7.99,arrivals).group,'waiting','A stale provider listing is not a new arrival');
+assert.equal(W.releaseStage({id:6},{checkedAt:checkedWatch,offers:[{kind:'rent',price:19.99,provider:'Apple TV'}]},releaseWatchToday).group,'available','High premium rental is available but clearly priced');
+assert.equal(W.releaseStage(rows[1].entry,rows[1].status,releaseWatchToday).group,'theater','A published theatrical listing is not a fabricated digital date');
+assert.equal(W.releaseWatchPage(rows,{model:R,budget:7.99,today:releaseWatchToday,receipts:arrivals,limit:2}).total,5,'Pagination does not truncate tracked collection');
+console.log('Release follows, conservative legacy migration, verified arrivals, published dates and entire-collection grouping passed');
