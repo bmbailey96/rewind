@@ -750,13 +750,13 @@ async function renderWatchlist(force = false, reuse = false) {
     window.dispatchEvent(new Event('rewind:watchlist-ready'));
     return;
   }
-  if(!force)targets.forEach(entry=>watchlistBackgroundChecked.add(entry.id));
   loading.textContent=(force?'Checking shown films':'Updating a few saved films')+' · 0 of '+targets.length;
   statusEl.textContent=force?'Checking '+targets.length+' displayed films, not the whole watchlist.':'Loading saved films first · limited background checks.';
   // Give iOS Safari a frame to draw the cards before beginning any API work.
   if(!force){
     await new Promise(resolve=>setTimeout(resolve,700));
     if(request!==watchlistRequest)return;
+    targets.forEach(entry=>watchlistBackgroundChecked.add(entry.id));
   }
   let checked=0,receiptsDirty=false;
   const results=await mapLimited(targets,force?3:2,async entry=>{
