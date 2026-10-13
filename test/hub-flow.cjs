@@ -284,6 +284,35 @@ assert.equal(w.document.querySelector('[data-discover-intent=surprise]').getAttr
  w.document.querySelector('#news-followed-list button').click();assert.equal(w.testState.hub().newsFollows.length,0);
  w.document.querySelector('[data-discover-intent=pick]').click();assert.equal(w.document.getElementById('movie-news-panel').hidden,true);assert.equal(w.document.getElementById('hub-picker').hidden,false);
  w.document.querySelector('[data-discover-intent=explore]').click();assert.equal(w.document.getElementById('discover-grid').hidden,false);w.fetch=newsFetch;
+
+ // A stalled GitHub connection must not prevent the first Discover page from painting.
+ // Individual catalog detail requests are deliberately left unresolved as well.
+ const slowDom=new JSDOM(fs.readFileSync(__dirname+'/../index.html','utf8'),{url:'https://bekind-rewind.netlify.app',runScripts:'outside-only'});
+ const slow=slowDom.window;
+ slow.HTMLElement.prototype.scrollIntoView=function(){};
+ slow.HTMLDialogElement.prototype.showModal=function(){this.open=true};
+ slow.HTMLDialogElement.prototype.close=function(){this.open=false};
+ slow.IntersectionObserver=class{observe(){}unobserve(){}disconnect(){}};
+ slow.localStorage.setItem('rewind-gh-token','test-slow-sync');
+ slow.localStorage.setItem('rewind-watchlist-v1',JSON.stringify([]));
+ slow.localStorage.setItem('rewind-coyote-seeded-v1','1');
+ let fastCatalogCalls=0,detailCalls=0;
+ slow.fetch=async raw=>{
+   const url=new URL(raw,'https://bekind-rewind.netlify.app');
+   if(url.hostname==='api.github.com')return new Promise(()=>{});
+   if(url.pathname==='/watchlist-baseline.json')return {ok:true,json:async()=>({version:'fixture',films:[]})};
+   if(url.pathname.includes('/discover/')){fastCatalogCalls++;return {ok:true,json:async()=>({results:Array.from({length:16},(_,i)=>({id:30000+i,title:'Slow network feature '+i,release_date:'2026-08-28',poster_path:null})),total_pages:4})};}
+   if(url.pathname.includes('/movie/')){detailCalls++;return new Promise(()=>{});}
+   return {ok:false,status:503,json:async()=>({})};
+ };
+ slow.eval(['rewind-model.js','release-model.js','availability-ui.js','counter-model.js','discovery-model.js','taste-model.js','hub-model.js','artwork-model.js','occasion-model.js','oracle.js','storage-model.js','sync-model.js','static-model.js','watchlist-model.js','movie-news-model.js','app.js','hub.js','static-experience.js','flow.js','movie-news.js','letterboxd-diary.js'].map(file=>fs.readFileSync(__dirname+'/../'+file,'utf8')).join('\n'));
+ slow.document.querySelector('[data-tab=discover]').click();
+ await wait();
+ assert.equal(fastCatalogCalls,1,'Discover fetches only one catalog page, even with an unresolved cloud sync');
+ assert.equal(detailCalls,0,'Individual film details do not block the first Discover paint');
+ assert.equal(slow.document.querySelectorAll('#discover-grid .rental-card').length,16,'Discover remains usable while GitHub and film details hang');
+ slowDom.window.close();
+
  assert.equal(flowErrors.length,0,'Navigation has no runtime errors');
  console.log('Rewind hub flow: three shelves, source timeline, no vote floor, thresholds persist/sync, real price drops, stale checks, watched undo, inline search passed');
  await wait();await wait();dom.window.close();
