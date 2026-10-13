@@ -1122,31 +1122,33 @@ async function resolveWatchlistMatches(){
 // ---------- init ----------
 
 async function init() {
+  // The page must be usable even when sync and catalog requests take minutes.
   if(WatchlistModel.backfillReleaseFollows(watchlist)){saveWatchlist(false);scheduleSync();}
-  renderWatchlist(false,true); // Do not block the first screen on cross-device sync.
-  if (localStorage.getItem(GH_TOKEN_KEY)) {
-    const statusEl = document.getElementById('sync-status');
-    if (statusEl) statusEl.textContent = 'Syncing...';
-    try {
-      if(localStorage.getItem(SYNC_DIRTY_KEY))await pushToGist();else await pullFromGist();
-      if (statusEl) statusEl.textContent = 'Synced ' + new Date().toLocaleTimeString();
-    } catch (e) {
-      if (statusEl) {statusEl.dataset.tone='error';statusEl.textContent = 'Could not reach sync. Your changes remain on this device.';}
-    }
-  }
-  if (!localStorage.getItem('rewind-coyote-seeded-v1')) {
-    try {
-      if (!watchlist.some(m=>m.id === 1204680)) addToWatchlist(await tmdbGet('/movie/1204680'),{origin:'seed'});
-      localStorage.setItem('rewind-coyote-seeded-v1','1');
-    } catch (err) { showToast('Could not add Coyote vs. Acme. Search the catalog to try again.'); }
-  }
-  await loadWatchlistBaseline();
-  if(WatchlistModel.backfillReleaseFollows(watchlist)){saveWatchlist(false);scheduleSync();}
-  renderWatchlist().catch(err=>showToast(err.message));
-  // Discover is loaded on first entry, not alongside the initial price scan.
+  renderWatchlist(false,true);
   const discoverTab=document.querySelector('[data-tab=discover]');
-  discoverTab.addEventListener('click',()=>{if(!document.getElementById('discover-grid').children.length)renderDiscover().catch(err=>showToast(err.message));},{once:true});
-  setTimeout(()=>resolveWatchlistMatches().catch(()=>{watchlistMatching=false;renderImportReview();}),2200);
+  discoverTab.addEventListener('click',()=>{
+    if(!document.getElementById('discover-grid').querySelector('.rental-card')&&
+       document.getElementById('discover-grid').getAttribute('aria-busy')!=='true')
+      renderDiscover().catch(err=>showToast(err.message));
+  });
+  const localReady=loadWatchlistBaseline().catch(()=>{}).then(()=>{
+    if(WatchlistModel.backfillReleaseFollows(watchlist)){saveWatchlist(false);scheduleSync();}
+    renderWatchlist(false,true).catch(err=>showToast(err.message));
+  });
+  // Background sync can update the local watchlist when finished, but never
+  // blocks the first render, the Discover handler, or navigation.
+  if(localStorage.getItem(GH_TOKEN_KEY)){
+    const statusEl=document.getElementById('sync-status');
+    statusEl.textContent='Syncing in background. Local films remain usable.';
+    localReady.then(async()=>{
+      try{
+        if(localStorage.getItem(SYNC_DIRTY_KEY))await pushToGist();else await pullFromGist();
+        statusEl.textContent='Synced '+new Date().toLocaleTimeString();
+        renderWatchlist(false,true);
+      }catch(err){statusEl.dataset.tone='error';statusEl.textContent='Cloud sync delayed. Local watchlist remains available.';}
+    });
+  }
+  return localReady;
 }
 
 // Alert and browse controls are initialized below before the first render.
@@ -1204,7 +1206,7 @@ async function initEmailAlerts() {
 }
 renderServiceSettings();
 document.getElementById('refresh-card-btn').onclick=async()=>{const btn=document.getElementById('refresh-card-btn');btn.disabled=true;try{await renderWatchlist(true);}catch(err){showToast(err.message);}finally{btn.disabled=false;}};
-init().then(initEmailAlerts);
+init().then(()=>setTimeout(initEmailAlerts,10000));
 
 document.querySelectorAll('[data-discovery-stage]').forEach(button=>button.onclick=()=>{searchRequest++;document.getElementById('search-input').value='';document.getElementById('search-clear-btn').hidden=true;document.getElementById('search-grid').hidden=true;document.getElementById('discover-grid').hidden=false;discoveryStage=button.dataset.discoveryStage;discoverPage=1;updateDiscoveryGuide();renderDiscover().catch(e=>showToast(e.message));});
 updateDiscoveryGuide();
