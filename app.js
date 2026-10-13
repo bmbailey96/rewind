@@ -758,7 +758,30 @@ function watchedForRecent(movie){
 }
 function scopedWatchlist(){return watchlistScope==='all'?watchlist:watchlist.filter(m=>WatchlistModel.followsRelease(m)&&!watchedForRecent(m));}
 window.addEventListener('rewind:seen-updated',()=>{if(watchlistScope==='release')renderWatchlist(false,true);});
-function renderImportReview(){const box=document.getElementById('watchlist-import-review');if(!box)return;const rows=hubState.watchlistUnmatched||[],pending=watchlistScope==='all'?rows:[];box.replaceChildren();if(!pending.length)return;const details=document.createElement('details'),summary=document.createElement('summary');summary.textContent=watchlistMatching?watchlistMatchProgress:rows.length+' titles need a match';details.appendChild(summary);const note=document.createElement('p');note.textContent='Saved from your May 27, 2026 Letterboxd archive. Availability stays unknown until the film is verified.';details.appendChild(note);for(const m of pending){const row=document.createElement('p');row.textContent=m.title+' ('+m.year+') · added '+m.addedDate;details.appendChild(row);}box.appendChild(details);}
+function renderReleaseRecovery(){
+ const box=document.getElementById('rw-recovery'),list=document.getElementById('rw-recovery-list');
+ if(!box||!list)return;
+ box.hidden=watchlistScope!=='release';
+ if(box.hidden)return;
+ const today=discoveryWindow().today,low=ReleaseModel.addDays(today,-730),high=ReleaseModel.addDays(today,730);
+ const candidates=watchlist.filter(m=>m.id&&m.followRelease!==true&&m.followRelease!==false&&!watchedForRecent(m)&&
+   (m.releaseFile||m.pinned||typeof m.release_date==='string'&&m.release_date>=low&&m.release_date<=high))
+   .sort((a,b)=>Number(!!b.releaseFile)-Number(!!a.releaseFile)||Number(!!b.pinned)-Number(!!a.pinned)||
+      String(b.release_date||'').localeCompare(String(a.release_date||''))||(b.addedAt||0)-(a.addedAt||0))
+   .slice(0,10);
+ list.replaceChildren();
+ for(const movie of candidates){
+   const line=document.createElement('div');line.className='release-recovery-row';
+   const label=document.createElement('span');
+   label.textContent=movie.title+(movie.release_date?' · '+movie.release_date.slice(0,4):'');
+   const follow=document.createElement('button');follow.type='button';follow.className='secondary';follow.textContent='FOLLOW RELEASE';
+   follow.onclick=()=>followReleaseFilm(movie,'review');
+   line.append(label,follow);list.appendChild(line);
+ }
+ if(!candidates.length){const note=document.createElement('p');note.className='offer-note';note.textContent='No obvious older candidates found. You can follow any film from All Watchlist or Discover.';list.append(note);}
+}
+document.getElementById('rw-recovery-all').onclick=()=>document.querySelector('[data-watchlist-scope="all"]').click();
+function renderImportReview(){const box=document.getElementById('watchlist-import-review');if(!box)return;const rows=hubState.watchlistUnmatched||[],pending=watchlistScope==='all'?rows:[];box.replaceChildren();if(!pending.length)return;const details=document.createElement('details'),summary=document.createElement('summary');summary.textContent=watchlistMatching?watchlistMatchProgress:rows.length+' titles need a match';details.appendChild(summary);const note=document.createElement('p');note.textContent='Saved from your May 27, 2026 Letterboxd archive. Availability stays unknown until the film is verified.';details.appendChild(note);const match=document.createElement('button');match.type='button';match.className='secondary';match.textContent=watchlistMatching?'Matching catalog entries…':'MATCH 12 UNRESOLVED TITLES';match.disabled=watchlistMatching;match.onclick=()=>resolveWatchlistMatches().catch(()=>{watchlistMatching=false;renderImportReview();});details.appendChild(match);for(const m of pending){const row=document.createElement('p');row.textContent=m.title+' ('+m.year+') · added '+m.addedDate;details.appendChild(row);}box.appendChild(details);}
 document.querySelectorAll('[data-watchlist-scope]').forEach(btn=>btn.onclick=()=>{watchlistScope=btn.dataset.watchlistScope;watchlistLimit=WATCHLIST_PAGE_SIZE;renderWatchlist();});
 document.getElementById('watchlist-more').onclick=()=>{watchlistLimit+=WATCHLIST_PAGE_SIZE;renderWatchlist();};
 let costFilter='all';
@@ -791,6 +814,7 @@ async function renderWatchlist(force = false, reuse = false) {
   document.getElementById('tab-watchlist').dataset.scope=watchlistScope;
   document.getElementById('watchlist-scope-note').textContent=watchlistScope==='release'?'Films you chose to follow from Discover, Calendar, or your watchlist. No expiration date.':'Your complete Letterboxd and Rewind watchlist, including older films.';
   renderImportReview();
+  renderReleaseRecovery();
   watchlistResults=[...progress.values()];
   repaintWatchlist(); // First paint uses local data, without waiting on GitHub or film APIs.
   if(!batch.length){
@@ -892,10 +916,12 @@ function paintWatchlist(results){
     for(const [group,id] of Object.entries(groups)){document.getElementById(id+'-section').hidden=!counts[group];document.getElementById(id+'-count').textContent='('+counts[group]+')';}
     document.getElementById('filter-empty').hidden=page.total>0||!scopedWatchlist().length;
     document.getElementById('release-watch-empty').hidden=!!scopedWatchlist().length;
+    renderReleaseRecovery();
     document.getElementById('card-summary').textContent='';
     window.dispatchEvent(new Event('rewind:card-rendered'));
     return;
   }
+  document.getElementById('rw-recovery').hidden=true;
   document.getElementById('release-watch-empty').hidden=true;
   const groups={now:'watch-now',paid:'paid',waiting:'waiting'};
   const counts={now:0,paid:0,waiting:0};let changedCount=0;
