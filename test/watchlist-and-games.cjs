@@ -27,3 +27,12 @@ const cacheAt=Date.now(),cacheFilm={availabilitySnapshot:{checkedAt:cacheAt,quot
 const importedFilm={id:80,title:'Imported',release_date:'2001-01-01',source:'Letterboxd watchlist'},baselineFilm={id:81,title:'Baseline',release_date:'2002-01-01'},newFilm={id:82,title:'The "Odd", Film',release_date:'2027-01-01',source:'Rewind watchlist'};assert.deepEqual(W.rewindAdditions([importedFilm,baselineFilm,newFilm],[W.sourceKey(baselineFilm)]),[newFilm]);const csv=W.exportCSV([importedFilm,baselineFilm,newFilm],[W.sourceKey(baselineFilm)]);assert.match(csv,/^tmdbID,Title,Year\r\n82,/);assert.match(csv,/"The ""Odd"", Film",2027/);assert.doesNotMatch(csv,/Rating|Watched/);assert.deepEqual(W.genreIds({detailsSnapshot:{genres:[{id:27,name:'Horror'}]}}),[27]);
 const sixHundred=Array.from({length:600},(_,i)=>({entry:{id:i+1,title:'Film '+i},status:{checkedAt:cacheAt,offers:[{kind:'rent',price:600-i}]}}));assert.equal(W.page(sixHundred,{model:R,limit:60}).rows[0].entry.id,600);assert.equal(W.page(sixHundred,{model:R,limit:60}).rows.length,60);
 console.log('600-film sorting, fresh-cache boundaries, cached genres and exact-ID Letterboxd addition exports passed');
+const recentSource=Array.from({length:600},(_,i)=>({id:i+1,title:'Archived film '+i,addedAt:i<200?Date.parse('2025-01-01'):Date.parse('2026-10-01')+i,importedAt:Date.parse('2026-10-13')}));
+const recent=W.recentEntries(recentSource,30);
+assert.equal(recent.length,30,'Recent is a finite shelf even when hundreds were added within six months');
+assert.equal(recent[0].id,600,'Latest original added date wins');
+assert.equal(recent.at(-1).id,571,'Bulk import timestamp does not decide recency');
+assert.equal(recentSource.length,600,'Recent selection does not modify All');
+assert.deepEqual(W.recentEntries([{id:1,importedAt:Date.now()},{id:2,addedAt:Date.parse('2026-09-20')}]),[{id:2,addedAt:Date.parse('2026-09-20')}],'Unknown addition date is not silently treated as today');
+console.log('Latest 30 selection honors original add dates across 600 films and ignores bulk import timestamp');
+
