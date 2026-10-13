@@ -1384,3 +1384,11 @@ button:focus-visible,a:focus-visible,summary:focus-visible{outline:2px solid #db
  #tab-watchlist .watchlist-scope button{font-size:11px;padding:10px 12px;min-height:42px}
  #tab-watchlist .release-stage-line{grid-column:1/-1}
 }
+
+/* Keep the recovery list lightweight on mobile and never hide the empty-state explanation. */
+#rw-recovery{margin:12px 0 18px;padding:16px;border:1px solid #34473f;border-radius:10px}
+#rw-recovery-list{display:grid;gap:6px;margin:12px 0}
+.release-recovery-row{display:flex;align-items:center;justify-content:space-between;gap:10px;border-top:1px solid #32443e;padding:8px 0}
+.release-recovery-row span{min-width:0;overflow-wrap:anywhere}
+.release-recovery-row button{flex-shrink:0;font-size:11px}
+@media(max-width:600px){.release-recovery-row{align-items:flex-start}.release-recovery-row button{max-width:46%;white-space:normal}}
