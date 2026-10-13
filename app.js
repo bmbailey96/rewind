@@ -587,8 +587,7 @@ function renderCard(movie, opts = {}) {
     track.onclick=()=>{
       if(followable){
         followReleaseFilm(movie,context);
-        if(context==='discover'&&!movie.releaseFile)card.remove();
-        else{track.textContent='FOLLOWING RELEASE';track.disabled=true;card.classList.add('film-tracked');}
+        track.textContent='FOLLOWING RELEASE';track.disabled=true;card.classList.add('film-tracked');
       }else{
         addToWatchlist(movie);
         track.textContent='SAVED';track.disabled=true;card.classList.add('film-tracked');
@@ -599,7 +598,7 @@ function renderCard(movie, opts = {}) {
   }
   if(!current)body.appendChild(secondaryActions);
   card.append(actions,details);
-  if(!status&&['discover','search'].includes(context))observeCardOffers(card,async()=>{
+  if(!status&&context==='search')observeCardOffers(card,async()=>{
    try{const found=await deriveStatus(movie);if(!card.isConnected)return;current=found;if(movie.releaseFile)card.querySelector('.release-file')?.replaceWith(renderReleaseFile(movie,found,true));costInfo=ReleaseModel.cost(found.offers,rentalBudget,found.stale);card.querySelector('.cost-block')?.remove();if(!(movie.releaseFile&&costInfo.band==='waiting'))actions.before(renderCostHeadline(costInfo));
     const next=!found.stale?costInfo.offer:null;if(next?.link&&!actions.querySelector('.watch-link')){const watch=document.createElement('a');watch.className='watch-link';watch.textContent=next.kind==='rent'?'RENT':next.kind==='buy'?'BUY':'WATCH';watch.href=next.link;watch.target='_blank';watch.rel='noopener noreferrer';actions.prepend(watch);actions.querySelector('.track-action')?.classList.add('secondary-track');}if(body.closest('dialog')?.open)fillDetails();
    }catch{if(card.isConnected&&!card.querySelector('.cost-block')){const note=document.createElement('p');note.className='offer-note';note.textContent='Viewing options could not refresh. Open Details to retry.';details.before(note);}}
@@ -725,7 +724,7 @@ function dismissVisibleBrowse(){
 }
 function renderDiscoverCached() {
   const grid=document.getElementById('discover-grid');grid.replaceChildren();
-  lastDiscoverResults.filter(m=>!isSeen(m)&&!skipSet.has(m.id)&&(!watchlist.some(w=>w.id===m.id)||m.releaseFile)).forEach(m=>grid.appendChild(renderCard(m,{context:'discover'})));if(discoveryStage==='circuit'){const unresolved=(horizonFeed?.items||[]).filter(m=>!m.id);if(unresolved.length)grid.appendChild(renderSourceLinks(unresolved));}
+  lastDiscoverResults.filter(m=>!isSeen(m)&&!skipSet.has(m.id)).forEach(m=>grid.appendChild(renderCard(m,{context:'discover'})));if(discoveryStage==='circuit'){const unresolved=(horizonFeed?.items||[]).filter(m=>!m.id);if(unresolved.length)grid.appendChild(renderSourceLinks(unresolved));}
   updateBrowseDismissControl();
 }
 function renderSearchCached() {
@@ -951,8 +950,9 @@ async function fetchHorizon(){
 }
 async function refreshTrackedReleases(){const feed=await fetchHorizon();let changed=false;for(const tracked of watchlist){const row=feed.items.find(m=>m.id===tracked.id);if(!row||!tracked.releaseFile)continue;const file=DiscoveryModel.sourceMovie(row)?.releaseFile;if(file){tracked.releaseFile={...file,screenings:file.screenings.map(r=>({...r,stale:feed.stale||r.stale}))};changed=true;}}if(changed){saveWatchlist();window.dispatchEvent(new Event('rewind:state'));}}
 async function rankDiscovery(movies){
- if(typeof Hub!=='undefined')await Hub.loadTasteBaseline();const seeds=HubModel.evidence(hubState.taste);
- const ranked=await mapLimited(movies,4,async movie=>{if(!movie.id)return movie;let meta=movie.meta;try{if(!meta?.credits)meta=await fetchMovieDetails(movie.id);if(!meta?.keywords)meta={...meta,keywords:await tmdbGet('/movie/'+movie.id+'/keywords')};}catch{}const fit=HubModel.affinity({...movie,meta},seeds,hubState.feedback),profileFit=TasteModel.affinity({...movie,meta});return {...movie,meta,profileFit,discoveryFit:HubModel.strongConnection(fit)?fit:null,requestedInterest:movie.id===1599181};});
+ // Rank from the metadata we already have. No network calls before first paint.
+ const seeds=HubModel.evidence(hubState.taste);
+ const ranked=movies.map(movie=>{if(!movie.id)return movie;const meta=movie.meta||movie.detailsSnapshot||movie;const fit=HubModel.affinity({...movie,meta},seeds,hubState.feedback),profileFit=TasteModel.affinity({...movie,meta});return {...movie,meta,profileFit,discoveryFit:HubModel.strongConnection(fit)?fit:null,requestedInterest:movie.id===1599181};});
  if(document.getElementById('discover-sort').value==='taste')ranked.sort((a,b)=>Number(!!b.requestedInterest)-Number(!!a.requestedInterest)||((b.discoveryFit?.score||0)+(b.profileFit?.score||0))-((a.discoveryFit?.score||0)+(a.profileFit?.score||0)));return ranked;
 }
 function renderSourceLinks(rows){
