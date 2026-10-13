@@ -311,7 +311,7 @@ function mergeTheaterState(incoming){
  hubState.hiddenTheaterFilms=CounterModel.mergeHiddenFilms(hubState.hiddenTheaterFilms,Array.isArray(incoming.hiddenTheaterFilms)?incoming.hiddenTheaterFilms:[],restores);
 }
 function refreshTheaterState(){try{mergeTheaterState(StorageModel.read(localStorage,'rewind-hub-v1',{}));}catch{}}
-function persistHubState(){refreshTheaterState();persistData('rewind-hub-v1',hubState);}
+function persistHubState(){persistData('rewind-hub-v1',hubState);}
 window.addEventListener('storage',event=>{if(event.key==='rewind-hub-v1'){refreshTheaterState();if(typeof Hub!=='undefined')Hub.stateChanged();}});
 
 // ---------- storage ----------
@@ -722,7 +722,7 @@ async function renderWatchlist(force = false, reuse = false) {
   document.getElementById('watchlist-count').textContent=watchlist.length+' on your watchlist'+((hubState.watchlistUnmatched||[]).length?' · '+hubState.watchlistUnmatched.length+' awaiting match':'');
   empty.hidden=watchlist.length>0;
   const batch=scopedWatchlist().sort((a,b)=>Number(!!b.pinned)-Number(!!a.pinned)||(b.addedAt||0)-(a.addedAt||0));
-  const progress=new Map(batch.map(entry=>[entry.id,{entry,status:entry.availabilitySnapshot?{...entry.availabilitySnapshot,stale:reuse||!force&&WatchlistModel.freshSnapshot(entry)?entry.availabilitySnapshot.stale:true}:{code:'nodata',kind:'unknown',label:reuse?'Availability not checked':'Checking availability',offers:[],pending:!reuse},changed:false}]));let checked=0,networkChecks=0,lastPaintAt=Date.now();
+  const progress=new Map(batch.map(entry=>[entry.id,{entry,status:entry.availabilitySnapshot?{...entry.availabilitySnapshot,stale:reuse||!force&&WatchlistModel.freshSnapshot(entry)?entry.availabilitySnapshot.stale:true}:{code:'nodata',kind:'unknown',label:reuse?'Availability not checked':'Checking availability',offers:[],pending:!reuse},changed:false}]));let checked=0,networkChecks=0,lastPaintAt=Date.now(),lastCheckpointAt=Date.now(),receiptsDirty=false;
   document.querySelectorAll('[data-watchlist-scope]').forEach(btn=>btn.setAttribute('aria-pressed',String(btn.dataset.watchlistScope===watchlistScope)));
   document.getElementById('watchlist-scope-note').textContent=watchlistScope==='recent'?'Added in the last six months.':'Your full watchlist.';
   document.getElementById('watchlist-more').hidden=batch.length<=watchlistLimit;
@@ -743,7 +743,7 @@ async function renderWatchlist(force = false, reuse = false) {
     }
     catch {status={code:'nodata',kind:'unknown',label:'Availability could not be checked',offers:[],stale:true};}
     if(request !== watchlistRequest) return {entry,status,changed:false,prevLabel:entry.lastStatusLabel};
-    if(!reuse&&!status.stale){let receiptChanged=false;for(const receipt of CounterModel.changes(beforeAvailability,status,Date.now())){const record={...receipt,movieId:entry.id,title:entry.title,id:[entry.id,receipt.type,receipt.key,status.quoteCheckedAt||status.checkedAt].join(':')};if(!hubState.changeReceipts.some(r=>r.id===record.id)){hubState.changeReceipts.push(record);receiptChanged=true;}}entry.availabilityBaseline={...status};if(receiptChanged)persistHubState();}
+    if(!reuse&&!status.stale){let receiptChanged=false;for(const receipt of CounterModel.changes(beforeAvailability,status,Date.now())){const record={...receipt,movieId:entry.id,title:entry.title,id:[entry.id,receipt.type,receipt.key,status.quoteCheckedAt||status.checkedAt].join(':')};if(!hubState.changeReceipts.some(r=>r.id===record.id)){hubState.changeReceipts.push(record);receiptChanged=true;}}entry.availabilityBaseline={...status};if(receiptChanged)receiptsDirty=true;}
     const priorIncluded=typeof entry.lastFreshIncluded==='boolean'?entry.lastFreshIncluded:entry.availabilitySnapshot&&!entry.availabilitySnapshot.stale?HubModel.isIncluded(entry.availabilitySnapshot):null;
     Object.assign(entry,{availabilitySnapshot:lookupMovie.availabilitySnapshot,watchmodeCache:lookupMovie.watchmodeCache,storePriceCache:lookupMovie.storePriceCache,detailsSnapshot:lookupMovie.detailsSnapshot,priceHistory:lookupMovie.priceHistory,runtime:lookupMovie.runtime??entry.runtime,director:lookupMovie.director||entry.director,overview:lookupMovie.overview||entry.overview});
     const fingerprint = status.offers?.map(o=>`${o.kind}:${o.provider}:${o.format || ''}:${o.price ?? ''}`).sort().join('|') || status.label;
@@ -758,14 +758,15 @@ async function renderWatchlist(force = false, reuse = false) {
       entry.lastStatusCode=status.code;entry.lastStatusLabel=status.label;entry.lastAvailabilityKey=fingerprint;
     }
     const result={entry,status,changed,prevLabel};progress.set(entry.id,result);checked++;
-    if(!reuse){loading.textContent='Checking prices · '+checked+' of '+batch.length;if(checked%8===0&&Date.now()-lastPaintAt>=500){watchlistResults=[...progress.values()];repaintWatchlist();lastPaintAt=Date.now();}if(checked%20===0)saveWatchlist(false);}
+    if(!reuse){loading.textContent='Checking prices · '+checked+' of '+batch.length;if(checked%8===0&&Date.now()-lastPaintAt>=500){watchlistResults=[...progress.values()];repaintWatchlist();lastPaintAt=Date.now();}if(networkChecks&&Date.now()-lastCheckpointAt>=15000){saveWatchlist(false);if(receiptsDirty){persistHubState();receiptsDirty=false;}lastCheckpointAt=Date.now();}}
     return result;
   })).filter(r=>r&&watchlist.some(m=>m.id===r.entry.id));
   if (request !== watchlistRequest) return;
   document.getElementById('card-check-status').textContent=reuse?'Showing saved availability. Check availability to refresh.':'US providers checked '+new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'})+(results.some(r=>r.status.stale)?' · '+results.filter(r=>r.status.stale).length+' previous checks':'');
+  if(receiptsDirty)persistHubState();
   saveWatchlist();
 
-  watchlistResults=results;repaintWatchlist();if(!reuse&&networkChecks)scheduleSync();
+  watchlistResults=results;repaintWatchlist();window.dispatchEvent(new Event('rewind:watchlist-ready'));if(!reuse&&networkChecks)scheduleSync();
   document.getElementById('watchlist-load-status').textContent='';
 }
 function paintWatchlist(results){
@@ -987,7 +988,9 @@ async function init() {
   }
   await loadWatchlistBaseline();
   renderWatchlist().catch(err=>showToast(err.message));
-  renderDiscover().catch(err=>showToast(err.message));
+  // Discover is loaded on first entry, not alongside the initial price scan.
+  const discoverTab=document.querySelector('[data-tab=discover]');
+  discoverTab.addEventListener('click',()=>{if(!document.getElementById('discover-grid').children.length)renderDiscover().catch(err=>showToast(err.message));},{once:true});
   resolveWatchlistMatches().catch(()=>{watchlistMatching=false;renderImportReview();});
 }
 

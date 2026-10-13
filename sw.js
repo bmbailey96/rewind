@@ -1,4 +1,4 @@
-const CACHE = 'rewind-v56';
+const CACHE = 'rewind-v57';
 const SHELL = ['/', 'index.html', 'style.css', 'app.js', 'movie-news-model.js', 'movie-news.js', 'letterboxd-diary.js', 'rewind-model.js', 'availability-ui.js', 'release-model.js', 'manifest.json', 'hub-model.js', 'counter-model.js', 'discovery-model.js', 'taste-model.js', 'oracle.js', 'hub.js', 'sync-model.js', 'static-model.js', 'static-experience.js','flow.js', 'storage-model.js', 'occasion-model.js', 'watchlist-model.js', 'artwork-model.js', 'media-nav.js', 'media-nav.css'];
 
 self.addEventListener('install', (e) => {

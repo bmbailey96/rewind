@@ -1367,3 +1367,6 @@ button:focus-visible,a:focus-visible,summary:focus-visible{outline:2px solid #db
 #signal-shelf.watchlist-draw .rental-card>.cost-block{grid-column:2;grid-row:3;margin:4px 0 0;padding:8px 0}
 #signal-shelf.watchlist-draw .rental-card>.card-actions,#signal-shelf.watchlist-draw .rental-card>.film-details-trigger,#signal-shelf.watchlist-draw .rental-card>.release-file,#signal-shelf.watchlist-draw .rental-card>.draw-origin{grid-column:1/-1}
 @media(max-width:600px){#signal-shelf.watchlist-draw .rental-card{grid-template-columns:96px minmax(0,1fr);gap:4px 14px;padding:14px}#signal-shelf.watchlist-draw .rental-card>.card-poster{width:96px;height:144px;max-width:96px;max-height:144px}#signal-shelf.watchlist-draw .rental-card>.card-title{font-size:18px}#signal-shelf.watchlist-draw .rental-card>.card-meta{font-size:12px}}
+
+/* Offscreen film cards keep their layout without painting their contents. */
+@supports(content-visibility:auto){#watch-now-grid>.rental-card,#paid-grid>.rental-card,#waiting-grid>.rental-card{content-visibility:auto;contain-intrinsic-size:auto 380px}}
