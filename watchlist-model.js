@@ -27,6 +27,10 @@
    if(typeof movie.followRelease==='boolean')continue;
    if(movie.source==='Rewind watchlist'&&movie.id!==1204680&&Number.isFinite(movie.addedAt)&&movie.addedAt>0){
     movie.followRelease=true;movie.followReleaseAt=movie.addedAt;movie.followReleaseOrigin='legacy-manual';changed++;
+   }else if(movie.source==='Letterboxd watchlist'&&movie.letterboxdWatchlist===true&&movie.importedAt==null&&Number.isFinite(movie.addedAt)&&movie.addedAt>0&&movie.id!==1204680){
+    // Earlier CSV imports overwrote source on manually saved Rewind films,
+    // but preserved the original addedAt and did not set importedAt.
+    movie.followRelease=true;movie.followReleaseAt=movie.addedAt;movie.followReleaseOrigin='legacy-manual-reclassified';changed++;
    }else if(movie.releaseFile&&/^Rewind (?:discover|calendar)$/.test(movie.source||'')){
     movie.followRelease=true;movie.followReleaseAt=movie.addedAt||Date.now();movie.followReleaseOrigin='legacy-release';changed++;
    }
