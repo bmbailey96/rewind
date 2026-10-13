@@ -20,11 +20,12 @@
  // A release follow is independent of inclusion in the permanent watchlist.
  // Legacy "Rewind watchlist" records were saved through an explicit user action.
  // Never infer a follow from an imported Letterboxd title or a release year.
+ // Coyote vs. Acme was seeded automatically in earlier builds, so its legacy origin is ambiguous.
  function backfillReleaseFollows(films){
   let changed=0;
   for(const movie of films||[]){
    if(typeof movie.followRelease==='boolean')continue;
-   if(movie.source==='Rewind watchlist'&&Number.isFinite(movie.addedAt)&&movie.addedAt>0){
+   if(movie.source==='Rewind watchlist'&&movie.id!==1204680&&Number.isFinite(movie.addedAt)&&movie.addedAt>0){
     movie.followRelease=true;movie.followReleaseAt=movie.addedAt;movie.followReleaseOrigin='legacy-manual';changed++;
    }else if(movie.releaseFile&&/^Rewind (?:discover|calendar)$/.test(movie.source||'')){
     movie.followRelease=true;movie.followReleaseAt=movie.addedAt||Date.now();movie.followReleaseOrigin='legacy-release';changed++;
