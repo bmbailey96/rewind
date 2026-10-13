@@ -32,7 +32,7 @@ const wait=()=>new Promise(r=>setTimeout(r,100));
   else {const id=Number(u.pathname.split('/').at(-1));body=details(films.find(m=>m.id===id)||{id,title:'Feature',release_date:'2026-08-28',poster_path:'/f.jpg'});}
   return {ok:true,json:async()=>body};
  };
- w.eval(['rewind-model.js','release-model.js','availability-ui.js','counter-model.js','discovery-model.js','taste-model.js','hub-model.js','artwork-model.js','occasion-model.js','oracle.js','storage-model.js','sync-model.js','static-model.js','watchlist-model.js','movie-news-model.js','app.js','hub.js','static-experience.js','movie-news.js','letterboxd-diary.js'].map(file=>fs.readFileSync(__dirname+'/../'+file,'utf8')).join('\n')+'\nwindow.testState={movies:()=>watchlist,replaceMovies:m=>watchlist=m,hub:()=>hubState,hubInterface:Hub,syncBase,changed:()=>Hub.stateChanged()};');
+ w.eval(['rewind-model.js','release-model.js','availability-ui.js','counter-model.js','discovery-model.js','taste-model.js','hub-model.js','artwork-model.js','occasion-model.js','oracle.js','storage-model.js','sync-model.js','static-model.js','watchlist-model.js','movie-news-model.js','app.js','hub.js','static-experience.js','movie-news.js','letterboxd-diary.js'].map(file=>fs.readFileSync(__dirname+'/../'+file,'utf8')).join('\n')+'\nwindow.testState={movies:()=>watchlist,replaceMovies:m=>watchlist=m,hub:()=>hubState,hubInterface:Hub,syncBase,seen:()=>seenSet,changed:()=>Hub.stateChanged()};');
  await wait();w.document.querySelector('[data-watchlist-scope="all"]').click();await w.eval("renderWatchlist()");
  assert.equal(w.document.querySelectorAll('.tabs [data-tab]').length,4);
  assert.equal(w.document.getElementById('card-options').open,false);
@@ -236,7 +236,7 @@ assert.equal(w.document.querySelector('[data-discover-intent=surprise]').getAttr
  const filterToggle=w.document.getElementById('watchlist-filter-toggle');filterToggle.click();assert.equal(w.document.getElementById('card-options').open,true);assert.equal(filterToggle.getAttribute('aria-expanded'),'true');filterToggle.click();assert.equal(w.document.getElementById('card-options').open,false);
  const oldCollection=w.testState.movies(),scaleFilms=Array.from({length:600},(_,i)=>({id:100000+i,title:'Scale film '+i,release_date:i<400?'2026-09-01':'2020-01-01',genre_ids:[i%2?27:35],source:'Letterboxd watchlist',addedAt:w.Date.now(),runtime:100,availabilitySnapshot:{checkedAt:w.Date.now(),quoteCheckedAt:w.Date.now(),offers:[{kind:'rent',provider:'Apple TV',price:600-i,format:'HD'}]}}));let priceCalls=0;const scaleFetch=w.fetch;w.fetch=async(raw,opts)=>{if(/rewind-prices|watch\/providers/.test(String(raw)))priceCalls++;return scaleFetch(raw,opts);};w.testState.replaceMovies(scaleFilms);w.document.querySelector('[data-watchlist-scope=all]').click();await w.eval('renderWatchlist()');assert.equal(priceCalls,0,'600 fresh films reuse saved availability rather than 600 network checks');assert.equal(w.document.querySelectorAll('#paid-grid>.rental-card').length,24);assert.equal(w.document.querySelector('#paid-grid>.rental-card').dataset.movieId,'100599','Sort the whole 600-film list before rendering the first 24');
  // One title was watched outright; another has a recorded rating. Neither is in Recent.
- w.eval("seenSet.add(seenKey('Scale film 10','2026'))");
+ w.testState.seen().add('scalefilm10|2026');
  const priorTaste=w.testState.hub().taste.slice();
  w.testState.hub().taste.push({id:100020,title:'Scale film 20',rating:4.5});
  w.document.querySelector('[data-watchlist-scope=recent]').click();await w.eval('renderWatchlist()');
@@ -251,7 +251,7 @@ assert.equal(w.document.querySelector('[data-discover-intent=surprise]').getAttr
  assert.match(w.document.getElementById('watchlist-count').textContent,/600 total/);
  assert.equal(w.document.querySelectorAll('#paid-grid>.rental-card').length,24,'All is paginated, not truncated');
  assert.equal(priceCalls,0,'Switching Recent and All never forces 600 availability requests');
- w.eval("seenSet.delete(seenKey('Scale film 10','2026'))");
+ w.testState.seen().delete('scalefilm10|2026');
  w.testState.hub().taste=priorTaste;
  w.fetch=scaleFetch;w.testState.replaceMovies(oldCollection);await w.eval('renderWatchlist(false,true)');
  const compressedCollection=JSON.stringify(w.testState.movies());w.localStorage.setItem('rewind-watchlist-v1',w.StorageModel.encode(compressedCollection));assert.equal(JSON.stringify(w.eval('loadWatchlist()')),compressedCollection,'App reload reader understands compressed film storage');w.localStorage.setItem('rewind-watchlist-v1',compressedCollection);
