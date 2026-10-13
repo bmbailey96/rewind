@@ -728,7 +728,13 @@ async function renderWatchlist(force = false, reuse = false) {
   // Sorting and filters still consider the entire collection. Fetching does not.
   const progress=new Map(batch.map(entry=>{
     const saved=entry.availabilitySnapshot;
-    return [entry.id,{entry,status:saved?{...saved,stale:!WatchlistModel.freshSnapshot(entry)}:{code:'nodata',kind:'unknown',label:'Not checked yet',offers:[],stale:true},changed:false}];
+    const owned=hubState.taste.find(m=>m.id===entry.id&&m.owned);
+    const shelf=owned?HubModel.shelfStatus(owned):null;
+    const remote=(saved?.offers||[]).filter(o=>o.kind!=='physical').map(o=>o.kind==='subscription'?{...o,included:RewindModel.included(o.provider,myServices)}:o);
+    const offers=[...(shelf?.offers||[]),...remote];
+    const summary=shelf||(offers.length?RewindModel.summary(offers):null);
+    const status=saved?{...saved,...(summary||{}),offers,physical:!!owned,stale:!owned&&!WatchlistModel.freshSnapshot(entry)}:shelf||{code:'nodata',kind:'unknown',label:'Not checked yet',offers:[],stale:true};
+    return [entry.id,{entry,status,changed:false}];
   }));
   document.querySelectorAll('[data-watchlist-scope]').forEach(btn=>btn.setAttribute('aria-pressed',String(btn.dataset.watchlistScope===watchlistScope)));
   document.getElementById('watchlist-scope-note').textContent=watchlistScope==='recent'?'Added in the last six months.':'Your full watchlist.';
