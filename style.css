@@ -1392,3 +1392,10 @@ button:focus-visible,a:focus-visible,summary:focus-visible{outline:2px solid #db
 .release-recovery-row span{min-width:0;overflow-wrap:anywhere}
 .release-recovery-row button{flex-shrink:0;font-size:11px}
 @media(max-width:600px){.release-recovery-row{align-items:flex-start}.release-recovery-row button{max-width:46%;white-space:normal}}
+
+/* All collection shelves share the mobile row layout, including Release Watch. */
+@media(max-width:600px){
+ #tab-watchlist .shelf-group>.card-row.wrap{display:grid;grid-template-columns:minmax(0,1fr);gap:12px;align-items:start}
+ #tab-watchlist .shelf-group>.card-row.wrap>.rental-card{width:100%;min-width:0;max-width:100%}
+ #tab-watchlist .rental-card>.card-title,#tab-watchlist .rental-card>.card-meta{overflow-wrap:normal;word-break:normal}
+}
