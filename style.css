@@ -1399,3 +1399,6 @@ button:focus-visible,a:focus-visible,summary:focus-visible{outline:2px solid #db
  #tab-watchlist .shelf-group>.card-row.wrap>.rental-card{width:100%;min-width:0;max-width:100%}
  #tab-watchlist .rental-card>.card-title,#tab-watchlist .rental-card>.card-meta{overflow-wrap:normal;word-break:normal}
 }
+
+/* Recovery belongs to Collection; shelves follow viewing options, not release history. */
+.collection-recovery{margin:12px 0}.collection-recovery>summary{padding:12px 0;min-height:44px;box-sizing:border-box;cursor:pointer;color:#d8bd80}.film-drawer #rw-recovery{margin:8px 0;padding:12px}.rental-card .cost-warning{white-space:normal;line-height:1.5}

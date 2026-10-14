@@ -61,35 +61,34 @@
   // A date is not evidence a specific theater is still playing the film.
   return when>=ref-60*86400000&&when<=ref+180*86400000?d:null;
  }
- function releaseStage(movie,status,today,budget=7.99,receipts=[]){
+ function releaseStage(movie,status,today,budget=7.99,receipts=[],model=null,local=null){
+  // Previous quotes stay under their viewing option, with the check age shown.
+  const offers=status?.offers||[],cost=model?.cost(offers,budget,false),home=upcomingHome(movie,status,today);
   const fresh=!!status&&!status.stale&&Number.isFinite(status.checkedAt)&&Date.now()-status.checkedAt>=0&&Date.now()-status.checkedAt<24*3600000;
-  const offers=fresh?(status.offers||[]).filter(o=>o.kind!=='physical'):[];
-  const free=offers.some(o=>o.kind==='free'||o.kind==='subscription'&&o.included);
-  const rental=offers.some(o=>o.kind==='rent');
-  const buy=offers.some(o=>o.kind==='buy');
-  if(free||rental||buy){
-   const arrival=(receipts||[]).filter(r=>r.movieId===movie.id&&r.at&&Date.now()-r.at<=14*86400000&&Date.now()>=r.at)
-    .some(r=>r.type==='included'&&offers.some(o=>(o.kind==='free'||o.kind==='subscription'&&o.included)&&o.provider===r.provider)||
-      r.type==='price'&&r.from>budget&&r.to<=budget&&offers.some(o=>o.kind==='rent'&&o.provider===r.provider&&o.format===r.format&&o.price===r.to));
-   return {group:arrival?'arrived':'available',date:null,sortAt:arrival?Math.max(...receipts.filter(r=>r.movieId===movie.id).map(r=>r.at||0)):0};
-  }
-  const home=upcomingHome(movie,status,today);
-  if(home)return {group:'coming',date:home.date,label:home.label};
-  const theater=theatricalDate(movie,status,today);
-  if(theater)return {group:'theater',date:theater,label:'US theatrical release listing'};
-  return {group:'waiting',date:null};
+  let group='waiting';
+  if(cost?.band==='free')group='included';
+  else if(cost?.band==='cheap')group='cheap';
+  else if(['premium','buy','unknown'].includes(cost?.band))group='premium';
+  else if(local)group='theater';
+  const arrival=fresh&&(receipts||[]).filter(r=>r.movieId===movie.id&&r.at&&Date.now()-r.at<=14*86400000&&Date.now()>=r.at)
+   .some(r=>r.type==='included'&&offers.some(o=>(o.kind==='free'||o.kind==='subscription'&&o.included)&&o.provider===r.provider)||
+    r.type==='price'&&r.from>budget&&r.to<=budget&&offers.some(o=>o.kind==='rent'&&o.provider===r.provider&&o.format===r.format&&o.price===r.to));
+  return {group,date:group==='theater'?local.date:home?.date||null,label:home?.label||null,home,local,newArrival:arrival,stale:!fresh&&cost?.offer?.kind!=='physical'};
  }
- function releaseWatchPage(results,{limit=24,model,budget=7.99,filter='all',today,receipts=[]}){
-  const order={arrived:0,available:1,coming:2,theater:3,waiting:4};
-  const rows=results.map(r=>({...r,stage:releaseStage(r.entry,r.status,today,budget,receipts),cost:model.cost(r.status?.offers,budget,r.status?.stale)}))
-   .filter(r=>filter==='all'||r.cost.band===filter);
+ function releaseWatchPage(results,{limit=24,model,budget=7.99,filter='all',today,receipts=[],localListing=()=>null}){
+  const order={included:0,cheap:1,premium:2,theater:3,waiting:4};
+  const rows=results.map(r=>{
+   const cost=model.cost(r.status?.offers,budget,false);
+   return {...r,cost,stage:releaseStage(r.entry,r.status,today,budget,receipts,model,localListing(r.entry))};
+  }).filter(r=>filter==='all'||filter==='free'&&r.stage.group==='included'||filter==='cheap'&&r.stage.group==='cheap'||filter==='premium'&&r.stage.group==='premium'||filter==='waiting'&&['waiting','theater'].includes(r.stage.group));
   rows.sort((a,b)=>order[a.stage.group]-order[b.stage.group]||
-   (['coming','theater'].includes(a.stage.group)?String(a.stage.date||'').localeCompare(String(b.stage.date||'')):0)||
-   (a.stage.group==='arrived'?(b.stage.sortAt||0)-(a.stage.sortAt||0):0)||
-   (a.stage.group==='available'?Number(b.cost.band==='free')-Number(a.cost.band==='free'):0)||
-   (b.entry.pinned?1:0)-(a.entry.pinned?1:0)||
-   (b.entry.addedAt||0)-(a.entry.addedAt||0)||a.entry.title.localeCompare(b.entry.title));
-  return {rows:rows.slice(0,limit),total:rows.length};
+   (a.stage.group==='premium'?({premium:0,buy:1,unknown:2}[a.cost.band]??2)-({premium:0,buy:1,unknown:2}[b.cost.band]??2):0)||
+   (['cheap','premium'].includes(a.stage.group)?(a.cost.price??Infinity)-(b.cost.price??Infinity):0)||
+   (['waiting','theater'].includes(a.stage.group)?String(a.stage.date||'9999').localeCompare(String(b.stage.date||'9999')):0)||
+   Number(!!b.stage.newArrival)-Number(!!a.stage.newArrival)||Number(!!b.entry.pinned)-Number(!!a.entry.pinned)||a.entry.title.localeCompare(b.entry.title));
+  const counts={included:0,cheap:0,premium:0,theater:0,waiting:0};
+  for(const row of rows)counts[row.stage.group]++;
+  return {rows:rows.slice(0,limit),total:rows.length,counts};
  }
 
  function merge(existing,films){const byId=new Map(existing.map(f=>[f.id,f]));for(const f of films)if(f.id&&!byId.has(f.id))byId.set(f.id,{...f,addedAt:addedAt(f),importedAt:Date.now(),pinned:false,manualNote:'',lastStatusCode:null,lastStatusLabel:null,statusChangedAt:null});return [...byId.values()];}
