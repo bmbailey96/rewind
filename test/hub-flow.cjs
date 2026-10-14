@@ -40,6 +40,13 @@ const wait=()=>new Promise(r=>setTimeout(r,100));
  assert.ok(w.document.getElementById('rw-recovery').closest('#film-drawer'),'Recovery is inside Collection, not above movie shelves');
  assert.ok(w.document.querySelectorAll('#rw-recovery-list button').length>0,'Uncertain old films are offered for manual review, not silently flagged');
  w.document.querySelector('[data-watchlist-scope="all"]').click();await w.eval("renderWatchlist()");
+ const waitingFixture=w.testState.movies()[0],waitingStatus={offers:[],stale:true,checkedAt:w.Date.now()-2*86400000};
+ const releaseFixture={...waitingFixture,releaseFile:{title:waitingFixture.title,screenings:[],source:'Catalog',sourceURL:'https://example.com/film'}};
+ for(const film of [waitingFixture,releaseFixture]){
+  const card=w.renderCard(film,{context:'watchlist',status:waitingStatus,collectionCost:{...w.ReleaseModel.cost([],7.99,false),stale:true}});
+  assert.equal(card.querySelector('.cost-badge').textContent,'WAITING','Release metadata must not hide the availability label');
+  assert.ok(card.querySelector('.cost-warning'),'Both card types show the previous-check date');
+ }
  const pinButton=w.document.querySelector('.poster-pin[aria-label="Pin Coyote vs. Acme"]');assert.ok(pinButton,'Saved films expose a poster pin');
  pinButton.click();await wait();
  assert.equal(w.testState.movies().find(m=>m.id===1204680).pinned,true);assert.equal(w.StorageModel.read(w.localStorage,'rewind-watchlist-v1').find(m=>m.id===1204680).pinned,true,'Pin persists locally');
