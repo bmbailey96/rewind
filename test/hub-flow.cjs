@@ -15,6 +15,7 @@ const wait=()=>new Promise(r=>setTimeout(r,100));
  w.document.getElementById('letterboxd-export-additions').remove();w.document.getElementById('letterboxd-export-note').remove(); // A cached pre-export page must still boot with the new script.
  w.IntersectionObserver=class {constructor(callback){this.callback=callback;w.offerObserver=this;}observe(target){if(target?.id==='watchlist-more')w.watchlistScrollObserver=this;}unobserve(){}};
  w.HTMLElement.prototype.scrollIntoView=function(){};w.HTMLDialogElement.prototype.showModal=function(){this.open=true};w.HTMLDialogElement.prototype.close=function(){this.open=false;this.dispatchEvent(new this.ownerDocument.defaultView.Event('close'))};
+ w.localStorage.setItem('rewind-last-visit-v1',String(w.Date.now()-3600000));
  w.localStorage.setItem('rewind-ui-v1',JSON.stringify({pickerCost:'included',pickerMode:'oracle'}));
  w.localStorage.setItem('rewind-watchlist-v1',JSON.stringify(films));w.localStorage.setItem('rewind-coyote-seeded-v1','1');w.localStorage.setItem('rewind-watchmode-key','fixture');
  w.fetch=async(raw,opts={})=>{const u=new URL(raw,'https://bekind-rewind.netlify.app');let body;
@@ -119,7 +120,7 @@ const wait=()=>new Promise(r=>setTimeout(r,100));
  const reopened=new JSDOM(fs.readFileSync(__dirname+'/../index.html','utf8'),{url:'https://bekind-rewind.netlify.app',runScripts:'outside-only'}),rw=reopened.window;
  rw.HTMLElement.prototype.scrollIntoView=function(){};rw.HTMLDialogElement.prototype.showModal=function(){this.open=true};rw.HTMLDialogElement.prototype.close=function(){this.open=false;this.dispatchEvent(new this.ownerDocument.defaultView.Event('close'))};rw.fetch=w.fetch;
  for(const key of ['rewind-watchlist-v1','rewind-skipped-v1','rewind-seen-v1','rewind-coyote-seeded-v1']){const value=w.localStorage.getItem(key);if(value!=null)rw.localStorage.setItem(key,value);}
- rw.eval(['rewind-model.js','release-model.js','availability-ui.js','counter-model.js','discovery-model.js','taste-model.js','hub-model.js','artwork-model.js','occasion-model.js','oracle.js','storage-model.js','sync-model.js','static-model.js','watchlist-model.js','movie-news-model.js','app.js','hub.js','static-experience.js','movie-news.js','letterboxd-diary.js'].map(file=>fs.readFileSync(__dirname+'/../'+file,'utf8')).join('\n'));await wait();
+ rw.eval(['rewind-model.js','release-model.js','availability-ui.js','counter-model.js','discovery-model.js','taste-model.js','hub-model.js','artwork-model.js','occasion-model.js','oracle.js','storage-model.js','sync-model.js','static-model.js','watchlist-model.js','movie-news-model.js','app.js','hub.js','static-experience.js','movie-news.js','letterboxd-diary.js'].map(file=>fs.readFileSync(__dirname+'/../'+file,'utf8')).join('\n')+'\nwindow.slowState={replaceMovies:m=>watchlist=m};');await wait();
  rw.document.getElementById('search-input').value='Unwanted';rw.document.getElementById('search-form').dispatchEvent(new rw.Event('submit',{cancelable:true}));await wait();
  assert.equal(rw.document.querySelectorAll('#search-grid .rental-card').length,1,'Passed films stay hidden after opening a new browser session');assert.equal(rw.document.querySelector('#search-grid .rental-card').dataset.movieId,'3');reopened.window.close();
  w.eval('skipMovie(99)');w.document.querySelector('#toast button').click();
@@ -333,14 +334,40 @@ assert.equal(w.document.querySelector('[data-discover-intent=surprise]').getAttr
    if(url.pathname.includes('/movie/')){detailCalls++;return new Promise(()=>{});}
    return {ok:false,status:503,json:async()=>({})};
  };
- slow.eval(['rewind-model.js','release-model.js','availability-ui.js','counter-model.js','discovery-model.js','taste-model.js','hub-model.js','artwork-model.js','occasion-model.js','oracle.js','storage-model.js','sync-model.js','static-model.js','watchlist-model.js','movie-news-model.js','app.js','hub.js','static-experience.js','flow.js','movie-news.js','letterboxd-diary.js'].map(file=>fs.readFileSync(__dirname+'/../'+file,'utf8')).join('\n'));
+ slow.eval(['rewind-model.js','release-model.js','availability-ui.js','counter-model.js','discovery-model.js','taste-model.js','hub-model.js','artwork-model.js','occasion-model.js','oracle.js','storage-model.js','sync-model.js','static-model.js','watchlist-model.js','movie-news-model.js','app.js','hub.js','static-experience.js','flow.js','movie-news.js','letterboxd-diary.js'].map(file=>fs.readFileSync(__dirname+'/../'+file,'utf8')).join('\n')+'\nwindow.slowState={replaceMovies:m=>watchlist=m};');
  slow.document.querySelector('[data-tab=discover]').click();
  await wait();
- assert.equal(fastCatalogCalls,1,'Discover fetches only one catalog page, even with an unresolved cloud sync');
+ assert.equal(fastCatalogCalls,4,'Discover fills sparse batches across catalog pages without waiting for cloud sync');
  assert.equal(detailCalls,0,'Individual film details do not block the first Discover paint');
  assert.equal(slow.document.querySelectorAll('#discover-grid .rental-card').length,16,'Discover remains usable while GitHub and film details hang');
+ // A full saved page must be skipped and More Films must advance beyond the last page.
+ slow.slowState.replaceMovies(Array.from({length:20},(_,i)=>({id:40000+i,title:'Saved '+i,followRelease:true})));
+ const batches=[];
+ slow.fetch=async raw=>{const url=new URL(raw,'https://bekind-rewind.netlify.app');
+  if(url.pathname.includes('/discover/')){const page=Number(url.searchParams.get('page'));batches.push(page);return {ok:true,json:async()=>({total_pages:5,results:Array.from({length:20},(_,i)=>({id:40000+(page-1)*20+i,title:'Catalog '+page+' '+i,release_date:'2026-08-28',poster_path:null}))})};}
+  return new Promise(()=>{});
+ };
+ await slow.eval('renderDiscover(false)');
+ assert.deepEqual(batches,[1,2]);
+ let discoverIds=[...slow.document.querySelectorAll('#discover-grid .rental-card')].map(el=>Number(el.dataset.movieId));
+ assert.equal(discoverIds.length,20);assert.ok(discoverIds.every(id=>id>=40020),'Saved titles never fill Explore');
+ slow.document.getElementById('discover-more').click();await wait();
+ assert.deepEqual(batches,[1,2,3]);
+ discoverIds=[...slow.document.querySelectorAll('#discover-grid .rental-card')].map(el=>Number(el.dataset.movieId));
+ assert.equal(discoverIds.length,40);assert.equal(new Set(discoverIds).size,40,'More Films adds a useful batch without repeats');
  slowDom.window.close();
 
+ const originalLibraryMovies=w.testState.movies().map(m=>({...m})),originalReceipts=[...w.testState.hub().changeReceipts],libraryTestFetch=w.fetch;
+ w.testState.replaceMovies([{id:88001,title:'A useful arrival',followRelease:true,manualNote:'Keep my note',pinned:true,availabilitySnapshot:{checkedAt:w.Date.now()-10000,offers:[]}}]);w.testState.hub().changeReceipts=[];w.testState.hub().receiptsReadAt=0;
+ w.localStorage.setItem('rewind-gh-token','fixture-library');
+ w.fetch=async(raw,options)=>{assert.match(String(raw),/rewind-library/);const registry=JSON.parse(options.body);assert.equal(registry.movies[0].followRelease,true);return {ok:true,json:async()=>({generatedAt:w.Date.now(),films:[{id:88001,checkedAt:w.Date.now(),offers:[{kind:'subscription',provider:'Peacock',included:false}]}]})};};
+ await w.eval('syncBackgroundLibrary()');w.document.querySelector('[data-watchlist-scope=release]').click();
+ const arrival=w.testState.movies()[0];assert.equal(arrival.manualNote,'Keep my note');assert.equal(arrival.pinned,true);assert.equal(arrival.availabilitySnapshot.offers[0].included,true,'Server snapshots use current device subscriptions');
+ assert.equal(w.testState.hub().changeReceipts.filter(r=>r.type==='included').length,1);
+ w.eval('renderChangeStrip()');
+ assert.match(w.document.getElementById('since-visit').textContent,/1 newly included/);assert.doesNotMatch(w.document.getElementById('since-visit').textContent,/514/);
+ w.document.querySelector('#since-visit button').click();assert.match(w.document.getElementById('rw-arrived-grid').textContent,/A useful arrival/);
+ w.testState.replaceMovies(originalLibraryMovies);w.testState.hub().changeReceipts=originalReceipts;w.fetch=libraryTestFetch;w.localStorage.removeItem('rewind-gh-token');
  assert.equal(flowErrors.length,0,'Navigation has no runtime errors');
  console.log('Rewind hub flow: three shelves, source timeline, no vote floor, thresholds persist/sync, real price drops, stale checks, watched undo, inline search passed');
  await wait();await wait();dom.window.close();
