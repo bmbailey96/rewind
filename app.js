@@ -537,7 +537,11 @@ function renderCard(movie, opts = {}) {
   const image=posterUrl(movie.poster_path);const poster=document.createElement(image?'img':'div');poster.className='card-poster'+(image?'':' poster-missing');if(image){poster.loading='lazy';poster.src=image;poster.alt=movie.title+' poster';poster.onerror=()=>{const fallback=document.createElement('div');fallback.className='card-poster poster-missing';fallback.textContent='POSTER UNAVAILABLE';poster.replaceWith(fallback);};}else{poster.textContent='NO POSTER ON FILE';}card.appendChild(poster);
   const title=document.createElement('h3');title.className='card-title';title.textContent=movie.title;card.appendChild(title);
   const meta=document.createElement('p');meta.className='card-meta';meta.textContent=[(movie.release_date||'').slice(0,4),movie.runtime?movie.runtime+' min':'Runtime not listed',movie.director].filter(Boolean).join(' · ');card.appendChild(meta);
-  if(movie.pinned){const pinned=document.createElement('span');pinned.className='new-tag';pinned.textContent='PINNED';card.appendChild(pinned);}
+  if(context==='watchlist'){
+    const pin=document.createElement('button');pin.type='button';pin.className='poster-pin';pin.setAttribute('aria-pressed',String(!!movie.pinned));pin.setAttribute('aria-label',(movie.pinned?'Unpin ':'Pin ')+movie.title);pin.title=movie.pinned?'Unpin film':'Pin film';
+    pin.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 3h6l-1 6 4 4v2h-5v6l-1 2-1-2v-6H6v-2l4-4z"/></svg>';
+    pin.onclick=event=>{event.stopPropagation();togglePin(movie.id);};card.appendChild(pin);
+  }else if(movie.pinned){const pinned=document.createElement('span');pinned.className='new-tag';pinned.textContent='PINNED';card.appendChild(pinned);}
   const actionable=WatchlistModel.actionable(movie,status,hubState.changeReceipts,rentalBudget);if(actionable){const tag=document.createElement('p');tag.className='new-tag useful-change';tag.textContent=actionable.text;card.appendChild(tag);}else if(changed){const tag=document.createElement('span');tag.className='new-tag';tag.textContent='AVAILABILITY CHANGED';card.appendChild(tag);}
   if(opts.markSeen&&isSeen(movie)){const tag=document.createElement('span');tag.className='new-tag';tag.textContent='ALREADY SEEN';card.appendChild(tag);}
   let costInfo=opts.collectionCost|| (status?.pending?{band:'waiting',badge:'CHECKING',caption:'Getting current offers and prices.'}:status?ReleaseModel.cost(status.offers,rentalBudget,status.stale):null);

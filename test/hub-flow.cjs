@@ -40,6 +40,15 @@ const wait=()=>new Promise(r=>setTimeout(r,100));
  assert.ok(w.document.getElementById('rw-recovery').closest('#film-drawer'),'Recovery is inside Collection, not above movie shelves');
  assert.ok(w.document.querySelectorAll('#rw-recovery-list button').length>0,'Uncertain old films are offered for manual review, not silently flagged');
  w.document.querySelector('[data-watchlist-scope="all"]').click();await w.eval("renderWatchlist()");
+ const pinButton=w.document.querySelector('.poster-pin[aria-label="Pin Coyote vs. Acme"]');assert.ok(pinButton,'Saved films expose a poster pin');
+ pinButton.click();await wait();
+ assert.equal(w.testState.movies().find(m=>m.id===1204680).pinned,true);assert.equal(w.StorageModel.read(w.localStorage,'rewind-watchlist-v1').find(m=>m.id===1204680).pinned,true,'Pin persists locally');
+ assert.equal(w.document.querySelector('.poster-pin[aria-label="Unpin Coyote vs. Acme"]').getAttribute('aria-pressed'),'true');
+ assert.ok(!w.document.querySelector('#film-detail-dialog[open]'),'Pin does not open film details');
+ w.document.querySelector('.poster-pin[aria-label="Unpin Coyote vs. Acme"]').click();await wait();
+ assert.equal(w.testState.movies().find(m=>m.id===1204680).pinned,false);assert.equal(w.StorageModel.read(w.localStorage,'rewind-watchlist-v1').find(m=>m.id===1204680).pinned,false,'Unpin persists locally');
+ assert.equal(w.document.querySelector('.poster-pin[aria-label="Pin Coyote vs. Acme"]').getAttribute('aria-pressed'),'false');
+
  assert.equal(w.document.querySelectorAll('.tabs [data-tab]').length,4);
  assert.equal(w.document.getElementById('card-options').open,false);
  assert.equal(w.document.getElementById('calendar-scope').value,'personal');assert.equal(w.document.getElementById('calendar-recommendations').checked,false);

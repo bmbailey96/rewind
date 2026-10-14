@@ -1402,3 +1402,11 @@ button:focus-visible,a:focus-visible,summary:focus-visible{outline:2px solid #db
 
 /* Recovery belongs to Collection; shelves follow viewing options, not release history. */
 .collection-recovery{margin:12px 0}.collection-recovery>summary{padding:12px 0;min-height:44px;box-sizing:border-box;cursor:pointer;color:#d8bd80}.film-drawer #rw-recovery{margin:8px 0;padding:12px}.rental-card .cost-warning{white-space:normal;line-height:1.5}
+
+/* A small poster pin with a full finger-sized target. */
+.rental-card>.poster-pin{position:absolute;z-index:2;top:12px;right:12px;display:grid;place-items:center;width:44px;height:44px;min-height:44px;padding:0;border:0;border-radius:50%;background:transparent!important;color:#e4eae1;box-shadow:none!important;cursor:pointer}
+.poster-pin:before{content:'';position:absolute;inset:6px;border-radius:50%;background:#0a1515ed;border:1px solid #aabeb2}
+.poster-pin svg{position:relative;width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linejoin:round;pointer-events:none}
+.poster-pin[aria-pressed=true]{color:#10201a}.poster-pin[aria-pressed=true]:before{background:#d8b877;border-color:#e9d6a8}.poster-pin[aria-pressed=true] svg{fill:currentColor}
+.poster-pin:hover:before{border-color:#e9d6a8}.poster-pin:focus-visible{outline:2px solid #e9d6a8;outline-offset:2px}
+@media(max-width:600px){#tab-watchlist .rental-card>.poster-pin{top:12px;left:72px;right:auto}}
