@@ -65,3 +65,12 @@ assert.equal(r.rentalForecast(launched,{offers:[paid]},[],'2026-10-11',2.99).tar
 assert.equal(r.rentalForecast({}, {offers:[paid]},[],'2026-10-11',7.99),null,'No invented launch anchor');
 assert.equal(r.rentalForecast(launched,{offers:[{...paid,kind:'buy'}]},[],'2026-10-11',7.99),null,'Purchase prices cannot trigger rental forecasts');
 assert.equal(r.rentalForecast(current,{offers:[paid]},drops,'2026-09-28',5.99).kind,'observed','Observed history outranks the broad prior');
+
+assert.equal(r.forecastTiming({likely:'2026-10-20'},'2026-10-14').text,'Oct 20 · in 6 days');
+assert.equal(r.forecastTiming({likely:'2026-10-15'},'2026-10-14').relative,'in 1 day');
+assert.equal(r.forecastTiming({likely:'2026-10-14'},'2026-10-14').relative,'today');
+assert.equal(r.forecastTiming({likely:'2026-10-09'},'2026-10-14').text,'Oct 9 · 5 days past estimate');
+assert.equal(r.forecastTiming({likely:'2026-10-13'},'2026-10-14').relative,'1 day past estimate');
+assert.equal(r.forecastTiming({likely:'2027-01-02'},'2026-12-31').text,'Jan 2, 2027 · in 2 days');
+assert.equal(r.forecastTiming(null,'2026-10-14'),null);
+console.log('Single rental estimates: calendar days, today, singular labels, missed dates and year boundaries passed');

@@ -1414,3 +1414,6 @@ button:focus-visible,a:focus-visible,summary:focus-visible{outline:2px solid #db
 /* A quiet summary of changes, not another dashboard panel. */
 .since-visit{display:flex;flex-wrap:wrap;align-items:center;gap:4px 16px;border-block:1px solid #34443b;padding:9px 0;margin:8px 0 20px}.since-visit[hidden]{display:none}.since-visit>span{font-size:12px;color:#adbbb1}.since-visit>button{font-size:13px;min-height:40px;padding:5px 0;border:0;background:transparent;color:#c9b27e;box-shadow:none}.since-visit>button[aria-pressed=true]{color:#f3ddb0;text-decoration:underline;text-underline-offset:4px}
 .tonight-slot{font-size:10px;letter-spacing:.06em;color:#ceb77f;text-transform:uppercase;margin:0 0 5px}.tonight-reason{line-height:1.5}.tonight-card-body{gap:7px}
+
+/* Keep a price-drop guess visible, with the date and countdown intact. */
+.rental-card>.rental-forecast-note{font-size:12px;line-height:1.6;padding:10px 0;margin:8px 0;color:#c9d7c8}.forecast-note-label{display:block;font-size:11px;color:#abbbae}.forecast-note-date,.forecast-note-away{white-space:nowrap}.forecast-note-date{color:#dbc18a}

@@ -46,6 +46,12 @@
     const start=addDays(anchor,14),end=addDays(anchor,28);
     return {kind:'provisional',start,end,likely:addDays(anchor,21),overdue:end<today,anchor,anchorLabel:listed?'listed US digital release':'first premium rental check',provider:premium.provider,format:premium.format,threshold,confidence:'Low',samples:0,sourceUrl:'https://franchisere.substack.com/p/the-wednesday-charts-theatrical-windows-disney-universal-the-netflix-warner-bros-deal',sourceLabel:'FranchiseRe · Jan 28, 2026',basis:'Typical two-to-four-week premium rental period',targetSupported:threshold>=5.99};
   }
+  function forecastTiming(estimate,today){
+    const likely=date(estimate?.likely);if(!likely||!date(today))return null;
+    const away=days(today,likely),when=new Date(likely+'T12:00:00Z').toLocaleDateString('en-US',{month:'short',day:'numeric',...(likely.slice(0,4)!==today.slice(0,4)?{year:'numeric'}:{}),timeZone:'UTC'});
+    const relative=away>0?'in '+away+' day'+(away===1?'':'s'):away===0?'today':Math.abs(away)+' day'+(away===-1?'':'s')+' past estimate';
+    return {date:likely,daysAway:away,when,relative,text:when+' · '+relative};
+  }
   function group(status){if(status?.stale)return 'waiting';if((status?.offers||[]).some(o=>o.kind==='physical'||o.kind==='free'||o.kind==='subscription'&&o.included))return 'now';if((status?.offers||[]).some(o=>['rent','buy'].includes(o.kind)))return 'paid';return 'waiting';}
   function storeKey(name){const n=String(name||'').toLowerCase().replace(/[^a-z0-9]/g,'');if(['appletv','appletvstore','itunes'].includes(n))return 'apple';if(['amazon','amazonvideo','primevideo','amazonprimevideo'].includes(n))return 'amazon';return n;}
   function storeLabel(name){const key=storeKey(name);return key==='apple'?'Apple TV':key==='amazon'?'Prime Video':name;}
@@ -70,5 +76,5 @@
   }
   function compactOffers(offers){const groups=new Map();for(const o of offers||[]){const key=[o.kind,storeKey(o.provider),o.channel,typeof o.price==='number'?o.price:'?',o.included].join(':');if(!groups.has(key))groups.set(key,{...o,provider:['rent','buy'].includes(o.kind)?storeLabel(o.provider):o.provider,formats:[]});const row=groups.get(key);if(o.format&&!row.formats.includes(o.format))row.formats.push(o.format);if(qualityRank(o.format)<qualityRank(row.format)){row.format=o.format;row.link=o.link||row.link;}}return [...groups.values()].map(o=>({...o,format:o.formats.sort((a,b)=>qualityRank(a)-qualityRank(b)).join(' / ')||null}));}
   function preference(raw){return {mode:['any','mine','rental'].includes(raw?.mode)?raw.mode:'any',maxPrice:typeof raw?.maxPrice==='number'&&Number.isFinite(raw.maxPrice)&&raw.maxPrice>=0&&raw.maxPrice<=100?raw.maxPrice:7.99};}
-  return {date,days,addDays,datesFor,stages,digitalEstimate,quoteIdentity,recordQuotes,latestPriceChange,priceEstimate,rentalForecast,matchingAnnouncements,group,preference,storeKey,storeLabel,qualityRank,cost,compactOffers};
+  return {date,days,addDays,datesFor,stages,digitalEstimate,quoteIdentity,recordQuotes,latestPriceChange,priceEstimate,rentalForecast,forecastTiming,matchingAnnouncements,group,preference,storeKey,storeLabel,qualityRank,cost,compactOffers};
 });
