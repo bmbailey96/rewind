@@ -752,7 +752,7 @@ const WATCHLIST_PAGE_SIZE=24, WATCHLIST_BACKGROUND_CHECKS=6;
 let watchlistScope='release',watchlistLimit=WATCHLIST_PAGE_SIZE,watchlistResults=[];
 const watchlistBackgroundChecked=new Set();
 let watchlistMatching=false,watchlistMatchProgress='';
-function repaintWatchlist(){const visibleIds=new Set(scopedWatchlist().map(m=>m.id));paintWatchlist(watchlistResults.filter(r=>visibleIds.has(r.entry.id)&&watchlist.some(m=>m.id===r.entry.id)));}
+function repaintWatchlist(append=false){const visibleIds=new Set(scopedWatchlist().map(m=>m.id));paintWatchlist(watchlistResults.filter(r=>visibleIds.has(r.entry.id)&&watchlist.some(m=>m.id===r.entry.id)),append);}
 function watchedForRecent(movie){
   if(isSeen(movie))return true;
   return hubState.taste.some(record=>record.id===movie.id&&(
@@ -788,7 +788,22 @@ function renderReleaseRecovery(){
 document.getElementById('rw-recovery-all').onclick=()=>{document.getElementById('film-drawer')?.close();document.querySelector('[data-watchlist-scope="all"]').click();};
 function renderImportReview(){const box=document.getElementById('watchlist-import-review');if(!box)return;const rows=hubState.watchlistUnmatched||[],pending=watchlistScope==='all'?rows:[];box.replaceChildren();if(!pending.length)return;const details=document.createElement('details'),summary=document.createElement('summary');summary.textContent=watchlistMatching?watchlistMatchProgress:rows.length+' titles need a match';details.appendChild(summary);const note=document.createElement('p');note.textContent='Saved from your May 27, 2026 Letterboxd archive. Availability stays unknown until the film is verified.';details.appendChild(note);const match=document.createElement('button');match.type='button';match.className='secondary';match.textContent=watchlistMatching?'Matching catalog entries…':'MATCH 12 UNRESOLVED TITLES';match.disabled=watchlistMatching;match.onclick=()=>resolveWatchlistMatches().catch(()=>{watchlistMatching=false;renderImportReview();});details.appendChild(match);for(const m of pending){const row=document.createElement('p');row.textContent=m.title+' ('+m.year+') · added '+m.addedDate;details.appendChild(row);}box.appendChild(details);}
 document.querySelectorAll('[data-watchlist-scope]').forEach(btn=>btn.onclick=()=>{watchlistScope=btn.dataset.watchlistScope;watchlistLimit=WATCHLIST_PAGE_SIZE;renderWatchlist();});
-document.getElementById('watchlist-more').onclick=()=>{watchlistLimit+=WATCHLIST_PAGE_SIZE;renderWatchlist();};
+const watchlistMore=document.getElementById('watchlist-more');
+let watchlistAppending=false;
+function revealMoreWatchlist(){
+ if(watchlistAppending||watchlistMore.hidden||!document.getElementById('tab-watchlist').classList.contains('active'))return;
+ watchlistAppending=true;
+ watchlistLimit+=WATCHLIST_PAGE_SIZE;
+ // Extend the saved shelf. Scrolling must not start new provider requests.
+ try{repaintWatchlist(true);}finally{watchlistAppending=false;}
+}
+watchlistMore.onclick=revealMoreWatchlist;
+if(typeof IntersectionObserver==='function'){
+ const moreObserver=new IntersectionObserver(entries=>{
+  if(entries.some(entry=>entry.isIntersecting))revealMoreWatchlist();
+ },{rootMargin:'500px 0px'});
+ moreObserver.observe(watchlistMore);
+}
 let costFilter='all';
 let rentalBudget=Number(localStorage.getItem('rewind-rental-budget-v1')??7.99);
 if(!Number.isFinite(rentalBudget)||rentalBudget<0||rentalBudget>100)rentalBudget=7.99;
@@ -904,9 +919,10 @@ async function renderWatchlist(force = false, reuse = false) {
   if(checked)scheduleSync();
   loading.textContent='';
 }
-function paintWatchlist(results){
+function paintWatchlist(results,append=false){
+  const existing=append?new Set([...document.querySelectorAll('#tab-watchlist .shelf-group .rental-card')].map(card=>Number(card.dataset.movieId))):new Set();
   document.querySelectorAll('[data-cost-filter]').forEach(btn=>{btn.classList.toggle('active',btn.dataset.costFilter===costFilter);btn.setAttribute('aria-pressed',String(btn.dataset.costFilter===costFilter));});
-  for(const id of ['watch-now','paid','waiting','rw-arrived','rw-available','rw-coming','rw-theater','rw-waiting']){document.getElementById(id+'-grid').replaceChildren();document.getElementById(id+'-section').hidden=true;}
+  for(const id of ['watch-now','paid','waiting','rw-arrived','rw-available','rw-coming','rw-theater','rw-waiting']){if(!append){document.getElementById(id+'-grid').replaceChildren();document.getElementById(id+'-section').hidden=true;}}
   if(watchlistScope==='release'){
     const page=WatchlistModel.releaseWatchPage(results,{today:discoveryWindow().today,budget:rentalBudget,receipts:hubState.changeReceipts,limit:watchlistLimit,filter:costFilter,model:ReleaseModel,localListing:m=>typeof Hub==='undefined'||typeof Hub.localListing!=='function'?null:Hub.localListing(m)});
     const groups={included:'rw-arrived',cheap:'rw-available',premium:'rw-coming',theater:'rw-theater',waiting:'rw-waiting'};
@@ -915,6 +931,7 @@ function paintWatchlist(results){
     document.getElementById('watchlist-more').hidden=page.total<=watchlistLimit;
     document.getElementById('watchlist-more').textContent='Show more · '+Math.max(0,page.total-page.rows.length)+' remaining';
     for(const row of page.rows){
+      if(existing.has(row.entry.id))continue;
       const stage=row.stage,card=renderCard(row.entry,{context:'watchlist',status:row.status,changed:row.changed,prevLabel:row.entry.lastChange?.from,collectionCost:{...row.cost,stale:stage.stale}});
       if(stage.newArrival&&!card.querySelector('.useful-change')){const tag=document.createElement('p');tag.className='new-tag useful-change';tag.textContent='Newly available at your price';card.querySelector('.card-meta').after(tag);}
       const note=document.createElement('p');note.className='release-stage-line';
@@ -947,8 +964,8 @@ function paintWatchlist(results){
   document.getElementById('watchlist-more').textContent='Show more · '+Math.max(0,page.total-display.length)+' remaining';
   const optionsLabel=document.getElementById('card-options-label');if(optionsLabel)optionsLabel.textContent=costFilter==='all'?'Filters':'Filters: '+({free:'included / free',cheap:'at my price',premium:'over my price',waiting:'waiting'}[costFilter]||costFilter);
   document.querySelectorAll('[data-cost-filter]').forEach(btn=>{btn.classList.toggle('active',btn.dataset.costFilter===costFilter);btn.setAttribute('aria-pressed',String(btn.dataset.costFilter===costFilter));});
-  let lastPaidBand=null;
-  for(const r of display){const group=ReleaseModel.group(r.status);counts[group]++;const id=groups[group];const changed=r.changed||!!r.entry.lastChange&&r.entry.lastChange.at>previousVisit;if(changed)changedCount++;if(group==='paid'&&watchlistSort==='cost'){const c=ReleaseModel.cost(r.status.offers,rentalBudget);const band=c.band;if(band!==lastPaidBand){const divider=document.createElement('h4');divider.className='cost-divider';divider.textContent=band==='cheap'?'AT YOUR PRICE · $'+rentalBudget.toFixed(2)+' OR LESS':band==='premium'?'OVER YOUR PRICE':band==='buy'?'PURCHASE ONLY':'PRICE NOT CHECKED';document.getElementById(id+'-grid').appendChild(divider);lastPaidBand=band;}}document.getElementById(id+'-grid').appendChild(renderCard(r.entry,{context:'watchlist',status:r.status,changed,prevLabel:r.entry.lastChange?.from}));}
+  let lastPaidBand=append?document.querySelector('#paid-grid .cost-divider:last-of-type')?.dataset.band||null:null;
+  for(const r of display){const group=ReleaseModel.group(r.status);counts[group]++;const id=groups[group];const changed=r.changed||!!r.entry.lastChange&&r.entry.lastChange.at>previousVisit;if(changed)changedCount++;if(existing.has(r.entry.id))continue;if(group==='paid'&&watchlistSort==='cost'){const c=ReleaseModel.cost(r.status.offers,rentalBudget);const band=c.band;if(band!==lastPaidBand){const divider=document.createElement('h4');divider.className='cost-divider';divider.dataset.band=band;divider.textContent=band==='cheap'?'AT YOUR PRICE · $'+rentalBudget.toFixed(2)+' OR LESS':band==='premium'?'OVER YOUR PRICE':band==='buy'?'PURCHASE ONLY':'PRICE NOT CHECKED';document.getElementById(id+'-grid').appendChild(divider);lastPaidBand=band;}}document.getElementById(id+'-grid').appendChild(renderCard(r.entry,{context:'watchlist',status:r.status,changed,prevLabel:r.entry.lastChange?.from}));}
   for(const [group,id] of Object.entries(groups)){document.getElementById(id+'-section').hidden=!counts[group];document.getElementById(id+'-count').textContent='('+counts[group]+')';}
   document.getElementById('filter-empty').hidden=display.length>0;
   document.getElementById('card-summary').textContent=changedCount?changedCount+' changed since your last visit':'';
