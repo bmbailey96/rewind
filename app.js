@@ -1203,9 +1203,9 @@ async function emailRequest(method, data) {
   return result;
 }
 async function syncEmailCard(enabled = emailEnabled) {
-  const result = await emailRequest('POST',{enabled,movies:watchlist.map(m=>({id:m.id,title:m.title,alert:ReleaseModel.preference(m.alert)})),services:myServices,eventAlerts:!!hubState.eventAlerts,eventFilms:HubModel.evidence(hubState.taste).slice(0,500).map(m=>({id:m.id,title:m.title})),followedEvents:hubState.followed.slice(0,500)});
+  const result = await emailRequest('POST',{enabled,scope:'release-watch',movies:watchlist.filter(m=>WatchlistModel.followsRelease(m)&&!isSeen(m)).map(m=>({id:m.id,title:m.title,alert:ReleaseModel.preference(m.alert)})),services:myServices,eventAlerts:false,eventFilms:[],followedEvents:[]});
   emailEnabled = enabled;
-  document.getElementById('email-alert-status').textContent = enabled ? `Daily alerts enabled for ${result.count} films. Alerts follow each film’s selected preference.` : 'Email alerts paused.';
+  document.getElementById('email-alert-status').textContent = enabled ? `Daily alerts enabled for ${result.count} unwatched Release Watch films. Prices and published release updates only.` : 'Email alerts paused.';
 }
 function scheduleEmailSync() {
   if (!emailEnabled) return;
@@ -1233,7 +1233,8 @@ async function initEmailAlerts() {
     document.getElementById('price-alert-status').textContent=state.pricesConfigured?'Daily US store price checks are active. Unquoted offers stay unpriced.':'Server price checks are unavailable.';
     emailEnabled = state.enabled;
     document.getElementById('email-alert-status').textContent = state.enabled ? `Daily alerts enabled for ${state.movies.length} films.` : 'Email alerts paused. Enable alerts for your watchlist.';
-    // Opening a device must not replace the server's card with stale local data.
+    // Migrate the old whole-watchlist digest after this device has loaded its collection.
+    if(state.enabled&&state.scope!=='release-watch'&&watchlist.some(m=>WatchlistModel.followsRelease(m)&&!isSeen(m)))await syncEmailCard(true);
   } catch (err) { document.getElementById('email-alert-status').textContent = err.message; }
 }
 renderServiceSettings();
