@@ -90,7 +90,24 @@
     let forecast=null;if(current.band==='premium'&&!announcedNext){const e=rentalForecast(movie,status,context.movies||[],today,context.threshold??context.budget??7.99);if(e){const timing=forecastTiming(e,today);forecast={...timing,label:timing.daysAway<0?'Previous price estimate':'Next lower-rental estimate',note:(e.kind==='provisional'?'Low-confidence guess from typical premium-rental timing.':e.samples+' comparable observed drops · '+e.basis+'.')+(status.stale?' Current price needs a fresh check.':timing.daysAway<0?' No lower price verified.':' Not an announced reduction.'),source:safe(e.sourceUrl),missed:timing.daysAway<0};}}
     if(!forecast&&!announcedNext)undated.push({label:'Next price decrease',note:['free','cheap'].includes(current.band)?'No further drop predicted. Already within your limit.':'No supported estimate yet.'});
     const unique=new Map();for(const event of events){const key=[event.kind,event.date,['price-drop','purchase-drop','quote'].includes(event.kind)?event.label+':'+event.note.split(' · observed')[0]:event.kind==='streaming'?storeKey(event.label):event.kind==='festival'?event.label:''].join(':');const old=unique.get(key);if(!old||event.certainty==='Announced')unique.set(key,event);}
-    return {events:[...unique.values()].sort((a,b)=>a.date.localeCompare(b.date)),undated,forecast,recentSince:cutoff};
+    const ordered=[...unique.values()].sort((a,b)=>a.date.localeCompare(b.date));
+    // Keep the evidence intact; the visible journey tells the major changes once.
+    const highlights=[],cuts=new Map();let digitalSeen=false;
+    for(const event of ordered){
+      if(event.kind==='quote')continue;
+      if(event.kind==='digital'){if(digitalSeen)continue;digitalSeen=true;}
+      if(['price-drop','purchase-drop'].includes(event.kind)){
+        const amounts=event.label.match(/\d+\.\d{2}/g)||[];
+        if(amounts.length!==2||Math.round((Number(amounts[0])-Number(amounts[1]))*100)<100)continue;
+        const key=[event.kind,event.date,event.label].join(':');let cut=cuts.get(key);
+        if(!cut){cut={...event,notes:[]};cuts.set(key,cut);highlights.push(cut);}
+        const note=event.note.split(' · observed')[0],parts=note.split(' · '),provider=storeLabel(parts[0]);
+        if(!cut.notes.includes(provider))cut.notes.push(provider);
+        cut.note=cut.notes.join(' / ');continue;
+      }
+      highlights.push({...event,note:event.kind==='premiere'?event.note.replace(/ · Festival name not supplied/,''):['digital','streaming'].includes(event.kind)?'':event.note});
+    }
+    return {events:ordered,highlights,undated,forecast,recentSince:cutoff};
   }
   function group(status){if(status?.stale)return 'waiting';if((status?.offers||[]).some(o=>o.kind==='physical'||o.kind==='free'||o.kind==='subscription'&&o.included))return 'now';if((status?.offers||[]).some(o=>['rent','buy'].includes(o.kind)))return 'paid';return 'waiting';}
   function storeKey(name){const n=String(name||'').toLowerCase().replace(/[^a-z0-9]/g,'');if(['appletv','appletvstore','itunes'].includes(n))return 'apple';if(['amazon','amazonvideo','primevideo','amazonprimevideo'].includes(n))return 'amazon';return n;}

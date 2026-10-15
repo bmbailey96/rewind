@@ -33,3 +33,14 @@ console.log('Price journey boundaries: Denver dates, same-format evidence and fu
 const buyCuts={...movie,priceHistory:[...history.filter(r=>r.kind==='rent'),{kind:'buy',provider:'Apple TV Store',format:'4K',price:24.99,at:at('2026-09-01')},{kind:'buy',provider:'Apple TV Store',format:'4K',price:12.99,at:at('2026-10-01')}]};
 journey=R.releaseJourney(buyCuts,status,today);assert.equal(journey.events.filter(e=>e.kind==='purchase-drop').length,1);assert.equal(journey.events.find(e=>e.kind==='purchase-drop').label,'Buy $24.99 → $12.99');assert.equal(journey.events.filter(e=>e.kind==='price-drop').length,3,'Purchase cuts never mix with rental cuts');
 console.log('Purchase and rental histories remain distinct while both reductions are visible');
+
+const noisy={...movie,priceHistory:['Amazon','Apple TV','Fandango at Home'].flatMap(provider=>['SD','HD','4K'].flatMap(format=>[{kind:'buy',provider,format,price:19.99,at:at('2026-10-10')},{kind:'buy',provider,format,price:19.98,at:at('2026-10-11')},{kind:'buy',provider,format,price:9.99,at:at('2026-10-12')}]))};
+journey=R.releaseJourney(noisy,{...status,announcements:[...status.announcements,{kind:'digital',date:'2026-11-01',sourceUrl:'https://example.com/later'}]},today);
+assert.equal(journey.highlights.filter(e=>e.kind==='purchase-drop').length,1,'Matching store and format drops become one milestone');
+assert.equal(journey.highlights.find(e=>e.kind==='purchase-drop').note,'Prime Video / Apple TV / Fandango at Home');
+assert.equal(journey.highlights.some(e=>e.kind==='quote'),false,'First observations stay in the evidence, not the short journey');
+assert.equal(journey.highlights.filter(e=>e.kind==='digital').length,1,'A later generic digital date does not imply a second launch');
+assert.equal(journey.events.filter(e=>e.kind==='purchase-drop').length,18,'All original observed cuts remain available as evidence');
+assert.equal(journey.highlights.some(e=>e.label.includes('19.99 → $19.98')),false,'Cent-level adjustments do not become milestones');
+assert.equal(journey.events.filter(e=>e.kind==='digital').length,2,'Conflicting dates remain in the underlying evidence');
+console.log('Condensed journey: meaningful grouped drops, one digital launch and complete underlying evidence passed');
