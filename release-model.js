@@ -52,6 +52,45 @@
     const relative=away>0?'in '+away+' day'+(away===1?'':'s'):away===0?'today':Math.abs(away)+' day'+(away===-1?'':'s')+' past estimate';
     return {date:likely,daysAway:away,when,relative,text:when+' · '+relative};
   }
+  function releaseJourney(movie,status={},today,context={}){
+    const valid=x=>{const d=date(x);return d&&new Date(d+'T12:00:00Z').toISOString().slice(0,10)===d?d:null;};
+    const cutoff=addDays(today,-365),details=(status.details?.release_dates?status.details:movie.detailsSnapshot?.release_dates?movie.detailsSnapshot:movie.meta||{}),us=datesFor(details);
+    const announcements=status.announcements||[],file=movie.releaseFile||{},screenings=file.screenings||[];
+    const usLaunch=us.filter(r=>[2,3,4].includes(r.type)).map(r=>valid(r.release_date)).filter(Boolean);
+    const catalog=valid(movie.release_date||details.release_date),premieres=(details.release_dates?.results||[]).flatMap(country=>(country.release_dates||[]).filter(r=>r.type===1).map(r=>({...r,country:country.iso_3166_1,date:valid(r.release_date)}))).filter(r=>r.date).sort((a,b)=>a.date.localeCompare(b.date));
+    const sourceDates=announcements.filter(a=>['theatrical','digital'].includes(a.kind)).map(a=>valid(a.date)).filter(Boolean);
+    const relevant=[...usLaunch,...sourceDates,catalog,...screenings.map(r=>valid(r.date))].filter(Boolean).some(d=>d>=cutoff);
+    if(!relevant)return null;
+    // An old film with a new listed run gets the new cycle, not its entire century.
+    const priorRun=us.filter(r=>[2,3].includes(r.type)).some(r=>valid(r.release_date)&&valid(r.release_date)<cutoff);
+    const events=[],undated=[],safe=url=>{try{const u=new URL(url);return u.protocol==='https:'?u.href:null;}catch{return null;}},tmdb='https://www.themoviedb.org/movie/'+movie.id+'/releases';
+    const add=(kind,label,when,certainty,note,source)=>{const d=valid(when);if(!d||priorRun&&d<cutoff)return;events.push({kind,label,date:d,certainty,note:note||'',source:safe(source)});};
+    const premiere=premieres.find(r=>!priorRun||r.date>=cutoff);
+    if(premiere)add('premiere',/festival|sundance|cannes|tiff|fantasia|venice|berlin|toronto|sxsw/i.test(premiere.note||'')?'Festival premiere':'Premiere',premiere.date,'Listed',[premiere.note,premiere.country,!premiere.note?'Festival name not supplied':''].filter(Boolean).join(' · '),tmdb);
+    for(const screening of screenings)if(/festival|sundance|cannes|tiff|fantasia|venice|berlin|toronto|sxsw/i.test(screening.label||''))add('festival',screening.label,screening.date,'Listed',screening.location,screening.sourceURL||file.sourceURL);
+    for(const [type,label] of [[2,'Limited US theaters'],[3,priorRun?'New US theatrical run':'US theaters'],[4,'Digital rent / buy']]){
+      const first=us.filter(r=>r.type===type&&valid(r.release_date)&&(!priorRun||valid(r.release_date)>=cutoff)).sort((a,b)=>a.release_date.localeCompare(b.release_date))[0];
+      if(first)add(type===4?'digital':'theatrical',label,first.release_date,'Listed',first.note,tmdb);
+    }
+    for(const a of announcements){if(a.kind==='theatrical')add('theatrical','US theaters',a.date,'Announced','US release announcement',a.sourceUrl);if(a.kind==='digital')add('digital','Digital rent / buy',a.date,'Announced','A release date does not establish a rental price.',a.sourceUrl);if(a.kind==='subscription')add('streaming',a.provider||'Subscription streaming',a.date,'Announced','Check current offers when the date arrives.',a.sourceUrl);if(a.kind==='price'&&Number.isFinite(a.price))add('price-announcement','$'+a.price.toFixed(2)+' rental',a.date,'Announced',a.provider,a.sourceUrl);}
+    for(const c of status.calendar||[])if((!c.region||c.region==='US')&&c.source_name)add('streaming',c.source_name,c.source_release_date,'Listed','Service release calendar', 'https://api.watchmode.com/docs');
+    const now=Date.parse(today+'T23:59:59Z'),quotes=(movie.priceHistory||[]).filter(r=>r.kind==='rent'&&Number.isFinite(r.at)&&r.at<=now&&Number.isFinite(r.price)&&r.price>=0&&(!priorRun||r.at>=Date.parse(cutoff+'T00:00:00Z'))).sort((a,b)=>a.at-b.at);
+    if(quotes.length){const first=quotes[0];add('quote','First saved rental quote',new Date(first.at).toISOString(), 'Observed','$'+first.price.toFixed(2)+' · '+first.provider+(first.format?' · '+first.format:'')+' · first check, not the release date',first.link);}
+    const previous=new Map(),observed=new Set();
+    for(const quote of quotes){const key=storeKey(quote.provider)+':'+(quote.format||''),before=previous.get(key);previous.set(key,quote);if(!before||quote.at<=before.at||quote.price>=before.price)continue;
+      const d=new Date(quote.at).toISOString().slice(0,10),identity=[key,d,before.price,quote.price].join(':');if(observed.has(identity))continue;observed.add(identity);
+      add('price-drop','$'+before.price.toFixed(2)+' → $'+quote.price.toFixed(2),d,'Observed',quote.provider+(quote.format?' · '+quote.format:'')+' · observed in saved checks; the store may have changed earlier',quote.link);
+    }
+    for(const receipt of context.receipts||[])if(receipt.movieId===movie.id&&receipt.type==='price'&&Number.isFinite(receipt.at)&&receipt.at<=now&&Number.isFinite(receipt.from)&&Number.isFinite(receipt.to)&&receipt.to<receipt.from){const d=new Date(receipt.at).toISOString().slice(0,10),key=storeKey(receipt.provider)+':'+(receipt.format||''),identity=[key,d,receipt.from,receipt.to].join(':');if(observed.has(identity))continue;observed.add(identity);add('price-drop','$'+receipt.from.toFixed(2)+' → $'+receipt.to.toFixed(2),d,'Observed',receipt.provider+(receipt.format?' · '+receipt.format:'')+' · observed in saved checks',receipt.url);}
+    const offers=status.offers||[],home=offers.some(o=>['rent','buy'].includes(o.kind)),subscriptions=[...new Set(offers.filter(o=>o.kind==='subscription').map(o=>o.provider))];
+    if(home&&!events.some(e=>e.kind==='digital'))undated.push({label:'Digital date unknown',note:status.stale?'Home offers were listed at the previous check.':'A home offer is listed; its release date is not supplied.'});
+    if(subscriptions.length&&!events.some(e=>e.kind==='streaming'))undated.push({label:'Streaming date unknown',note:subscriptions.join(' / ')+(status.stale?' · previous check':' · currently listed')});
+    const current=cost(offers,context.budget??7.99,false),announcedNext=events.some(e=>e.kind==='price-announcement'&&e.date>=today);
+    let forecast=null;if(current.band==='premium'&&!announcedNext){const e=rentalForecast(movie,status,context.movies||[],today,context.threshold??context.budget??7.99);if(e){const timing=forecastTiming(e,today);forecast={...timing,label:timing.daysAway<0?'Previous price estimate':'Next lower-rental estimate',note:(e.kind==='provisional'?'Low-confidence guess from typical premium-rental timing.':e.samples+' comparable observed drops · '+e.basis+'.')+(status.stale?' Current price needs a fresh check.':timing.daysAway<0?' No lower price verified.':' Not an announced reduction.'),source:safe(e.sourceUrl),missed:timing.daysAway<0};}}
+    if(!forecast&&!announcedNext)undated.push({label:'Next price decrease',note:['free','cheap'].includes(current.band)?'No further drop predicted. Already within your limit.':'No supported estimate yet.'});
+    const unique=new Map();for(const event of events){const key=[event.kind,event.date,event.kind==='price-drop'?event.label+':'+event.note.split(' · observed')[0]:event.kind==='streaming'?storeKey(event.label):event.kind==='festival'?event.label:''].join(':');const old=unique.get(key);if(!old||event.certainty==='Announced')unique.set(key,event);}
+    return {events:[...unique.values()].sort((a,b)=>a.date.localeCompare(b.date)),undated,forecast,recentSince:cutoff};
+  }
   function group(status){if(status?.stale)return 'waiting';if((status?.offers||[]).some(o=>o.kind==='physical'||o.kind==='free'||o.kind==='subscription'&&o.included))return 'now';if((status?.offers||[]).some(o=>['rent','buy'].includes(o.kind)))return 'paid';return 'waiting';}
   function storeKey(name){const n=String(name||'').toLowerCase().replace(/[^a-z0-9]/g,'');if(['appletv','appletvstore','itunes'].includes(n))return 'apple';if(['amazon','amazonvideo','primevideo','amazonprimevideo'].includes(n))return 'amazon';return n;}
   function storeLabel(name){const key=storeKey(name);return key==='apple'?'Apple TV':key==='amazon'?'Prime Video':name;}
@@ -76,5 +115,5 @@
   }
   function compactOffers(offers){const groups=new Map();for(const o of offers||[]){const key=[o.kind,storeKey(o.provider),o.channel,typeof o.price==='number'?o.price:'?',o.included].join(':');if(!groups.has(key))groups.set(key,{...o,provider:['rent','buy'].includes(o.kind)?storeLabel(o.provider):o.provider,formats:[]});const row=groups.get(key);if(o.format&&!row.formats.includes(o.format))row.formats.push(o.format);if(qualityRank(o.format)<qualityRank(row.format)){row.format=o.format;row.link=o.link||row.link;}}return [...groups.values()].map(o=>({...o,format:o.formats.sort((a,b)=>qualityRank(a)-qualityRank(b)).join(' / ')||null}));}
   function preference(raw){return {mode:['any','mine','rental'].includes(raw?.mode)?raw.mode:'any',maxPrice:typeof raw?.maxPrice==='number'&&Number.isFinite(raw.maxPrice)&&raw.maxPrice>=0&&raw.maxPrice<=100?raw.maxPrice:7.99};}
-  return {date,days,addDays,datesFor,stages,digitalEstimate,quoteIdentity,recordQuotes,latestPriceChange,priceEstimate,rentalForecast,forecastTiming,matchingAnnouncements,group,preference,storeKey,storeLabel,qualityRank,cost,compactOffers};
+  return {date,days,addDays,datesFor,stages,digitalEstimate,quoteIdentity,recordQuotes,latestPriceChange,priceEstimate,rentalForecast,forecastTiming,releaseJourney,matchingAnnouncements,group,preference,storeKey,storeLabel,qualityRank,cost,compactOffers};
 });
