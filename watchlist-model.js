@@ -92,10 +92,11 @@
    return {...r,cost,stage:releaseStage(r.entry,r.status,today,budget,receipts,model,localListing(r.entry))};
   }).filter(r=>filter==='all'||filter==='free'&&r.stage.group==='included'||filter==='cheap'&&r.stage.group==='cheap'||filter==='premium'&&r.stage.group==='premium'||filter==='waiting'&&['waiting','upcoming','theater'].includes(r.stage.group));
   rows.sort((a,b)=>order[a.stage.group]-order[b.stage.group]||
+   Number(!!b.entry.pinned)-Number(!!a.entry.pinned)||
    (a.stage.group==='premium'?({premium:0,buy:1,unknown:2}[a.cost.band]??2)-({premium:0,buy:1,unknown:2}[b.cost.band]??2):0)||
    (['cheap','premium'].includes(a.stage.group)?(a.cost.price??Infinity)-(b.cost.price??Infinity):0)||
    (['waiting','upcoming','theater'].includes(a.stage.group)?String(a.stage.date||'9999').localeCompare(String(b.stage.date||'9999')):0)||
-   Number(!!b.stage.newArrival)-Number(!!a.stage.newArrival)||Number(!!b.entry.pinned)-Number(!!a.entry.pinned)||a.entry.title.localeCompare(b.entry.title));
+   Number(!!b.stage.newArrival)-Number(!!a.stage.newArrival)||a.entry.title.localeCompare(b.entry.title));
   const counts={included:0,cheap:0,premium:0,theater:0,upcoming:0,waiting:0};
   for(const row of rows)counts[row.stage.group]++;
   return {rows:rows.slice(0,limit),total:rows.length,counts};

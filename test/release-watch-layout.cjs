@@ -29,3 +29,18 @@ assert.equal(W.releaseWatchPage([futureFilm,row(52)],{...options,filter:'waiting
 const alreadyRenting={...futureFilm,status:{offers:[rent(5.99)],checkedAt:now}};
 assert.equal(W.releaseWatchPage([alreadyRenting],options).rows[0].stage.group,'cheap','Actual home availability outranks a future catalog date');
 console.log('Waiting shelves: future release, released today, unknown date, dated home release and actual offer precedence passed');
+
+function pin(r){r.entry.pinned=true;return r;}
+const affordable=[row(61,[rent(1.99)]),pin(row(62,[rent(6.99)])),pin(row(63,[rent(4.99)]))];
+assert.deepEqual(W.releaseWatchPage(affordable,options).rows.map(r=>r.entry.id),[63,62,61],'Pinned films lead their section, with price ordering within pins');
+const premiumPins=[row(64,[rent(15.99)]),pin(row(65,[{kind:'buy',provider:'Apple TV',price:24.99}]))];
+assert.deepEqual(W.releaseWatchPage(premiumPins,options).rows.map(r=>r.entry.id),[65,64],'Pin priority beats the usual rental / purchase subgroup');
+const later=pin(row(66,[],{digitalDate:future})),earlier=row(67,[],{digitalDate:today});
+assert.deepEqual(W.releaseWatchPage([earlier,later],options).rows.map(r=>r.entry.id),[66,67],'A pin beats date order in a waiting section');
+const mixed=W.releaseWatchPage([pin(row(68,[rent(19.99)])),row(69,[included])],options);
+assert.deepEqual(mixed.rows.map(r=>r.entry.id),[69,68],'Pins never cross availability sections');
+affordable[1].entry.pinned=false;affordable[2].entry.pinned=false;
+assert.deepEqual(W.releaseWatchPage(affordable,options).rows.map(r=>r.entry.id),[61,63,62],'Unpin restores normal price ordering');
+const many=Array.from({length:600},(_,i)=>row(2000+i,[rent(1.99)]));many[599].entry.pinned=true;
+assert.equal(W.releaseWatchPage(many,{...options,limit:24}).rows[0].entry.id,2599,'Pins are sorted across the whole collection before pagination');
+console.log('Section pins: price/date/subgroup precedence, unchanged section order, unpin restoration and 600-film pagination passed');
