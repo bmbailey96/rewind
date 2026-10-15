@@ -35,7 +35,7 @@ const affordable=[row(61,[rent(1.99)]),pin(row(62,[rent(6.99)])),pin(row(63,[ren
 assert.deepEqual(W.releaseWatchPage(affordable,options).rows.map(r=>r.entry.id),[63,62,61],'Pinned films lead their section, with price ordering within pins');
 const premiumPins=[row(64,[rent(15.99)]),pin(row(65,[{kind:'buy',provider:'Apple TV',price:24.99}]))];
 assert.deepEqual(W.releaseWatchPage(premiumPins,options).rows.map(r=>r.entry.id),[65,64],'Pin priority beats the usual rental / purchase subgroup');
-const later=pin(row(66,[],{digitalDate:future})),earlier=row(67,[],{digitalDate:today});
+const later=pin(row(66,[],{digitalDate:future})),earlier=row(67,[],{digitalDate:new Date(now+2*86400000).toISOString().slice(0,10)});
 assert.deepEqual(W.releaseWatchPage([earlier,later],options).rows.map(r=>r.entry.id),[66,67],'A pin beats date order in a waiting section');
 const mixed=W.releaseWatchPage([pin(row(68,[rent(19.99)])),row(69,[included])],options);
 assert.deepEqual(mixed.rows.map(r=>r.entry.id),[69,68],'Pins never cross availability sections');
