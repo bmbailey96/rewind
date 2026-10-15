@@ -14,7 +14,18 @@ assert.deepEqual(page.rows.filter(r=>r.stage.group==='cheap').map(r=>r.entry.id)
 assert.deepEqual(page.rows.filter(r=>r.stage.group==='premium').map(r=>r.entry.id),[1,7,9],'Purchase-only stays clearly behind rentals');
 assert.equal(page.rows.filter(r=>r.entry.id===3).length,1,'Streaming and local screening must not duplicate a film');
 assert.equal(page.rows.at(-2).entry.id,8,'Dated future home arrival precedes an undated wait');
-const one=W.releaseWatchPage(rows,{...options,limit:1});assert.equal(one.total,9);assert.equal(one.rows.length,1);assert.deepEqual(one.counts,{included:1,cheap:2,premium:3,theater:1,waiting:2});
+const one=W.releaseWatchPage(rows,{...options,limit:1});assert.equal(one.total,9);assert.equal(one.rows.length,1);assert.deepEqual(one.counts,{included:1,cheap:2,premium:3,theater:1,upcoming:0,waiting:2});
 assert.equal(W.releaseWatchPage(rows,{...options,filter:'free'}).total,1);assert.equal(W.releaseWatchPage(rows,{...options,filter:'premium'}).total,3);
 const big=Array.from({length:600},(_,i)=>row(1000+i,[rent(i===599?0.99:5.99)]));const first=W.releaseWatchPage(big,{...options,limit:24});assert.equal(first.rows[0].entry.id,1599);assert.equal(first.counts.cheap,600);assert.equal(first.rows.length,24);
 console.log('Release Watch: last-known offers, upcoming notes, actual local dates, price order, unknown quotes, one film per shelf and full counts before pagination passed');
+
+const futureFilm=row(50);futureFilm.entry.detailsSnapshot.release_dates.results[0].release_dates[0].release_date=future+'T00:00:00Z';
+const unknownFilm={entry:{id:51,title:'Undated'},status:{offers:[],stale:true}};
+const separated=W.releaseWatchPage([futureFilm,row(52),unknownFilm],options);
+assert.equal(separated.rows[0].stage.group,'upcoming');assert.equal(separated.rows[0].stage.opening.date,future);
+assert.equal(separated.rows.find(r=>r.entry.id===52).stage.group,'waiting','Released today is awaiting home availability');
+assert.equal(separated.rows.find(r=>r.entry.id===51).stage.opening,null,'Unknown release dates never imply released');
+assert.equal(W.releaseWatchPage([futureFilm,row(52)],{...options,filter:'waiting'}).total,2,'Waiting filter includes both distinct shelves');
+const alreadyRenting={...futureFilm,status:{offers:[rent(5.99)],checkedAt:now}};
+assert.equal(W.releaseWatchPage([alreadyRenting],options).rows[0].stage.group,'cheap','Actual home availability outranks a future catalog date');
+console.log('Waiting shelves: future release, released today, unknown date, dated home release and actual offer precedence passed');

@@ -1,0 +1,18 @@
+const assert=require('node:assert/strict'),fs=require('node:fs'),{JSDOM}=require('jsdom');
+const dom=new JSDOM('<section id="tab-watchlist" class="active"><article class="rental-card" data-movie-id="1">Original</article></section>',{url:'https://bekind-rewind.netlify.app',runScripts:'outside-only'}),w=dom.window;
+const timers=new Map();let timer=0;w.setTimeout=(fn,ms)=>{timers.set(++timer,{fn,ms});return timer;};w.clearTimeout=id=>timers.delete(id);
+let scrolledBy=0;Object.defineProperty(w,'scrollY',{value:300,writable:true});w.scrollBy=(_,y)=>{scrolledBy+=y;};
+w.document.querySelector('article').getBoundingClientRect=()=>({top:100,bottom:200});
+w.eval(fs.readFileSync(__dirname+'/../startup.js','utf8'));const startup=w.RewindStartup,progress=w.document.querySelector('progress');
+assert.equal(progress.max,4);assert.equal(progress.value,0);
+startup.begin('sync','Cloud sync');startup.finish('saved');assert.equal(progress.max,5);assert.equal(progress.value,1,'Progress counts actual startup tasks');
+let draws=0;assert.equal(startup.defer('watchlist',()=>{draws+=100}),true);startup.defer('watchlist',()=>{draws++;w.document.querySelector('article').textContent='Updated';w.document.querySelector('article').getBoundingClientRect=()=>({top:130,bottom:230});assert.equal(startup.defer('nested',()=>{}),false,'Applying updates must not enqueue itself');});
+assert.equal(draws,0);assert.equal(w.document.querySelector('article').textContent,'Original','Late results do not move content while reading');
+(async()=>{w.document.getElementById('rewind-pending-updates').click();await Promise.resolve();await Promise.resolve();
+assert.equal(draws,1,'Repeated background results coalesce into one repaint');assert.equal(scrolledBy,30,'Applying updates preserves the visible movie offset');assert.equal(w.document.getElementById('rewind-pending-updates').hidden,true);
+w.scrollY=0;assert.equal(startup.defer('watchlist',()=>{}),false,'At the top, results may paint immediately');
+startup.finish('collection');startup.finish('taste');startup.finish('screenings');assert.equal(progress.value,4);assert.match(w.document.getElementById('startup-label').textContent,/cloud sync/);
+[...timers.values()].find(t=>t.ms===20000).fn();assert.match(w.document.getElementById('startup-label').textContent,/some updates delayed/,'A stalled source does not claim successful completion');
+startup.finish('sync');assert.match(w.document.getElementById('startup-label').textContent,/Rewind is ready/);dom.window.close();
+console.log('Startup: measured task progress, stalled-source honesty, deferred/coalesced updates, anchor preservation and immediate top-of-page rendering passed');
+})().catch(e=>{console.error(e);process.exitCode=1});

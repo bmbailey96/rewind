@@ -10,11 +10,12 @@
 <link rel="apple-touch-icon" href="icons/icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=optional" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="/media-nav.css">
 </head>
 <body>
+<script src="startup.js"></script>
 <script src="/media-nav.js"></script>
 
 <header class="counter">
@@ -56,7 +57,8 @@
     <section id="rw-available-section" class="shelf-group" hidden><h3>At your price <span id="rw-available-count"></span></h3><p class="group-note">Rentals at or below your limit, cheapest first.</p><div id="rw-available-grid" class="card-row wrap"></div></section>
     <section id="rw-coming-section" class="shelf-group" hidden><h3>Waiting for a better price <span id="rw-coming-count"></span></h3><p class="group-note">Higher rentals, purchase-only offers, and unpriced listings.</p><div id="rw-coming-grid" class="card-row wrap"></div></section>
     <section id="rw-theater-section" class="shelf-group" hidden><h3>In Kalispell <span id="rw-theater-count"></span></h3><p class="group-note">Listed local screenings with ticket links.</p><div id="rw-theater-grid" class="card-row wrap"></div></section>
-    <section id="rw-waiting-section" class="shelf-group" hidden><h3>Still coming <span id="rw-waiting-count"></span></h3><p class="group-note">No known home viewing option. Confirmed upcoming dates come first.</p><div id="rw-waiting-grid" class="card-row wrap"></div></section>
+    <section id="rw-upcoming-section" class="shelf-group" hidden><h3>Not released yet <span id="rw-upcoming-count"></span></h3><p class="group-note">Future releases, nearest date first.</p><div id="rw-upcoming-grid" class="card-row wrap"></div></section>
+    <section id="rw-waiting-section" class="shelf-group" hidden><h3>Awaiting home release <span id="rw-waiting-count"></span></h3><p class="group-note">No known home viewing option. Confirmed upcoming dates come first.</p><div id="rw-waiting-grid" class="card-row wrap"></div></section>
     <section id="watch-now-section" class="shelf-group" hidden><h3>Watch now <span id="watch-now-count"></span></h3><p class="group-note">Included with your services, or free.</p><div id="watch-now-grid" class="card-row wrap"></div></section>
     <section id="paid-section" class="shelf-group" hidden><h3>Rent or buy <span id="paid-count"></span></h3><div id="paid-grid" class="card-row wrap"></div></section>
     <section id="waiting-section" class="shelf-group" hidden><h3>Waiting <span id="waiting-count"></span></h3><p class="group-note">Waiting for an included offer or a confirmed listing.</p><div id="waiting-grid" class="card-row wrap"></div></section>

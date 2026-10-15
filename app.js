@@ -238,7 +238,7 @@ async function pullFromGist(){const id=await findOrCreateGist(),remote=await rea
 async function pushToGist(){if(syncFlight)return syncFlight;syncFlight=(async()=>{const id=await findOrCreateGist(),remote=await readGist(id),local=collectSyncData(),merged=SyncModel.merge(syncBase()||{},local,remote);merged.updatedAt=Date.now();await ghJSON('/gists/'+id,{method:'PATCH',body:JSON.stringify({files:{[GIST_FILENAME]:{content:StorageModel.syncContent(merged)}}})});const current=collectSyncData(),after=SyncModel.merge(local,current,merged);applySyncData(after);rememberSync(merged);const changed=JSON.stringify({...current,updatedAt:0})!==JSON.stringify({...local,updatedAt:0});if(changed){localStorage.setItem(SYNC_DIRTY_KEY,'1');scheduleSync();}else localStorage.removeItem(SYNC_DIRTY_KEY);window.dispatchEvent(new Event('rewind:state'));syncNotice('Synced '+new Date().toLocaleTimeString()+'. '+(failedStorageKeys.size?'GitHub saved your changes; this device still has a local storage problem.':'Ready on your connected devices.'));})().catch(e=>{syncNotice(e.message,true);throw e;}).finally(()=>{syncFlight=null;});return syncFlight;}
 function scheduleSync(){scheduleBackgroundLibrary();scheduleEmailSync();localStorage.setItem(SYNC_DIRTY_KEY,'1');if(!localStorage.getItem(GH_TOKEN_KEY))return;clearTimeout(syncTimer);syncNotice('Saving changes across devices…');syncTimer=setTimeout(()=>pushToGist().catch(()=>{}),1500);}
 let lastSyncPull=0;
-async function refreshDeviceSync(){if(!localStorage.getItem(GH_TOKEN_KEY)||document.hidden||syncFlight||Date.now()-lastSyncPull<30000)return;lastSyncPull=Date.now();try{if(localStorage.getItem(SYNC_DIRTY_KEY))await pushToGist();else{await pullFromGist();syncNotice('Synced '+new Date().toLocaleTimeString()+'. Connected devices share this film memory.');}renderWatchlist(false,true);await syncBackgroundLibrary();}catch(e){syncNotice(e.message,true);}}
+async function refreshDeviceSync(){if(!localStorage.getItem(GH_TOKEN_KEY)||document.hidden||syncFlight||Date.now()-lastSyncPull<30000)return;lastSyncPull=Date.now();try{if(localStorage.getItem(SYNC_DIRTY_KEY))await pushToGist();else{await pullFromGist();syncNotice('Synced '+new Date().toLocaleTimeString()+'. Connected devices share this film memory.');}renderWatchlist(false,true,true);await syncBackgroundLibrary();}catch(e){syncNotice(e.message,true);}}
 window.addEventListener('focus',refreshDeviceSync);window.addEventListener('online',refreshDeviceSync);document.addEventListener('visibilitychange',refreshDeviceSync);
 
 document.getElementById('watchmode-save-btn').addEventListener('click', () => {
@@ -812,8 +812,9 @@ const previousVisit=Number(localStorage.getItem('rewind-last-visit-v1'))||Date.n
 localStorage.setItem('rewind-last-visit-v1',String(Date.now()));
 let watchlistRequest = 0;
 
-async function renderWatchlist(force = false, reuse = false) {
-  if(watchlistScope==='release'&&!document.getElementById('rw-arrived-grid')){
+async function renderWatchlist(force = false, reuse = false, background = false) {
+  if(background&&window.RewindStartup?.defer('watchlist',()=>renderWatchlist(force,reuse)))return;
+  if(watchlistScope==='release'&&(!document.getElementById('rw-arrived-grid')||!document.getElementById('rw-upcoming-grid'))){
     watchlistScope='all';
     const notice=document.getElementById('watchlist-load-status');
     if(notice)notice.textContent='Updating the saved page files. All Watchlist remains available. Reload to restore Release Watch.';
@@ -911,7 +912,7 @@ async function renderWatchlist(force = false, reuse = false) {
   // Repaint once at the end. Rebuilding cards after every few network responses
   // was repeatedly resetting image loads and scroll positions on mobile.
   watchlistResults=[...progress.values()];
-  repaintWatchlist();
+  if(!force&&window.RewindStartup?.defer('watchlist',()=>repaintWatchlist())){}else repaintWatchlist();
   const failed=results.filter(r=>r?.status?.stale).length;
   statusEl.textContent=checked+' film'+(checked===1?'':'s')+' checked'+(failed?' · '+failed+' previous or unavailable results':'')+' · remaining films use saved data.';
   if(receiptsDirty)persistHubState();
@@ -924,22 +925,23 @@ function paintWatchlist(results,append=false){
   renderChangeStrip();
   const existing=append?new Set([...document.querySelectorAll('#tab-watchlist .shelf-group .rental-card')].map(card=>Number(card.dataset.movieId))):new Set();
   document.querySelectorAll('[data-cost-filter]').forEach(btn=>{btn.classList.toggle('active',btn.dataset.costFilter===costFilter);btn.setAttribute('aria-pressed',String(btn.dataset.costFilter===costFilter));});
-  for(const id of ['watch-now','paid','waiting','rw-arrived','rw-available','rw-coming','rw-theater','rw-waiting']){if(!append){document.getElementById(id+'-grid').replaceChildren();document.getElementById(id+'-section').hidden=true;}}
+  for(const id of ['watch-now','paid','waiting','rw-arrived','rw-available','rw-coming','rw-theater','rw-upcoming','rw-waiting']){if(!append){document.getElementById(id+'-grid')?.replaceChildren();const section=document.getElementById(id+'-section');if(section)section.hidden=true;}}
   if(watchlistScope==='release'){
     const page=WatchlistModel.releaseWatchPage(results,{today:discoveryWindow().today,budget:rentalBudget,receipts:hubState.changeReceipts,limit:watchlistLimit,filter:costFilter,model:ReleaseModel,localListing:m=>typeof Hub==='undefined'||typeof Hub.localListing!=='function'?null:Hub.localListing(m)});
-    const groups={included:'rw-arrived',cheap:'rw-available',premium:'rw-coming',theater:'rw-theater',waiting:'rw-waiting'};
-    const labels={included:'Included & free',cheap:'At your price',premium:'Waiting for a better price',theater:'In Kalispell',waiting:'Still coming'};
-    const descriptions={included:'Your services, free streams, and your physical shelf.',cheap:'Rentals at or below $'+rentalBudget.toFixed(2)+', cheapest first.',premium:'Higher rentals first, then purchase-only and unpriced offers.',theater:'Listed local screenings. Ticket links live on each film.',waiting:'No known home viewing option. Confirmed upcoming dates come first.'};
+    const groups={included:'rw-arrived',cheap:'rw-available',premium:'rw-coming',theater:'rw-theater',upcoming:'rw-upcoming',waiting:'rw-waiting'};
+    const labels={included:'Included & free',cheap:'At your price',premium:'Waiting for a better price',theater:'In Kalispell',upcoming:'Not released yet',waiting:'Awaiting home release'};
+    const descriptions={included:'Your services, free streams, and your physical shelf.',cheap:'Rentals at or below $'+rentalBudget.toFixed(2)+', cheapest first.',premium:'Higher rentals first, then purchase-only and unpriced offers.',theater:'Listed local screenings. Ticket links live on each film.',upcoming:'Future releases, nearest date first.',waiting:'No known home offer. Published home dates come first; unknown dates stay labeled.'};
     document.getElementById('watchlist-more').hidden=page.total<=watchlistLimit;
     document.getElementById('watchlist-more').textContent='Show more · '+Math.max(0,page.total-page.rows.length)+' remaining';
     for(const row of page.rows){
       if(existing.has(row.entry.id))continue;
-      const stage=row.stage,card=renderCard(row.entry,{context:'watchlist',status:row.status,changed:row.changed,prevLabel:row.entry.lastChange?.from,collectionCost:{...row.cost,stale:stage.stale}});
+      const stage=row.stage,card=renderCard(row.entry,{context:'watchlist',status:row.status,changed:row.changed,prevLabel:row.entry.lastChange?.from,collectionCost:{...row.cost,...(stage.group==='upcoming'?{badge:'UPCOMING',caption:'Not released yet'}:{}),stale:stage.stale}});
       if(stage.newArrival&&!card.querySelector('.useful-change')){const tag=document.createElement('p');tag.className='new-tag useful-change';tag.textContent='Newly available at your price';card.querySelector('.card-meta').after(tag);}
       const note=document.createElement('p');note.className='release-stage-line';
-      if(stage.group==='theater')note.textContent='Kalispell screening listed '+formatFilmDate(stage.date)+(stage.local.stale?' · previous theater check':'');
+      if(stage.group==='upcoming'){const timing=ReleaseModel.forecastTiming({likely:stage.opening.date},discoveryWindow().today);note.textContent=stage.opening.label+' · '+timing.when+' · '+timing.relative+' · '+stage.opening.source;}
+      else if(stage.group==='theater')note.textContent='Kalispell screening listed '+formatFilmDate(stage.date)+(stage.local.stale?' · previous theater check':'');
       else if(stage.home&&!card.querySelector('.wait-advice'))note.textContent=stage.home.label+' on '+formatFilmDate(stage.home.date)+' · listed date; source in details';
-      else if(stage.group==='waiting'&&!card.querySelector('.cost-block'))note.textContent=row.status?.pending?'Checking viewing options…':row.status?.stale?'No saved home offer. Current availability needs a check.':'No home viewing option found yet.';
+      else if(stage.group==='waiting'){const dated=(row.status?.announcements||[]).filter(a=>['digital','subscription'].includes(a.kind)&&a.date&&a.date<=discoveryWindow().today).map(a=>({date:a.date,label:a.provider||'Digital release'}));for(const d of ReleaseModel.datesFor(row.status?.details||row.entry.detailsSnapshot))if(d.type===4&&ReleaseModel.date(d.release_date)<=discoveryWindow().today)dated.push({date:ReleaseModel.date(d.release_date),label:'Digital release'});const past=dated.sort((a,b)=>b.date.localeCompare(a.date))[0];note.textContent=past?past.label+' listed '+formatFilmDate(past.date)+' · current home availability unverified.':(stage.opening?stage.opening.label+' · '+formatFilmDate(stage.opening.date)+'. ':'Release date unannounced. ')+'Home release date unannounced.';}
       if(note.textContent)card.querySelector('.film-details-trigger')?.before(note);
       document.getElementById(groups[stage.group]+'-grid').appendChild(card);
     }
@@ -1190,7 +1192,9 @@ async function resolveWatchlistMatches(){
 async function init() {
   // The page must be usable even when sync and catalog requests take minutes.
   if(WatchlistModel.backfillReleaseFollows(watchlist)){saveWatchlist(false);scheduleSync();}
-  renderWatchlist(false,true).catch(err=>{const notice=document.getElementById('watchlist-load-status');if(notice)notice.textContent='My Films could not finish drawing. Try All Watchlist or reload.';});
+  if(localStorage.getItem(GH_TOKEN_KEY))window.RewindStartup?.begin('sync','Cloud sync');
+  const savedReady=renderWatchlist(false,true).catch(err=>{const notice=document.getElementById('watchlist-load-status');if(notice)notice.textContent='My Films could not finish drawing. Try All Watchlist or reload.';});
+  window.RewindStartup?.track('saved',savedReady);
   const discoverTab=document.querySelector('[data-tab=discover]');
   discoverTab.addEventListener('click',()=>{
     if(!document.getElementById('discover-grid').querySelector('.rental-card')&&
@@ -1199,8 +1203,9 @@ async function init() {
   });
   const localReady=loadWatchlistBaseline().catch(()=>{}).then(()=>{
     if(WatchlistModel.backfillReleaseFollows(watchlist)){saveWatchlist(false);scheduleSync();}
-    renderWatchlist(false,true).catch(err=>showToast(err.message));
+    return renderWatchlist(false,true,true).catch(err=>showToast(err.message));
   });
+  window.RewindStartup?.track('collection',localReady);
   // Background sync can update the local watchlist when finished, but never
   // blocks the first render, the Discover handler, or navigation.
   if(localStorage.getItem(GH_TOKEN_KEY)){
@@ -1210,8 +1215,8 @@ async function init() {
       try{
         if(localStorage.getItem(SYNC_DIRTY_KEY))await pushToGist();else await pullFromGist();
         statusEl.textContent='Synced '+new Date().toLocaleTimeString();
-        renderWatchlist(false,true);await syncBackgroundLibrary();
-      }catch(err){statusEl.dataset.tone='error';statusEl.textContent='Cloud sync delayed. Local watchlist remains available.';}
+        renderWatchlist(false,true,true);await syncBackgroundLibrary();
+      }catch(err){statusEl.dataset.tone='error';statusEl.textContent='Cloud sync delayed. Local watchlist remains available.';}finally{window.RewindStartup?.finish('sync');}
     });
   }
   return localReady;
@@ -1259,7 +1264,7 @@ async function syncBackgroundLibrary(){
    }
    movie.priceHistory=ReleaseModel.recordQuotes(movie.priceHistory,status.offers,status.quoteCheckedAt);movie.availabilitySnapshot=status;movie.availabilityBaseline={...status};changed=true;
   }
-  if(receipts)persistHubState();if(changed){saveWatchlist();await renderWatchlist(false,true);}
+  if(receipts)persistHubState();if(changed){saveWatchlist();await renderWatchlist(false,true,true);}
   const note=document.getElementById('background-check-status');if(note)note.textContent=data.generatedAt?'Server checks saved '+formatFilmDate(new Date(data.generatedAt).toISOString())+'. Followed films refresh every six hours; the rest rotate.':'Registered for background checks. The first scheduled check is still pending.';
  }catch{const note=document.getElementById('background-check-status');if(note)note.textContent='Background checks could not sync. Your saved results remain available.';}
  finally{libraryBusy=false;}

@@ -61,32 +61,42 @@
   // A date is not evidence a specific theater is still playing the film.
   return when>=ref-60*86400000&&when<=ref+180*86400000?d:null;
  }
+ function releaseOpening(movie,status){
+  const us=(status?.details||movie?.detailsSnapshot)?.release_dates?.results?.find(r=>r.iso_3166_1==='US')?.release_dates||[];
+  const dates=us.filter(r=>[2,3].includes(r.type)).map(r=>String(r.release_date||'').slice(0,10)).filter(d=>/^\d{4}-\d{2}-\d{2}$/.test(d)).sort();
+  if(dates.length)return {date:dates[0],label:'US theatrical release',source:'listed'};
+  const announced=(status?.announcements||[]).filter(a=>a.kind==='theatrical'&&/^\d{4}-\d{2}-\d{2}$/.test(a.date||'')).sort((a,b)=>a.date.localeCompare(b.date))[0];
+  if(announced)return {date:announced.date,label:'US theatrical release',source:'announced'};
+  const catalog=String(movie?.release_date||'').slice(0,10);
+  return /^\d{4}-\d{2}-\d{2}$/.test(catalog)?{date:catalog,label:'Catalog release',source:'listed'}:null;
+ }
  function releaseStage(movie,status,today,budget=7.99,receipts=[],model=null,local=null){
   // Previous quotes stay under their viewing option, with the check age shown.
-  const offers=status?.offers||[],cost=model?.cost(offers,budget,false),home=upcomingHome(movie,status,today);
+  const offers=status?.offers||[],cost=model?.cost(offers,budget,false),home=upcomingHome(movie,status,today),opening=releaseOpening(movie,status);
   const fresh=!!status&&!status.stale&&Number.isFinite(status.checkedAt)&&Date.now()-status.checkedAt>=0&&Date.now()-status.checkedAt<24*3600000;
   let group='waiting';
   if(cost?.band==='free')group='included';
   else if(cost?.band==='cheap')group='cheap';
   else if(['premium','buy','unknown'].includes(cost?.band))group='premium';
   else if(local)group='theater';
+  else if(opening?.date>today)group='upcoming';
   const arrival=fresh&&(receipts||[]).filter(r=>r.movieId===movie.id&&r.at&&Date.now()-r.at<=14*86400000&&Date.now()>=r.at)
    .some(r=>r.type==='included'&&offers.some(o=>(o.kind==='free'||o.kind==='subscription'&&o.included)&&o.provider===r.provider)||
     r.type==='price'&&r.from>budget&&r.to<=budget&&offers.some(o=>o.kind==='rent'&&o.provider===r.provider&&o.format===r.format&&o.price===r.to));
-  return {group,date:group==='theater'?local.date:home?.date||null,label:home?.label||null,home,local,newArrival:arrival,stale:!fresh&&cost?.offer?.kind!=='physical'};
+  return {group,date:group==='theater'?local.date:group==='upcoming'?opening.date:home?.date||null,opening,label:home?.label||null,home,local,newArrival:arrival,stale:!fresh&&cost?.offer?.kind!=='physical'};
  }
  function releaseWatchPage(results,{limit=24,model,budget=7.99,filter='all',today,receipts=[],localListing=()=>null}){
-  const order={included:0,cheap:1,premium:2,theater:3,waiting:4};
+  const order={included:0,cheap:1,premium:2,theater:3,upcoming:4,waiting:5};
   const rows=results.map(r=>{
    const cost=model.cost(r.status?.offers,budget,false);
    return {...r,cost,stage:releaseStage(r.entry,r.status,today,budget,receipts,model,localListing(r.entry))};
-  }).filter(r=>filter==='all'||filter==='free'&&r.stage.group==='included'||filter==='cheap'&&r.stage.group==='cheap'||filter==='premium'&&r.stage.group==='premium'||filter==='waiting'&&['waiting','theater'].includes(r.stage.group));
+  }).filter(r=>filter==='all'||filter==='free'&&r.stage.group==='included'||filter==='cheap'&&r.stage.group==='cheap'||filter==='premium'&&r.stage.group==='premium'||filter==='waiting'&&['waiting','upcoming','theater'].includes(r.stage.group));
   rows.sort((a,b)=>order[a.stage.group]-order[b.stage.group]||
    (a.stage.group==='premium'?({premium:0,buy:1,unknown:2}[a.cost.band]??2)-({premium:0,buy:1,unknown:2}[b.cost.band]??2):0)||
    (['cheap','premium'].includes(a.stage.group)?(a.cost.price??Infinity)-(b.cost.price??Infinity):0)||
-   (['waiting','theater'].includes(a.stage.group)?String(a.stage.date||'9999').localeCompare(String(b.stage.date||'9999')):0)||
+   (['waiting','upcoming','theater'].includes(a.stage.group)?String(a.stage.date||'9999').localeCompare(String(b.stage.date||'9999')):0)||
    Number(!!b.stage.newArrival)-Number(!!a.stage.newArrival)||Number(!!b.entry.pinned)-Number(!!a.entry.pinned)||a.entry.title.localeCompare(b.entry.title));
-  const counts={included:0,cheap:0,premium:0,theater:0,waiting:0};
+  const counts={included:0,cheap:0,premium:0,theater:0,upcoming:0,waiting:0};
   for(const row of rows)counts[row.stage.group]++;
   return {rows:rows.slice(0,limit),total:rows.length,counts};
  }
@@ -105,5 +115,5 @@
  function rewindAdditions(movies,keys=[]){const imported=new Set(keys);return movies.filter(m=>m.id&&!m.letterboxdWatchlist&&!/Letterboxd watchlist/i.test(m.source||'')&&!imported.has(sourceKey(m)));}
  function exportCSV(movies,keys=[]){const field=value=>'"'+String(value??'').replace(/"/g,'""')+'"';return 'tmdbID,Title,Year\r\n'+rewindAdditions(movies,keys).map(m=>[m.id,field(m.title),String(m.release_date||'').slice(0,4)].join(',')).join('\r\n')+'\r\n';}
  function page(results,{sort='cost',filter='all',budget=7.99,limit=60,model}){const ranks={free:0,cheap:1,premium:2,unknown:3,buy:4,waiting:5};const rows=results.map(r=>({...r,cost:model.cost(r.status.offers,budget,r.status.stale)})).filter(r=>filter==='all'||filter===r.cost.band);const compare={changed:(a,b)=>(b.entry.statusChangedAt||0)-(a.entry.statusChangedAt||0),added:(a,b)=>(b.entry.addedAt||0)-(a.entry.addedAt||0),release:(a,b)=>String(b.entry.release_date||'').localeCompare(a.entry.release_date||''),az:(a,b)=>a.entry.title.localeCompare(b.entry.title)};rows.sort((a,b)=>Number(!!b.entry.pinned)-Number(!!a.entry.pinned)||(sort==='cost'?ranks[a.cost.band]-ranks[b.cost.band]||(a.cost.price??Infinity)-(b.cost.price??Infinity):(compare[sort]||compare.changed)(a,b))||a.entry.title.localeCompare(b.entry.title));return {rows:rows.slice(0,limit),total:rows.length};}
- return {addedAt,recentRelease,recentReleases,backfillReleaseFollows,followsRelease,upcomingHome,theatricalDate,releaseStage,releaseWatchPage,merge,titleKey,sourceKey,match,releaseYears,page,actionable,freshSnapshot,genreIds,rewindAdditions,exportCSV};
+ return {addedAt,recentRelease,recentReleases,backfillReleaseFollows,followsRelease,upcomingHome,theatricalDate,releaseOpening,releaseStage,releaseWatchPage,merge,titleKey,sourceKey,match,releaseYears,page,actionable,freshSnapshot,genreIds,rewindAdditions,exportCSV};
 });

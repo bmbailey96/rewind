@@ -85,10 +85,10 @@ const rows=[
 ];
 const arrivals=[{movieId:5,at:checkedWatch-1000,type:'included',provider:'Shudder'}];
 const releasePage=W.releaseWatchPage(rows,{model:R,budget:7.99,today:releaseWatchToday,receipts:arrivals});
-assert.deepEqual(releasePage.rows.map(r=>r.stage.group),['included','included','waiting','waiting','waiting']);
+assert.deepEqual(releasePage.rows.map(r=>r.stage.group),['included','included','upcoming','waiting','waiting']);
 assert.equal(W.releaseStage(rows[3].entry,rows[3].status,releaseWatchToday,7.99,[],R).group,'included','A first check is not an arrival');
 assert.equal(W.releaseStage(rows[4].entry,{...rows[4].status,stale:true},releaseWatchToday,7.99,arrivals,R).newArrival,false,'A stale provider listing is not a new arrival');
 assert.equal(W.releaseStage({id:6},{checkedAt:checkedWatch,offers:[{kind:'rent',price:19.99,provider:'Apple TV'}]},releaseWatchToday,7.99,[],R).group,'premium','High premium rental belongs above the rental limit');
-assert.equal(W.releaseStage(rows[1].entry,rows[1].status,releaseWatchToday,7.99,[],R).group,'waiting','A published US theatrical date is not a local screening');
+assert.equal(W.releaseStage(rows[1].entry,rows[1].status,releaseWatchToday,7.99,[],R).group,'upcoming','A future US theatrical date is not a local screening');
 assert.equal(W.releaseWatchPage(rows,{model:R,budget:7.99,today:releaseWatchToday,receipts:arrivals,limit:2}).total,5,'Pagination does not truncate tracked collection');
 console.log('Release follows, conservative legacy migration, verified arrivals, published dates and entire-collection grouping passed');
