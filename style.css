@@ -1447,3 +1447,10 @@ button:focus-visible,a:focus-visible,summary:focus-visible{outline:2px solid #db
 .compact-film-card>.card-title{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden}.rental-card.compact-film-card>.poster-missing{display:grid!important;place-content:center;padding:8px;font-size:10px;line-height:1.5;text-align:center;background:#21312b;color:#aebfb2}.release-journey .release-milestone{padding-bottom:18px}.journey-history-note{font-size:11px;line-height:1.5;color:#aebfb2;margin:8px 0 16px}
 
 .release-journey a{color:#b9d4c1;text-underline-offset:3px}
+
+/* Undated earlier quotes stay outside the dated release journey. */
+.earlier-store-prices{margin-top:24px;padding-top:16px;border-top:1px solid var(--rule)}
+.earlier-store-prices h4{margin:0 0 12px}
+.earlier-price-row{margin:12px 0;font-size:15px;line-height:1.5}
+.earlier-price-links{display:flex;flex-wrap:wrap;gap:4px 16px;margin-top:4px}
+.earlier-price-links a,.earlier-store-prices>a{color:#b9d4c1;font-size:13px;overflow-wrap:anywhere}

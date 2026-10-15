@@ -15,7 +15,7 @@ function renderAvailability(movie,status,context={}) {
   if(status.checkedAt)appendNote(wrap,(status.stale?'Previous check · ':'Checked · ')+new Date(status.checkedAt).toLocaleString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}),'checked-note');
   const journey=renderReleaseTimeline(movie,status,context);if(journey.nodeType===11){if(ReleaseModel.rentalForecast(movie,status,context.movies||[],discoveryWindow().today,rentalBudget))wrap.appendChild(renderRentalForecast(movie,status,context));}else wrap.appendChild(journey);
   const sources=document.createElement('details');sources.className='source-disclosure release-sources';const summary=document.createElement('summary');summary.textContent='Sources & price history';sources.append(summary,renderReleaseEvidence(movie,status,context));
-  if(status.priceWarning)appendNote(sources,status.priceWarning,'lookup-warning');appendNote(sources,'US listings: JustWatch. '+(status.priceSources?.length?'Price sources: '+status.priceSources.join(' / ')+'.':'No current dollar quote supplied.'));if(status.quoteCheckedAt)appendNote(sources,'Prices checked '+new Date(status.quoteCheckedAt).toLocaleString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'})+'. Store checkout is final.');wrap.appendChild(sources);
+  if(status.priceWarning)appendNote(sources,status.priceWarning,'lookup-warning');appendNote(sources,'US listings: JustWatch. '+(status.priceSources?.length?'Price sources: '+status.priceSources.join(' / ')+'.':'No current dollar quote supplied.'));if(status.quoteCheckedAt)appendNote(sources,'Prices checked '+new Date(status.quoteCheckedAt).toLocaleString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'})+'. Store checkout is final.');wrap.appendChild(sources);wrap.appendChild(renderEarlierPriceHistory(movie));
   return wrap;
 }
 function renderRentalForecast(movie,status,context={}){
@@ -84,4 +84,31 @@ function renderReleaseTimeline(movie,status,context={}){
  if(journey.forecast){const f=journey.forecast,box=document.createElement('section');box.className='journey-next estimated'+(f.missed?' missed':'');const title=document.createElement('h5');title.textContent=f.label;const date=document.createElement('p');date.className='journey-prediction';date.textContent=f.text;box.append(title,date);appendNote(box,f.note,'journey-note');if(f.source)releaseSource(box,'Estimate basis ↗',f.source);root.appendChild(box);}
  if(journey.undated.length){const notes=document.createElement('div');notes.className='journey-unknowns';for(const point of journey.undated){const row=document.createElement('p'),label=document.createElement('strong');label.textContent=point.label+': ';row.append(label,document.createTextNode(point.note));notes.appendChild(row);}root.appendChild(notes);}
  return root;
+}
+
+// Loaded only in film details, never while building or scrolling the collection.
+const earlierPriceCache=new Map(),earlierPriceRequests=new Map();
+async function fetchEarlierPriceHistory(id){
+ const cached=earlierPriceCache.get(id);if(cached&&Date.now()-cached.receivedAt<(cached.failed?300000:12*3600000))return cached;
+ if(earlierPriceRequests.has(id))return earlierPriceRequests.get(id);
+ const task=(async()=>{try{
+  const response=await fetch('https://transmissionalbum.netlify.app/.netlify/functions/rewind-earlier-prices?id='+encodeURIComponent(id),{signal:AbortSignal.timeout(18000)});
+  if(!response.ok)throw Error();const data=await response.json();if(data.id!==id||!Array.isArray(data.entries))throw Error();
+  const result={...data,receivedAt:Date.now()};earlierPriceCache.set(id,result);if(earlierPriceCache.size>150)earlierPriceCache.delete(earlierPriceCache.keys().next().value);return result;
+ }catch{const result={id,entries:[],failed:true,receivedAt:Date.now()};earlierPriceCache.set(id,result);return result;}})();
+ earlierPriceRequests.set(id,task);try{return await task;}finally{earlierPriceRequests.delete(id);}
+}
+function renderEarlierPriceHistory(movie){
+ const root=document.createElement('section');root.className='earlier-store-prices';
+ const title=document.createElement('h4');title.textContent='Earlier prices · CheapCharts';root.append(title);
+ const content=document.createElement('div');content.setAttribute('aria-live','polite');appendNote(content,'Checking earlier store prices…','checked-note');root.append(content);
+ fetchEarlierPriceHistory(movie.id).then(data=>{
+  if(!root.isConnected)return;content.replaceChildren();
+  if(data.failed){appendNote(content,'Earlier store prices are unavailable right now. Your saved checks remain in Sources & price history.','checked-note');return;}
+  const entries=data.entries.filter(e=>e.kind==='buy'&&e.region==='US'&&e.currency==='USD'&&Number.isFinite(e.previousPrice)&&e.previousPrice>=0&&e.previousPrice!==e.price&&(()=>{try{const u=new URL(e.link);return u.protocol==='https:'&&u.hostname==='www.cheapcharts.com'&&u.pathname.startsWith('/us/');}catch{return false;}})());
+  if(!entries.length){appendNote(content,'No earlier purchase price supplied for an exact US match.','checked-note');for(const entry of data.entries)releaseSource(content,'Full history on CheapCharts · '+entry.provider+' ↗',entry.link);return;}
+  const groups=new Map();for(const entry of entries){if(!groups.has(entry.previousPrice))groups.set(entry.previousPrice,[]);groups.get(entry.previousPrice).push(entry);}
+  for(const [price,stores] of [...groups].sort((a,b)=>a[0]-b[0])){const row=document.createElement('div');row.className='earlier-price-row';const amount=document.createElement('strong');amount.textContent='$'+price.toFixed(2)+' previously to buy';row.append(amount);const links=document.createElement('div');links.className='earlier-price-links';for(const entry of stores)releaseSource(links,entry.provider+' history ↗',entry.link);row.append(links);content.append(row);}
+  appendNote(content,'Purchase prices only. Dates and video quality are not supplied by this API.','checked-note');if(data.stale)appendNote(content,'Previous lookup · could not refresh.','checked-note');
+ });return root;
 }
