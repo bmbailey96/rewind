@@ -535,7 +535,7 @@ function renderCard(movie, opts = {}) {
   const {context='discover',status=null,changed=false}=opts;
   const card=document.createElement('article');card.className='rental-card compact-film-card'+(movie.releaseFile?' release-card':'');card.dataset.movieId=movie.id;
   const image=posterUrl(movie.poster_path);const poster=document.createElement(image?'img':'div');poster.className='card-poster'+(image?'':' poster-missing');if(image){poster.loading='lazy';poster.src=image;poster.alt=movie.title+' poster';poster.onerror=()=>{const fallback=document.createElement('div');fallback.className='card-poster poster-missing';fallback.textContent='POSTER UNAVAILABLE';poster.replaceWith(fallback);};}else{poster.textContent='NO POSTER ON FILE';}card.appendChild(poster);
-  const title=document.createElement('h3');title.className='card-title';title.textContent=movie.title;card.appendChild(title);
+  const title=document.createElement('h3');title.className='card-title';title.textContent=movie.title;title.title=movie.title;card.appendChild(title);
   const meta=document.createElement('p');meta.className='card-meta';meta.textContent=[(movie.release_date||'').slice(0,4),movie.runtime?movie.runtime+' min':null].filter(Boolean).join(' · ');card.appendChild(meta);
   if(movie.director){const director=document.createElement('p');director.className='card-director';director.textContent=movie.director;director.title=movie.director;card.appendChild(director);}
   if(context==='watchlist'){

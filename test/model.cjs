@@ -52,7 +52,7 @@ const company={id:99,priceHistory:current.priceHistory,detailsSnapshot:{producti
 const companyDrops=drops.map(m=>({...m,detailsSnapshot:{production_companies:[{id:8,name:'Test Company'}]}}));
 const slower=[11,12,13,14,15].map(id=>({id,priceHistory:r.recordQuotes(r.recordQuotes([],[paid],Date.parse('2026-08-01')),[{...paid,price:5.99}],Date.parse('2026-08-08'))}));
 const companyForecast=r.priceEstimate(company,[paid],[...companyDrops,...slower,companyDrops[0]],'2026-09-28',5.99);
-assert.equal(companyForecast.companyMatched,true);assert.equal(companyForecast.samples,5,'Production-company cohort is deduplicated');assert.equal(companyForecast.likely,'2026-10-02');assert.equal(companyForecast.confidence,'Low');
+assert.equal(companyForecast.companyMatched,true);assert.equal(companyForecast.samples,5,'Production-company cohort is deduplicated');assert.equal(companyForecast.likely,'2026-10-01','Quote-derived anchors use the Mountain Time calendar date');assert.equal(companyForecast.confidence,'Low');
 assert.equal(r.priceEstimate(company,[paid],slower,'2026-09-28',5.99).companyMatched,false,'No invented studio cohort without matching data');
 
 assert.deepEqual(require('../storage-model').compact({detailsSnapshot:{production_companies:[{id:8,name:'Test Company',logo_path:'huge cached art'}]}}).detailsSnapshot.production_companies,[{id:8,name:'Test Company'}],'Forecast company identity survives compact saving without artwork payloads');

@@ -23,3 +23,13 @@ journey=R.releaseJourney(noFestival,{offers:[{kind:'subscription',provider:'Shud
 const announced={...expensive,announcements:[{kind:'price',date:'2026-10-20',provider:'Apple TV',price:5.99,sourceUrl:'javascript:alert(1)'}]};
 journey=R.releaseJourney(premium,announced,today);assert.equal(journey.forecast,null);assert.equal(journey.events.find(e=>e.kind==='price-announcement').source,null,'Sources cannot use unsafe links');
 console.log('Release journeys: recent-cycle gating, premieres without invented festivals, US stages, all same-format drops, unknown launch dates, re-releases and honest next-price estimates passed');
+
+const lateCheck={...movie,priceHistory:[{kind:'rent',provider:'Apple TV',format:'4K',price:19.99,at:Date.parse('2026-10-14T20:00:00Z')},{kind:'rent',provider:'Apple TV',format:'4K',price:5.99,at:Date.parse('2026-10-15T01:00:00Z')}]};
+journey=R.releaseJourney(lateCheck,status,'2026-10-14',{at:Date.parse('2026-10-15T02:00:00Z')});assert.equal(journey.events.find(e=>e.kind==='price-drop').date,'2026-10-14','Evening observations use the Kalispell calendar date');
+const unknownFormat={...movie,priceHistory:history.map(r=>({...r,format:null}))};
+assert.equal(R.releaseJourney(unknownFormat,status,today).events.some(e=>e.kind==='price-drop'),false,'An unspecified format cannot prove a same-format reduction');
+console.log('Price journey boundaries: Denver dates, same-format evidence and future-check exclusion passed');
+
+const buyCuts={...movie,priceHistory:[...history.filter(r=>r.kind==='rent'),{kind:'buy',provider:'Apple TV Store',format:'4K',price:24.99,at:at('2026-09-01')},{kind:'buy',provider:'Apple TV Store',format:'4K',price:12.99,at:at('2026-10-01')}]};
+journey=R.releaseJourney(buyCuts,status,today);assert.equal(journey.events.filter(e=>e.kind==='purchase-drop').length,1);assert.equal(journey.events.find(e=>e.kind==='purchase-drop').label,'Buy $24.99 → $12.99');assert.equal(journey.events.filter(e=>e.kind==='price-drop').length,3,'Purchase cuts never mix with rental cuts');
+console.log('Purchase and rental histories remain distinct while both reductions are visible');
