@@ -34,3 +34,7 @@ const expected=H.affinity(batchFilm,batchSeeds);featureReads=0;
 for(let i=0;i<600;i++)assert.deepEqual(H.affinity({...batchFilm,id:30000+i},batchSeeds,[],compiled),expected);
 assert.equal(featureReads,0,'Ranking a collection must reuse prepared seed features');
 console.log('600-film batch ranking reuses seed features without changing scores or reasons');
+
+const savedDates={id:999,detailsSnapshot:{release_dates:{results:[{iso_3166_1:'US',release_dates:[{type:4,release_date:'2026-10-23T00:00:00Z'}]}]}},availabilitySnapshot:{details:{id:999}}};
+assert.equal(H.upcoming(savedDates,'2026-10-16')[0].date,'2026-10-23','Saved US release dates survive a missing or partial availability detail');
+assert.equal(H.upcoming({...savedDates,detailsSnapshot:{release_dates:{results:[{iso_3166_1:'FR',release_dates:[{type:4,release_date:'2026-10-23'}]}]}}},'2026-10-16').length,0,'Foreign dates are not US streaming dates');

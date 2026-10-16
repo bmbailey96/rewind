@@ -24,7 +24,8 @@
     const date=a.source_release_date?.slice(0,10);
     if(date>=today)rows.push({movie,date,label:a.source_name?'Arrives on '+a.source_name:'Digital release',theatrical:false,platform:a.source_name||null,sourceKind:'watchmode',certainty:'Listed'});
   }
-  for(const r of (status.details||movie.releaseFile?.details)?.release_dates?.results?.find(r=>r.iso_3166_1==='US')?.release_dates||[]){
+  const releaseDates=[status.details,movie.detailsSnapshot,movie.releaseFile?.details,movie.meta].map(d=>d?.release_dates?.results?.find(r=>r.iso_3166_1==='US')?.release_dates).find(d=>d?.length)||[];
+  for(const r of releaseDates){
     const date=r.release_date?.slice(0,10);
     if(date>=today&&[2,3,4].includes(r.type))rows.push({movie,date,label:r.type===4?'Digital release':'US theatrical release',theatrical:r.type!==4,platform:null,sourceKind:'tmdb',certainty:'Listed'});
   }

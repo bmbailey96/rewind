@@ -379,6 +379,18 @@ assert.equal(w.document.querySelector('[data-discover-intent=surprise]').getAttr
  assert.match(w.document.getElementById('since-visit').textContent,/1 newly included/);assert.doesNotMatch(w.document.getElementById('since-visit').textContent,/514/);
  w.document.querySelector('#since-visit button').click();assert.match(w.document.getElementById('rw-arrived-grid').textContent,/A useful arrival/);
  w.testState.replaceMovies(originalLibraryMovies);w.testState.hub().changeReceipts=originalReceipts;w.fetch=libraryTestFetch;w.localStorage.removeItem('rewind-gh-token');
+
+ const calendarFetch=w.fetch,weekRequests=[];
+ w.fetch=async raw=>{const u=new URL(raw,'https://bekind-rewind.netlify.app');if(!u.pathname.includes('rewind-cinema')&&u.pathname!='/cinema-snapshot.json')return calendarFetch(raw);const start=u.searchParams.get('week')||'2026-10-05';if(u.pathname.includes('rewind-cinema'))weekRequests.push(start);return {ok:true,json:async()=>({weekStart:start,generatedAt:w.Date.now(),events:{items:[],stale:false,checkedAt:w.Date.now()},local:{items:[{id:'weekly:'+start,title:'Published week '+start,dates:[start],start,end:start,screenings:[]}],stale:false,checkedAt:w.Date.now()}})};};
+ w.document.querySelector('[data-tab=upcoming]').click();w.document.querySelector('[data-calendar-scope=local]').click();w.document.getElementById('calendar-today').click();await wait();
+ w.document.getElementById('calendar-next').click();await wait();
+ assert.ok(weekRequests.includes('2026-10-12'),'Next week requests that week from the server');assert.match(w.document.getElementById('calendar-range').textContent,/Oct 12/);assert.match(w.document.getElementById('calendar-mobile').textContent,/Published week 2026-10-12/);
+ w.document.getElementById('calendar-next').click();w.document.getElementById('calendar-next').click();await wait();await wait();
+ assert.match(w.document.getElementById('calendar-range').textContent,/Oct 26/);assert.match(w.document.getElementById('calendar-mobile').textContent,/Published week 2026-10-26/,'Rapid navigation finishes on the latest selected week');
+ const before=weekRequests.length;w.document.getElementById('calendar-prev').click();await wait();w.document.getElementById('calendar-prev').click();await wait();
+ assert.match(w.document.getElementById('calendar-mobile').textContent,/Published week 2026-10-12/);const afterReturn=weekRequests.length;w.document.getElementById('calendar-next').click();await wait();w.document.getElementById('calendar-prev').click();await wait();assert.equal(weekRequests.length,afterReturn,'Revisiting loaded weeks uses the session cache');
+ w.fetch=calendarFetch;
+ console.log('Calendar navigation: requested weeks, rapid next clicks, cached back/forward and dated local rows passed');
  assert.equal(flowErrors.length,0,'Navigation has no runtime errors');
  console.log('Rewind hub flow: three shelves, source timeline, no vote floor, thresholds persist/sync, real price drops, stale checks, watched undo, inline search passed');
  await wait();await wait();dom.window.close();
