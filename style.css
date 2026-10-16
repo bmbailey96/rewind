@@ -1476,3 +1476,5 @@ button:focus-visible,a:focus-visible,summary:focus-visible{outline:2px solid #db
 .rental-card.compact-film-card>.film-details-trigger:after{content:' ›';font-size:18px;text-decoration:none}
 .card-actions [data-follow-movie]{min-height:44px;background:transparent!important;border:1px solid #6b8e7c!important;color:#cbe0d2!important;box-shadow:none!important}
 .card-actions [data-follow-movie][aria-pressed=true]{background:#244339!important;border-color:#8ec4ac!important}
+
+.rental-card.compact-film-card>.release-file.release-stage-line{border:0;background:transparent;padding:0;margin:8px 0;font-size:13px;line-height:1.5}.rental-card.compact-film-card>.release-file.release-stage-line p{margin:0}
