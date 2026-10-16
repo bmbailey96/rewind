@@ -1,7 +1,10 @@
 // ---------- letterboxd import ----------
 StorageModel.migrate(localStorage);
 const failedStorageKeys=new Set();
-function persistData(key,data){const saved=StorageModel.save(localStorage,key,data);if(saved)failedStorageKeys.delete(key);else failedStorageKeys.add(key);const backup=document.getElementById('storage-backup');if(backup)backup.hidden=!failedStorageKeys.size;const status=document.getElementById('storage-status');if(status){status.hidden=!failedStorageKeys.size;status.textContent=failedStorageKeys.size?'Could not save the latest changes on this device. Your previous local save is intact. GitHub sync is separate; use Download backup below before closing this page.':'';}return saved;}
+let cloudSavePhase='idle';
+function renderSaveState(){const el=document.getElementById('save-state');if(!el)return;let connected=false,dirty=false;try{connected=!!localStorage.getItem('rewind-gh-token');dirty=!!localStorage.getItem('rewind-sync-dirty-v1');}catch{}const failed=failedStorageKeys.size>0;el.dataset.tone=failed||cloudSavePhase==='error'?'error':'info';el.textContent=failed?(cloudSavePhase==='synced'?'Synced · device save failed':'Device save failed'):!connected?'Saved on this device':cloudSavePhase==='error'?'Saved here · sync delayed':cloudSavePhase==='saving'||dirty?'Saved here · sync pending':cloudSavePhase==='synced'?'Synced across devices':'Saved here · sync not checked';el.title=failed?'Open Settings to download a backup.':connected?'Devices using the same GitHub connection share your films.':'Connect GitHub in Settings to share films with your phone.';}
+
+function persistData(key,data){const saved=StorageModel.save(localStorage,key,data);if(saved)failedStorageKeys.delete(key);else failedStorageKeys.add(key);const backup=document.getElementById('storage-backup');if(backup)backup.hidden=!failedStorageKeys.size;const status=document.getElementById('storage-status');if(status){status.hidden=!failedStorageKeys.size;status.textContent=failedStorageKeys.size?'Could not save the latest changes on this device. Your previous local save is intact. GitHub sync is separate; use Download backup below before closing this page.':'';}renderSaveState();return saved;}
 
 const SEEN_KEY = 'rewind-seen-v1';
 let seenSet = loadSeenSet();
@@ -178,7 +181,7 @@ let syncTimer,syncFlight=null;
 const SYNC_BASE_KEY='rewind-sync-base-v1',SYNC_DIRTY_KEY='rewind-sync-dirty-v1';
 const syncBase=()=>{try{return StorageModel.read(localStorage,SYNC_BASE_KEY);}catch{return null;}};
 function rememberSync(data){persistData(SYNC_BASE_KEY,data);}
-function syncNotice(text,error=false){const e=document.getElementById('sync-status');if(e){e.dataset.tone=error?'error':'info';e.textContent=text;}}
+function syncNotice(text,error=false){cloudSavePhase=error?'error':/^Synced|Connected and synced/i.test(text)?'synced':/saving|pushing|syncing|connecting/i.test(text)?'saving':cloudSavePhase;renderSaveState();const e=document.getElementById('sync-status');if(e){e.dataset.tone=error?'error':'info';e.textContent=text;}}
 async function ghJSON(path,options){const r=await ghFetch(path,options);if(!r.ok)throw Error(r.status===401||r.status===403?'GitHub did not accept this token. Check its gist permission.':'GitHub sync failed (HTTP '+r.status+'). Your changes remain on this device.');return r.json();}
 
 async function ghFetch(path, opts = {}) {
@@ -236,7 +239,7 @@ async function findOrCreateGist() {
 async function readGist(id){const gist=await ghJSON('/gists/'+id),file=gist.files?.[GIST_FILENAME];let content=file?.content;if(file?.truncated){const rawURL=new URL(file.raw_url);if(rawURL.protocol!=='https:'||rawURL.hostname!=='gist.githubusercontent.com')throw Error('Unexpected sync file address.');let response;try{response=await fetch(rawURL.href,{cache:'no-store',credentials:'omit',referrerPolicy:'no-referrer',signal:AbortSignal.timeout(20000)});}catch{throw Error('Could not download your full saved profile from GitHub. Your local films were kept. Check your connection and try Sync now.');}if(!response.ok)throw Error('Could not read the full saved film profile.');content=await response.text();}let data;try{data=StorageModel.parseSync(content);}catch{throw Error('Saved sync data could not be read. Local films were kept.');}if(!data||!Array.isArray(data.watchlist)||!Array.isArray(data.seen)||!Array.isArray(data.skipped))throw Error('Saved sync data is incomplete. Local films were kept.');return data;}
 async function pullFromGist(){const id=await findOrCreateGist(),remote=await readGist(id),base=syncBase(),local=collectSyncData(),merged=SyncModel.merge(base||{},local,remote);applySyncData(merged);rememberSync(remote);window.dispatchEvent(new Event('rewind:state'));return merged;}
 async function pushToGist(){if(syncFlight)return syncFlight;syncFlight=(async()=>{const id=await findOrCreateGist(),remote=await readGist(id),local=collectSyncData(),merged=SyncModel.merge(syncBase()||{},local,remote);merged.updatedAt=Date.now();await ghJSON('/gists/'+id,{method:'PATCH',body:JSON.stringify({files:{[GIST_FILENAME]:{content:StorageModel.syncContent(merged)}}})});const current=collectSyncData(),after=SyncModel.merge(local,current,merged);applySyncData(after);rememberSync(merged);const changed=JSON.stringify({...current,updatedAt:0})!==JSON.stringify({...local,updatedAt:0});if(changed){localStorage.setItem(SYNC_DIRTY_KEY,'1');scheduleSync();}else localStorage.removeItem(SYNC_DIRTY_KEY);window.dispatchEvent(new Event('rewind:state'));syncNotice('Synced '+new Date().toLocaleTimeString()+'. '+(failedStorageKeys.size?'GitHub saved your changes; this device still has a local storage problem.':'Ready on your connected devices.'));})().catch(e=>{syncNotice(e.message,true);throw e;}).finally(()=>{syncFlight=null;});return syncFlight;}
-function scheduleSync(){scheduleBackgroundLibrary();scheduleEmailSync();localStorage.setItem(SYNC_DIRTY_KEY,'1');if(!localStorage.getItem(GH_TOKEN_KEY))return;clearTimeout(syncTimer);syncNotice('Saving changes across devices…');syncTimer=setTimeout(()=>pushToGist().catch(()=>{}),1500);}
+function scheduleSync(){scheduleBackgroundLibrary();scheduleEmailSync();localStorage.setItem(SYNC_DIRTY_KEY,'1');if(!localStorage.getItem(GH_TOKEN_KEY)){renderSaveState();return;}clearTimeout(syncTimer);syncNotice('Saving changes across devices…');syncTimer=setTimeout(()=>pushToGist().catch(()=>{}),1500);}
 let lastSyncPull=0;
 async function refreshDeviceSync(){if(!localStorage.getItem(GH_TOKEN_KEY)||document.hidden||syncFlight||Date.now()-lastSyncPull<30000)return;lastSyncPull=Date.now();try{if(localStorage.getItem(SYNC_DIRTY_KEY))await pushToGist();else{await pullFromGist();syncNotice('Synced '+new Date().toLocaleTimeString()+'. Connected devices share this film memory.');}renderWatchlist(false,true,true);await syncBackgroundLibrary();}catch(e){syncNotice(e.message,true);}}
 window.addEventListener('focus',refreshDeviceSync);window.addEventListener('online',refreshDeviceSync);document.addEventListener('visibilitychange',refreshDeviceSync);
@@ -261,16 +264,16 @@ document.getElementById('gh-connect-btn').addEventListener('click', async () => 
   const statusEl = document.getElementById('sync-status');
   if (!token) return;
   localStorage.setItem(GH_TOKEN_KEY, token);
-  statusEl.textContent = 'Connecting...';
+  syncNotice('Connecting…');
   try {
     await pullFromGist();
     await pushToGist();
-    statusEl.dataset.tone=failedStorageKeys.size?'error':'info';statusEl.textContent = failedStorageKeys.size?'GitHub saved your changes. This device still has a local storage problem; download a backup before closing.':'Connected and synced. Use this same GitHub connection on your phone.';
+    syncNotice('Connected and synced. '+(failedStorageKeys.size?'GitHub saved your changes; this device still has a local storage problem.':'Use this same GitHub connection on your phone.'));
     renderWatchlist();
     renderDiscover();
     await initEmailAlerts();await syncBackgroundLibrary();
   } catch (e) {
-    statusEl.dataset.tone='error';statusEl.textContent = e.message || 'Connection failed. Check the token has gist permission.';
+    syncNotice(e.message || 'Connection failed. Check the token has gist permission.',true);
   }
 });
 
@@ -280,7 +283,7 @@ document.getElementById('gh-sync-now-btn').addEventListener('click', async () =>
     statusEl.textContent = 'Connect with a token first.';
     return;
   }
-  statusEl.textContent = 'Pushing...';
+  syncNotice('Pushing…');
   try {
     await pushToGist();
   } catch (e) {
@@ -531,6 +534,15 @@ function openFilmDetails(movie,body,trigger,load){
   const close=document.createElement('button');close.type='button';close.className='film-detail-close';close.textContent='×';close.setAttribute('aria-label','Close film details');close.onclick=()=>dialog.close();const identity=document.createElement('div');identity.className='film-detail-identity';const meta=document.createElement('p');meta.className='film-detail-meta';meta.textContent=[String(movie.release_date||'').slice(0,4),movie.runtime?movie.runtime+' min':null,movie.director].filter(Boolean).join(' · ');identity.append(title,meta);head.append(identity,close);
   dialog.replaceChildren(head,body);dialog.dataset.movieId=String(movie.id);dialog._returnFocus=trigger;document.body.classList.add('film-dialog-open');if(!dialog.open)dialog.showModal();dialog.scrollTop=0;load();
 }
+function balanceCardUpdates(card){
+ const notes=[...card.querySelectorAll(':scope > .wait-advice,:scope > .useful-change,:scope > .release-stage-line,:scope > .local-card-note,:scope > .discover-unverified,:scope > .discovery-reason,:scope > .tonight-reason')];
+ const priority=n=>n.matches('.rental-forecast-note')?0:n.matches('.wait-advice')?1:n.matches('.useful-change')?2:n.matches('.local-card-note')?3:n.matches('.release-stage-line')?4:n.matches('.tonight-reason,.discovery-reason')?5:6;
+ const first=[...notes].filter(n=>n.textContent.trim()).sort((a,b)=>priority(a)-priority(b))[0];for(const note of notes){note.classList.toggle('card-extra-update',note!==first);note.hidden=note!==first;}
+}
+function paintFollowControl(button,movie){const followed=!!watchlist.find(m=>m.id===movie.id)?.followRelease;button.dataset.followMovie=String(movie.id);button.textContent=followed?'FOLLOWING RELEASE':'FOLLOW RELEASE';button.disabled=false;button.setAttribute('aria-pressed',String(followed));button.setAttribute('aria-label',(followed?'Unfollow release: ':'Follow release: ')+movie.title);button.title=followed?'Stop release updates; keep this film saved':'Follow release and availability updates';}
+function refreshFollowControls(){for(const button of document.querySelectorAll('[data-follow-movie]')){const movie=watchlist.find(m=>String(m.id)===button.dataset.followMovie)||{id:Number(button.dataset.followMovie),title:button.dataset.filmTitle||'this film'};paintFollowControl(button,movie);}}
+function createFollowControl(movie,origin='watchlist'){const button=document.createElement('button');button.type='button';button.className='track-action';button.dataset.filmTitle=movie.title;paintFollowControl(button,movie);button.onclick=()=>{if(watchlist.find(m=>m.id===movie.id)?.followRelease)unfollowReleaseFilm(movie.id);else followReleaseFilm(movie,origin);refreshFollowControls();};return button;}
+window.addEventListener('rewind:state',refreshFollowControls);
 function renderCard(movie, opts = {}) {
   const {context='discover',status=null,changed=false}=opts;
   const card=document.createElement('article');card.className='rental-card compact-film-card'+(movie.releaseFile?' release-card':'');card.dataset.movieId=movie.id;
@@ -546,7 +558,8 @@ function renderCard(movie, opts = {}) {
   const actionable=WatchlistModel.actionable(movie,status,hubState.changeReceipts,rentalBudget);if(actionable){const tag=document.createElement('p');tag.className='new-tag useful-change';tag.textContent=actionable.text;card.appendChild(tag);}else if(changed){const tag=document.createElement('span');tag.className='new-tag';tag.textContent='AVAILABILITY CHANGED';card.appendChild(tag);}
   if(opts.markSeen&&isSeen(movie)){const tag=document.createElement('span');tag.className='new-tag';tag.textContent='ALREADY SEEN';card.appendChild(tag);}
   let costInfo=opts.collectionCost|| (status?.pending?{band:'waiting',badge:'CHECKING',caption:'Getting current offers and prices.'}:status?ReleaseModel.cost(status.offers,rentalBudget,status.stale):null);
-  if(costInfo&&(context==='watchlist'||!(movie.releaseFile&&costInfo.band==='waiting'))){const headline=renderCostHeadline(costInfo);if(opts.collectionCost?.stale){const warning=headline.querySelector('.cost-warning');if(warning)warning.textContent=status?.checkedAt?'Last checked '+formatFilmDate(new Date(status.checkedAt).toISOString())+' · not refreshed':'Previous listing · check needed';}card.appendChild(headline);}
+  if(!costInfo)costInfo={band:'waiting',badge:'NOT CHECKED',caption:'Open details for viewing options'};
+  if(costInfo){const headline=renderCostHeadline(costInfo);if(opts.collectionCost?.stale){const warning=headline.querySelector('.cost-warning');if(warning)warning.textContent=status?.checkedAt?'Last checked '+formatFilmDate(new Date(status.checkedAt).toISOString())+' · not refreshed':'Previous listing · check needed';}card.appendChild(headline);}
 
   if(movie.discoveryFit||movie.requestedInterest){const reason=document.createElement('p');reason.className='discovery-reason';reason.textContent=movie.requestedInterest?'You asked to keep an eye on this one.':movie.discoveryFit.connection?.directors?.length?'From '+movie.discoveryFit.connection.directors.join(' and ')+', behind '+movie.discoveryFit.connection.seedTitle+'.':FilmOracle.reading(movie,{connection:null}).text;card.appendChild(reason);}if(movie.releaseFile&&context!=='watchlist')card.appendChild(renderReleaseFile(movie,status,true));
   if(status){const upcoming=(status.announcements||[]).filter(a=>a.kind==='subscription'&&a.date&&a.date>discoveryWindow().today).sort((a,b)=>a.date.localeCompare(b.date))[0];if(upcoming){const note=document.createElement('p');note.className='wait-advice';note.textContent=upcoming.provider+' on '+formatFilmDate(upcoming.date)+' · announced';card.appendChild(note);}else if(costInfo?.band==='premium'){const note=document.createElement('p');note.className='wait-advice';const pref=ReleaseModel.preference(movie.alert);const estimate=ReleaseModel.rentalForecast(movie,status,watchlist,discoveryWindow().today,pref.mode==='rental'?pref.maxPrice:rentalBudget);if(estimate){const timing=ReleaseModel.forecastTiming(estimate,discoveryWindow().today);note.classList.add('rental-forecast-note');const label=document.createElement('span');label.className='forecast-note-label';label.textContent='Cheaper rental · estimate';const when=document.createElement('span');when.className='forecast-note-date';when.textContent=timing.when;const away=document.createElement('span');away.className='forecast-note-away';away.textContent=timing.relative;note.append(label,when,document.createTextNode(' · '),away);note.title=(estimate.kind==='provisional'?'Low-confidence estimate from typical premium-rental timing.':'Estimate from comparable observed price drops.')+(status.stale?' Price needs a fresh check.':timing.daysAway<0?' No lower price verified yet.':' Not an announced reduction.');}else note.textContent='Above your $'+rentalBudget.toFixed(2)+' limit. No drop date announced.';card.appendChild(note);}}
@@ -558,6 +571,7 @@ function renderCard(movie, opts = {}) {
   const fillDetails=()=>{
     body.replaceChildren();if(current)body.appendChild(renderAvailability(movie,{...current,previousLabel:opts.prevLabel},{details:[...observedDetails.values()],movies:watchlist}));if(movie.releaseFile)body.appendChild(renderReleaseFile(movie,current));body.appendChild(renderTrackingNote(movie,current));
     if(current){const refresh=document.createElement('button');refresh.type='button';refresh.className='text-action refresh-film-offers';refresh.textContent='Recheck prices & availability';refresh.onclick=async()=>{refresh.disabled=true;refresh.textContent='Checking current offers…';try{current=await deriveStatus(movie,true);const saved=watchlist.find(m=>m.id===movie.id);if(saved){Object.assign(saved,{availabilitySnapshot:current,detailsSnapshot:movie.detailsSnapshot,priceHistory:movie.priceHistory,watchmodeCache:movie.watchmodeCache,storePriceCache:movie.storePriceCache});saveWatchlist();scheduleSync();renderWatchlist(false,true,true);}if(body.isConnected)fillDetails();}catch{refresh.disabled=false;refresh.textContent='Check failed · try again';}};body.appendChild(refresh);}
+    const extra=[...card.querySelectorAll(':scope > .card-extra-update')].filter(n=>!n.classList.contains('discovery-reason'));if(extra.length){const updates=document.createElement('section');updates.className='film-extra-updates';const h=document.createElement('h4');h.textContent='Other release information';updates.append(h);for(const note of extra){const p=document.createElement('p');p.textContent=note.textContent;updates.append(p);if(note.classList.contains('local-card-note')){const open=document.createElement('button');open.className='text-action';open.textContent='View calendar';open.onclick=()=>{document.getElementById('film-detail-dialog')?.close();note.click();};updates.append(open);}}body.append(updates);}
     const about=document.createElement('section');about.className='film-about';
     if(movie.overview){const heading=document.createElement('h4');heading.textContent='About the film';const synopsis=document.createElement('p');synopsis.textContent=movie.overview;about.append(heading,synopsis);}
     const recommendation=card.querySelector('.discovery-reason');if(recommendation){const heading=document.createElement('h4');heading.textContent='Why this film';const fullReason=document.createElement('p');fullReason.className='full-discovery-reason';fullReason.textContent=recommendation.textContent;about.append(heading,fullReason);}
@@ -565,8 +579,9 @@ function renderCard(movie, opts = {}) {
     if(context==='watchlist'||context==='physical'){
       const collection=document.createElement('section');collection.className='film-collection';const heading=document.createElement('h4');heading.textContent='Your collection';collection.append(heading,secondaryActions);
       if(context==='watchlist'){
+        collection.appendChild(createFollowControl(movie,'watchlist'));
         const tools=document.createElement('div');tools.className='card-actions collection-tools';
-        for(const [name,fn] of [[movie.followRelease?'Unfollow release (keep film)':'Follow release',()=>{document.getElementById('film-detail-dialog')?.close();movie.followRelease?unfollowReleaseFilm(movie.id):followReleaseFilm(movie,'watchlist');}],[movie.pinned?'Unpin':'Pin this film',()=>togglePin(movie.id)],['Remove from watchlist',()=>removeFromWatchlist(movie.id)]]){const btn=document.createElement('button');btn.className='secondary';btn.textContent=name;btn.onclick=fn;tools.appendChild(btn);}collection.appendChild(tools);
+        for(const [name,fn] of [[movie.pinned?'Unpin':'Pin this film',()=>togglePin(movie.id)],['Remove from watchlist',()=>removeFromWatchlist(movie.id)]]){const btn=document.createElement('button');btn.className='secondary';btn.textContent=name;btn.onclick=fn;tools.appendChild(btn);}collection.appendChild(tools);
         const alert=document.createElement('details');alert.className='source-disclosure film-notifications';const title=document.createElement('summary');title.textContent='Notifications';alert.append(title,renderAlertPreference(movie));collection.appendChild(alert);
       }
       if(opts.onRemovePhysical){const remove=document.createElement('button');remove.className='secondary';remove.textContent='Remove from physical shelf';remove.onclick=()=>{document.getElementById('film-detail-dialog')?.close();opts.onRemovePhysical();};collection.appendChild(remove);}
@@ -577,6 +592,7 @@ function renderCard(movie, opts = {}) {
   details.onclick=()=>openFilmDetails(movie,body,details,async()=>{if(current){fillDetails();if(!(current.details||movie.detailsSnapshot)?.release_dates){try{const full=await fetchMovieDetails(movie.id);movie.detailsSnapshot={id:full.id,runtime:full.runtime,release_dates:full.release_dates,production_companies:full.production_companies};current={...current,details:movie.detailsSnapshot};if(body.isConnected)fillDetails();}catch{}}return;}body.textContent='Checking releases and viewing options…';try{current=await deriveStatus(movie);fillDetails();}catch{body.replaceChildren();const note=document.createElement('p');note.textContent='Could not load this film.';const retry=document.createElement('button');retry.textContent='Try again';retry.onclick=()=>details.click();body.append(note,retry);}});
   const actions=document.createElement('div');actions.className='card-actions';
   if(context==='watchlist'){
+    actions.appendChild(createFollowControl(movie,'watchlist'));
     const watched=document.createElement('button');watched.className='secondary';watched.textContent='MARK WATCHED';watched.onclick=()=>{document.getElementById('film-detail-dialog')?.close();markMovieWatched(movie);};secondaryActions.appendChild(watched);
     const next=(!status?.stale||opts.collectionCost)?costInfo?.offer:null;
     if(next?.link){const link=document.createElement('a');link.className='watch-link';link.textContent=opts.collectionCost?.stale?'CHECK OFFER':next.kind==='buy'?'BUY':next.kind==='rent'?'RENT':'WATCH';link.href=next.link;link.target='_blank';link.rel='noopener noreferrer';actions.prepend(link);}
@@ -590,11 +606,11 @@ function renderCard(movie, opts = {}) {
     const track=document.createElement('button');
     track.textContent=followable?(followed?'FOLLOWING RELEASE':'FOLLOW RELEASE'):(inList?'SAVED':'SAVE');
     track.className=next?.link?'track-action secondary-track':'track-action';
-    track.disabled=followable?followed:inList;
+    track.disabled=followable?false:inList;if(followable){track.dataset.filmTitle=movie.title;paintFollowControl(track,movie);}
     track.onclick=()=>{
       if(followable){
-        followReleaseFilm(movie,context);
-        track.textContent='FOLLOWING RELEASE';track.disabled=true;card.classList.add('film-tracked');if(context==='discover'){lastDiscoverResults=lastDiscoverResults.filter(m=>m.id!==movie.id);card.remove();updateBrowseDismissControl();}
+        if(watchlist.find(m=>m.id===movie.id)?.followRelease)unfollowReleaseFilm(movie.id);else followReleaseFilm(movie,context);
+        refreshFollowControls();card.classList.toggle('film-tracked',!!watchlist.find(m=>m.id===movie.id)?.followRelease);
       }else{
         addToWatchlist(movie);
         track.textContent='SAVED';track.disabled=true;card.classList.add('film-tracked');
@@ -605,9 +621,9 @@ function renderCard(movie, opts = {}) {
   }
   if(!current)body.appendChild(secondaryActions);
   actions.querySelectorAll('.watch-link').forEach(link=>link.remove());if(context==='physical'||context==='picker'&&actions.querySelector('.track-action:disabled'))actions.querySelector('.track-action')?.remove();
-  if(actions.children.length)card.appendChild(actions);card.appendChild(details);
+  if(actions.children.length)card.appendChild(actions);card.appendChild(details);balanceCardUpdates(card);
   if(!status&&context==='search')observeCardOffers(card,async()=>{
-   try{const found=await deriveStatus(movie);if(!card.isConnected)return;current=found;if(movie.releaseFile)card.querySelector('.release-file')?.replaceWith(renderReleaseFile(movie,found,true));costInfo=ReleaseModel.cost(found.offers,rentalBudget,found.stale);card.querySelector('.cost-block')?.remove();if(!(movie.releaseFile&&costInfo.band==='waiting'))actions.before(renderCostHeadline(costInfo));
+   try{const found=await deriveStatus(movie);if(!card.isConnected)return;current=found;if(movie.releaseFile)card.querySelector('.release-file')?.replaceWith(renderReleaseFile(movie,found,true));costInfo=ReleaseModel.cost(found.offers,rentalBudget,found.stale);card.querySelector('.cost-block')?.remove();actions.before(renderCostHeadline(costInfo));
     if(body.closest('dialog')?.open)fillDetails();
    }catch{if(card.isConnected&&!card.querySelector('.cost-block')){const note=document.createElement('p');note.className='offer-note';note.textContent='Viewing options could not refresh. Open Details to retry.';details.before(note);}}
   });
@@ -933,7 +949,7 @@ function paintWatchlist(results,append=false){
     const page=WatchlistModel.releaseWatchPage(results,{today:discoveryWindow().today,budget:rentalBudget,receipts:hubState.changeReceipts,limit:watchlistLimit,filter:costFilter,model:ReleaseModel,localListing:m=>typeof Hub==='undefined'||typeof Hub.localListing!=='function'?null:Hub.localListing(m)});
     const groups={included:'rw-arrived',cheap:'rw-available',premium:'rw-coming',theater:'rw-theater',upcoming:'rw-upcoming',waiting:'rw-waiting'};
     const labels={included:'Included & free',cheap:'At your price',premium:'Waiting for a better price',theater:'In Kalispell',upcoming:'Not released yet',waiting:'Awaiting home release'};
-    const descriptions={included:'Your services, free streams, and your physical shelf.',cheap:'Rentals at or below $'+rentalBudget.toFixed(2)+', cheapest first.',premium:'Higher rentals first, then purchase-only and unpriced offers.',theater:'Listed local screenings. Ticket links live on each film.',upcoming:'Future releases, nearest date first.',waiting:'No known home offer. Published home dates come first; unknown dates stay labeled.'};
+    const descriptions={included:'Your services, free streams, and your physical shelf.',cheap:'Rentals at or below $'+rentalBudget.toFixed(2)+', cheapest first.',premium:'Rentals from lowest to highest, then purchase-only and unpriced offers.',theater:'Listed local screenings. Ticket links live on each film.',upcoming:'Future releases, nearest date first.',waiting:'No known home offer. Published home dates come first; unknown dates stay labeled.'};
     document.getElementById('watchlist-more').hidden=page.total<=watchlistLimit;
     document.getElementById('watchlist-more').textContent='Show more · '+Math.max(0,page.total-page.rows.length)+' remaining';
     for(const row of page.rows){
@@ -945,7 +961,7 @@ function paintWatchlist(results,append=false){
       else if(stage.group==='theater')note.textContent='Kalispell screening listed '+formatFilmDate(stage.date)+(stage.local.stale?' · previous theater check':'');
       else if(stage.home&&!card.querySelector('.wait-advice'))note.textContent=stage.home.label+' on '+formatFilmDate(stage.home.date)+' · listed date; source in details';
       else if(stage.group==='waiting'){const dated=(row.status?.announcements||[]).filter(a=>['digital','subscription'].includes(a.kind)&&a.date&&a.date<=discoveryWindow().today).map(a=>({date:a.date,label:a.provider||'Digital release'}));for(const d of ReleaseModel.datesFor(row.status?.details||row.entry.detailsSnapshot))if(d.type===4&&ReleaseModel.date(d.release_date)<=discoveryWindow().today)dated.push({date:ReleaseModel.date(d.release_date),label:'Digital release'});const past=dated.sort((a,b)=>b.date.localeCompare(a.date))[0];note.textContent=past?past.label+' listed '+formatFilmDate(past.date)+' · current home availability unverified.':(stage.opening?stage.opening.label+' · '+formatFilmDate(stage.opening.date)+'. ':'Release date unannounced. ')+'Home release date unannounced.';}
-      if(note.textContent)card.querySelector('.film-details-trigger')?.before(note);
+      if(note.textContent)card.querySelector('.film-details-trigger')?.before(note);balanceCardUpdates(card);
       document.getElementById(groups[stage.group]+'-grid').appendChild(card);
     }
     for(const [group,id] of Object.entries(groups)){
@@ -1213,13 +1229,13 @@ async function init() {
   // blocks the first render, the Discover handler, or navigation.
   if(localStorage.getItem(GH_TOKEN_KEY)){
     const statusEl=document.getElementById('sync-status');
-    statusEl.textContent='Syncing in background. Local films remain usable.';
+    syncNotice('Syncing in background. Local films remain usable.');
     localReady.then(async()=>{
       try{
         if(localStorage.getItem(SYNC_DIRTY_KEY))await pushToGist();else await pullFromGist();
-        statusEl.textContent='Synced '+new Date().toLocaleTimeString();
+        syncNotice('Synced '+new Date().toLocaleTimeString());
         renderWatchlist(false,true,true);await syncBackgroundLibrary();
-      }catch(err){statusEl.dataset.tone='error';statusEl.textContent='Cloud sync delayed. Local watchlist remains available.';}finally{window.RewindStartup?.finish('sync');}
+      }catch(err){syncNotice('Cloud sync delayed. Local watchlist remains available.',true);}finally{window.RewindStartup?.finish('sync');}
     });
   }
   return localReady;

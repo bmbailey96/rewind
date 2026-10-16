@@ -1454,3 +1454,25 @@ button:focus-visible,a:focus-visible,summary:focus-visible{outline:2px solid #db
 .earlier-price-row{margin:12px 0;font-size:15px;line-height:1.5}
 .earlier-price-links{display:flex;flex-wrap:wrap;gap:4px 16px;margin-top:4px}
 .earlier-price-links a,.earlier-store-prices>a{color:#b9d4c1;font-size:13px;overflow-wrap:anywhere}
+
+/* Shared card anatomy also applies to Tonight and the single Surprise draw. */
+#tonight-grid .rental-card.compact-film-card{display:grid;grid-template-columns:80px minmax(0,1fr);padding:14px;gap:4px 14px;width:100%;box-sizing:border-box}
+#tonight-grid .rental-card.compact-film-card>.card-poster{width:80px!important;height:120px!important;max-width:80px!important;max-height:120px!important;grid-column:1;grid-row:1 / 5;object-fit:cover}
+#tonight-grid .compact-film-card>.tonight-reason{grid-column:1/-1;margin:8px 0;font-size:13px;line-height:1.5}
+.card-extra-update{display:none!important}
+.film-extra-updates p{font-size:13px;line-height:1.55;margin:8px 0}
+#signal-shelf:not(.watchlist-draw)>.card-row:has(>.rental-card:only-child){grid-template-columns:minmax(0,600px);justify-content:center}
+.save-state{font-size:11px;line-height:1.5;letter-spacing:0;margin:6px 0 0;color:inherit;opacity:.75}
+.save-state[data-tone=error]{color:#e7ad9d;opacity:1}
+.calendar-legend{display:flex;flex-wrap:wrap;gap:8px 18px;margin:0;padding:10px 16px;border-bottom:1px solid #34473f;font-size:11px;line-height:1.5;color:#c6d2c9}
+.calendar-legend span:before{content:'';display:inline-block;width:16px;height:4px;margin-right:7px;vertical-align:middle;background:#8bc5b3}
+.calendar-legend .event:before{background:repeating-linear-gradient(90deg,#d0b06f 0 3px,transparent 3px 5px)}
+.calendar-legend .stream:before{background:#a9bce1}
+.surprise-genre-choice .surprise-sources{margin:12px 0 4px}
+
+.run-bar.local{border-left:3px solid #8bc5b3}.run-bar.event{border-left:3px solid #d0b06f}.run-bar.stream{border-left:3px solid #a9bce1}
+
+.rental-card.compact-film-card>.film-details-trigger{font-weight:600;color:#d3e2d8!important;text-decoration:underline;text-underline-offset:4px}
+.rental-card.compact-film-card>.film-details-trigger:after{content:' ›';font-size:18px;text-decoration:none}
+.card-actions [data-follow-movie]{min-height:44px;background:transparent!important;border:1px solid #6b8e7c!important;color:#cbe0d2!important;box-shadow:none!important}
+.card-actions [data-follow-movie][aria-pressed=true]{background:#244339!important;border-color:#8ec4ac!important}

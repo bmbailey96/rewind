@@ -22,12 +22,12 @@ const MovieNews=(()=>{
   b.disabled=true;b.textContent='Saving…';
   const record={id:'news:'+item.id,articleId:item.id,title:item.project||(item.fit.maker?item.fit.maker+' · next project':item.headline),filmTitle:item.project||null,filmMaker:item.fit.maker||null,maker:!item.project?item.fit.maker||null:null,sourceURL:item.url,source:item.source,addedAt:Date.now(),status:item.status,movieId:null,matchCheckedAt:Date.now()};
   try{
-   if(item.project){const movie=await catalogFilm(item.project,item.fit.maker);if(movie){addToWatchlist(movie);record.movieId=movie.id;}}
+   if(item.project){const movie=await catalogFilm(item.project,item.fit.maker);if(movie){followReleaseFilm(movie,'news');record.movieId=movie.id;}}
    hubState.newsFollows=[...follows().filter(f=>f.articleId!==item.id&&(!item.project||MovieNewsModel.norm(f.title)!==MovieNewsModel.norm(item.project))),record];save();
    showToast(record.movieId?record.title+' saved for news and viewing options':record.title+' followed. Catalog and release date are still unverified.');render();
-  }catch{b.disabled=false;b.textContent=item.project?'SAVE FILM':'FOLLOW PROJECT';showToast('Could not save this project. Try again.');}
+  }catch{b.disabled=false;b.textContent='FOLLOW PROJECT';showToast('Could not save this project. Try again.');}
  }
- async function resolveFollowed(){let changed=false;for(const f of follows().filter(f=>f.filmTitle&&!f.movieId&&Date.now()-(f.matchCheckedAt||0)>86400000).slice(0,4)){f.matchCheckedAt=Date.now();const movie=await catalogFilm(f.filmTitle,f.filmMaker);if(movie){addToWatchlist(movie);f.movieId=movie.id;}changed=true;}if(changed)save();}
+ async function resolveFollowed(){let changed=false;for(const f of follows().filter(f=>f.filmTitle&&!f.movieId&&Date.now()-(f.matchCheckedAt||0)>86400000).slice(0,4)){f.matchCheckedAt=Date.now();const movie=await catalogFilm(f.filmTitle,f.filmMaker);if(movie){followReleaseFilm(movie,'news');f.movieId=movie.id;}changed=true;}if(changed)save();}
  function renderFollows(){
   const box=by('news-followed'),out=by('news-followed-list');out.replaceChildren();box.hidden=!follows().length;by('news-followed-count').textContent='Following '+follows().length+' project'+(follows().length===1?'':'s');
   for(const f of follows()){const row=el('div',null,'news-followed-row'),text=el('div');text.append(link(f.title,f.sourceURL),el('p',f.movieId?'Also tracked in My films.':f.maker?'Following this filmmaker’s project news.':f.status==='rumor'?'Following an unconfirmed report.':'Awaiting a verified catalog match.','offer-note'));
@@ -41,7 +41,8 @@ const MovieNews=(()=>{
    card.append(meta,el('p',MovieNewsModel.label(item.status),'news-certainty '+item.status),el('h3',item.headline));
    if(!['tracked','followed'].includes(item.fit.scope))card.append(el('p','BEYOND YOUR WATCHLIST','news-discovery-label'));const summary=MovieNewsModel.summary(item);if(summary)card.append(el('p',summary,'news-summary'));card.append(el('p',item.fit.reason,'news-connection'));
    const actions=el('div',null,'news-actions');actions.append(link('Read report ↗',item.url,'news-read'));
-   const known=followFor(item)||isTracked(item),b=button(known?(known.movieId||isTracked(item)?'SAVED':'FOLLOWING'):item.project?'SAVE FILM':'FOLLOW PROJECT',()=>track(item,b));b.disabled=!!known;actions.append(b);card.append(actions);
+   const followed=followFor(item),film=item.film||watchlist.find(m=>item.project&&MovieNewsModel.norm(m.title)===MovieNewsModel.norm(item.project));
+   if(film?.id)actions.append(createFollowControl(film,'news'));else{const b=button(followed?'FOLLOWING PROJECT':'FOLLOW PROJECT',()=>{if(followed){hubState.newsFollows=follows().filter(f=>f.id!==followed.id);save();render();showToast('Project news unfollowed',()=>{hubState.newsFollows=[...follows(),followed];save();render();});}else track(item,b);});b.setAttribute('aria-pressed',String(!!followed));actions.append(b);}card.append(actions);
    if(item.aggregated)card.append(el('small','Indexed report. The link opens the publisher through Google News.','news-index-note'));
    grid.append(card);
   }
