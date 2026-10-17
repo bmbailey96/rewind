@@ -558,7 +558,10 @@ function renderCard(movie, opts = {}) {
   const actionable=WatchlistModel.actionable(movie,status,hubState.changeReceipts,rentalBudget);if(actionable){const tag=document.createElement('p');tag.className='new-tag useful-change';tag.textContent=actionable.text;card.appendChild(tag);}else if(changed){const tag=document.createElement('span');tag.className='new-tag';tag.textContent='AVAILABILITY CHANGED';card.appendChild(tag);}
   if(opts.markSeen&&isSeen(movie)){const tag=document.createElement('span');tag.className='new-tag';tag.textContent='ALREADY SEEN';card.appendChild(tag);}
   let costInfo=opts.collectionCost|| (status?.pending?{band:'waiting',badge:'CHECKING',caption:'Getting current offers and prices.'}:status?ReleaseModel.cost(status.offers,rentalBudget,status.stale):null);
-  if(!costInfo)costInfo={band:'waiting',badge:'NOT CHECKED',caption:'Open details for viewing options'};
+  if(!costInfo){
+    const listed=/^\d{4}-\d{2}-\d{2}$/.test(movie.release_date||'')?movie.release_date:null;
+    costInfo={band:'waiting',badge:listed&&!movie.releaseFile?'CATALOG DATE · '+formatFilmDate(listed):'VIEWING OPTIONS',caption:'Open details for current offers'};
+  }
   if(costInfo){const headline=renderCostHeadline(costInfo);if(opts.collectionCost?.stale){const warning=headline.querySelector('.cost-warning');if(warning)warning.textContent=status?.checkedAt?'Last checked '+formatFilmDate(new Date(status.checkedAt).toISOString())+' · not refreshed':'Previous listing · check needed';}card.appendChild(headline);}
 
   if(movie.discoveryFit||movie.requestedInterest){const reason=document.createElement('p');reason.className='discovery-reason';reason.textContent=movie.requestedInterest?'You asked to keep an eye on this one.':movie.discoveryFit.connection?.directors?.length?'From '+movie.discoveryFit.connection.directors.join(' and ')+', behind '+movie.discoveryFit.connection.seedTitle+'.':FilmOracle.reading(movie,{connection:null}).text;card.appendChild(reason);}if(movie.releaseFile&&context!=='watchlist')card.appendChild(renderReleaseFile(movie,status,true));
@@ -806,7 +809,14 @@ function renderReleaseRecovery(){
  if(!candidates.length){const note=document.createElement('p');note.className='offer-note';note.textContent='No obvious older candidates found. You can follow any film from All Watchlist or Discover.';list.append(note);}
 }
 document.getElementById('rw-recovery-all').onclick=()=>{document.getElementById('film-drawer')?.close();document.querySelector('[data-watchlist-scope="all"]').click();};
-function renderImportReview(){const box=document.getElementById('watchlist-import-review');if(!box)return;const rows=hubState.watchlistUnmatched||[],pending=watchlistScope==='all'?rows:[];box.replaceChildren();if(!pending.length)return;const details=document.createElement('details'),summary=document.createElement('summary');summary.textContent=watchlistMatching?watchlistMatchProgress:rows.length+' titles need a match';details.appendChild(summary);const note=document.createElement('p');note.textContent='Saved from your May 27, 2026 Letterboxd archive. Availability stays unknown until the film is verified.';details.appendChild(note);const match=document.createElement('button');match.type='button';match.className='secondary';match.textContent=watchlistMatching?'Matching catalog entries…':'MATCH 12 UNRESOLVED TITLES';match.disabled=watchlistMatching;match.onclick=()=>resolveWatchlistMatches().catch(()=>{watchlistMatching=false;renderImportReview();});details.appendChild(match);for(const m of pending){const row=document.createElement('p');row.textContent=m.title+' ('+m.year+') · added '+m.addedDate;details.appendChild(row);}box.appendChild(details);}
+function renderImportReview(){
+ const box=document.getElementById('watchlist-import-review');if(!box)return;const rows=hubState.watchlistUnmatched||[];box.replaceChildren();if(!rows.length)return;
+ const note=document.createElement('p');note.className='offer-note';note.textContent=rows.length+' Letterboxd titles are saved as title/year records. They need a catalog match before availability can be checked. Matching does not follow their releases.';box.appendChild(note);
+ const match=document.createElement('button');match.type='button';match.className='secondary';match.textContent=watchlistMatching?watchlistMatchProgress:'MATCH NEXT '+Math.min(12,rows.length)+' TITLES';match.disabled=watchlistMatching;match.onclick=()=>resolveWatchlistMatches().catch(()=>{watchlistMatching=false;renderImportReview();});box.appendChild(match);
+ const details=document.createElement('details'),summary=document.createElement('summary');summary.textContent='Review unmatched titles';details.appendChild(summary);
+ for(const m of rows){const row=document.createElement('p');row.textContent=m.title+' ('+m.year+')'+(m.addedDate?' · added '+m.addedDate:'');details.appendChild(row);}box.appendChild(details);
+}
+
 document.querySelectorAll('[data-watchlist-scope]').forEach(btn=>btn.onclick=()=>{watchlistScope=btn.dataset.watchlistScope;watchlistChangeFilter=null;watchlistLimit=WATCHLIST_PAGE_SIZE;renderWatchlist();});
 const watchlistMore=document.getElementById('watchlist-more');
 let watchlistAppending=false;
@@ -843,7 +853,7 @@ async function renderWatchlist(force = false, reuse = false, background = false)
   const loading=document.getElementById('watchlist-load-status');
   const statusEl=document.getElementById('card-check-status');
   const batch=scopedWatchlist().sort((a,b)=>Number(!!b.pinned)-Number(!!a.pinned)||(b.addedAt||0)-(a.addedAt||0));
-  document.getElementById('watchlist-count').textContent=(watchlistScope==='release'?batch.length+' followed releases · '+watchlist.length+' total':watchlist.length+' total')+((hubState.watchlistUnmatched||[]).length?' · '+hubState.watchlistUnmatched.length+' awaiting match':'');
+  document.getElementById('watchlist-count').textContent=(watchlistScope==='release'?batch.length+' followed releases · '+watchlist.length+' total':watchlist.length+' total')+((hubState.watchlistUnmatched||[]).length?' · '+hubState.watchlistUnmatched.length+' Letterboxd titles need matching':'');
   empty.hidden=watchlist.length>0;
   // Sorting and filters still consider the entire collection. Fetching does not.
   const progress=new Map(batch.map(entry=>{
@@ -1003,11 +1013,14 @@ document.getElementById('sort-select').addEventListener('change',e=>{watchlistSo
 function renderTrackingNote(movie,status){
  const section=document.createElement('section');section.className='film-tracking-note';const heading=document.createElement('h4');heading.textContent=watchlist.some(m=>m.id===movie.id)?'What we’re watching for':'Next development';section.appendChild(heading);
  const recent=hubState.changeReceipts.filter(r=>r.movieId===movie.id).sort((a,b)=>b.at-a.at)[0];if(recent){const p=document.createElement('p');p.textContent='Latest observed change: '+recent.text+' · '+formatFilmDate(new Date(recent.at).toISOString().slice(0,10));section.appendChild(p);}
+ const homeStages=ReleaseModel.stages(status?.details||movie.detailsSnapshot||movie.meta,discoveryWindow().today);
  const cost=ReleaseModel.cost(status?.offers,rentalBudget,status?.stale),dates=(status?.announcements||[]).filter(r=>r.date>=discoveryWindow().today).sort((a,b)=>a.date.localeCompare(b.date));let text;
  if(status?.physical)text='Your copy is ready. Streaming availability can still change.';
  else if(cost.band==='free'&&!status?.stale)text='Ready on '+cost.caption+'. We’ll keep checking provider changes.';
  else if(cost.band==='cheap'&&!status?.stale)text='At your rental price now. We’ll keep watching for an included streaming offer.';
+ else if(!status?.stale&&(status?.offers||[]).some(o=>['rent','buy'].includes(o.kind)))text='Available to '+((status.offers||[]).some(o=>o.kind==='rent')?'rent':'buy')+' now. Watching for an included streaming offer or a rental at $'+rentalBudget.toFixed(2)+' or less.';
  else if(dates.length)text='Next announced arrival: '+(dates[0].provider||'Digital release')+' on '+formatFilmDate(dates[0].date)+'. Local bookings and rental prices are checked separately.';
+ else if([homeStages.digital,homeStages.physical].some(d=>d&&d<=discoveryWindow().today))text='A home release is listed. Watching for a current viewing offer, an included stream, or a rental at $'+rentalBudget.toFixed(2)+' or less.';
  else text='Watching for a confirmed home release, an included streaming offer, or a rental at $'+rentalBudget.toFixed(2)+' or less. Festival and distribution reports appear in Movie news; missing dates remain unknown.';
  const p=document.createElement('p');p.textContent=text;section.appendChild(p);if(!recent){const n=document.createElement('p');n.className='offer-note';n.textContent='No change history yet. The first verified check establishes a baseline.';section.appendChild(n);}return section;
 }
@@ -1085,7 +1098,7 @@ async function renderDiscover(append = false) {
       const card=renderCard(movie,{context:'discover'});
       if(!movie.detailsSnapshot&&!movie.releaseFile){
         const note=document.createElement('p');note.className='offer-note discover-unverified';
-        note.textContent='Catalog listing · release and watch options not yet checked';
+        note.textContent='Catalog date may differ from the US release. Open details to verify.';
         card.querySelector('.film-details-trigger')?.before(note);
       }
       grid.appendChild(card);
@@ -1200,7 +1213,7 @@ async function resolveWatchlistMatches(){
     const film={id:match.id,title:match.title,sourceTitle:row.title,year:row.year,release_date:match.release_date,poster_path:match.poster_path||null,genre_ids:match.genre_ids||[],catalogReleaseYears:match.catalogReleaseYears||[],addedDate:row.addedDate,letterboxdURL:row.letterboxdURL,source:'Letterboxd watchlist'};
     watchlist=WatchlistModel.merge(watchlist,[film]);hubState.watchlistImportedKeys=[...new Set([...(hubState.watchlistImportedKeys||[]),key])];hubState.watchlistUnmatched=hubState.watchlistUnmatched.filter(f=>WatchlistModel.sourceKey(f)!==key);matched++;saveWatchlist();persistHubState();scheduleSync();
    }}
-  }catch{if(++failures>=8)stopped=true;}finally{clearTimeout(timer);checked++;watchlistMatchProgress='Matching Letterboxd titles · '+checked+' of '+pending.length+' · '+matched+' matched';if(checked%8===0){renderImportReview();document.getElementById('watchlist-count').textContent=watchlist.length+' tracked · '+hubState.watchlistUnmatched.length+' awaiting match';}}
+  }catch{if(++failures>=8)stopped=true;}finally{clearTimeout(timer);checked++;watchlistMatchProgress='Matching Letterboxd titles · '+checked+' of '+pending.length+' · '+matched+' matched';if(checked%8===0){renderImportReview();document.getElementById('watchlist-count').textContent=watchlist.length+' tracked · '+hubState.watchlistUnmatched.length+' Letterboxd titles need matching';}}
  });
  watchlistMatching=false;renderImportReview();if(matched)renderWatchlist().catch(()=>{});
  if(stopped)showToast('Catalog matching paused. Saved progress will resume next time you open Rewind.');
