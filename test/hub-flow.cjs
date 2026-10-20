@@ -403,6 +403,32 @@ assert.equal(w.document.querySelector('[data-discover-intent=surprise]').getAttr
  w.testState.saveFailure();assert.match(w.document.getElementById('save-state').textContent,/device save failed/i,'Sync success never masks a local save failure');w.testState.clearSaveFailure();
 
  const sourceCard=w.renderCard(releaseFixture,{context:'discover',status:waitingStatus});assert.equal(sourceCard.querySelector('.release-file').querySelectorAll('p').length,1,'Festival/source leads use the same single release summary as other cards');assert.equal(sourceCard.querySelector('.release-file .release-stage'),null,'The source card does not introduce a second status badge beside its price');
+ { // A second venue must keep its identity through mixed views, filtering and outages.
+ const preRoxyFetch=w.fetch;let roxyOffline=false;
+ const roxyRow={id:'roxy:fixture',title:'Roxy fixture',venueId:'roxy',venue:'Roxy Theater',location:'Missoula',dates:['2026-10-05'],ranges:[],start:'2026-10-05',end:'2026-10-05',poster:'https://www.theroxytheater.org/poster.jpg',screenings:[{date:'2026-10-05',time:'4:30pm',startsAt:'2026-10-05T22:30:00Z',url:'https://www.theroxytheater.org/show/fixture/'}],url:'https://www.theroxytheater.org/show/fixture/'};
+ w.fetch=async(raw,opts)=>{const u=new URL(raw,'https://bekind-rewind.netlify.app');
+  if(u.pathname.includes('roxy-cinema')){if(roxyOffline)throw Error('Roxy offline');return {ok:true,json:async()=>({items:[roxyRow],checkedAt:w.Date.now(),stale:false})};}
+  if(u.pathname==='/roxy-snapshot.json')return {ok:true,json:async()=>({items:[roxyRow],checkedAt:w.Date.now()-3600000,stale:false})};
+  return preRoxyFetch(raw,opts);
+ };
+ w.document.getElementById('calendar-today').click();await wait();w.document.getElementById('cinema-refresh').click();await wait();await wait();
+ const venue=w.document.getElementById('calendar-venue');venue.value='roxy';venue.dispatchEvent(new w.Event('change'));
+ assert.match(w.document.getElementById('calendar-mobile').textContent,/Roxy fixture/);
+ assert.equal(w.document.querySelectorAll('#calendar-mobile [data-channel=theater]').length,0,'Roxy selection excludes Kalispell bookings');
+ const roxyCard=w.document.querySelector('#calendar-mobile [data-channel=roxy]');assert.match(roxyCard.querySelector('.release-channel').textContent,/Roxy · Missoula/);
+ roxyCard.querySelector('.calendar-film-head').click();assert.match(roxyCard.textContent,/ROXY SHOWTIMES & TICKETS/);assert.doesNotMatch(roxyCard.textContent,/CINEMARK TICKETS/);
+ roxyCard.querySelector('.mobile-week-day.listed').click();assert.match(roxyCard.textContent,/4:30pm MT/);
+ venue.value='kalispell';venue.dispatchEvent(new w.Event('change'));assert.equal(w.document.querySelectorAll('#calendar-mobile [data-channel=roxy]').length,0);
+ venue.value='all';venue.dispatchEvent(new w.Event('change'));
+ const mixed=w.testState.movies()[0];mixed.availabilitySnapshot={...mixed.availabilitySnapshot,announcements:[{kind:'theatrical',date:'2026-10-05'},{kind:'digital',date:'2026-10-05',provider:'Apple TV'}]};
+ w.document.querySelector('[data-calendar-scope=all]').click();w.testState.changed();
+ assert.ok(w.document.querySelector('#calendar-mobile [data-channel=digital] .release-channel.digital'),'Digital dates have their own visible label');
+ assert.ok(w.document.querySelector('#calendar-mobile [data-channel=national] .release-channel.national'),'National theatrical dates cannot acquire digital styling');
+ roxyOffline=true;w.document.getElementById('cinema-refresh').click();await wait();await wait();assert.match(w.document.querySelector('#calendar-mobile [data-channel=roxy]').textContent,/PREVIOUS CHECK/,'Roxy outage retains recent source listings with an honest stale label');
+ const digitalCard=w.renderCard({id:99912,title:'Home fixture'},{status:{offers:[{kind:'rent',price:4.99,provider:'Apple TV'}]}});assert.equal(digitalCard.querySelector('.release-channel.digital').textContent,'Digital');
+ w.fetch=preRoxyFetch;
+ console.log('Roxy UI: venue filters, ticket destination, exact times, digital/national distinction and stale fallback passed');
+ }
  assert.equal(flowErrors.length,0,'Navigation has no runtime errors');
  console.log('Rewind hub flow: three shelves, source timeline, no vote floor, thresholds persist/sync, real price drops, stale checks, watched undo, inline search passed');
  await wait();await wait();dom.window.close();

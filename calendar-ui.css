@@ -1,0 +1,45 @@
+/* Shared source cues: text survives grayscale, color makes the mixed board scannable. */
+:root{--channel-theater:#95c9b3;--channel-roxy:#e2b984;--channel-digital:#b6c8ed;--channel-national:#d3c18c}
+.release-channel.theater,[data-channel=theater]{--channel:var(--channel-theater);--channel-wash:#20392f}
+.release-channel.roxy,[data-channel=roxy]{--channel:var(--channel-roxy);--channel-wash:#3a3025}
+.release-channel.digital,[data-channel=digital]{--channel:var(--channel-digital);--channel-wash:#293342}
+.release-channel.national,[data-channel=national]{--channel:var(--channel-national);--channel-wash:#353426}
+.release-channel{display:inline-flex;align-items:center;gap:6px;width:fit-content;max-width:100%;box-sizing:border-box;color:var(--channel,#c4d1c8);font-size:10px;font-weight:600;line-height:1.5;letter-spacing:.025em;text-transform:uppercase;text-align:left}
+.release-channel:before{content:'';width:7px;height:7px;flex:0 0 7px;background:currentColor;border-radius:1px}
+.release-channel.digital:before{border-radius:50%}.release-channel.national:before{background:transparent;border:1px dashed currentColor;box-sizing:border-box}
+.release-channels{display:flex;flex-wrap:wrap;gap:6px 16px;padding:7px 0 0}
+.rental-card.compact-film-card>.release-channels{grid-column:1/-1;grid-row:auto}
+.calendar-film-label .board-label>.release-channel,.cinema-title>.release-channel{display:flex;margin:5px 0 3px}
+.calendar-mobile-card .calendar-film-head>.release-channel{grid-column:1;min-width:0;margin:3px 0}
+.calendar-mobile-card .calendar-film-head:has(>img)>.release-channel{grid-column:2}
+.calendar-mobile-card[data-channel],.cinema-list-item[data-channel]{border-left:3px solid var(--channel);background:linear-gradient(105deg,var(--channel-wash),#17211f 65%)}
+.calendar-track[data-channel] .calendar-film-label{border-left:3px solid var(--channel)}
+.run-bar.channel-theater,.run-bar.channel-roxy,.run-bar.channel-digital,.run-bar.channel-national{border-left:3px solid var(--channel);color:#f0f1e7;background-color:var(--channel-wash)}
+.run-bar.channel-national{border-left-style:dashed}
+.mobile-week-day.listed{border-color:var(--channel,#8bc5b3)!important;color:var(--channel,#c8e1d5)!important;background:var(--channel-wash,#20392f)!important}
+.calendar-legend .theater:before{background:var(--channel-theater)}.calendar-legend .roxy:before{background:var(--channel-roxy)}.calendar-legend .digital:before{background:var(--channel-digital);border-radius:3px}.calendar-legend .national:before{background:repeating-linear-gradient(90deg,var(--channel-national) 0 3px,transparent 3px 5px)}
+.calendar-venue-label{display:flex;align-items:center;gap:8px;font-size:11px;color:#b7c7bd;margin:0}
+.calendar-venue-label select{min-height:44px;max-width:210px;font-size:12px;padding:8px 28px 8px 10px;background-color:#17211f;color:#dbe4db;border:1px solid #465b4f;border-radius:3px}
+.calendar-simple-tools{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px}
+.calendar-simple-tools input{flex:1 1 160px;min-width:120px}
+.calendar-simple-tools .calendar-scope-tabs{flex:0 0 auto}
+.calendar-film-head img,.cinema-title img{object-fit:cover;background:#24322c}
+.calendar-source-note{font-size:12px;line-height:1.55;color:#bac9bf}
+#cinema-status{font-size:11px;line-height:1.7;max-width:78ch}
+:where(button,a,input,select,summary):focus-visible{outline:2px solid #d9c38f;outline-offset:4px}
+@media(max-width:700px){
+ .calendar-simple-tools .calendar-scope-tabs{flex-basis:100%}
+ .calendar-venue-label{flex:1 1 100%;justify-content:space-between}
+ .calendar-venue-label select{max-width:none;flex:1;margin-left:10px}
+ .calendar-legend{gap:6px 14px;padding:10px 12px;font-size:10px}
+ .calendar-mobile-card .calendar-film-head img{grid-row:1 / span 3}
+ .calendar-mobile-card .calendar-film-head .cinema-fit{font-size:10px;color:#aebfb3}
+ .release-channel{font-size:10px}
+}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
+/* Keep source and personal notes in the text column, clear of the thumbnail. */
+.calendar-film-label .board-label>.release-channel{grid-column:2;margin:0;line-height:1.5}
+.calendar-film-label .board-label:not(:has(img,.calendar-poster-placeholder))>.release-channel{grid-column:1}
+.calendar-film-label .calendar-film-actions{position:static;margin:8px 0 0 76px;padding:0}
+.calendar-film-label:not(:has(img,.calendar-poster-placeholder)) .calendar-film-actions{margin-left:0}
+.run-bar.channel-theater,.run-bar.channel-roxy,.run-bar.channel-digital,.run-bar.channel-national{background-image:linear-gradient(90deg,var(--channel-wash),transparent),var(--screening-art,none)!important}

@@ -1,0 +1,9 @@
+const assert=require('node:assert/strict'),{parseCalendar,mountainInstant,refresh}=require('../lib/roxy-cinema.cjs');
+const event={title:'The Devils',start:'2026-10-20T16:30:00-05:00',show_url:'https://www.theroxytheater.org/show/the-devils/',image:'https://www.theroxytheater.org/poster.jpg',format:'4K Restoration'};
+const feed=parseCalendar({events:[event,{...event,start:'2026-10-21T20:15:00-05:00'},event,{...event,show_url:'javascript:alert(1)'},{...event,start:'nonsense'},{...event,allDay:true}]},123);
+assert.equal(feed.items.length,1);const film=feed.items[0];assert.equal(film.venueId,'roxy');assert.equal(film.location,'Missoula');assert.deepEqual(film.dates,['2026-10-20','2026-10-21']);assert.equal(film.screenings.length,2);assert.equal(film.screenings[0].time,'4:30pm');assert.equal(film.screenings[0].startsAt,'2026-10-20T22:30:00.000Z','Use the posted Mountain clock time, not the feed’s erroneous -05 offset');
+assert.equal(mountainInstant('2026-12-20T16:30:00-05:00'),'2026-12-20T23:30:00.000Z','Winter screenings use MST');
+assert.equal(mountainInstant('invalid'),null);assert.equal(mountainInstant('2026-99-99T16:30:00'),null);
+assert.equal(parseCalendar({events:[]}).items.length,0,'A successful empty feed is valid');assert.throws(()=>parseCalendar({}),/Invalid/);
+assert.equal(film.screenings[0].price,undefined,'A showtime does not establish a ticket price');
+(async()=>{let requested;await refresh('2026-10-20',async url=>{requested=new URL(url);return {ok:true,json:async()=>({events:[event]})};});assert.equal(requested.searchParams.get('start_date'),'2026-10-20');assert.equal(requested.searchParams.get('end_date'),'2026-11-02');await assert.rejects(()=>refresh('2026-10-20',async()=>({ok:false})),/unavailable/);console.log('Roxy: official links, exact venue times, DST, grouped dates, duplicates, empty feed and source failures passed');})().catch(e=>{console.error(e);process.exit(1)});

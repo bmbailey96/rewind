@@ -110,3 +110,14 @@ Calendar and Oracle refinements: Mobile uses film cards with an entire week visi
 Set-asides can last a visit, a week, until a fresh comparable rental is cheaper, or indefinitely. Oracle corrections record seen/familiar/tonight/weak-connection feedback separately from ratings. Familiar and tonight corrections apply only to Oracle; weak connections suppress that exact film/seed pair. The Changes drawer records observed price drops, provider arrivals/removals, announced dates and added tracked local screening dates, with before/after check timestamps and sources. First checks establish baselines rather than inventing changes. See CALENDAR_AUDIT.md for source findings and verification limits.
 
 All hub writes merge the latest saved theater hides and restore records first. Open tabs listen for visibility changes, so a delayed taste refresh, price check or Oracle correction cannot overwrite a hide created in another tab.
+
+
+### Theater sources and mixed calendar views
+
+The calendar includes Cinemark Kalispell and the Roxy Theater in Missoula. The theater selector filters concrete venue bookings while keeping national dates and digital releases independent. Cards, list entries and timeline rows identify the source in text and color. Digital availability and theater bookings can coexist on a saved film.
+
+`netlify/functions/roxy-cinema.mjs` reads the Roxy public calendar, caches each requested date window for 15 minutes, and retains a recent source snapshot during outages. Screening times use the venue's posted clock time in America/Denver, rather than the upstream feed's incorrect fixed UTC offset. Listings older than 36 hours are suppressed. No ticket price is inferred from a screening.
+
+`calendar-ui.css` contains the shared source labels and responsive calendar refinements. The calendar loader shares its fallback-snapshot request, caches visited weeks, and uses supplied artwork before looking up catalog artwork. Opening or following an event can still request its catalog match.
+
+Run `npm test` for source parsing, Mountain daylight-saving time conversion, venue filtering, ticket destinations, mixed national/digital labels, outage fallback and existing application regressions.
