@@ -47,6 +47,11 @@ const wait=()=>new Promise(r=>setTimeout(r,100));
 
  await wait();await wait();await wait();
  const media=w.mediaTest;
+ const registered=media.registration('release');
+ assert.equal(registered[0].id,'tv:fixtureseries');assert.equal(registered[0].season,2);assert.equal(registered[0].episode,3);
+ assert.equal('rating' in registered[0],false,'Background registry excludes private ratings');
+ media.setFilter('movie');assert.equal(media.registration('release').length,1,'View filters never remove TV subscriptions');media.setFilter('all');
+ assert.equal(media.receiveSnapshots([{id:'tv:fixtureseries',mediaType:'tv',tmdbId:99,detail:{id:42,seasons:[]},providers:[],checkedAt:w.Date.now()}]),false);
  assert.equal(media.next(media.groups().find(g=>g.id==='tv:fixtureseries')).number,2);
  assert.equal(media.evidence().filter(r=>r.title.startsWith('Neutral')).length,0,'Unseen is neutral, not a negative taste score');
  assert.equal(media.evidence().find(r=>r.title.startsWith('Fixture')).rating,5,'Use the supplied season rating');

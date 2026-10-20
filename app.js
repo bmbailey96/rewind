@@ -1385,8 +1385,8 @@ function scheduleBackgroundLibrary(){clearTimeout(libraryTimer);libraryTimer=set
 async function syncBackgroundLibrary(){
  const token=localStorage.getItem(GH_TOKEN_KEY);if(!token||libraryBusy)return;libraryBusy=true;
  try{
-  const movies=watchlist.filter(m=>!isSeen(m)).map(m=>({id:m.id,title:m.title,followRelease:!!m.followRelease}));
-  const response=await fetch('https://transmissionalbum.netlify.app/.netlify/functions/rewind-library',{method:'POST',headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},body:JSON.stringify({movies,services:myServices})});
+  const movies=watchlist.filter(m=>!isSeen(m)&&(typeof RewindMedia==='undefined'||!RewindMedia.isTV(m))).map(m=>({id:m.id,title:m.title,followRelease:!!m.followRelease}));
+  const response=await fetch('https://transmissionalbum.netlify.app/.netlify/functions/rewind-library',{method:'POST',headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},body:JSON.stringify({movies,services:myServices,...(typeof RewindMedia!=='undefined'?{series:RewindMedia.registration()}: {})})});
   if(!response.ok)throw Error('Background availability could not sync');const data=await response.json();let changed=false,receipts=false;
   for(const fresh of data.films||[]){
    const movie=watchlist.find(m=>m.id===fresh.id);if(!movie||!fresh.checkedAt||fresh.checkedAt>Date.now()||fresh.checkedAt<=(movie.availabilitySnapshot?.checkedAt||0))continue;
@@ -1399,6 +1399,7 @@ async function syncBackgroundLibrary(){
    }
    movie.priceHistory=ReleaseModel.recordQuotes(movie.priceHistory,status.offers,status.quoteCheckedAt);movie.availabilitySnapshot=status;movie.availabilityBaseline={...status};changed=true;
   }
+  if(typeof RewindMedia!=='undefined')RewindMedia.receiveSnapshots(data.series);
   if(receipts)persistHubState();if(changed){saveWatchlist();await renderWatchlist(false,true,true);}
   const note=document.getElementById('background-check-status');if(note)note.textContent=data.generatedAt?'Server checks saved '+formatFilmDate(new Date(data.generatedAt).toISOString())+'. Followed films refresh every six hours; the rest rotate.':'Registered for background checks. The first scheduled check is still pending.';
  }catch{const note=document.getElementById('background-check-status');if(note)note.textContent='Background checks could not sync. Your saved results remain available.';}
@@ -1425,9 +1426,9 @@ async function emailRequest(method, data) {
   return result;
 }
 async function syncEmailCard(enabled = emailEnabled) {
-  const result = await emailRequest('POST',{enabled,scope:'release-watch',movies:watchlist.filter(m=>WatchlistModel.followsRelease(m)&&!isSeen(m)).map(m=>({id:m.id,title:m.title,alert:ReleaseModel.preference(m.alert)})),services:myServices,eventAlerts:false,eventFilms:[],followedEvents:[]});
+  const result = await emailRequest('POST',{enabled,scope:'release-watch',series:typeof RewindMedia!=='undefined'?RewindMedia.registration('release'):undefined,movies:watchlist.filter(m=>WatchlistModel.followsRelease(m)&&!isSeen(m)&&(typeof RewindMedia==='undefined'||!RewindMedia.isTV(m))).map(m=>({id:m.id,title:m.title,alert:ReleaseModel.preference(m.alert)})),services:myServices,eventAlerts:false,eventFilms:[],followedEvents:[]});
   emailEnabled = enabled;
-  document.getElementById('email-alert-status').textContent = enabled ? `Daily alerts enabled for ${result.count} unwatched Release Watch films. Prices and published release updates only.` : 'Email alerts paused.';
+  document.getElementById('email-alert-status').textContent = enabled ? `Daily alerts enabled for ${result.count+(result.seriesCount||0)} followed movie and TV releases. Prices, season dates, and published release updates.` : 'Email alerts paused.';
 }
 function scheduleEmailSync() {
   if (!emailEnabled) return;
@@ -1454,7 +1455,7 @@ async function initEmailAlerts() {
     const state = await emailRequest('GET');
     document.getElementById('price-alert-status').textContent=state.pricesConfigured?'Daily US store price checks are active. Unquoted offers stay unpriced.':'Server price checks are unavailable.';
     emailEnabled = state.enabled;
-    document.getElementById('email-alert-status').textContent = state.enabled ? `Daily alerts enabled for ${state.movies.length} films.` : 'Email alerts paused. Enable alerts for your watchlist.';
+    document.getElementById('email-alert-status').textContent = state.enabled ? `Daily alerts enabled for ${state.movies.length+(state.series||[]).length} movie and TV releases.` : 'Email alerts paused. Enable alerts for your watchlist.';
     // Migrate the old whole-watchlist digest after this device has loaded its collection.
     if(state.enabled&&state.scope!=='release-watch'&&watchlist.some(m=>WatchlistModel.followsRelease(m)&&!isSeen(m)))await syncEmailCard(true);
   } catch (err) { document.getElementById('email-alert-status').textContent = err.message; }

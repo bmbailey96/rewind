@@ -40,6 +40,24 @@ const RewindMedia=(()=>{
   const keywords={keywords:d.keywords?.results||d.keywords?.keywords||[]};
   return {id:g.id,mediaType:'tv',tmdbId:cache?.tmdbId||d.id,title:g.title,first_air_date:first,release_date:target?.date||first,poster_path:d.poster_path||g.alias?.poster_path,backdrop_path:d.backdrop_path,overview:d.overview||g.alias?.overview||'',runtime:d.episode_run_time?.[0]||d.last_episode_to_air?.runtime||null,genre_ids:MediaModel.movieGenres(genres),meta:{...d,genres,keywords,runtime:d.episode_run_time?.[0]||d.last_episode_to_air?.runtime||null},pinned:!!cache?.pinned,followRelease:(hubState.seriesFollows||[]).includes(g.id),addedAt:Math.max(0,...[...g.seasons,...g.legacy].map(r=>r.updatedAt||0)),availabilitySnapshot:status(g),letterboxdURL:g.alias?.letterboxdURL||g.legacy.find(r=>r.letterboxdURL)?.letterboxdURL};
  }
+
+ function registration(scope='all'){
+  return groups().filter(g=>scope==='release'?(hubState.seriesFollows||[]).includes(g.id):g.intent||(hubState.seriesFollows||[]).includes(g.id)||MediaModel.positiveRecords(g).length).flatMap(g=>{
+   const c=TV.cached(g.id),target=next(g)||{number:Math.max(0,...TV.catalogFor(g).map(s=>s.number),...g.seasons.map(r=>r.season||0))+1};if(!Number.isSafeInteger(c?.tmdbId)||target.number>100)return [];
+   const count=target.scope?.match(/(?:episodes?|ep)\s*(\d+)/i)?.[1];const episode=target.partial&&count?Number(count):null;
+   return [{id:g.id,tmdbId:c.tmdbId,title:g.title,followRelease:(hubState.seriesFollows||[]).includes(g.id),season:MediaModel.norm(clean(g.title))==='twinpeaksthereturn'?3:target.number,episode}];
+  });
+ }
+ function receiveSnapshots(rows){
+  let changed=false;
+  for(const c of rows||[]){
+   if(c?.mediaType!=='tv'||!String(c.id).startsWith('tv:')||!Number.isSafeInteger(c.tmdbId)||c.detail?.id!==c.tmdbId||!Array.isArray(c.detail.seasons)||!Array.isArray(c.providers)||!c.checkedAt||c.checkedAt>Date.now()||c.checkedAt<=(TV.cached(c.id)?.checkedAt||0)||!groups().some(g=>g.id===c.id))continue;
+   const old=TV.cached(c.id);hubState.seriesCatalog=(hubState.seriesCatalog||[]).filter(r=>r.id!==c.id);hubState.seriesCatalog.push({...c,pinned:old?.pinned||false});changed=true;
+  }
+  if(changed){persistHubState();window.dispatchEvent(new Event('rewind:tv-state'));}
+  return changed;
+ }
+
  function accepts(m){return filter==='all'||isTV(m)===(filter==='tv');}
  function select(items){return (items||[]).filter(accepts).map(m=>isTV(m)&&!String(m.id).startsWith('tv:')?asMedia(group(m)):m);}
  function savedTV(scope='all'){return groups().filter(g=>scope==='release'?(hubState.seriesFollows||[]).includes(g.id):g.intent||(hubState.seriesFollows||[]).includes(g.id)).map(asMedia);}
@@ -147,6 +165,6 @@ const RewindMedia=(()=>{
  window.addEventListener('rewind:media-filter',()=>{if(!$('movie-news-panel').hidden)news();});
 
  labelControls();TV.ready.then(changed);
- return {isTV,accepts,select,filter:()=>filter,setFilter,collection,groups,group,next,status,asMedia,evidence,seeds,hydrate,recommendations,playable,tvBrowse,typeBadge,tvCard,changed,savedTV,
+ return {registration,receiveSnapshots,isTV,accepts,select,filter:()=>filter,setFilter,collection,groups,group,next,status,asMedia,evidence,seeds,hydrate,recommendations,playable,tvBrowse,typeBadge,tvCard,changed,savedTV,
  recordProgress,calendarRows:()=>groups().filter(g=>g.intent||(hubState.seriesFollows||[]).includes(g.id)||MediaModel.positiveRecords(g).length).flatMap(g=>TV.eventsFor(g).map(e=>({id:g.id+':'+e.date+':'+e.label,title:g.title,kind:'stream',mediaType:'tv',seriesId:g.id,theatrical:false,dates:[e.date],ranges:[],start:e.date,end:e.date,label:e.label,platform:'',sourceKind:'tv',certainty:'Listed',film:{id:g.id},art:TV.cached(g.id)?.detail,url:e.url,followed:true}))).filter(r=>accepts(r)&&!hubState.hidden.includes(r.id)),modeChanged:()=>labelControls()};
 })();
