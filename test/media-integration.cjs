@@ -51,7 +51,6 @@ const wait=()=>new Promise(r=>setTimeout(r,100));
  assert.equal(media.evidence().find(r=>r.title.startsWith('Fixture')).rating,5,'Use the supplied season rating');
  w.document.querySelector('[data-watchlist-scope=all]').click();await wait();await wait();
  await w.eval('renderWatchlist(false,true)');
- if(!w.document.querySelector('#tab-watchlist .shelf-group [data-media-type=tv]'))console.log('TV diagnostics',JSON.stringify(media.collection().map(m=>({id:m.id,type:m.mediaType}))),w.document.getElementById('watchlist-load-status').textContent,w.document.getElementById('toast').textContent);
  assert.ok(w.document.querySelector('#tab-watchlist .shelf-group [data-media-type=tv]'),'TV is inside the existing watchlist shelves');
  assert.match(w.document.querySelector('#tab-watchlist [data-media-type=tv]').textContent,/Continue season 2/);
  assert.match(w.document.querySelector('#tab-watchlist [data-media-type=tv]').textContent,/TV SERIES/);

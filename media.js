@@ -5,12 +5,13 @@ const RewindMedia=(()=>{
  let filter='all',browseToken=0,extraRows=[],refreshTimer=null,seedFlight=null;
  try{const p=JSON.parse(localStorage.getItem('rewind-ui-v1')||'{}');if(['all','movie','tv'].includes(p.mediaType))filter=p.mediaType;}catch{}
  const button=(text,fn)=>{const b=el('button',text);b.type='button';b.onclick=fn;return b;};
- const isTV=m=>MediaModel.type(m)==='tv';
+ function linkedTitle(m){const known=MediaModel.seriesForFilm(m);if(known)return known;const year=String(m?.year||m?.release_date||'').slice(0,4),title=MediaModel.norm(m?.title);if(!year||!title)return null;const hits=(hubState.seriesRecords||[]).filter(r=>r.letterboxdURL&&MediaModel.norm(MediaModel.clean(r.title))===title&&((m.letterboxdURL&&m.letterboxdURL===r.letterboxdURL)||String(TV.seed(r.title)?.catalog?.seasons?.find(s=>s.number===1)?.date||'').startsWith(year)));const names=[...new Set(hits.map(r=>r.title))];return names.length===1?names[0]:null;}
+ const isTV=m=>MediaModel.type(m)==='tv'||!!linkedTitle(m);
  const clean=MediaModel.clean;
  function groups(){
   const map=new Map(TV.groupRows().map(g=>[g.id,{...g,seasons:[...g.seasons],legacy:[...g.legacy]}]));
   for(const m of [...watchlist,...hubState.taste]){
-   const title=MediaModel.seriesForFilm(m);if(!title)continue;
+   const title=linkedTitle(m);if(!title)continue;
    const matches=[...map.values()].filter(g=>MediaModel.norm(clean(g.title))===MediaModel.norm(title));
    const id=matches.length===1?matches[0].id:TVModel.seriesKey(title);
    const g=map.get(id)||{id,title,seasons:[],legacy:[],intent:false};
@@ -21,7 +22,7 @@ const RewindMedia=(()=>{
   return [...map.values()];
  }
  function group(m){
-  const title=MediaModel.seriesForFilm(m),id=typeof m==='string'?m:m.id;
+  const title=linkedTitle(m),id=typeof m==='string'?m:m.id;
   return groups().find(g=>g.id===String(id).split(':evidence:')[0]||title&&MediaModel.norm(clean(g.title))===MediaModel.norm(title))||
    {id:typeof id==='string'&&id.startsWith('tv:')?id:TVModel.seriesKey(title||m.title||m.name),title:title||m.title||m.name||'TV series',seasons:[],legacy:[],intent:false};
  }
@@ -39,7 +40,7 @@ const RewindMedia=(()=>{
   const keywords={keywords:d.keywords?.results||d.keywords?.keywords||[]};
   return {id:g.id,mediaType:'tv',tmdbId:cache?.tmdbId||d.id,title:g.title,first_air_date:first,release_date:target?.date>today()?target.date:first,poster_path:d.poster_path||g.alias?.poster_path,backdrop_path:d.backdrop_path,overview:d.overview||g.alias?.overview||'',runtime:d.episode_run_time?.[0]||d.last_episode_to_air?.runtime||null,genre_ids:MediaModel.movieGenres(genres),meta:{...d,genres,keywords,runtime:d.episode_run_time?.[0]||d.last_episode_to_air?.runtime||null},pinned:!!cache?.pinned,followRelease:(hubState.seriesFollows||[]).includes(g.id),addedAt:Math.max(0,...[...g.seasons,...g.legacy].map(r=>r.updatedAt||0)),availabilitySnapshot:status(g),letterboxdURL:g.alias?.letterboxdURL||g.legacy.find(r=>r.letterboxdURL)?.letterboxdURL};
  }
- function accepts(m){return MediaModel.accepts(m,filter);}
+ function accepts(m){return filter==='all'||isTV(m)===(filter==='tv');}
  function select(items){return (items||[]).filter(accepts).map(m=>isTV(m)&&!String(m.id).startsWith('tv:')?asMedia(group(m)):m);}
  function savedTV(scope='all'){return groups().filter(g=>scope==='release'?(hubState.seriesFollows||[]).includes(g.id):g.intent||(hubState.seriesFollows||[]).includes(g.id)).map(asMedia);}
  function collection(items=watchlist,scope='all'){return [...new Map([...select(items).filter(m=>!isTV(m)),...savedTV(scope).filter(accepts)].map(m=>[m.id,m])).values()];}
@@ -95,6 +96,7 @@ const RewindMedia=(()=>{
   else {const feeds=await Promise.all([tmdbGet('/tv/on_the_air',{page}),tmdbGet('/trending/tv/week',{page})]);results=feeds.flatMap(r=>r.results||[]);}
   const saved=new Set(savedTV().map(m=>m.id));let movies=[...new Map(results.filter(r=>r.id&&typeof r.name==='string').map(r=>{const m=asMedia(TV.fromResult(r));return [m.id,m];})).values()];
   if(!query){if(stage==='coming')movies.push(...groups().map(asMedia).filter(m=>TV.eventsFor(group(m)).length));movies=movies.filter(m=>!saved.has(m.id)&&unseen(m)&&!skipSet.has(m.id));}
+  const genre=Number($('discover-genre')?.value||0);if(genre&&!query)movies=movies.filter(m=>m.genre_ids.includes(genre)||(genre===27||genre===53)&&new RegExp(genre===27?'horror':'thriller','i').test((m.meta.keywords?.keywords||[]).map(k=>k.name).join(' ')));
   return [...new Map(movies.map(m=>[m.id,m])).values()];
  }
  function paintTVBrowse(rows,append=false){const grid=$('discover-grid');if(!append)for(const c of grid.querySelectorAll('[data-media-type=tv]'))c.remove();const existing=new Set([...grid.querySelectorAll('[data-media-type=tv]')].map(c=>c.dataset.movieId));for(const m of rows)if(!existing.has(m.id))grid.append(renderCard(m,{context:'discover'}));}
