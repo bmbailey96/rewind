@@ -822,7 +822,7 @@
           "time": "11:00am",
           "startsAt": "2026-10-25T17:00:00.000Z",
           "url": "https://www.theroxytheater.org/show/omfg-live-podcast-with-in-memoriam-writer-director-rob-burnett/",
-          "format": ""
+          "format": "Annex"
         }
       ],
       "start": "2026-10-25",
@@ -2176,7 +2176,7 @@
       "dateLabel": "1 listed days"
     }
   ],
-  "checkedAt": 1792508080318,
+  "checkedAt": 1792524247260,
   "stale": false,
   "sourceURL": "https://www.theroxytheater.org/showtimes/"
 }
