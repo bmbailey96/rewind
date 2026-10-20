@@ -39,10 +39,21 @@
  function shuffle(items,random=Math.random){const copy=[...items];for(let i=copy.length-1;i>0;i--){const j=Math.floor(random()*(i+1));[copy[i],copy[j]]=[copy[j],copy[i]];}return copy;}
  function orderWatchlist(items,mode='smart',at=Date.now(),random=Math.random){const copy=shuffle(items,random);return mode==='shuffle'?copy:copy.sort((a,b)=>watchlistPriority(b,at)-watchlistPriority(a,at));}
 
+ function filterCalendar(rows,{source='theaters',savedOnly=false,venue='all',savedIds=[],followed=[],search=''}={}){
+  const ids=new Set(savedIds),following=new Set(followed),query=norm(search);
+  const selected=rows.filter(r=>{
+   const theater=r.kind==='local'||r.kind==='event'||r.theatrical;
+   if(source==='theaters'&&!theater||source==='digital'&&theater)return false;
+   if(r.kind==='local'&&venue!=='all'&&(r.venueId||'kalispell')!==venue)return false;
+   if(savedOnly&&!ids.has(r.film?.id)&&!following.has(r.id))return false;
+   return !query||norm(r.title).includes(query);
+  });
+  return selected.filter(r=>r.kind!=='event'||r.regional||!selected.some(local=>local.kind==='local'&&norm(cleanEventTitle(local.title))===norm(cleanEventTitle(r.title))&&!local.stale&&(r.dates.length?r.dates.every(d=>local.dates.includes(d)):r.ranges.every(w=>{for(let d=w.start;d<=w.end;){if(!local.dates.includes(d))return false;const next=new Date(d+'T12:00:00Z');next.setUTCDate(next.getUTCDate()+1);d=next.toISOString().slice(0,10);}return true;}))));
+ }
  function shelfStatus(movie){const offers=(movie.physicalFormats?.length?movie.physicalFormats:['Physical copy']).map(format=>({kind:'physical',provider:'Your shelf',format,included:true,price:0,link:null}));return {offers,physical:true,code:'owned',kind:'physical',label:'On your physical shelf',stale:false};}
  function theaterIdentity(event,film){return {listingId:event.id||null,id:film?.id||null,title:cleanEventTitle(event.title),year:String(film?.release_date||'').slice(0,4)};}
  function sameTheaterFilm(a,b){if(a.listingId&&b.listingId&&a.listingId===b.listingId)return true;if(a.id&&b.id)return Number(a.id)===Number(b.id);return norm(a.title)===norm(b.title)&&(!a.year||!b.year||a.year===b.year);}
  function strongConnection(fit){const c=fit?.connection;return !!c&&fit.score>=3&&(c.directors.length>0||c.writers.length>0||c.keywords.length>=2);}
  function shelfRow(raw){const row=Object.fromEntries(Object.entries(raw).map(([k,v])=>[k.toLowerCase().replace(/[^a-z0-9]/g,''),v]));return {title:row.name||row.title||row.movietitle||row.filmtitle,year:String(row.year||row.releaseyear||row.productionyear||'').slice(0,4),format:row.format||row.mediaformat||row.mediatype||row.media||row.type||'Physical copy',tmdbId:row.tmdbid};}
- return {strongConnection,shelfStatus,theaterIdentity,sameTheaterFilm,shelfRow,norm,cleanEventTitle,matchEvent,safeLink,letterboxd,mergeRecords,evidence,features,affinity,ranked,roulettePass,rouletteWeight,weightedPick,upcoming,isIncluded,watchlistPriority,shuffle,orderWatchlist};
+ return {filterCalendar,strongConnection,shelfStatus,theaterIdentity,sameTheaterFilm,shelfRow,norm,cleanEventTitle,matchEvent,safeLink,letterboxd,mergeRecords,evidence,features,affinity,ranked,roulettePass,rouletteWeight,weightedPick,upcoming,isIncluded,watchlistPriority,shuffle,orderWatchlist};
 });

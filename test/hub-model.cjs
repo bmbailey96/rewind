@@ -38,3 +38,12 @@ console.log('600-film batch ranking reuses seed features without changing scores
 const savedDates={id:999,detailsSnapshot:{release_dates:{results:[{iso_3166_1:'US',release_dates:[{type:4,release_date:'2026-10-23T00:00:00Z'}]}]}},availabilitySnapshot:{details:{id:999}}};
 assert.equal(H.upcoming(savedDates,'2026-10-16')[0].date,'2026-10-23','Saved US release dates survive a missing or partial availability detail');
 assert.equal(H.upcoming({...savedDates,detailsSnapshot:{release_dates:{results:[{iso_3166_1:'FR',release_dates:[{type:4,release_date:'2026-10-23'}]}]}}},'2026-10-16').length,0,'Foreign dates are not US streaming dates');
+
+// Release type and personal scope are independent choices.
+const mixedRows=[{id:'k',title:'Film',kind:'local',film:{id:10},dates:['2026-10-20'],ranges:[],venueId:'kalispell'},{id:'r',title:'Film',kind:'local',film:{id:10},dates:['2026-10-20'],ranges:[],venueId:'roxy'},{id:'d',title:'Film',kind:'stream',film:{id:10},theatrical:false,dates:['2026-10-20'],ranges:[]},{id:'n',title:'Other',kind:'event',dates:['2026-10-20'],ranges:[]}];
+const calendarModel=require('../hub-model');
+assert.deepEqual(calendarModel.filterCalendar(mixedRows,{source:'digital',venue:'roxy'}).map(r=>r.id),['d'],'A theater selection cannot hide digital records');
+assert.deepEqual(calendarModel.filterCalendar(mixedRows,{source:'theaters',venue:'roxy'}).map(r=>r.id),['r','n']);
+assert.deepEqual(calendarModel.filterCalendar(mixedRows,{source:'both',savedOnly:true,savedIds:[10]}).map(r=>r.id),['k','r','d']);
+assert.deepEqual(calendarModel.filterCalendar(mixedRows,{source:'both',savedOnly:true,followed:['n']}).map(r=>r.id),['n']);
+console.log('Calendar: theater/digital/both, independent venue scope, saved films and followed events passed');

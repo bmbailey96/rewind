@@ -2,9 +2,26 @@
 StorageModel.migrate(localStorage);
 const failedStorageKeys=new Set();
 let cloudSavePhase='idle';
-function renderSaveState(){const el=document.getElementById('save-state');if(!el)return;let connected=false,dirty=false;try{connected=!!localStorage.getItem('rewind-gh-token');dirty=!!localStorage.getItem('rewind-sync-dirty-v1');}catch{}const failed=failedStorageKeys.size>0;el.dataset.tone=failed||cloudSavePhase==='error'?'error':'info';el.textContent=failed?(cloudSavePhase==='synced'?'Synced · device save failed':'Device save failed'):!connected?'Saved on this device':cloudSavePhase==='error'?'Saved here · sync delayed':cloudSavePhase==='saving'||dirty?'Saved here · sync pending':cloudSavePhase==='synced'?'Synced across devices':'Saved here · sync not checked';el.title=failed?'Open Settings to download a backup.':connected?'Devices using the same GitHub connection share your films.':'Connect GitHub in Settings to share films with your phone.';}
+function renderSaveState(){const el=document.getElementById('save-state');if(!el)return;let connected=false,dirty=false;try{connected=!!localStorage.getItem('rewind-gh-token');dirty=!!localStorage.getItem('rewind-sync-dirty-v1');}catch{}const failed=failedStorageKeys.size>0;el.dataset.tone=failed||cloudSavePhase==='error'?'error':'info';el.textContent=failed?(cloudSavePhase==='synced'?'Cloud saved · device save failed':'Device save failed'):!connected?'Saved on this device':cloudSavePhase==='error'?'Saved here · sync delayed':cloudSavePhase==='saving'||dirty?'Saved here · sync pending':cloudSavePhase==='synced'?'Synced across devices':'Saved here · sync not checked';if(failed){el.tabIndex=0;el.setAttribute('role','button');}else{el.removeAttribute('tabindex');el.removeAttribute('role');}el.title=failed?'Open Settings to download a backup.':connected?'Devices using the same GitHub connection share your films.':'Connect GitHub in Settings to share films with your phone.';}
 
-function persistData(key,data){const saved=StorageModel.save(localStorage,key,data);if(saved)failedStorageKeys.delete(key);else failedStorageKeys.add(key);const backup=document.getElementById('storage-backup');if(backup)backup.hidden=!failedStorageKeys.size;const status=document.getElementById('storage-status');if(status){status.hidden=!failedStorageKeys.size;status.textContent=failedStorageKeys.size?'Could not save the latest changes on this device. Your previous local save is intact. GitHub sync is separate; use Download backup below before closing this page.':'';}renderSaveState();return saved;}
+const pendingDeviceSaves=new Map();
+function paintStorageRecovery(){
+ const backup=document.getElementById('storage-backup'),status=document.getElementById('storage-status');
+ if(backup)backup.hidden=!failedStorageKeys.size;
+ if(status){status.hidden=!failedStorageKeys.size;const full=[...failedStorageKeys].some(key=>['QuotaExceededError','NS_ERROR_DOM_QUOTA_REACHED'].includes(StorageModel.failure(key)));
+  status.textContent=failedStorageKeys.size?(full?'This device’s storage is full. ':'This device could not save the latest changes. ')+'The previous local save is intact. Cloud sync has a separate status. Retry the device save or download a backup before closing.':'';
+ }
+ const retry=document.getElementById('storage-retry');if(retry)retry.hidden=!failedStorageKeys.size;renderSaveState();
+}
+function persistData(key,data){
+ const saved=StorageModel.save(localStorage,key,data);
+ if(saved){failedStorageKeys.delete(key);pendingDeviceSaves.delete(key);}else{failedStorageKeys.add(key);pendingDeviceSaves.set(key,data);}
+ paintStorageRecovery();return saved;
+}
+function retryDeviceSaves(){
+ for(const [key,data] of [...pendingDeviceSaves])persistData(key,data);
+ paintStorageRecovery();
+}
 
 const SEEN_KEY = 'rewind-seen-v1';
 let seenSet = loadSeenSet();
@@ -139,6 +156,7 @@ document.getElementById('import-watchlist').addEventListener('change', async (e)
   }
   saveWatchlist();
   persistHubState();
+  scheduleWatchlistMatching();
   statusEl.textContent = `Done. ${matched} added to your watchlist, ${skipped} need review or were unmatched. Undated additions are under All.`;
   scheduleSync();
   renderWatchlist();
@@ -220,8 +238,9 @@ function applySyncData(data) {
   if(data.ui&&typeof data.ui==='object')localStorage.setItem('rewind-ui-v1',JSON.stringify(data.ui));
   if(Array.isArray(data.recommendations))localStorage.setItem('rewind-recommendations-v1',JSON.stringify(data.recommendations));
   if(typeof data.rentalBudget==='number'&&data.rentalBudget>=0&&data.rentalBudget<=100){rentalBudget=data.rentalBudget;localStorage.setItem('rewind-rental-budget-v1',String(rentalBudget));document.getElementById('rental-budget').value=rentalBudget;}
-  if(data.hub&&typeof data.hub==='object'){const restores=[...(hubState.theaterHideRestores||[]),...(data.hub.theaterHideRestores||[])];hubState.hiddenTheaterFilms=CounterModel.mergeHiddenFilms(hubState.hiddenTheaterFilms,data.hub.hiddenTheaterFilms,restores);hubState.theaterHideRestores=[...new Map(restores.map(r=>[r.key+':'+r.at,r])).values()];for(const key of ['taste','hidden','muted','followed','knownEvents','suggestions','dismissedSuggestions','ignoredTaste','ignoredOwnership','setAsides','feedback','changeReceipts','calendarBaseline','newsFollows','letterboxdEntries'])if(Array.isArray(data.hub[key]))hubState[key]=data.hub[key];if(Number.isFinite(data.hub.receiptsReadAt))hubState.receiptsReadAt=Math.max(hubState.receiptsReadAt||0,data.hub.receiptsReadAt);if(Number.isFinite(data.hub.suggestionsVersion))hubState.suggestionsVersion=data.hub.suggestionsVersion;if(Number.isFinite(data.hub.suggestionsCheckedAt))hubState.suggestionsCheckedAt=data.hub.suggestionsCheckedAt;if(typeof data.hub.watchlistBaselineVersion==='string')hubState.watchlistBaselineVersion=data.hub.watchlistBaselineVersion;if(Array.isArray(data.hub.watchlistUnmatched))hubState.watchlistUnmatched=data.hub.watchlistUnmatched;if(Array.isArray(data.hub.watchlistImportedKeys))hubState.watchlistImportedKeys=data.hub.watchlistImportedKeys;if(typeof data.hub.letterboxdAuto==='boolean')hubState.letterboxdAuto=data.hub.letterboxdAuto;if(typeof data.hub.eventAlerts==='boolean')hubState.eventAlerts=data.hub.eventAlerts;persistHubState();}
+  if(data.hub&&typeof data.hub==='object'){const restores=[...(hubState.theaterHideRestores||[]),...(data.hub.theaterHideRestores||[])];hubState.hiddenTheaterFilms=CounterModel.mergeHiddenFilms(hubState.hiddenTheaterFilms,data.hub.hiddenTheaterFilms,restores);hubState.theaterHideRestores=[...new Map(restores.map(r=>[r.key+':'+r.at,r])).values()];for(const key of ['taste','hidden','muted','followed','knownEvents','suggestions','dismissedSuggestions','ignoredTaste','ignoredOwnership','setAsides','feedback','changeReceipts','calendarBaseline','newsFollows','letterboxdEntries','watchlistCatalogMatches'])if(Array.isArray(data.hub[key]))hubState[key]=data.hub[key];if(Number.isFinite(data.hub.receiptsReadAt))hubState.receiptsReadAt=Math.max(hubState.receiptsReadAt||0,data.hub.receiptsReadAt);if(Number.isFinite(data.hub.suggestionsVersion))hubState.suggestionsVersion=data.hub.suggestionsVersion;if(Number.isFinite(data.hub.suggestionsCheckedAt))hubState.suggestionsCheckedAt=data.hub.suggestionsCheckedAt;if(typeof data.hub.watchlistBaselineVersion==='string')hubState.watchlistBaselineVersion=data.hub.watchlistBaselineVersion;if(Array.isArray(data.hub.watchlistUnmatched))hubState.watchlistUnmatched=[...(hubState.watchlistUnmatched||[]),...data.hub.watchlistUnmatched];if(Array.isArray(data.hub.watchlistImportedKeys))hubState.watchlistImportedKeys=[...new Set([...(hubState.watchlistImportedKeys||[]),...data.hub.watchlistImportedKeys])];if(typeof data.hub.letterboxdAuto==='boolean')hubState.letterboxdAuto=data.hub.letterboxdAuto;if(typeof data.hub.eventAlerts==='boolean')hubState.eventAlerts=data.hub.eventAlerts;persistHubState();}
   watchlist = data.watchlist || [];
+  reconcileWatchlistMatches();scheduleWatchlistMatching();
   if(WatchlistModel.backfillReleaseFollows(watchlist)){saveWatchlist(false);scheduleSync();}
   if (Array.isArray(data.services)) {myServices = data.services;localStorage.setItem('rewind-services-v1',JSON.stringify(myServices));renderServiceSettings();}
   seenSet = new Set(data.seen || []);
@@ -306,7 +325,7 @@ let discoverPage = 1;let discoveryStage='recent',horizonFeed=null,horizonPromise
 let watchlist = loadWatchlist();
 let hubState;
 try {hubState=StorageModel.read(localStorage,'rewind-hub-v1')||{};}catch{hubState={};}
-for(const key of ['taste','hidden','muted','followed','knownEvents','suggestions','dismissedSuggestions','ignoredTaste','hiddenTheaterFilms','theaterHideRestores','ignoredOwnership','setAsides','feedback','changeReceipts','calendarBaseline','newsFollows','letterboxdEntries'])if(!Array.isArray(hubState[key]))hubState[key]=[];
+for(const key of ['taste','hidden','muted','followed','knownEvents','suggestions','dismissedSuggestions','ignoredTaste','hiddenTheaterFilms','theaterHideRestores','ignoredOwnership','setAsides','feedback','changeReceipts','calendarBaseline','newsFollows','letterboxdEntries','watchlistCatalogMatches'])if(!Array.isArray(hubState[key]))hubState[key]=[];
 
 
 function mergeTheaterState(incoming){
@@ -813,11 +832,30 @@ function renderReleaseRecovery(){
 }
 document.getElementById('rw-recovery-all').onclick=()=>{document.getElementById('film-drawer')?.close();document.querySelector('[data-watchlist-scope="all"]').click();};
 function renderImportReview(){
- const box=document.getElementById('watchlist-import-review');if(!box)return;const rows=hubState.watchlistUnmatched||[];box.replaceChildren();if(!rows.length)return;
- const note=document.createElement('p');note.className='offer-note';note.textContent=rows.length+' Letterboxd titles are saved as title/year records. They need a catalog match before availability can be checked. Matching does not follow their releases.';box.appendChild(note);
- const match=document.createElement('button');match.type='button';match.className='secondary';match.textContent=watchlistMatching?watchlistMatchProgress:'MATCH NEXT '+Math.min(12,rows.length)+' TITLES';match.disabled=watchlistMatching;match.onclick=()=>resolveWatchlistMatches().catch(()=>{watchlistMatching=false;renderImportReview();});box.appendChild(match);
- const details=document.createElement('details'),summary=document.createElement('summary');summary.textContent='Review unmatched titles';details.appendChild(summary);
- for(const m of rows){const row=document.createElement('p');row.textContent=m.title+' ('+m.year+')'+(m.addedDate?' · added '+m.addedDate:'');details.appendChild(row);}box.appendChild(details);
+ const box=document.getElementById('watchlist-import-review');if(!box)return;
+ const wasOpen=!!box.querySelector('details[open]'),rows=hubState.watchlistUnmatched||[],counts=WatchlistModel.matchSummary(rows);box.replaceChildren();if(!rows.length)return;
+ const status=document.createElement('p');status.className='offer-note import-progress';status.setAttribute('role','status');
+ const parts=[];if(counts.pending)parts.push(counts.pending+' waiting to be identified');if(counts.retry)parts.push(counts.retry+' will retry');if(counts.review)parts.push(counts.review+' need review');if(counts.unsupported)parts.push(counts.unsupported+' series retained (film-only checker)');
+ status.textContent=(watchlistMatching?'Importing in background: ':'Film import: ')+parts.join(' · ')+'. Streaming availability is checked after identification.';box.append(status);
+ if(counts.retry&&!watchlistMatching){const retry=document.createElement('button');retry.type='button';retry.className='text-action';retry.textContent='Retry failed lookups';retry.onclick=()=>{for(const row of rows)if(row.catalogMatch?.state==='retry')row.catalogMatch.nextAttemptAt=0;hubState.watchlistMatchRetryAt=0;persistHubState();scheduleWatchlistMatching(0);};box.append(retry);}
+ if(!counts.review&&!counts.unsupported)return;
+ const details=document.createElement('details'),summary=document.createElement('summary');details.open=wasOpen;summary.textContent=counts.review?'Review '+counts.review+(counts.review===1?' uncertain film':' uncertain films')+(counts.unsupported?' · '+counts.unsupported+' imported series':''):counts.unsupported+' imported series';details.append(summary);
+ for(const row of rows.filter(r=>['review','unsupported'].includes(r.catalogMatch?.state))){
+  const group=document.createElement('section');group.className='import-review-film';const title=document.createElement('p');title.textContent=row.title+' ('+row.year+')';const reason=document.createElement('p');reason.className='offer-note';reason.textContent=row.catalogMatch.reason;group.append(title,reason);
+  if(row.catalogMatch.series?.id){const source=document.createElement('a');source.href='https://www.themoviedb.org/tv/'+row.catalogMatch.series.id;source.target='_blank';source.rel='noopener';source.textContent='View series record ↗';source.className='text-action';group.append(source);}
+  for(const candidate of row.catalogMatch.candidates||[]){
+   if(!Number.isInteger(candidate.id)||candidate.id<=0)continue;
+   const choice=document.createElement('div');choice.className='import-candidate';const source=document.createElement('a');source.href='https://www.themoviedb.org/movie/'+candidate.id;source.target='_blank';source.rel='noopener';source.textContent=candidate.title+' ('+String(candidate.release_date||'').slice(0,4)+') ↗';
+   const use=document.createElement('button');use.type='button';use.className='text-action';use.textContent='Use this film';use.onclick=()=>{
+    const key=WatchlistModel.sourceKey(row);hubState.watchlistCatalogMatches=[...(hubState.watchlistCatalogMatches||[]).filter(m=>m.key!==key),{key,film:candidate}];
+    reconcileWatchlistMatches();renderImportReview();renderWatchlist(false,true,true).catch(()=>{});scheduleWatchlistMatching();
+   };choice.append(source,use);group.append(choice);
+  }
+  if(row.catalogMatch.state==='unsupported'){details.append(group);continue;}
+  const search=document.createElement('button');search.type='button';search.className='text-action';search.textContent='Search by title';search.onclick=()=>{document.querySelector('[data-tab=watchlist]').click();const input=document.getElementById('search-input');input.value=row.title;document.getElementById('search-form').dispatchEvent(new Event('submit',{bubbles:true,cancelable:true}));input.scrollIntoView({block:'center'});};group.append(search);
+  const retry=document.createElement('button');retry.type='button';retry.className='text-action';retry.textContent='Try lookup again';retry.onclick=()=>{row.catalogMatch={state:'pending',lastAttemptAt:Date.now()};persistHubState();renderImportReview();scheduleWatchlistMatching(0);};group.append(retry);details.append(group);
+ }
+ box.append(details);
 }
 
 document.querySelectorAll('[data-watchlist-scope]').forEach(btn=>btn.onclick=()=>{watchlistScope=btn.dataset.watchlistScope;watchlistChangeFilter=null;watchlistLimit=WATCHLIST_PAGE_SIZE;renderWatchlist();});
@@ -856,7 +894,7 @@ async function renderWatchlist(force = false, reuse = false, background = false)
   const loading=document.getElementById('watchlist-load-status');
   const statusEl=document.getElementById('card-check-status');
   const batch=scopedWatchlist().sort((a,b)=>Number(!!b.pinned)-Number(!!a.pinned)||(b.addedAt||0)-(a.addedAt||0));
-  document.getElementById('watchlist-count').textContent=(watchlistScope==='release'?batch.length+' followed releases · '+watchlist.length+' total':watchlist.length+' total')+((hubState.watchlistUnmatched||[]).length?' · '+hubState.watchlistUnmatched.length+' Letterboxd titles need matching':'');
+  document.getElementById('watchlist-count').textContent=(watchlistScope==='release'?batch.length+' followed releases · '+watchlist.length+' total':watchlist.length+' total')+((hubState.watchlistUnmatched||[]).length?' · '+hubState.watchlistUnmatched.length+' films importing':'');
   empty.hidden=watchlist.length>0;
   // Sorting and filters still consider the entire collection. Fetching does not.
   const progress=new Map(batch.map(entry=>{
@@ -1189,37 +1227,92 @@ document.getElementById('prune-btn').addEventListener('click', () => {
   renderWatchlist();
 });
 
+let catalogMatchesPromise=null,verifiedCatalogMatches=[],verifiedCatalogReviews=[],watchlistMatchTimer=null;
+async function loadCatalogMatches(){
+ if(!catalogMatchesPromise)catalogMatchesPromise=fetch('catalog-matches.json',{cache:'no-cache'}).then(r=>r.ok?r.json():null).then(data=>{verifiedCatalogReviews=Array.isArray(data?.reviews)?data.reviews.map(r=>({...r,checkedAt:data.checkedAt})):[];verifiedCatalogMatches=Array.isArray(data?.matches)?data.matches.filter(m=>m.key&&m.film?.id):[];return verifiedCatalogMatches;}).catch(()=>[]);
+ return catalogMatchesPromise;
+}
+function reconcileWatchlistMatches(known=verifiedCatalogMatches){
+ const imported=new Set(hubState.watchlistImportedKeys||[]),catalog=new Map([...(hubState.watchlistCatalogMatches||[]),...known].map(m=>[m.key,m.film]));
+ const queue=new Map();let matched=0,changed=false;
+ for(const row of hubState.watchlistUnmatched||[]){
+  const key=WatchlistModel.sourceKey(row),saved=WatchlistModel.match(row,watchlist),film=saved||catalog.get(key);
+  if(imported.has(key)){changed=true;continue;}
+  if(film){if(!saved)watchlist=WatchlistModel.merge(watchlist,[{...film,sourceTitle:row.title,year:row.year,addedDate:row.addedDate,letterboxdURL:row.letterboxdURL,source:'Letterboxd watchlist',letterboxdWatchlist:true}]);imported.add(key);matched++;changed=true;continue;}
+  const checked=verifiedCatalogReviews.find(r=>r.key===key);if(checked&&(!row.catalogMatch||(row.catalogMatch.lastAttemptAt||0)<checked.checkedAt))row.catalogMatch={state:checked.series?'unsupported':'review',reason:checked.reason,candidates:checked.candidates||[],series:checked.series,lastAttemptAt:checked.checkedAt,attempts:1};
+  const previous=queue.get(key);if(!previous||(row.catalogMatch?.lastAttemptAt||0)>=(previous.catalogMatch?.lastAttemptAt||0))queue.set(key,{...row,key});
+ }
+ if(queue.size!==(hubState.watchlistUnmatched||[]).length)changed=true;
+ hubState.watchlistUnmatched=[...queue.values()];hubState.watchlistImportedKeys=[...imported];
+ if(changed){saveWatchlist(false);persistHubState();scheduleSync();}
+ return matched;
+}
 async function loadWatchlistBaseline(){
- try{const response=await fetch('watchlist-baseline.json',{cache:'no-cache'});if(!response.ok)return;const data=await response.json();if(!Array.isArray(data.films))return;
-  if(hubState.watchlistBaselineVersion===data.version){if(!Array.isArray(hubState.watchlistImportedKeys)){const pending=new Set((hubState.watchlistUnmatched||[]).map(WatchlistModel.sourceKey));hubState.watchlistImportedKeys=data.films.filter(f=>!pending.has(WatchlistModel.sourceKey(f))).map(WatchlistModel.sourceKey);persistHubState();}return;}
-  const oldPending=new Set((hubState.watchlistUnmatched||[]).map(WatchlistModel.sourceKey));
-  const imported=new Set(hubState.watchlistImportedKeys|| (hubState.watchlistBaselineVersion?data.films.filter(f=>!oldPending.has(WatchlistModel.sourceKey(f))).map(WatchlistModel.sourceKey):[]));
-  const fresh=data.films.filter(f=>!imported.has(WatchlistModel.sourceKey(f)));watchlist=WatchlistModel.merge(watchlist,fresh);
-  for(const film of fresh.filter(f=>f.id))imported.add(WatchlistModel.sourceKey(film));
-  hubState.watchlistUnmatched=fresh.filter(f=>!f.id);hubState.watchlistImportedKeys=[...imported];hubState.watchlistBaselineVersion=data.version;saveWatchlist();persistHubState();scheduleSync();
+ try{
+  const response=await fetch('watchlist-baseline.json',{cache:'no-cache'});if(!response.ok)return;const data=await response.json();if(!Array.isArray(data.films))return;
+  if(hubState.watchlistBaselineVersion!==data.version){
+   const pending=new Set((hubState.watchlistUnmatched||[]).map(WatchlistModel.sourceKey));
+   const imported=new Set(hubState.watchlistImportedKeys||(hubState.watchlistBaselineVersion?data.films.filter(f=>!pending.has(WatchlistModel.sourceKey(f))).map(WatchlistModel.sourceKey):[]));
+   const fresh=data.films.filter(f=>!imported.has(WatchlistModel.sourceKey(f)));watchlist=WatchlistModel.merge(watchlist,fresh);
+   for(const film of fresh.filter(f=>f.id))imported.add(WatchlistModel.sourceKey(film));
+   hubState.watchlistUnmatched=[...(hubState.watchlistUnmatched||[]),...fresh.filter(f=>!f.id)];
+   hubState.watchlistImportedKeys=[...imported];hubState.watchlistBaselineVersion=data.version;saveWatchlist(false);persistHubState();scheduleSync();
+  }else if(!Array.isArray(hubState.watchlistImportedKeys)){
+   const pending=new Set((hubState.watchlistUnmatched||[]).map(WatchlistModel.sourceKey));hubState.watchlistImportedKeys=data.films.filter(f=>!pending.has(WatchlistModel.sourceKey(f))).map(WatchlistModel.sourceKey);
+  }
+  await loadCatalogMatches();reconcileWatchlistMatches();
  }catch{ /* Existing tracked films remain available. */ }
 }
-async function resolveWatchlistMatches(){
+function scheduleWatchlistMatching(delay=2500){
+ clearTimeout(watchlistMatchTimer);if(watchlistMatching||!(hubState.watchlistUnmatched||[]).length)return;
+ const rows=WatchlistModel.matchQueue(hubState.watchlistUnmatched);
+ const retryTimes=hubState.watchlistUnmatched.filter(r=>r.catalogMatch?.state==='retry').map(r=>r.catalogMatch.nextAttemptAt).filter(Number.isFinite);
+ if(!rows.length&&!retryTimes.length)return;
+ const wait=rows.length?delay:Math.max(delay,Math.min(...retryTimes)-Date.now());
+ watchlistMatchTimer=setTimeout(()=>{
+  if(document.visibilityState==='hidden'||navigator.onLine===false)return;
+  resolveWatchlistMatches({automatic:true}).catch(()=>scheduleWatchlistMatching(60000));
+ },Math.max(wait,(hubState.watchlistMatchRetryAt||0)-Date.now()));
+}
+async function resolveWatchlistMatches({automatic=false}={}){
  if(watchlistMatching||!(hubState.watchlistUnmatched||[]).length)return;
- watchlistMatching=true;const pending=[...hubState.watchlistUnmatched].slice(0,12);let checked=0,matched=0,failures=0,stopped=false;
- watchlistMatchProgress='Matching Letterboxd titles · 0 of '+pending.length;renderImportReview();
- await mapLimited(pending,4,async row=>{
-  if(stopped)return;const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),20000);
-  try{const lookup=async params=>{const data=await tmdbGet('/search/movie',params,controller.signal);if(data.total_pages>5)return [];let candidates=data.results||[];for(let page=2;page<=(data.total_pages||1);page++){const more=await tmdbGet('/search/movie',{...params,page},controller.signal);candidates=candidates.concat(more.results||[]);}return candidates;};
-   let candidates=await lookup({query:row.title,primary_release_year:row.year});let match=WatchlistModel.match(row,candidates);
-   if(!match){candidates=await lookup({query:row.title});match=WatchlistModel.match(row,candidates);}
-   if(!match){const sameTitle=candidates.filter(f=>[f.title,f.original_title].some(t=>WatchlistModel.titleKey(t)===WatchlistModel.titleKey(row.title))&&Math.abs(Number(String(f.release_date||'').slice(0,4))-Number(row.year))<=2);
-    if(sameTitle.length<=3){const verified=[];for(const candidate of sameTitle){const releases=await tmdbGet('/movie/'+candidate.id+'/release_dates',{},controller.signal);verified.push({...candidate,catalogReleaseYears:WatchlistModel.releaseYears(releases)});}match=WatchlistModel.match(row,verified);}
-   }
-   failures=0;
-   if(match){const key=WatchlistModel.sourceKey(row);if((hubState.watchlistUnmatched||[]).some(f=>WatchlistModel.sourceKey(f)===key)){
-    const film={id:match.id,title:match.title,sourceTitle:row.title,year:row.year,release_date:match.release_date,poster_path:match.poster_path||null,genre_ids:match.genre_ids||[],catalogReleaseYears:match.catalogReleaseYears||[],addedDate:row.addedDate,letterboxdURL:row.letterboxdURL,source:'Letterboxd watchlist'};
-    watchlist=WatchlistModel.merge(watchlist,[film]);hubState.watchlistImportedKeys=[...new Set([...(hubState.watchlistImportedKeys||[]),key])];hubState.watchlistUnmatched=hubState.watchlistUnmatched.filter(f=>WatchlistModel.sourceKey(f)!==key);matched++;saveWatchlist();persistHubState();scheduleSync();
-   }}
-  }catch{if(++failures>=8)stopped=true;}finally{clearTimeout(timer);checked++;watchlistMatchProgress='Matching Letterboxd titles · '+checked+' of '+pending.length+' · '+matched+' matched';if(checked%8===0){renderImportReview();document.getElementById('watchlist-count').textContent=watchlist.length+' tracked · '+hubState.watchlistUnmatched.length+' Letterboxd titles need matching';}}
- });
- watchlistMatching=false;renderImportReview();if(matched)renderWatchlist().catch(()=>{});
- if(stopped)showToast('Catalog matching paused. Saved progress will resume next time you open Rewind.');
+ clearTimeout(watchlistMatchTimer);reconcileWatchlistMatches();
+ const pending=WatchlistModel.matchQueue(hubState.watchlistUnmatched).slice(0,8);if(!pending.length){renderImportReview();if(automatic)scheduleWatchlistMatching();return;}
+ watchlistMatching=true;let checked=0,matched=0,failures=0;
+ watchlistMatchProgress='Identifying films in the background';renderImportReview();
+ try{
+  await mapLimited(pending,2,async row=>{
+   if(failures>=4)return;
+   const key=WatchlistModel.sourceKey(row),controller=new AbortController(),timer=setTimeout(()=>controller.abort(),20000),at=Date.now();
+   try{
+    let result=await WatchlistModel.resolveCatalog(row,(path,params)=>tmdbGet(path,params,controller.signal));
+    if(!result.film&&!result.series&&row.letterboxdURL){
+     const response=await fetch('/.netlify/functions/catalog-identity?uri='+encodeURIComponent(row.letterboxdURL),{signal:controller.signal});
+     const linked=await response.json();
+     if(response.ok&&Number.isInteger(linked.id)&&linked.id>0){
+      if(linked.mediaType==='movie'){const detail=await tmdbGet('/movie/'+linked.id,{},controller.signal);result={state:'matched',film:detail};}
+      else if(linked.mediaType==='tv')result={state:'review',reason:'TV series: Rewind’s availability checker currently handles films',candidates:[],series:{id:linked.id,title:row.title}};
+     }else if(response.status!==400&&linked.retryable!==false)throw Error('Source identity request unavailable');
+    }
+    const current=(hubState.watchlistUnmatched||[]).find(r=>WatchlistModel.sourceKey(r)===key);if(!current)return;
+    if(result.film){
+     const m=result.film,film={id:m.id,title:m.title,original_title:m.original_title,sourceTitle:row.title,year:row.year,release_date:m.release_date,poster_path:m.poster_path||null,genre_ids:m.genre_ids||(m.genres||[]).map(g=>g.id),catalogReleaseYears:m.catalogReleaseYears||[],catalogAliases:m.catalogAliases||[],addedDate:row.addedDate,letterboxdURL:row.letterboxdURL,source:'Letterboxd watchlist',letterboxdWatchlist:true};
+     watchlist=WatchlistModel.merge(watchlist,[film]);hubState.watchlistImportedKeys=[...new Set([...(hubState.watchlistImportedKeys||[]),key])];
+     hubState.watchlistCatalogMatches=[...(hubState.watchlistCatalogMatches||[]).filter(m=>m.key!==key),{key,film:{id:film.id,title:film.title,release_date:film.release_date,poster_path:film.poster_path,genre_ids:film.genre_ids,catalogReleaseYears:film.catalogReleaseYears,catalogAliases:film.catalogAliases}}];
+     hubState.watchlistUnmatched=hubState.watchlistUnmatched.filter(r=>WatchlistModel.sourceKey(r)!==key);matched++;
+    }else current.catalogMatch={state:result.series?'unsupported':'review',series:result.series,reason:result.reason,candidates:result.candidates,lastAttemptAt:at,attempts:(current.catalogMatch?.attempts||0)+1};
+    // Save every completed identity. Availability and release-follow choices are independent.
+    saveWatchlist(false);persistHubState();scheduleSync();
+   }catch{
+    failures++;const current=hubState.watchlistUnmatched.find(r=>WatchlistModel.sourceKey(r)===key);
+    if(current){const attempts=(current.catalogMatch?.attempts||0)+1;current.catalogMatch={state:'retry',reason:'Catalog request failed; will retry',attempts,lastAttemptAt:at,nextAttemptAt:at+Math.min(3600000,30000*2**Math.min(attempts-1,7))};persistHubState();}
+   }finally{clearTimeout(timer);checked++;watchlistMatchProgress='Identifying films · '+checked+' checked · '+matched+' identified';renderImportReview();}
+  });
+ }finally{
+  watchlistMatching=false;if(failures>=4)hubState.watchlistMatchRetryAt=Date.now()+60000;else hubState.watchlistMatchRetryAt=0;
+  persistHubState();renderImportReview();if(matched)renderWatchlist(false,true,true).catch(()=>{});
+  if(automatic)scheduleWatchlistMatching(1500);
+ }
 }
 
 // ---------- init ----------
@@ -1241,6 +1334,13 @@ async function init() {
     return renderWatchlist(false,true,true).catch(err=>showToast(err.message));
   });
   window.RewindStartup?.track('collection',localReady);
+  localReady.finally(()=>scheduleWatchlistMatching());
+  const retrySave=document.getElementById('storage-retry');if(retrySave)retrySave.onclick=retryDeviceSaves;
+  window.addEventListener('focus',()=>{if(failedStorageKeys.size)retryDeviceSaves();});
+  const saveStatus=document.getElementById('save-state');if(saveStatus)saveStatus.onkeydown=event=>{if(failedStorageKeys.size&&['Enter',' '].includes(event.key)){event.preventDefault();saveStatus.click();}};if(saveStatus)saveStatus.onclick=()=>{if(failedStorageKeys.size){document.querySelector('[data-tab=import]').click();const backup=document.getElementById('storage-backup');backup.closest('details')?.setAttribute('open','');backup.scrollIntoView({block:'center'});}};
+  window.addEventListener('online',()=>scheduleWatchlistMatching());
+  window.addEventListener('rewind:state',()=>{if(!watchlistMatching&&(hubState.watchlistUnmatched||[]).length){reconcileWatchlistMatches();renderImportReview();scheduleWatchlistMatching();}});
+  document.addEventListener('visibilitychange',()=>{if(document.visibilityState!=='hidden')scheduleWatchlistMatching();});
   // Background sync can update the local watchlist when finished, but never
   // blocks the first render, the Discover handler, or navigation.
   if(localStorage.getItem(GH_TOKEN_KEY)){

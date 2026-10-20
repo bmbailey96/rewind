@@ -1,0 +1,5010 @@
+{
+  "version": 1,
+  "checkedAt": 1792517507346,
+  "source": "TMDB title/year, documented release years, and authoritative Letterboxd film links",
+  "matches": [
+    {
+      "key": "964pinocchio|1991",
+      "sourceTitle": "964 Pinocchio",
+      "year": "1991",
+      "film": {
+        "id": 50162,
+        "title": "964 Pinocchio",
+        "original_title": "ピノキオ√964",
+        "release_date": "1991-09-14",
+        "poster_path": "/99iOoaDyFElUA5ihgBYKmGRhPJs.jpg",
+        "genre_ids": [
+          27,
+          878,
+          53
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "976evil|1988",
+      "sourceTitle": "976-EVIL",
+      "year": "1988",
+      "film": {
+        "id": 24038,
+        "title": "976-EVIL",
+        "original_title": "976-EVIL",
+        "release_date": "1988-12-09",
+        "poster_path": "/qQVLe0h2k06aamoAI5KjOle7mJR.jpg",
+        "genre_ids": [
+          27
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "afieldinengland|2013",
+      "sourceTitle": "A Field in England",
+      "year": "2013",
+      "film": {
+        "id": 179111,
+        "title": "A Field in England",
+        "original_title": "A Field in England",
+        "release_date": "2013-07-05",
+        "poster_path": "/dKhMJr8yoHVyvxyUiAeIn2hKVdL.jpg",
+        "genre_ids": [
+          27,
+          53,
+          14
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "afterbluedirtyparadise|2021",
+      "sourceTitle": "After Blue (Dirty Paradise)",
+      "year": "2021",
+      "film": {
+        "id": 660715,
+        "title": "After Blue (Dirty Paradise)",
+        "original_title": "After Blue (Paradis sale)",
+        "release_date": "2022-02-16",
+        "poster_path": "/uzlk8JZbialeyduUjgtbsqwH3yX.jpg",
+        "genre_ids": [
+          878,
+          14,
+          37
+        ],
+        "catalogReleaseYears": [
+          "2021",
+          "2022"
+        ],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "aftersun|2022",
+      "sourceTitle": "Aftersun",
+      "year": "2022",
+      "sourceURL": "https://letterboxd.com/film/aftersun/",
+      "film": {
+        "id": 965150,
+        "title": "Aftersun",
+        "original_title": "Aftersun",
+        "release_date": "2022-10-21",
+        "poster_path": "/evKz85EKouVbIr51zy5fOtpNRPg.jpg",
+        "genre_ids": [],
+        "catalogReleaseYears": [
+          "2022",
+          "2023",
+          "2025",
+          "2024"
+        ],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "afterthehunt|2025",
+      "sourceTitle": "After the Hunt",
+      "year": "2025",
+      "film": {
+        "id": 1265063,
+        "title": "After the Hunt",
+        "original_title": "After the Hunt",
+        "release_date": "2025-10-09",
+        "poster_path": "/ryF8QPGUGlo8gRB4OYKb4J0r3aJ.jpg",
+        "genre_ids": [
+          18
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "agoofymovie|1995",
+      "sourceTitle": "A Goofy Movie",
+      "year": "1995",
+      "film": {
+        "id": 15789,
+        "title": "A Goofy Movie",
+        "original_title": "A Goofy Movie",
+        "release_date": "1995-04-05",
+        "poster_path": "/bycmMhO3iIoEDzP768sUjq2RV4T.jpg",
+        "genre_ids": [
+          12,
+          35,
+          10749,
+          16,
+          10751
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "allegronontroppo|1976",
+      "sourceTitle": "Allegro non troppo",
+      "year": "1976",
+      "film": {
+        "id": 22561,
+        "title": "Allegro non troppo",
+        "original_title": "Allegro non troppo",
+        "release_date": "1976-03-12",
+        "poster_path": "/xRAnD7yd6Qx8NYXfoW5GN6K5jiC.jpg",
+        "genre_ids": [
+          14,
+          16,
+          35,
+          10402
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "alongcamepolly|2004",
+      "sourceTitle": "Along Came Polly",
+      "year": "2004",
+      "film": {
+        "id": 5966,
+        "title": "Along Came Polly",
+        "original_title": "Along Came Polly",
+        "release_date": "2004-01-16",
+        "poster_path": "/7Tp16THdpHkMrqgoiDresDz9CWL.jpg",
+        "genre_ids": [
+          35,
+          10749
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "alwaysshine|2016",
+      "sourceTitle": "Always Shine",
+      "year": "2016",
+      "film": {
+        "id": 385737,
+        "title": "Always Shine",
+        "original_title": "Always Shine",
+        "release_date": "2016-11-25",
+        "poster_path": "/gTDt04LtD1IUn8FWamBbKUBOQXq.jpg",
+        "genre_ids": [
+          53,
+          18,
+          27,
+          9648
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "americanguineapigthesongofsolomon|2017",
+      "sourceTitle": "American Guinea Pig: The Song of Solomon",
+      "year": "2017",
+      "film": {
+        "id": 483200,
+        "title": "American Guinea Pig: The Song of Solomon",
+        "original_title": "American Guinea Pig: The Song of Solomon",
+        "release_date": "2017-11-25",
+        "poster_path": "/6bIlOEBczmV7FJKzmt8sOzlH3MH.jpg",
+        "genre_ids": [
+          27
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "amityvilleinspace|2022",
+      "sourceTitle": "Amityville in Space",
+      "year": "2022",
+      "film": {
+        "id": 945610,
+        "title": "Amityville in Space",
+        "original_title": "Amityville in Space",
+        "release_date": "2022-07-19",
+        "poster_path": "/mPe4LGNANQUTS4s36CSHqNCpm3v.jpg",
+        "genre_ids": [
+          27,
+          878
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "anchorandhope|2017",
+      "sourceTitle": "Anchor and Hope",
+      "year": "2017",
+      "film": {
+        "id": 444288,
+        "title": "Anchor and Hope",
+        "original_title": "Tierra firme",
+        "release_date": "2017-11-24",
+        "poster_path": "/iR7Zb6jyuflNaUnLOEh7UX0fE6f.jpg",
+        "genre_ids": [
+          35,
+          18,
+          10749
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "angelsegg|1985",
+      "sourceTitle": "Angel's Egg",
+      "year": "1985",
+      "film": {
+        "id": 15916,
+        "title": "Angel's Egg",
+        "original_title": "天使のたまご",
+        "release_date": "1985-12-22",
+        "poster_path": "/dcEUGvckbePFzPKhGXnS9T3kZMG.jpg",
+        "genre_ids": [
+          16,
+          14,
+          9648,
+          878
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "apartment7a|2024",
+      "sourceTitle": "Apartment 7A",
+      "year": "2024",
+      "film": {
+        "id": 807339,
+        "title": "Apartment 7A",
+        "original_title": "Apartment 7A",
+        "release_date": "2024-09-20",
+        "poster_path": "/uipHKJHY1nNEQyprXjfNzH0GIOF.jpg",
+        "genre_ids": [
+          27,
+          53
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "ariverrunsthroughit|1992",
+      "sourceTitle": "A River Runs Through It",
+      "year": "1992",
+      "film": {
+        "id": 293,
+        "title": "A River Runs Through It",
+        "original_title": "A River Runs Through It",
+        "release_date": "1992-10-09",
+        "poster_path": "/aVP45oS2cBL4WtZ1kB7r8uarruB.jpg",
+        "genre_ids": [
+          18
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "asakoiii|2018",
+      "sourceTitle": "Asako I & II",
+      "year": "2018",
+      "film": {
+        "id": 487850,
+        "title": "Asako I & II",
+        "original_title": "寝ても覚めても",
+        "release_date": "2018-09-01",
+        "poster_path": "/nqwfB2GMMjrjAJnQj1hxD97sQXF.jpg",
+        "genre_ids": [
+          18,
+          10749
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "awakenings|1990",
+      "sourceTitle": "Awakenings",
+      "year": "1990",
+      "film": {
+        "id": 11005,
+        "title": "Awakenings",
+        "original_title": "Awakenings",
+        "release_date": "1990-12-04",
+        "poster_path": "/9gztZXuHLG6AJ0fgqGd7Q43cWRI.jpg",
+        "genre_ids": [
+          18
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "babyteeth|2019",
+      "sourceTitle": "Babyteeth",
+      "year": "2019",
+      "film": {
+        "id": 522098,
+        "title": "Babyteeth",
+        "original_title": "Babyteeth",
+        "release_date": "2020-06-15",
+        "poster_path": "/aINpljdt3VVMrCLtJW4BektwYOp.jpg",
+        "genre_ids": [
+          18,
+          35,
+          10749
+        ],
+        "catalogReleaseYears": [
+          "2020",
+          "2019",
+          "2021"
+        ],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "balladofasmallplayer|2025",
+      "sourceTitle": "Ballad of a Small Player",
+      "year": "2025",
+      "film": {
+        "id": 1272166,
+        "title": "Ballad of a Small Player",
+        "original_title": "Ballad of a Small Player",
+        "release_date": "2025-10-15",
+        "poster_path": "/yiXpXNiBWENaSJmdKfoT5DU0bL4.jpg",
+        "genre_ids": [
+          80,
+          18
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "barbarella|1968",
+      "sourceTitle": "Barbarella",
+      "year": "1968",
+      "film": {
+        "id": 8069,
+        "title": "Barbarella",
+        "original_title": "Barbarella",
+        "release_date": "1968-10-10",
+        "poster_path": "/facTz5BZz4AkJal1FWgjYciekih.jpg",
+        "genre_ids": [
+          878,
+          12,
+          35
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "beforemidnight|2013",
+      "sourceTitle": "Before Midnight",
+      "year": "2013",
+      "film": {
+        "id": 132344,
+        "title": "Before Midnight",
+        "original_title": "Before Midnight",
+        "release_date": "2013-04-05",
+        "poster_path": "/qbGKJmNUroDz75kh5Oafoall89e.jpg",
+        "genre_ids": [
+          10749,
+          18
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "beforesunrise|1995",
+      "sourceTitle": "Before Sunrise",
+      "year": "1995",
+      "film": {
+        "id": 76,
+        "title": "Before Sunrise",
+        "original_title": "Before Sunrise",
+        "release_date": "1995-01-27",
+        "poster_path": "/kf1Jb1c2JAOqjuzA3H4oDM263uB.jpg",
+        "genre_ids": [
+          18,
+          10749
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "beforesunset|2004",
+      "sourceTitle": "Before Sunset",
+      "year": "2004",
+      "film": {
+        "id": 80,
+        "title": "Before Sunset",
+        "original_title": "Before Sunset",
+        "release_date": "2004-06-16",
+        "poster_path": "/gycdE1ARByGQcK4fYR2mgpU6OO.jpg",
+        "genre_ids": [
+          18,
+          10749
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "begotten|1989",
+      "sourceTitle": "Begotten",
+      "year": "1989",
+      "film": {
+        "id": 1483,
+        "title": "Begotten",
+        "original_title": "Begotten",
+        "release_date": "1991-06-05",
+        "poster_path": "/rvgYcVToOHe0gKWtF3mz6SvM4Aw.jpg",
+        "genre_ids": [
+          14,
+          27
+        ],
+        "catalogReleaseYears": [
+          "1989",
+          "2020",
+          "2026",
+          "2006",
+          "2023",
+          "2022",
+          "1990",
+          "1991"
+        ],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "belladonnaofsadness|1973",
+      "sourceTitle": "Belladonna of Sadness",
+      "year": "1973",
+      "film": {
+        "id": 64847,
+        "title": "Belladonna of Sadness",
+        "original_title": "哀しみのベラドンナ",
+        "release_date": "1973-06-30",
+        "poster_path": "/2okYZVVw7RdMwlOKcAJsQ7Nsrpr.jpg",
+        "genre_ids": [
+          16,
+          18,
+          14
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "bitcheskillbitches|2023",
+      "sourceTitle": "Bitches Kill Bitches",
+      "year": "2023",
+      "film": {
+        "id": 1148948,
+        "title": "Bitches Kill Bitches",
+        "original_title": "Bitches Kill Bitches",
+        "release_date": "2023-08-06",
+        "poster_path": "/4RwSDuYAFGLEMZNqCWQUy96xx4Y.jpg",
+        "genre_ids": [
+          27,
+          35
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "blackbook|2006",
+      "sourceTitle": "Black Book",
+      "year": "2006",
+      "film": {
+        "id": 9075,
+        "title": "Black Book",
+        "original_title": "Zwartboek",
+        "release_date": "2006-09-14",
+        "poster_path": "/vZaYDWa3IqTNKsHCsUr72J4zTJ6.jpg",
+        "genre_ids": [
+          18,
+          53,
+          10752
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "blackdynamite|2009",
+      "sourceTitle": "Black Dynamite",
+      "year": "2009",
+      "film": {
+        "id": 24804,
+        "title": "Black Dynamite",
+        "original_title": "Black Dynamite",
+        "release_date": "2009-10-16",
+        "poster_path": "/u3oWQDz0JggzzsVlsuHY7XVxp5Y.jpg",
+        "genre_ids": [
+          35,
+          28
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "blacksunday|1960",
+      "sourceTitle": "Black Sunday",
+      "year": "1960",
+      "film": {
+        "id": 27632,
+        "title": "Black Sunday",
+        "original_title": "La maschera del demonio",
+        "release_date": "1960-08-11",
+        "poster_path": "/x41Zx8GeZhducquhOq9nE7z1GBG.jpg",
+        "genre_ids": [
+          27
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "blooddiner|1987",
+      "sourceTitle": "Blood Diner",
+      "year": "1987",
+      "film": {
+        "id": 62132,
+        "title": "Blood Diner",
+        "original_title": "Blood Diner",
+        "release_date": "1987-07-24",
+        "poster_path": "/q8Y9BhkWj5Hi7hCQ5QPsDHC95jR.jpg",
+        "genre_ids": [
+          27,
+          35
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "bloodsuckingfreaks|1976",
+      "sourceTitle": "Blood Sucking Freaks",
+      "year": "1976",
+      "film": {
+        "id": 34023,
+        "title": "Blood Sucking Freaks",
+        "original_title": "Blood Sucking Freaks",
+        "release_date": "1976-11-03",
+        "poster_path": "/sRFWfces1Aa2yPRzDt4NVuYrysQ.jpg",
+        "genre_ids": [
+          27,
+          35
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "boardinghouse|1982",
+      "sourceTitle": "Boardinghouse",
+      "year": "1982",
+      "film": {
+        "id": 40464,
+        "title": "Boardinghouse",
+        "original_title": "Boardinghouse",
+        "release_date": "1982-12-31",
+        "poster_path": "/k5sF7CvHXd1Y9fmVhHMUmmmKjhY.jpg",
+        "genre_ids": [
+          27
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "breakfastattiffanys|1961",
+      "sourceTitle": "Breakfast at Tiffany's",
+      "year": "1961",
+      "film": {
+        "id": 164,
+        "title": "Breakfast at Tiffany's",
+        "original_title": "Breakfast at Tiffany's",
+        "release_date": "1961-10-06",
+        "poster_path": "/79xm4gXw4l7A5D0XukUOJRocFYQ.jpg",
+        "genre_ids": [
+          35,
+          10749,
+          18
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "bridgetjonessdiary|2001",
+      "sourceTitle": "Bridget Jones's Diary",
+      "year": "2001",
+      "film": {
+        "id": 634,
+        "title": "Bridget Jones's Diary",
+        "original_title": "Bridget Jones's Diary",
+        "release_date": "2001-04-13",
+        "poster_path": "/olMTi7uCaec9Yr3Ar07D2SIja1G.jpg",
+        "genre_ids": [
+          35,
+          10749,
+          18
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "bustersmalheart|2016",
+      "sourceTitle": "Buster's Mal Heart",
+      "year": "2016",
+      "film": {
+        "id": 367147,
+        "title": "Buster's Mal Heart",
+        "original_title": "Buster's Mal Heart",
+        "release_date": "2017-05-28",
+        "poster_path": "/eoZO92Q1zvtxaHMFBuA9znXsw8n.jpg",
+        "genre_ids": [
+          9648,
+          18
+        ],
+        "catalogReleaseYears": [
+          "2016",
+          "2017"
+        ],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "carnivalofsouls|1962",
+      "sourceTitle": "Carnival of Souls",
+      "year": "1962",
+      "film": {
+        "id": 16093,
+        "title": "Carnival of Souls",
+        "original_title": "Carnival of Souls",
+        "release_date": "1962-11-02",
+        "poster_path": "/AdbQsFB8pS090l0NO3uBtLZy2zw.jpg",
+        "genre_ids": [
+          27,
+          9648,
+          14
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "catchmeifyoucan|2002",
+      "sourceTitle": "Catch Me If You Can",
+      "year": "2002",
+      "film": {
+        "id": 640,
+        "title": "Catch Me If You Can",
+        "original_title": "Catch Me If You Can",
+        "release_date": "2002-12-16",
+        "poster_path": "/ctjEj2xM32OvBXCq8zAdK3ZrsAj.jpg",
+        "genre_ids": [
+          18,
+          80
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "catsoup|2001",
+      "sourceTitle": "Cat Soup",
+      "year": "2001",
+      "film": {
+        "id": 25078,
+        "title": "Cat Soup",
+        "original_title": "ねこぢる草",
+        "release_date": "2001-02-21",
+        "poster_path": "/85c6VTiUOtizQBoT9ekBBlUz3zc.jpg",
+        "genre_ids": [
+          14,
+          16,
+          878
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "chud|1984",
+      "sourceTitle": "C.H.U.D.",
+      "year": "1984",
+      "film": {
+        "id": 23730,
+        "title": "C.H.U.D.",
+        "original_title": "C.H.U.D.",
+        "release_date": "1984-08-31",
+        "poster_path": "/8BVw5RIDBTZwdMAR1VKpAkwrMjj.jpg",
+        "genre_ids": [
+          27,
+          878
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "cityofgod|2002",
+      "sourceTitle": "City of God",
+      "year": "2002",
+      "film": {
+        "id": 598,
+        "title": "City of God",
+        "original_title": "Cidade de Deus",
+        "release_date": "2002-08-30",
+        "poster_path": "/k7eYdWvhYQyRQoU2TB2A2Xu2TfD.jpg",
+        "genre_ids": [
+          18,
+          80
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "comeandsee|1985",
+      "sourceTitle": "Come and See",
+      "year": "1985",
+      "film": {
+        "id": 25237,
+        "title": "Come and See",
+        "original_title": "Иди и смотри",
+        "release_date": "1985-10-17",
+        "poster_path": "/qNbMsKVzigERgJUbwf8pKyZogpb.jpg",
+        "genre_ids": [
+          18,
+          10752,
+          27,
+          36
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "cyst|2020",
+      "sourceTitle": "Cyst",
+      "year": "2020",
+      "film": {
+        "id": 741592,
+        "title": "Cyst",
+        "original_title": "Cyst",
+        "release_date": "2020-09-24",
+        "poster_path": "/5nJwS765eHzCb5M8BTT2sl0lxxv.jpg",
+        "genre_ids": [
+          27,
+          878,
+          35
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "deadlyfriend|1986",
+      "sourceTitle": "Deadly Friend",
+      "year": "1986",
+      "film": {
+        "id": 33278,
+        "title": "Deadly Friend",
+        "original_title": "Deadly Friend",
+        "release_date": "1986-10-10",
+        "poster_path": "/24X1pdzeU9x2QCVDu957tpUA0kp.jpg",
+        "genre_ids": [
+          27,
+          878
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "deadlyprey|1987",
+      "sourceTitle": "Deadly Prey",
+      "year": "1987",
+      "film": {
+        "id": 5753,
+        "title": "Deadly Prey",
+        "original_title": "Deadly Prey",
+        "release_date": "1987-11-02",
+        "poster_path": "/aG4hUQ0vw56B1zx0YJJKhaMR1DT.jpg",
+        "genre_ids": [
+          28
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "deadmail|2024",
+      "sourceTitle": "Dead Mail",
+      "year": "2024",
+      "film": {
+        "id": 1229915,
+        "title": "Dead Mail",
+        "original_title": "Dead Mail",
+        "release_date": "2024-03-09",
+        "poster_path": "/mZultpdnzuCDAouwDs5ZYdkGGgT.jpg",
+        "genre_ids": [
+          27,
+          53
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "deathstalker|2025",
+      "sourceTitle": "Deathstalker",
+      "year": "2025",
+      "film": {
+        "id": 1253000,
+        "title": "Deathstalker",
+        "original_title": "Deathstalker",
+        "release_date": "2025-10-10",
+        "poster_path": "/nEI3DnzQC1afAjJOAizx6UX27pL.jpg",
+        "genre_ids": [
+          14,
+          28,
+          12
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "departures|2008",
+      "sourceTitle": "Departures",
+      "year": "2008",
+      "film": {
+        "id": 16804,
+        "title": "Departures",
+        "original_title": "おくりびと",
+        "release_date": "2008-09-13",
+        "poster_path": "/2RkoGK7RcDoWdXm2pCJ1B9dXcTg.jpg",
+        "genre_ids": [
+          18
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "dickierobertsformerchildstar|2003",
+      "sourceTitle": "Dickie Roberts: Former Child Star",
+      "year": "2003",
+      "film": {
+        "id": 13778,
+        "title": "Dickie Roberts: Former Child Star",
+        "original_title": "Dickie Roberts: Former Child Star",
+        "release_date": "2003-09-04",
+        "poster_path": "/eyn1WbZmUUIXU8QoorKWJTQ1iLg.jpg",
+        "genre_ids": [
+          35
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "doggiewoggiezpoochiewoochiez|2012",
+      "sourceTitle": "Doggiewoggiez! Poochiewoochiez!",
+      "year": "2012",
+      "film": {
+        "id": 97638,
+        "title": "Doggiewoggiez! Poochiewoochiez!",
+        "original_title": "Doggiewoggiez! Poochiewoochiez!",
+        "release_date": "2012-01-27",
+        "poster_path": "/waDrAhFwv3boKUuzck2ICtnRBrc.jpg",
+        "genre_ids": [
+          35
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "dracula3000|2004",
+      "sourceTitle": "Dracula 3000",
+      "year": "2004",
+      "film": {
+        "id": 10838,
+        "title": "Dracula 3000",
+        "original_title": "Dracula 3000",
+        "release_date": "2004-08-09",
+        "poster_path": "/3BbTrjIXlQb0DC0v7z6Ct0azB9Q.jpg",
+        "genre_ids": [
+          27,
+          878
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "dreameater|2024",
+      "sourceTitle": "Dream Eater",
+      "year": "2024",
+      "film": {
+        "id": 1317877,
+        "title": "Dream Eater",
+        "original_title": "Dream Eater",
+        "release_date": "2025-10-24",
+        "poster_path": "/5PRT9vkRxSAogsce4v4svKNQkqb.jpg",
+        "genre_ids": [
+          27
+        ],
+        "catalogReleaseYears": [
+          "2024",
+          "2025"
+        ],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "eatenalive|1976",
+      "sourceTitle": "Eaten Alive",
+      "year": "1976",
+      "film": {
+        "id": 30062,
+        "title": "Eaten Alive",
+        "original_title": "Eaten Alive",
+        "release_date": "1976-12-25",
+        "poster_path": "/9pQk8hRRCNfvFEjlOuyUWFsXryS.jpg",
+        "genre_ids": [
+          27
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "elemental|2023",
+      "sourceTitle": "Elemental",
+      "year": "2023",
+      "film": {
+        "id": 976573,
+        "title": "Elemental",
+        "original_title": "Elemental",
+        "release_date": "2023-06-14",
+        "poster_path": "/4Y1WNkd88JXmGfhtWR7dmDAo1T2.jpg",
+        "genre_ids": [
+          16,
+          35,
+          10751,
+          10749
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "elvirashalloweenspecial|1986",
+      "sourceTitle": "Elvira's Halloween Special",
+      "year": "1986",
+      "film": {
+        "id": 421944,
+        "title": "Elvira's Halloween Special",
+        "original_title": "Elvira's Halloween Special",
+        "release_date": "1986-10-31",
+        "poster_path": "/b6iYoGBkcHtRONLDg4rlDQdiGNK.jpg",
+        "genre_ids": [
+          10402,
+          35,
+          27
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "empiresofthedeep|",
+      "sourceTitle": "Empires of the Deep",
+      "year": "",
+      "film": {
+        "id": 1313174,
+        "title": "Empires of the Deep",
+        "original_title": "Empires of the Deep",
+        "release_date": "",
+        "poster_path": "/x9cSk46yaIXSEi7kdFMPE6mSVnP.jpg",
+        "genre_ids": [
+          14,
+          12
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "evendwarfsstartedsmall|1970",
+      "sourceTitle": "Even Dwarfs Started Small",
+      "year": "1970",
+      "film": {
+        "id": 11900,
+        "title": "Even Dwarfs Started Small",
+        "original_title": "Auch Zwerge haben klein angefangen",
+        "release_date": "1971-02-02",
+        "poster_path": "/b0jmVC1a4LghH9BtzTPn1DELvBP.jpg",
+        "genre_ids": [
+          35,
+          18
+        ],
+        "catalogReleaseYears": [
+          "1971",
+          "1970"
+        ],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "evilofdracula|1974",
+      "sourceTitle": "Evil of Dracula",
+      "year": "1974",
+      "film": {
+        "id": 108545,
+        "title": "Evil of Dracula",
+        "original_title": "血を吸う薔薇",
+        "release_date": "1974-07-20",
+        "poster_path": "/eZRslwVszyWzwV4UiapJdkqzBFv.jpg",
+        "genre_ids": [
+          27,
+          9648
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "eyesoffire|1983",
+      "sourceTitle": "Eyes of Fire",
+      "year": "1983",
+      "film": {
+        "id": 72349,
+        "title": "Eyes of Fire",
+        "original_title": "Eyes of Fire",
+        "release_date": "1983-10-21",
+        "poster_path": "/mxT0psJTjT2yri8QOvHE4N7iANo.jpg",
+        "genre_ids": [
+          27,
+          18
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "fantasticanimationfestival|1977",
+      "sourceTitle": "Fantastic Animation Festival",
+      "year": "1977",
+      "film": {
+        "id": 240638,
+        "title": "Fantastic Animation Festival",
+        "original_title": "Fantastic Animation Festival",
+        "release_date": "1977-05-27",
+        "poster_path": "/6lKBiiTiL4KwRPZbs9mpCC7puIK.jpg",
+        "genre_ids": [
+          16
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "fantasticplanet|1973",
+      "sourceTitle": "Fantastic Planet",
+      "year": "1973",
+      "film": {
+        "id": 16306,
+        "title": "Fantastic Planet",
+        "original_title": "La Planète sauvage",
+        "release_date": "1973-12-01",
+        "poster_path": "/prq0j1S0K07UjwLZLF6oMGflRUI.jpg",
+        "genre_ids": [
+          16,
+          878
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "finalflesh|2009",
+      "sourceTitle": "Final Flesh",
+      "year": "2009",
+      "film": {
+        "id": 60085,
+        "title": "Final Flesh",
+        "original_title": "Final Flesh",
+        "release_date": "2009-06-09",
+        "poster_path": "/6dsulCPvrNvP3yWsP45NB4gcjFZ.jpg",
+        "genre_ids": [
+          27,
+          35,
+          878
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "fridaynight|2002",
+      "sourceTitle": "Friday Night",
+      "year": "2002",
+      "film": {
+        "id": 45044,
+        "title": "Friday Night",
+        "original_title": "Vendredi soir",
+        "release_date": "2002-09-11",
+        "poster_path": "/oBLkiNfPaXGKQHwSd8I9Ta36UTZ.jpg",
+        "genre_ids": [
+          18,
+          10749
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "fridaythe13thpartviiijasontakesmanhattan|1989",
+      "sourceTitle": "Friday the 13th Part VIII: Jason Takes Manhattan",
+      "year": "1989",
+      "film": {
+        "id": 10283,
+        "title": "Friday the 13th Part VIII: Jason Takes Manhattan",
+        "original_title": "Friday the 13th Part VIII: Jason Takes Manhattan",
+        "release_date": "1989-07-28",
+        "poster_path": "/6ezOsZ9UzqGnbDokaatxdOWP6e9.jpg",
+        "genre_ids": [
+          27
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "fucktoys|2025",
+      "sourceTitle": "Fucktoys",
+      "year": "2025",
+      "film": {
+        "id": 1422008,
+        "title": "Fucktoys",
+        "original_title": "Fucktoys",
+        "release_date": "2025-03-08",
+        "poster_path": "/hYDSzen6p8wkhkskWzwgr5dz5EN.jpg",
+        "genre_ids": [
+          35,
+          18,
+          14
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "funkyforestthefirstcontact|2005",
+      "sourceTitle": "Funky Forest: The First Contact",
+      "year": "2005",
+      "film": {
+        "id": 21136,
+        "title": "Funky Forest: The First Contact",
+        "original_title": "ナイスの森〜The First Contact〜",
+        "release_date": "2005-10-25",
+        "poster_path": "/XuQF2LZH3duTm156vdqGPjQ3PA.jpg",
+        "genre_ids": [
+          35,
+          878,
+          14
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "ghosttropic|2019",
+      "sourceTitle": "Ghost Tropic",
+      "year": "2019",
+      "film": {
+        "id": 597093,
+        "title": "Ghost Tropic",
+        "original_title": "Ghost Tropic",
+        "release_date": "2020-01-01",
+        "poster_path": "/gZFuhwJWHPzsPGMtfJGppgBopxO.jpg",
+        "genre_ids": [
+          18
+        ],
+        "catalogReleaseYears": [
+          "2019",
+          "2020",
+          "2021"
+        ],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "ghostwatch|1992",
+      "sourceTitle": "Ghostwatch",
+      "year": "1992",
+      "film": {
+        "id": 46633,
+        "title": "Ghostwatch",
+        "original_title": "Ghostwatch",
+        "release_date": "1992-10-31",
+        "poster_path": "/h5nOIZbO3J7STIOZumW00BxU6DC.jpg",
+        "genre_ids": [
+          27,
+          9648,
+          10770
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "godlesstheeastfieldexorcism|2023",
+      "sourceTitle": "Godless: The Eastfield Exorcism",
+      "year": "2023",
+      "film": {
+        "id": 1088157,
+        "title": "Godless: The Eastfield Exorcism",
+        "original_title": "Godless: The Eastfield Exorcism",
+        "release_date": "2023-03-08",
+        "poster_path": "/nfSrMW6ooScsf3PRa0ZSjbch8ed.jpg",
+        "genre_ids": [
+          27
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "gonjiamhauntedasylum|2018",
+      "sourceTitle": "Gonjiam: Haunted Asylum",
+      "year": "2018",
+      "film": {
+        "id": 508642,
+        "title": "Gonjiam: Haunted Asylum",
+        "original_title": "곤지암",
+        "release_date": "2018-03-28",
+        "poster_path": "/fNqlsmu2tiI1bXcpU31yjHPkiJz.jpg",
+        "genre_ids": [
+          27,
+          9648
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "gothic|1986",
+      "sourceTitle": "Gothic",
+      "year": "1986",
+      "film": {
+        "id": 33516,
+        "title": "Gothic",
+        "original_title": "Gothic",
+        "release_date": "1987-02-27",
+        "poster_path": "/xGXj6wpJimmWkQMahZryM7xB9EX.jpg",
+        "genre_ids": [
+          27
+        ],
+        "catalogReleaseYears": [
+          "1987",
+          "1986"
+        ],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "hagazussa|2017",
+      "sourceTitle": "Hagazussa",
+      "year": "2017",
+      "film": {
+        "id": 466565,
+        "title": "Hagazussa",
+        "original_title": "Hagazussa",
+        "release_date": "2018-05-17",
+        "poster_path": "/qxUiwpRKagcNHFlly5IpcbX0QPI.jpg",
+        "genre_ids": [
+          27,
+          18,
+          14
+        ],
+        "catalogReleaseYears": [
+          "2018",
+          "2017",
+          "2019"
+        ],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "halecountythismorningthisevening|2018",
+      "sourceTitle": "Hale County This Morning, This Evening",
+      "year": "2018",
+      "film": {
+        "id": 490785,
+        "title": "Hale County This Morning, This Evening",
+        "original_title": "Hale County This Morning, This Evening",
+        "release_date": "2018-09-14",
+        "poster_path": "/yzso3kOTsilpu25bnDhAkxPWoTT.jpg",
+        "genre_ids": [
+          99
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "harakiri|1962",
+      "sourceTitle": "Harakiri",
+      "year": "1962",
+      "film": {
+        "id": 14537,
+        "title": "Harakiri",
+        "original_title": "切腹",
+        "release_date": "1962-09-15",
+        "poster_path": "/5konZnIbcAxZjP616Cz5o9bKEfW.jpg",
+        "genre_ids": [
+          28,
+          18,
+          36
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "highest2lowest|2025",
+      "sourceTitle": "Highest 2 Lowest",
+      "year": "2025",
+      "film": {
+        "id": 1242434,
+        "title": "Highest 2 Lowest",
+        "original_title": "Highest 2 Lowest",
+        "release_date": "2025-08-14",
+        "poster_path": "/RFQtinuiHhOnbmJaCn3uzegCYF.jpg",
+        "genre_ids": [
+          80,
+          18
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "highfidelity|2000",
+      "sourceTitle": "High Fidelity",
+      "year": "2000",
+      "film": {
+        "id": 243,
+        "title": "High Fidelity",
+        "original_title": "High Fidelity",
+        "release_date": "2000-03-17",
+        "poster_path": "/e2LZGB62GMhv3Fo8tDZjY87I81a.jpg",
+        "genre_ids": [
+          18,
+          35,
+          10749,
+          10402
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "hilloffreedom|2014",
+      "sourceTitle": "Hill of Freedom",
+      "year": "2014",
+      "film": {
+        "id": 284135,
+        "title": "Hill of Freedom",
+        "original_title": "자유의 언덕",
+        "release_date": "2014-09-04",
+        "poster_path": "/6YjwoDVShfw1TcqOH2z83EWnmv8.jpg",
+        "genre_ids": [
+          18
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "horsegirl|2020",
+      "sourceTitle": "Horse Girl",
+      "year": "2020",
+      "film": {
+        "id": 653601,
+        "title": "Horse Girl",
+        "original_title": "Horse Girl",
+        "release_date": "2020-01-27",
+        "poster_path": "/hNQ7st9dFXUXENMcsAuVxcrIBfA.jpg",
+        "genre_ids": [
+          18
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "howl|2010",
+      "sourceTitle": "Howl",
+      "year": "2010",
+      "sourceURL": "https://letterboxd.com/film/howl/",
+      "film": {
+        "id": 38568,
+        "title": "Howl",
+        "original_title": "Howl",
+        "release_date": "2010-08-26",
+        "poster_path": "/4gy0rUIaaao1nx6pr1Dj1WpslcO.jpg",
+        "genre_ids": [],
+        "catalogReleaseYears": [
+          "2010",
+          "2011",
+          "2012"
+        ],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "howtobuildatimemachine|2016",
+      "sourceTitle": "How to Build a Time Machine",
+      "year": "2016",
+      "film": {
+        "id": 272787,
+        "title": "How to Build a Time Machine",
+        "original_title": "How to Build a Time Machine",
+        "release_date": "2016-05-02",
+        "poster_path": "/al2SbZodKKJWtqllCFuGFZchaDm.jpg",
+        "genre_ids": [
+          99
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "hypernormalisation|2016",
+      "sourceTitle": "HyperNormalisation",
+      "year": "2016",
+      "film": {
+        "id": 419546,
+        "title": "HyperNormalisation",
+        "original_title": "HyperNormalisation",
+        "release_date": "2016-10-25",
+        "poster_path": "/tTqI2xoB7cGO7HASB22Sss6x44J.jpg",
+        "genre_ids": [
+          99
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "iboughtavampiremotorcycle|1990",
+      "sourceTitle": "I Bought a Vampire Motorcycle",
+      "year": "1990",
+      "film": {
+        "id": 41153,
+        "title": "I Bought a Vampire Motorcycle",
+        "original_title": "I Bought a Vampire Motorcycle",
+        "release_date": "1990-07-06",
+        "poster_path": "/dCbFIzq64uUo5ZR4W3vLFhaJenk.jpg",
+        "genre_ids": [
+          35,
+          27
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "icomewiththerain|2009",
+      "sourceTitle": "I Come with the Rain",
+      "year": "2009",
+      "film": {
+        "id": 31166,
+        "title": "I Come with the Rain",
+        "original_title": "I Come with the Rain",
+        "release_date": "2009-05-14",
+        "poster_path": "/wOJZ3XvHjcGfLBh0GLJU3HhsJKE.jpg",
+        "genre_ids": [
+          53,
+          9648
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "iloveboosters|2026",
+      "sourceTitle": "I Love Boosters",
+      "year": "2026",
+      "film": {
+        "id": 1227877,
+        "title": "I Love Boosters",
+        "original_title": "I Love Boosters",
+        "release_date": "2026-05-21",
+        "poster_path": "/4pNKIUFy7tkZiBx0rnSmG9ysRy.jpg",
+        "genre_ids": [
+          35,
+          878,
+          80
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "incantation|2022",
+      "sourceTitle": "Incantation",
+      "year": "2022",
+      "film": {
+        "id": 864370,
+        "title": "Incantation",
+        "original_title": "咒",
+        "release_date": "2022-03-18",
+        "poster_path": "/cWz28oGV3cSajWdziVQbqrYCmnX.jpg",
+        "genre_ids": [
+          27
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "incendies|2010",
+      "sourceTitle": "Incendies",
+      "year": "2010",
+      "film": {
+        "id": 46738,
+        "title": "Incendies",
+        "original_title": "Incendies",
+        "release_date": "2010-09-17",
+        "poster_path": "/yH6DAQVgbyj72S66gN4WWVoTjuf.jpg",
+        "genre_ids": [
+          18,
+          10752,
+          9648
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "intensity|1997",
+      "sourceTitle": "Intensity",
+      "year": "1997",
+      "film": {
+        "id": 35608,
+        "title": "Intensity",
+        "original_title": "Intensity",
+        "release_date": "1997-08-05",
+        "poster_path": "/aMumOEvsvYXFJkCa6gu0TCaeHX9.jpg",
+        "genre_ids": [
+          27,
+          53,
+          10770
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "invitationtohell|1984",
+      "sourceTitle": "Invitation to Hell",
+      "year": "1984",
+      "film": {
+        "id": 81009,
+        "title": "Invitation to Hell",
+        "original_title": "Invitation to Hell",
+        "release_date": "1984-05-24",
+        "poster_path": "/fTYftDbvVv9U2tQibt2cmSGTXCE.jpg",
+        "genre_ids": [
+          10770,
+          27,
+          878
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "iseeyou|2019",
+      "sourceTitle": "I See You",
+      "year": "2019",
+      "sourceURL": "https://letterboxd.com/film/i-see-you-2019/",
+      "film": {
+        "id": 524251,
+        "title": "I See You",
+        "original_title": "I See You",
+        "release_date": "2019-09-11",
+        "poster_path": "/2LwamrHAmxqEHsT9JViFJxT08Ek.jpg",
+        "genre_ids": [],
+        "catalogReleaseYears": [
+          "2019",
+          "2020",
+          "2021"
+        ],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "itsallgonnabreak|2024",
+      "sourceTitle": "It's All Gonna Break",
+      "year": "2024",
+      "film": {
+        "id": 1357584,
+        "title": "It's All Gonna Break",
+        "original_title": "It's All Gonna Break",
+        "release_date": "2024-10-16",
+        "poster_path": "/EiILMRR2SGmHm4tRI7CryZlpLM.jpg",
+        "genre_ids": [
+          99,
+          10402
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "jasonx|2001",
+      "sourceTitle": "Jason X",
+      "year": "2001",
+      "film": {
+        "id": 11470,
+        "title": "Jason X",
+        "original_title": "Jason X",
+        "release_date": "2001-11-09",
+        "poster_path": "/ggOND0hfoE0f3K857joSzEeIchb.jpg",
+        "genre_ids": [
+          27,
+          878
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "jasonx|2002",
+      "sourceTitle": "Jason X",
+      "year": "2002",
+      "film": {
+        "id": 11470,
+        "title": "Jason X",
+        "original_title": "Jason X",
+        "release_date": "2001-11-09",
+        "poster_path": "/ggOND0hfoE0f3K857joSzEeIchb.jpg",
+        "genre_ids": [
+          27,
+          878
+        ],
+        "catalogReleaseYears": [
+          "2002",
+          "2001",
+          "2004"
+        ],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "jaykelly|2025",
+      "sourceTitle": "Jay Kelly",
+      "year": "2025",
+      "film": {
+        "id": 1069905,
+        "title": "Jay Kelly",
+        "original_title": "Jay Kelly",
+        "release_date": "2025-11-14",
+        "poster_path": "/lEXYpY9X17pGC7xYYy17Guv0L3J.jpg",
+        "genre_ids": [
+          18,
+          35
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "jubilee|1978",
+      "sourceTitle": "Jubilee",
+      "year": "1978",
+      "film": {
+        "id": 41426,
+        "title": "Jubilee",
+        "original_title": "Jubilee",
+        "release_date": "1978-02-01",
+        "poster_path": "/8HtAaaDZDCCx2F73n41xMDWDhwU.jpg",
+        "genre_ids": [
+          35,
+          18,
+          14,
+          10402
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "kindzadza|1986",
+      "sourceTitle": "Kin-dza-dza!",
+      "year": "1986",
+      "film": {
+        "id": 20874,
+        "title": "Kin-dza-dza!",
+        "original_title": "Кин-дза-дза!",
+        "release_date": "1986-12-01",
+        "poster_path": "/xmCxrS5bxXl3wadSNqxoFlM2Cqa.jpg",
+        "genre_ids": [
+          35,
+          878,
+          12
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "ladyinwhite|1988",
+      "sourceTitle": "Lady in White",
+      "year": "1988",
+      "film": {
+        "id": 49365,
+        "title": "Lady in White",
+        "original_title": "Lady in White",
+        "release_date": "1988-04-22",
+        "poster_path": "/AevfLQ5c0ZGtO3clHawg9L2XAQ2.jpg",
+        "genre_ids": [
+          9648,
+          27,
+          53
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "liquidsky|1982",
+      "sourceTitle": "Liquid Sky",
+      "year": "1982",
+      "film": {
+        "id": 20980,
+        "title": "Liquid Sky",
+        "original_title": "Liquid Sky",
+        "release_date": "1982-08-01",
+        "poster_path": "/yMRvaqt0oUImW1Z91RXHTvkH6DE.jpg",
+        "genre_ids": [
+          878,
+          53,
+          18
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "lisztomania|1975",
+      "sourceTitle": "Lisztomania",
+      "year": "1975",
+      "film": {
+        "id": 67298,
+        "title": "Lisztomania",
+        "original_title": "Lisztomania",
+        "release_date": "1975-10-01",
+        "poster_path": "/slkgkRL8hu0Sj4sOkcb8NSkwdGd.jpg",
+        "genre_ids": [
+          10402,
+          35,
+          36
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "littleghost|1997",
+      "sourceTitle": "Little Ghost",
+      "year": "1997",
+      "film": {
+        "id": 64313,
+        "title": "Little Ghost",
+        "original_title": "Little Ghost",
+        "release_date": "1997-12-30",
+        "poster_path": "/vAYEBiLx8UilGEBUcqanMyERfll.jpg",
+        "genre_ids": [
+          10751,
+          14,
+          12
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "lovebites|1988",
+      "sourceTitle": "Love Bites",
+      "year": "1988",
+      "film": {
+        "id": 363089,
+        "title": "Love Bites",
+        "original_title": "Love Bites",
+        "release_date": "1988-06-04",
+        "poster_path": "/63H9qNeHv0YHTglasyQUkM7N9KJ.jpg",
+        "genre_ids": [
+          35,
+          27
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "maddoctorofbloodisland|1969",
+      "sourceTitle": "Mad Doctor of Blood Island",
+      "year": "1969",
+      "film": {
+        "id": 81477,
+        "title": "Mad Doctor of Blood Island",
+        "original_title": "Mad Doctor of Blood Island",
+        "release_date": "1969-09-18",
+        "poster_path": "/1ihk3cUdumUlpsKNJGiRFu2HHGU.jpg",
+        "genre_ids": [
+          27,
+          878
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "madelinesmadeline|2018",
+      "sourceTitle": "Madeline's Madeline",
+      "year": "2018",
+      "film": {
+        "id": 468735,
+        "title": "Madeline's Madeline",
+        "original_title": "Madeline's Madeline",
+        "release_date": "2018-08-10",
+        "poster_path": "/8PcvYO5SHmPUFzdXpI2kzj3JtXN.jpg",
+        "genre_ids": [
+          18
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "mcbain|1991",
+      "sourceTitle": "McBain",
+      "year": "1991",
+      "film": {
+        "id": 27350,
+        "title": "McBain",
+        "original_title": "McBain",
+        "release_date": "1991-09-20",
+        "poster_path": "/tOYtB42P1njhR5vN7gulIKf6TVu.jpg",
+        "genre_ids": [
+          28,
+          10752,
+          18
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "meetthedeedles|1998",
+      "sourceTitle": "Meet the Deedles",
+      "year": "1998",
+      "film": {
+        "id": 40688,
+        "title": "Meet the Deedles",
+        "original_title": "Meet the Deedles",
+        "release_date": "1998-03-27",
+        "poster_path": "/7hSCyqtYZ2ICMiV2rI5ZtZQTUnF.jpg",
+        "genre_ids": [
+          35,
+          10751
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "meetthefeebles|1989",
+      "sourceTitle": "Meet the Feebles",
+      "year": "1989",
+      "film": {
+        "id": 8216,
+        "title": "Meet the Feebles",
+        "original_title": "Meet the Feebles",
+        "release_date": "1989-08-12",
+        "poster_path": "/31DqGazwdE9N4Y9FHC6Q4NvstuW.jpg",
+        "genre_ids": [
+          35,
+          10402
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "miamiconnection|1987",
+      "sourceTitle": "Miami Connection",
+      "year": "1987",
+      "film": {
+        "id": 59558,
+        "title": "Miami Connection",
+        "original_title": "Miami Connection",
+        "release_date": "1987-08-18",
+        "poster_path": "/pfysfJ8f1JcVVOeGQ5EZSxeSka8.jpg",
+        "genre_ids": [
+          28,
+          80,
+          10402
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "mikadroidrobokillbeneathdiscoclublayla|1991",
+      "sourceTitle": "Mikadroid: Robokill Beneath Disco Club Layla",
+      "year": "1991",
+      "film": {
+        "id": 74386,
+        "title": "Mikadroid",
+        "original_title": "ミカドロイド",
+        "release_date": "1991-07-10",
+        "poster_path": "/hYt71ICyTecCk32weIkrQobUEBO.jpg",
+        "genre_ids": [
+          27,
+          878
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": [
+          "Mikadoroido",
+          "Mikadroid: Robokill Beneath Disco Club Layla"
+        ]
+      }
+    },
+    {
+      "key": "miraclemile|1988",
+      "sourceTitle": "Miracle Mile",
+      "year": "1988",
+      "film": {
+        "id": 24739,
+        "title": "Miracle Mile",
+        "original_title": "Miracle Mile",
+        "release_date": "1989-05-19",
+        "poster_path": "/9qRCVO9L3s3CsPnoUO9c3iZm6aB.jpg",
+        "genre_ids": [
+          878,
+          53,
+          35,
+          10749
+        ],
+        "catalogReleaseYears": [
+          "1989",
+          "2012",
+          "1988",
+          "1990",
+          "1991",
+          "2014"
+        ],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "morgiana|1972",
+      "sourceTitle": "Morgiana",
+      "year": "1972",
+      "film": {
+        "id": 53186,
+        "title": "Morgiana",
+        "original_title": "Morgiana",
+        "release_date": "1972-09-15",
+        "poster_path": "/bX8ZGlqREc3qwsO7blOPWX52HyG.jpg",
+        "genre_ids": [
+          9648,
+          27,
+          18
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "murderparty|2007",
+      "sourceTitle": "Murder Party",
+      "year": "2007",
+      "film": {
+        "id": 13561,
+        "title": "Murder Party",
+        "original_title": "Murder Party",
+        "release_date": "2007-10-12",
+        "poster_path": "/gzwNjaoamQ8WMuD62WTfu7NWoA1.jpg",
+        "genre_ids": [
+          35,
+          27
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "mybestfriendisavampire|1987",
+      "sourceTitle": "My Best Friend Is a Vampire",
+      "year": "1987",
+      "film": {
+        "id": 21151,
+        "title": "My Best Friend Is a Vampire",
+        "original_title": "My Best Friend Is a Vampire",
+        "release_date": "1987-10-01",
+        "poster_path": "/nWvPMQ7b767G6zOrKCBU3MNbEyf.jpg",
+        "genre_ids": [
+          27,
+          35
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "mygrandpaisavampire|1992",
+      "sourceTitle": "My Grandpa Is a Vampire",
+      "year": "1992",
+      "film": {
+        "id": 109240,
+        "title": "My Grandpa Is a Vampire",
+        "original_title": "My Grandpa Is a Vampire",
+        "release_date": "1992-06-01",
+        "poster_path": "/qDD6InlutGGCW6D3q9BXAnbjIbD.jpg",
+        "genre_ids": [
+          10751,
+          35,
+          27
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "naturalbornkillers|1994",
+      "sourceTitle": "Natural Born Killers",
+      "year": "1994",
+      "film": {
+        "id": 241,
+        "title": "Natural Born Killers",
+        "original_title": "Natural Born Killers",
+        "release_date": "1994-08-26",
+        "poster_path": "/fEKZwT91gxvkAoyPgpNXo8W5fu0.jpg",
+        "genre_ids": [
+          80,
+          53,
+          18
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "network|1976",
+      "sourceTitle": "Network",
+      "year": "1976",
+      "film": {
+        "id": 10774,
+        "title": "Network",
+        "original_title": "Network",
+        "release_date": "1976-11-27",
+        "poster_path": "/qZomlHsaALUtkFeMDwdYmwS2Pbo.jpg",
+        "genre_ids": [
+          18
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "neverletmego|2010",
+      "sourceTitle": "Never Let Me Go",
+      "year": "2010",
+      "film": {
+        "id": 42188,
+        "title": "Never Let Me Go",
+        "original_title": "Never Let Me Go",
+        "release_date": "2010-03-18",
+        "poster_path": "/8F0r5ng9Fp60OhzQfR5v33fppq.jpg",
+        "genre_ids": [
+          18,
+          10749,
+          878
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "newyorkninja|2021",
+      "sourceTitle": "New York Ninja",
+      "year": "2021",
+      "film": {
+        "id": 870219,
+        "title": "New York Ninja",
+        "original_title": "New York Ninja",
+        "release_date": "2021-10-02",
+        "poster_path": "/1oXECgPkTPx98EZWcaCpHH3Rdhv.jpg",
+        "genre_ids": [
+          28,
+          80,
+          53
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "nightbeast|1982",
+      "sourceTitle": "Nightbeast",
+      "year": "1982",
+      "film": {
+        "id": 66881,
+        "title": "Nightbeast",
+        "original_title": "Nightbeast",
+        "release_date": "1982-11-01",
+        "poster_path": "/wkcBUK3vAbCtidPArf6HLPgEEZy.jpg",
+        "genre_ids": [
+          27,
+          878
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "nightofthedemons|1988",
+      "sourceTitle": "Night of the Demons",
+      "year": "1988",
+      "film": {
+        "id": 24924,
+        "title": "Night of the Demons",
+        "original_title": "Night of the Demons",
+        "release_date": "1988-09-09",
+        "poster_path": "/2VcJ4wpIx8TO14rXZnYPhzKL7Tp.jpg",
+        "genre_ids": [
+          27,
+          35
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "ninjaterminator|1986",
+      "sourceTitle": "Ninja Terminator",
+      "year": "1986",
+      "film": {
+        "id": 40027,
+        "title": "Ninja Terminator",
+        "original_title": "Ninja Terminator",
+        "release_date": "1986-07-15",
+        "poster_path": "/5YkYpKxTQVq4gna3qTztwwwo8YF.jpg",
+        "genre_ids": [
+          28
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "nothinglastsforever|1984",
+      "sourceTitle": "Nothing Lasts Forever",
+      "year": "1984",
+      "film": {
+        "id": 52826,
+        "title": "Nothing Lasts Forever",
+        "original_title": "Nothing Lasts Forever",
+        "release_date": "1984-09-06",
+        "poster_path": "/ffrdtojhaKR6qG4vCbYH9xTBDvL.jpg",
+        "genre_ids": [
+          10749,
+          878,
+          14,
+          35,
+          18
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "ogroff|1983",
+      "sourceTitle": "Ogroff",
+      "year": "1983",
+      "film": {
+        "id": 105907,
+        "title": "Ogroff",
+        "original_title": "Ogroff",
+        "release_date": "1983-01-01",
+        "poster_path": "/iFc5G5yNKj7DO8ZkzDPrYpp30GF.jpg",
+        "genre_ids": [
+          27
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "once|2007",
+      "sourceTitle": "Once",
+      "year": "2007",
+      "sourceURL": "https://letterboxd.com/film/once/",
+      "film": {
+        "id": 5723,
+        "title": "Once",
+        "original_title": "Once",
+        "release_date": "2007-03-23",
+        "poster_path": "/7nW363kSYRCkr4VGOMvuSGwtzKs.jpg",
+        "genre_ids": [],
+        "catalogReleaseYears": [
+          "2007",
+          "2008"
+        ],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "ontheroad|2012",
+      "sourceTitle": "On the Road",
+      "year": "2012",
+      "film": {
+        "id": 83770,
+        "title": "On the Road",
+        "original_title": "On the Road",
+        "release_date": "2012-05-22",
+        "poster_path": "/k7LQteD02p3VHixbS6NXHkFdFwT.jpg",
+        "genre_ids": [
+          12,
+          18
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "onthesilverglobe|1988",
+      "sourceTitle": "On the Silver Globe",
+      "year": "1988",
+      "film": {
+        "id": 27072,
+        "title": "On the Silver Globe",
+        "original_title": "Na Srebrnym Globie",
+        "release_date": "1989-02-10",
+        "poster_path": "/fOeMeTdGBlueTPtXgdamH8CkioX.jpg",
+        "genre_ids": [
+          878,
+          18
+        ],
+        "catalogReleaseYears": [
+          "1988",
+          "1989"
+        ],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "orlando|1992",
+      "sourceTitle": "Orlando",
+      "year": "1992",
+      "film": {
+        "id": 9300,
+        "title": "Orlando",
+        "original_title": "Orlando",
+        "release_date": "1992-12-11",
+        "poster_path": "/seRawEs8eQ8rWfkBm6QC39EQEAU.jpg",
+        "genre_ids": [
+          18,
+          14
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "passenger|2026",
+      "sourceTitle": "Passenger",
+      "year": "2026",
+      "sourceURL": "https://letterboxd.com/film/passenger-2026/",
+      "film": {
+        "id": 1368314,
+        "title": "Passenger",
+        "original_title": "Passenger",
+        "release_date": "2026-05-20",
+        "poster_path": "/2sOEJzhPzjTkZSlPbGxOJ7xgIyS.jpg",
+        "genre_ids": [],
+        "catalogReleaseYears": [
+          "2026"
+        ],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "phantomoftheparadise|1974",
+      "sourceTitle": "Phantom of the Paradise",
+      "year": "1974",
+      "film": {
+        "id": 27327,
+        "title": "Phantom of the Paradise",
+        "original_title": "Phantom of the Paradise",
+        "release_date": "1974-10-31",
+        "poster_path": "/qDOtGWeSQNwB3dG7Amt1K0JW0az.jpg",
+        "genre_ids": [
+          18,
+          27,
+          10402
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "phantomtown|1999",
+      "sourceTitle": "Phantom Town",
+      "year": "1999",
+      "film": {
+        "id": 180886,
+        "title": "Phantom Town",
+        "original_title": "Phantom Town",
+        "release_date": "1999-02-16",
+        "poster_path": "/uIw6oziIiipGqoWVM2CTtG5J3Nu.jpg",
+        "genre_ids": [
+          27,
+          37,
+          10751
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "phenomena|1985",
+      "sourceTitle": "Phenomena",
+      "year": "1985",
+      "film": {
+        "id": 29161,
+        "title": "Phenomena",
+        "original_title": "Phenomena",
+        "release_date": "1985-01-25",
+        "poster_path": "/dhk14s8ogQkbf6re3HLKV2UBHjx.jpg",
+        "genre_ids": [
+          27,
+          53
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "picnicathangingrock|1975",
+      "sourceTitle": "Picnic at Hanging Rock",
+      "year": "1975",
+      "film": {
+        "id": 11020,
+        "title": "Picnic at Hanging Rock",
+        "original_title": "Picnic at Hanging Rock",
+        "release_date": "1975-09-02",
+        "poster_path": "/7BAXwmFN4pZDNb9N6kzmAAwdssi.jpg",
+        "genre_ids": [
+          18,
+          9648
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "policeadjective|2009",
+      "sourceTitle": "Police, Adjective",
+      "year": "2009",
+      "film": {
+        "id": 32511,
+        "title": "Police, Adjective",
+        "original_title": "Polițist, adjectiv",
+        "release_date": "2009-07-03",
+        "poster_path": "/yiimBQLll8l6SXyNjder7ToilDi.jpg",
+        "genre_ids": [
+          18,
+          35,
+          80
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "possession|1981",
+      "sourceTitle": "Possession",
+      "year": "1981",
+      "film": {
+        "id": 21484,
+        "title": "Possession",
+        "original_title": "Possession",
+        "release_date": "1981-05-27",
+        "poster_path": "/A9bnRn05riOKWftvQlLKa2gl51n.jpg",
+        "genre_ids": [
+          27
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "presence|2024",
+      "sourceTitle": "Presence",
+      "year": "2024",
+      "sourceURL": "https://letterboxd.com/film/presence-2024/",
+      "film": {
+        "id": 1140535,
+        "title": "Presence",
+        "original_title": "Presence",
+        "release_date": "2025-01-17",
+        "poster_path": "/xZIGHoHj0DF0zdibwa66cRWHdHO.jpg",
+        "genre_ids": [],
+        "catalogReleaseYears": [
+          "2025",
+          "2024",
+          "2026"
+        ],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "pulse|2001",
+      "sourceTitle": "Pulse",
+      "year": "2001",
+      "film": {
+        "id": 27324,
+        "title": "Pulse",
+        "original_title": "回路",
+        "release_date": "2001-02-03",
+        "poster_path": "/c3zEimDraIyMSasPMGDaNOrhnzn.jpg",
+        "genre_ids": [
+          27,
+          53,
+          9648
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "ravenous|1999",
+      "sourceTitle": "Ravenous",
+      "year": "1999",
+      "film": {
+        "id": 10212,
+        "title": "Ravenous",
+        "original_title": "Ravenous",
+        "release_date": "1999-03-16",
+        "poster_path": "/5f7pY4Uzyt4ZNWhHyd1dJhIF4Gc.jpg",
+        "genre_ids": [
+          12,
+          37,
+          27,
+          35,
+          18
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "rawforce|1982",
+      "sourceTitle": "Raw Force",
+      "year": "1982",
+      "film": {
+        "id": 30644,
+        "title": "Raw Force",
+        "original_title": "Raw Force",
+        "release_date": "1982-07-01",
+        "poster_path": "/tREHKq24p5vpMcOUy17Mbch70uv.jpg",
+        "genre_ids": [
+          28,
+          12,
+          27
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "rawheadrex|1986",
+      "sourceTitle": "Rawhead Rex",
+      "year": "1986",
+      "film": {
+        "id": 13511,
+        "title": "Rawhead Rex",
+        "original_title": "Rawhead Rex",
+        "release_date": "1986-10-01",
+        "poster_path": "/vIEaIVlV5XRIUVoaptsymIexaL2.jpg",
+        "genre_ids": [
+          27
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "reds|1981",
+      "sourceTitle": "Reds",
+      "year": "1981",
+      "film": {
+        "id": 18254,
+        "title": "Reds",
+        "original_title": "Reds",
+        "release_date": "1981-12-25",
+        "poster_path": "/AeiKdVVM93fwfQG1m3N0cgVZgHl.jpg",
+        "genre_ids": [
+          18,
+          36,
+          10749
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "reentry|2024",
+      "sourceTitle": "ReEntry",
+      "year": "2024",
+      "sourceURL": "https://letterboxd.com/film/reentry/",
+      "film": {
+        "id": 1336097,
+        "title": "ReEntry",
+        "original_title": "ReEntry",
+        "release_date": "2024-10-11",
+        "poster_path": "/pnTyO4NxH0mvcEBcwJa21DCGiIe.jpg",
+        "genre_ids": [],
+        "catalogReleaseYears": [
+          "2024"
+        ],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "repoman|1984",
+      "sourceTitle": "Repo Man",
+      "year": "1984",
+      "film": {
+        "id": 13820,
+        "title": "Repo Man",
+        "original_title": "Repo Man",
+        "release_date": "1984-03-02",
+        "poster_path": "/bjuu5UceuVUNUjnOC2fBzL3hZKC.jpg",
+        "genre_ids": [
+          35,
+          878
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "rocks|2019",
+      "sourceTitle": "Rocks",
+      "year": "2019",
+      "film": {
+        "id": 575773,
+        "title": "Rocks",
+        "original_title": "Rocks",
+        "release_date": "2020-09-09",
+        "poster_path": "/8Mg4ew6drIax6ZmeY22dxM8ujBk.jpg",
+        "genre_ids": [
+          18
+        ],
+        "catalogReleaseYears": [
+          "2020",
+          "2019",
+          "2021"
+        ],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "rubber|2010",
+      "sourceTitle": "Rubber",
+      "year": "2010",
+      "film": {
+        "id": 45649,
+        "title": "Rubber",
+        "release_date": "2010-11-09",
+        "poster_path": "/mWgCORI5IC5vOvB2cDVQe0YNtXZ.jpg",
+        "genre_ids": [],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "samuraicop|1991",
+      "sourceTitle": "Samurai Cop",
+      "year": "1991",
+      "film": {
+        "id": 65374,
+        "title": "Samurai Cop",
+        "original_title": "Samurai Cop",
+        "release_date": "1991-11-30",
+        "poster_path": "/4M2FSwfTvhmP4ubF47UKS86BKYO.jpg",
+        "genre_ids": [
+          28,
+          80,
+          35,
+          53
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "santasangre|1989",
+      "sourceTitle": "Santa Sangre",
+      "year": "1989",
+      "film": {
+        "id": 19236,
+        "title": "Santa Sangre",
+        "original_title": "Santa Sangre",
+        "release_date": "1989-11-24",
+        "poster_path": "/6VTra0NR4ygRnq3bD922I4rU0Mq.jpg",
+        "genre_ids": [
+          27,
+          18,
+          53
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "savageland|2015",
+      "sourceTitle": "Savageland",
+      "year": "2015",
+      "film": {
+        "id": 326446,
+        "title": "Savageland",
+        "original_title": "Savageland",
+        "release_date": "2015-11-01",
+        "poster_path": "/zen8kRKOjLpmZWNdGekzY58ZHOD.jpg",
+        "genre_ids": [
+          27,
+          80,
+          53
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "savethegreenplanet|2003",
+      "sourceTitle": "Save the Green Planet!",
+      "year": "2003",
+      "film": {
+        "id": 11297,
+        "title": "Save the Green Planet!",
+        "original_title": "지구를 지켜라!",
+        "release_date": "2003-04-04",
+        "poster_path": "/kou9TDjveVwBhWnxCRUT88RUVCs.jpg",
+        "genre_ids": [
+          35,
+          878,
+          80
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "sevensamurai|1954",
+      "sourceTitle": "Seven Samurai",
+      "year": "1954",
+      "film": {
+        "id": 346,
+        "title": "Seven Samurai",
+        "original_title": "七人の侍",
+        "release_date": "1954-04-26",
+        "poster_path": "/lOMGc8bnSwQhS4XyE1S99uH8NXf.jpg",
+        "genre_ids": [
+          28,
+          18
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "sewtorn|2024",
+      "sourceTitle": "Sew Torn",
+      "year": "2024",
+      "film": {
+        "id": 1046758,
+        "title": "Sew Torn",
+        "original_title": "Sew Torn",
+        "release_date": "2025-09-11",
+        "poster_path": "/6N3bJq0VInPhifYml7cZ0TjRrXb.jpg",
+        "genre_ids": [
+          53,
+          35,
+          80
+        ],
+        "catalogReleaseYears": [
+          "2024",
+          "2025",
+          "2026"
+        ],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "shocker|1989",
+      "sourceTitle": "Shocker",
+      "year": "1989",
+      "film": {
+        "id": 12521,
+        "title": "Shocker",
+        "original_title": "Shocker",
+        "release_date": "1989-10-27",
+        "poster_path": "/m5EKmXhFFq8wg6xE15eEoKaHfnO.jpg",
+        "genre_ids": [
+          27,
+          53
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "shockingdark|1989",
+      "sourceTitle": "Shocking Dark",
+      "year": "1989",
+      "film": {
+        "id": 66664,
+        "title": "Shocking Dark",
+        "original_title": "Terminator 2",
+        "release_date": "1989-03-17",
+        "poster_path": "/tztmdSyvfvQBVyzqyh6sKQeJP5g.jpg",
+        "genre_ids": [
+          28,
+          878,
+          27
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "shoplifters|2018",
+      "sourceTitle": "Shoplifters",
+      "year": "2018",
+      "film": {
+        "id": 505192,
+        "title": "Shoplifters",
+        "original_title": "万引き家族",
+        "release_date": "2018-06-02",
+        "poster_path": "/4nfRUOv3LX5zLn98WS1WqVBk9E9.jpg",
+        "genre_ids": [
+          18,
+          80,
+          53
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "shortbus|2006",
+      "sourceTitle": "Shortbus",
+      "year": "2006",
+      "film": {
+        "id": 1378,
+        "title": "Shortbus",
+        "original_title": "Shortbus",
+        "release_date": "2006-10-04",
+        "poster_path": "/s8QBrWgpZpYrySSyTQ0xbFLPKrS.jpg",
+        "genre_ids": [
+          10749,
+          35,
+          18
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "sinnombre|2009",
+      "sourceTitle": "Sin Nombre",
+      "year": "2009",
+      "film": {
+        "id": 21191,
+        "title": "Sin Nombre",
+        "original_title": "Sin nombre",
+        "release_date": "2009-03-20",
+        "poster_path": "/dubZwiGWp6TwYNGYtyGEUC7XAin.jpg",
+        "genre_ids": [
+          18,
+          28,
+          53,
+          80
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "sisu|2022",
+      "sourceTitle": "Sisu",
+      "year": "2022",
+      "film": {
+        "id": 840326,
+        "title": "Sisu",
+        "original_title": "Sisu",
+        "release_date": "2022-09-09",
+        "poster_path": "/xgb30M1wL4nibyFvlHh3w4XlDYq.jpg",
+        "genre_ids": [
+          28,
+          10752,
+          53
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "sisuroadtorevenge|2025",
+      "sourceTitle": "Sisu: Road to Revenge",
+      "year": "2025",
+      "film": {
+        "id": 1223601,
+        "title": "Sisu: Road to Revenge",
+        "original_title": "Sisu 2",
+        "release_date": "2025-10-21",
+        "poster_path": "/roCMOuMQ55Z2TxVx1vZZTevlo0n.jpg",
+        "genre_ids": [
+          28,
+          10752,
+          53
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "sneakers|1992",
+      "sourceTitle": "Sneakers",
+      "year": "1992",
+      "film": {
+        "id": 2322,
+        "title": "Sneakers",
+        "original_title": "Sneakers",
+        "release_date": "1992-09-09",
+        "poster_path": "/l2pIGwCvpZEpBuMb55YBl6A04Jv.jpg",
+        "genre_ids": [
+          35,
+          80,
+          18
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "somethingwickedthiswaycomes|1983",
+      "sourceTitle": "Something Wicked This Way Comes",
+      "year": "1983",
+      "film": {
+        "id": 24808,
+        "title": "Something Wicked This Way Comes",
+        "original_title": "Something Wicked This Way Comes",
+        "release_date": "1983-04-29",
+        "poster_path": "/94dMO6kAawyFUk0sCDGIjAnchED.jpg",
+        "genre_ids": [
+          14,
+          9648,
+          27
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "sometimestheycomeback|1991",
+      "sourceTitle": "Sometimes They Come Back",
+      "year": "1991",
+      "film": {
+        "id": 27769,
+        "title": "Sometimes They Come Back",
+        "original_title": "Sometimes They Come Back",
+        "release_date": "1991-05-07",
+        "poster_path": "/jOsCw4tKKyRcYU1Wygp2V6hhpNm.jpg",
+        "genre_ids": [
+          27,
+          10770,
+          53,
+          18
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "songsfromthesecondfloor|2000",
+      "sourceTitle": "Songs from the Second Floor",
+      "year": "2000",
+      "film": {
+        "id": 34070,
+        "title": "Songs from the Second Floor",
+        "original_title": "Sånger från andra våningen",
+        "release_date": "2000-10-06",
+        "poster_path": "/xMZieoxiQ1hb5zraZlhzcvU7MGN.jpg",
+        "genre_ids": [
+          18,
+          35
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "sonofthewhitemare|1981",
+      "sourceTitle": "Son of the White Mare",
+      "year": "1981",
+      "film": {
+        "id": 41077,
+        "title": "Son of the White Mare",
+        "original_title": "Fehérlófia",
+        "release_date": "1981-10-22",
+        "poster_path": "/cYYYIfBFG5nszjDk5xea4MQHyDS.jpg",
+        "genre_ids": [
+          12,
+          16,
+          14
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "sorcerer|1977",
+      "sourceTitle": "Sorcerer",
+      "year": "1977",
+      "film": {
+        "id": 38985,
+        "title": "Sorcerer",
+        "original_title": "Sorcerer",
+        "release_date": "1977-06-24",
+        "poster_path": "/2b7oexm173SF1FSEq0DdgxZZNRH.jpg",
+        "genre_ids": [
+          53,
+          12,
+          28
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "spacedinvaders|1990",
+      "sourceTitle": "Spaced Invaders",
+      "year": "1990",
+      "film": {
+        "id": 34086,
+        "title": "Spaced Invaders",
+        "original_title": "Spaced Invaders",
+        "release_date": "1990-04-27",
+        "poster_path": "/vchyoV7mnaUd46meVO81yolXH2D.jpg",
+        "genre_ids": [
+          35,
+          10751,
+          878
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "spookies|1986",
+      "sourceTitle": "Spookies",
+      "year": "1986",
+      "film": {
+        "id": 26679,
+        "title": "Spookies",
+        "original_title": "Spookies",
+        "release_date": "1986-05-14",
+        "poster_path": "/tcRccnLpM2wsNjEv39O6UgkrNYI.jpg",
+        "genre_ids": [
+          27
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "stagefright|1987",
+      "sourceTitle": "Stage Fright",
+      "year": "1987",
+      "film": {
+        "id": 20465,
+        "title": "Stage Fright",
+        "original_title": "Deliria",
+        "release_date": "1987-02-08",
+        "poster_path": "/m9oNxIzu4OLBolUCjEvZSY003Xc.jpg",
+        "genre_ids": [
+          27
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "standbyme|1986",
+      "sourceTitle": "Stand by Me",
+      "year": "1986",
+      "film": {
+        "id": 235,
+        "title": "Stand by Me",
+        "original_title": "Stand by Me",
+        "release_date": "1986-08-08",
+        "poster_path": "/vz0w9BSehcqjDcJOjRaCk7fgJe7.jpg",
+        "genre_ids": [
+          18,
+          12
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "starcrash|1978",
+      "sourceTitle": "Starcrash",
+      "year": "1978",
+      "film": {
+        "id": 22049,
+        "title": "Starcrash",
+        "original_title": "Starcrash",
+        "release_date": "1978-12-21",
+        "poster_path": "/npJt35Q36aGcTYpcg9epbwQIIkz.jpg",
+        "genre_ids": [
+          14,
+          878
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "stirofechoes|1999",
+      "sourceTitle": "Stir of Echoes",
+      "year": "1999",
+      "film": {
+        "id": 11601,
+        "title": "Stir of Echoes",
+        "original_title": "Stir of Echoes",
+        "release_date": "1999-09-10",
+        "poster_path": "/9CyJ5aYF27cITX1WSUTENeP4wBE.jpg",
+        "genre_ids": [
+          27,
+          9648,
+          53
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "strangebrew|1983",
+      "sourceTitle": "Strange Brew",
+      "year": "1983",
+      "film": {
+        "id": 12921,
+        "title": "Strange Brew",
+        "original_title": "Strange Brew",
+        "release_date": "1983-08-26",
+        "poster_path": "/rScplcvRHX7o7XK88SFb5mddo8y.jpg",
+        "genre_ids": [
+          35,
+          80,
+          878
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "strangeharvest|2024",
+      "sourceTitle": "Strange Harvest",
+      "year": "2024",
+      "film": {
+        "id": 1330443,
+        "title": "Strange Harvest",
+        "original_title": "Strange Harvest",
+        "release_date": "2025-08-08",
+        "poster_path": "/fYe0FNJNy0EIb8q4JUMLbbSmCth.jpg",
+        "genre_ids": [
+          27,
+          80,
+          9648
+        ],
+        "catalogReleaseYears": [
+          "2026",
+          "2024",
+          "2025"
+        ],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "streettrash|1987",
+      "sourceTitle": "Street Trash",
+      "year": "1987",
+      "film": {
+        "id": 22172,
+        "title": "Street Trash",
+        "original_title": "Street Trash",
+        "release_date": "1987-02-22",
+        "poster_path": "/vwy81HbDoSvccWvculRMUVY39dD.jpg",
+        "genre_ids": [
+          35,
+          27
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "subspecies|1991",
+      "sourceTitle": "Subspecies",
+      "year": "1991",
+      "film": {
+        "id": 24789,
+        "title": "Subspecies",
+        "original_title": "Subspecies",
+        "release_date": "1991-08-08",
+        "poster_path": "/jDN4ILUNcYpy4IxnBkSspKHeUUb.jpg",
+        "genre_ids": [
+          27
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "surfnazismustdie|1987",
+      "sourceTitle": "Surf Nazis Must Die",
+      "year": "1987",
+      "film": {
+        "id": 28070,
+        "title": "Surf Nazis Must Die",
+        "original_title": "Surf Nazis Must Die",
+        "release_date": "1987-07-03",
+        "poster_path": "/gVECT5DHulQJyo9oqS1tdDSGowI.jpg",
+        "genre_ids": [
+          28,
+          35,
+          27
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "sweetmovie|1974",
+      "sourceTitle": "Sweet Movie",
+      "year": "1974",
+      "film": {
+        "id": 1559,
+        "title": "Sweet Movie",
+        "original_title": "Sweet Movie",
+        "release_date": "1974-06-12",
+        "poster_path": "/64SaF3kOOaLPUVflDhXZLrB0xjt.jpg",
+        "genre_ids": [
+          35
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "talesfromthecrypt|1972",
+      "sourceTitle": "Tales from the Crypt",
+      "year": "1972",
+      "film": {
+        "id": 38939,
+        "title": "Tales from the Crypt",
+        "original_title": "Tales from the Crypt",
+        "release_date": "1972-03-09",
+        "poster_path": "/vA3wsl2lfurU6UFVs0Hg0cZJDah.jpg",
+        "genre_ids": [
+          27
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "tasteofcherry|1997",
+      "sourceTitle": "Taste of Cherry",
+      "year": "1997",
+      "film": {
+        "id": 30020,
+        "title": "Taste of Cherry",
+        "original_title": "طعم گيلاس",
+        "release_date": "1997-10-10",
+        "poster_path": "/vgPwjgbSdbYWrS1ty8TIZtmi6Tn.jpg",
+        "genre_ids": [
+          18
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "taxidermia|2006",
+      "sourceTitle": "Taxidermia",
+      "year": "2006",
+      "film": {
+        "id": 15742,
+        "title": "Taxidermia",
+        "original_title": "Taxidermia",
+        "release_date": "2006-08-23",
+        "poster_path": "/uRqxKim0Vr1JZPLYcR1rjFtu74p.jpg",
+        "genre_ids": [
+          18,
+          27,
+          35
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "tetsuotheironman|1989",
+      "sourceTitle": "Tetsuo: The Iron Man",
+      "year": "1989",
+      "film": {
+        "id": 41428,
+        "title": "Tetsuo: The Iron Man",
+        "original_title": "鉄男",
+        "release_date": "1989-07-01",
+        "poster_path": "/lARc59hUAKW3ziWddftUnZ99R8c.jpg",
+        "genre_ids": [
+          27,
+          878
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "theadventuresofbuckaroobanzaiacrossthe8thdimension|1984",
+      "sourceTitle": "The Adventures of Buckaroo Banzai Across the 8th Dimension",
+      "year": "1984",
+      "film": {
+        "id": 11379,
+        "title": "The Adventures of Buckaroo Banzai Across the 8th Dimension",
+        "original_title": "The Adventures of Buckaroo Banzai Across the 8th Dimension",
+        "release_date": "1984-08-10",
+        "poster_path": "/jWZh2ChereoxKgTl3AmSAKNpnmO.jpg",
+        "genre_ids": [
+          878,
+          35,
+          12
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "theascent|1977",
+      "sourceTitle": "The Ascent",
+      "year": "1977",
+      "film": {
+        "id": 50183,
+        "title": "The Ascent",
+        "original_title": "Восхождение",
+        "release_date": "1977-04-02",
+        "poster_path": "/nbGyTnH1TREKgZXLxEJNnDVohYC.jpg",
+        "genre_ids": [
+          18,
+          10752
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "thebeastmustdie|1974",
+      "sourceTitle": "The Beast Must Die",
+      "year": "1974",
+      "film": {
+        "id": 40218,
+        "title": "The Beast Must Die",
+        "original_title": "The Beast Must Die",
+        "release_date": "1974-04-01",
+        "poster_path": "/fNJLiSDHjQdoZzB1EfjSORZE1ra.jpg",
+        "genre_ids": [
+          27,
+          9648
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "thebeyond|1981",
+      "sourceTitle": "The Beyond",
+      "year": "1981",
+      "film": {
+        "id": 19204,
+        "title": "The Beyond",
+        "original_title": "...E tu vivrai nel terrore! L'aldilà",
+        "release_date": "1981-04-22",
+        "poster_path": "/kMSZHq9VYQV1FCbM8nz2zrZShzx.jpg",
+        "genre_ids": [
+          27
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "thebirdcage|1996",
+      "sourceTitle": "The Birdcage",
+      "year": "1996",
+      "film": {
+        "id": 11000,
+        "title": "The Birdcage",
+        "original_title": "The Birdcage",
+        "release_date": "1996-03-03",
+        "poster_path": "/4IpC35BoA5aRO0Q1DpFGJ8iKKYq.jpg",
+        "genre_ids": [
+          35,
+          10749
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "thebloodonsatansclaw|1971",
+      "sourceTitle": "The Blood on Satan's Claw",
+      "year": "1971",
+      "film": {
+        "id": 26774,
+        "title": "Blood on Satan's Claw",
+        "original_title": "Blood on Satan's Claw",
+        "release_date": "1971-01-28",
+        "poster_path": "/hp3xBv3sXmswAubsouWJ1V9Dfpi.jpg",
+        "genre_ids": [
+          27
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": [
+          "Satan's Skin",
+          "The Devil's Touch",
+          "In den Krallen des Hexenjägers",
+          "O Estigma de Satanás",
+          "Satans kult",
+          "La garra de Satán",
+          "Paholaisen nahka",
+          "La nuit des maléfices",
+          "La nuit du maléfice",
+          "The Devil's Skin",
+          "Aima sta nyhia tou Satana",
+          "La pelle di Satana",
+          "La piel de Satanás",
+          "Satans skinn",
+          "사탄의 피부",
+          "The Blood on Satan's Claw",
+          "Blood on Satan's Claw"
+        ]
+      }
+    },
+    {
+      "key": "theboxersomen|1983",
+      "sourceTitle": "The Boxer's Omen",
+      "year": "1983",
+      "film": {
+        "id": 49239,
+        "title": "The Boxer's Omen",
+        "original_title": "魔",
+        "release_date": "1983-10-23",
+        "poster_path": "/tIOUIqHvjFyv80NoEIuIJxmr8VA.jpg",
+        "genre_ids": [
+          27,
+          14
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "thebride|2026",
+      "sourceTitle": "The Bride!",
+      "year": "2026",
+      "film": {
+        "id": 1159831,
+        "title": "The Bride!",
+        "original_title": "The Bride!",
+        "release_date": "2026-03-04",
+        "poster_path": "/lV8YHwGkYZsm6EfIqnhaSz2avKt.jpg",
+        "genre_ids": [
+          878,
+          27,
+          14
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "thecantervilleghost|1986",
+      "sourceTitle": "The Canterville Ghost",
+      "year": "1986",
+      "film": {
+        "id": 65465,
+        "title": "The Canterville Ghost",
+        "original_title": "The Canterville Ghost",
+        "release_date": "1986-12-31",
+        "poster_path": "/bX2o4hqC9PiKjIBBeRYSqcs6Dr5.jpg",
+        "genre_ids": [
+          10751,
+          12,
+          10770
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "thecolorofpomegranates|1969",
+      "sourceTitle": "The Color of Pomegranates",
+      "year": "1969",
+      "film": {
+        "id": 26302,
+        "title": "The Color of Pomegranates",
+        "original_title": "Նռան գույնը",
+        "release_date": "1969-10-01",
+        "poster_path": "/rMUbQf7RgsYgQ47AFf1wpoSt4dX.jpg",
+        "genre_ids": [
+          18,
+          36
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "thecompanyofstrangers|1990",
+      "sourceTitle": "The Company of Strangers",
+      "year": "1990",
+      "film": {
+        "id": 123778,
+        "title": "The Company of Strangers",
+        "original_title": "The Company of Strangers",
+        "release_date": "1990-10-01",
+        "poster_path": "/hlXFhekstIC0hsVjbhLjjC5EWBy.jpg",
+        "genre_ids": [
+          18,
+          12
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "thecompanyofwolves|1984",
+      "sourceTitle": "The Company of Wolves",
+      "year": "1984",
+      "film": {
+        "id": 11905,
+        "title": "The Company of Wolves",
+        "original_title": "The Company of Wolves",
+        "release_date": "1984-09-21",
+        "poster_path": "/2g2YPws1MiEWTodUE8u3qOf78XS.jpg",
+        "genre_ids": [
+          27,
+          14
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "thecornshukker|1997",
+      "sourceTitle": "The Cornshukker",
+      "year": "1997",
+      "film": {
+        "id": 443644,
+        "title": "The Cornshukker",
+        "original_title": "The Cornshukker",
+        "release_date": "1997-06-04",
+        "poster_path": "/PJTVNn6lHRRhcQ1SB6I3TOTcaF.jpg",
+        "genre_ids": [
+          27
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "thedayofthebeast|1995",
+      "sourceTitle": "The Day of the Beast",
+      "year": "1995",
+      "film": {
+        "id": 10722,
+        "title": "The Day of the Beast",
+        "original_title": "El día de la bestia",
+        "release_date": "1995-10-20",
+        "poster_path": "/yEXhgACPIV4PmTgHT2HS3Ko2oS3.jpg",
+        "genre_ids": [
+          27,
+          35,
+          28
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "thedevilwearsprada|2006",
+      "sourceTitle": "The Devil Wears Prada",
+      "year": "2006",
+      "film": {
+        "id": 350,
+        "title": "The Devil Wears Prada",
+        "original_title": "The Devil Wears Prada",
+        "release_date": "2006-06-29",
+        "poster_path": "/8912AsVuS7Sj915apArUFbv6F9L.jpg",
+        "genre_ids": [
+          18,
+          35
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "thedrillerkiller|1979",
+      "sourceTitle": "The Driller Killer",
+      "year": "1979",
+      "film": {
+        "id": 13553,
+        "title": "The Driller Killer",
+        "original_title": "The Driller Killer",
+        "release_date": "1979-06-15",
+        "poster_path": "/qeFh14wpyxtmEZrpnPX1L4q5AJG.jpg",
+        "genre_ids": [
+          27
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "theexorcistmartyrs|2027",
+      "sourceTitle": "The Exorcist: Martyrs",
+      "year": "2027",
+      "film": {
+        "id": 1297467,
+        "title": "The Exorcist: Martyrs",
+        "original_title": "The Exorcist: Martyrs",
+        "release_date": "2027-03-10",
+        "poster_path": "/i3kvS445sWWIhuxgXywPuUcsoP0.jpg",
+        "genre_ids": [
+          27
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "thegate|1987",
+      "sourceTitle": "The Gate",
+      "year": "1987",
+      "film": {
+        "id": 6917,
+        "title": "The Gate",
+        "original_title": "The Gate",
+        "release_date": "1987-04-21",
+        "poster_path": "/ik7AfGWpwKnjaQeth3LZqrqzvfB.jpg",
+        "genre_ids": [
+          27,
+          14
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "thegranny|1995",
+      "sourceTitle": "The Granny",
+      "year": "1995",
+      "film": {
+        "id": 83414,
+        "title": "The Granny",
+        "original_title": "The Granny",
+        "release_date": "1995-05-23",
+        "poster_path": "/hYA06TITutaSJrlK4ODrKd0TjkX.jpg",
+        "genre_ids": [
+          27,
+          35
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "thehalloweenthatalmostwasnt|1979",
+      "sourceTitle": "The Halloween That Almost Wasn't",
+      "year": "1979",
+      "film": {
+        "id": 192367,
+        "title": "The Halloween That Almost Wasn't",
+        "original_title": "The Halloween That Almost Wasn't",
+        "release_date": "1979-10-28",
+        "poster_path": "/g6rxrYxxB3yx0Yhh86jghZ2rh6c.jpg",
+        "genre_ids": [
+          27,
+          35,
+          10751,
+          10770
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "thehalloweentree|1993",
+      "sourceTitle": "The Halloween Tree",
+      "year": "1993",
+      "film": {
+        "id": 45974,
+        "title": "The Halloween Tree",
+        "original_title": "The Halloween Tree",
+        "release_date": "1993-10-02",
+        "poster_path": "/phcM1B7neu6g7ysw9CmIo35Qida.jpg",
+        "genre_ids": [
+          16,
+          10751,
+          10770,
+          12
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "thehumanconditioniiiasoldiersprayer|1961",
+      "sourceTitle": "The Human Condition III: A Soldier's Prayer",
+      "year": "1961",
+      "film": {
+        "id": 34530,
+        "title": "The Human Condition III: A Soldier's Prayer",
+        "original_title": "人間の條件　完結篇",
+        "release_date": "1961-01-28",
+        "poster_path": "/pag7gyxSFe7vTl6riHfZ5Xci6q7.jpg",
+        "genre_ids": [
+          10752,
+          18,
+          36
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "thehumanconditioniiroadtoeternity|1959",
+      "sourceTitle": "The Human Condition II: Road to Eternity",
+      "year": "1959",
+      "film": {
+        "id": 34528,
+        "title": "The Human Condition II: Road to Eternity",
+        "original_title": "人間の條件　第３部望郷篇／第４部戦雲篇",
+        "release_date": "1959-11-20",
+        "poster_path": "/7jfv1C4t06VGenQxf3HbmLVmUHZ.jpg",
+        "genre_ids": [
+          10752,
+          18,
+          36
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "thehumanconditioninogreaterlove|1959",
+      "sourceTitle": "The Human Condition I: No Greater Love",
+      "year": "1959",
+      "film": {
+        "id": 31217,
+        "title": "The Human Condition I: No Greater Love",
+        "original_title": "人間の條件　第１部純愛篇／第２部激怒篇",
+        "release_date": "1959-01-15",
+        "poster_path": "/q7godavx5XEbeVxEeqi4pmiOKdI.jpg",
+        "genre_ids": [
+          10752,
+          18,
+          36
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "theinnkeepers|2011",
+      "sourceTitle": "The Innkeepers",
+      "year": "2011",
+      "film": {
+        "id": 58428,
+        "title": "The Innkeepers",
+        "original_title": "The Innkeepers",
+        "release_date": "2012-02-03",
+        "poster_path": "/aC9XHtf0Opw2IJDVjSkL8eO71An.jpg",
+        "genre_ids": [
+          27,
+          53
+        ],
+        "catalogReleaseYears": [
+          "2011",
+          "2012"
+        ],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "thekeep|1983",
+      "sourceTitle": "The Keep",
+      "year": "1983",
+      "film": {
+        "id": 26198,
+        "title": "The Keep",
+        "original_title": "The Keep",
+        "release_date": "1983-12-16",
+        "poster_path": "/yd9wU3oajNxwaFHQ02rtTBuSFJD.jpg",
+        "genre_ids": [
+          27,
+          14
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "thelaststarfighter|1984",
+      "sourceTitle": "The Last Starfighter",
+      "year": "1984",
+      "film": {
+        "id": 11884,
+        "title": "The Last Starfighter",
+        "original_title": "The Last Starfighter",
+        "release_date": "1984-07-13",
+        "poster_path": "/A7oAHTjtYnIEQjJs62IONRufooq.jpg",
+        "genre_ids": [
+          12,
+          878,
+          28
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "themandalorianandgrogu|2026",
+      "sourceTitle": "The Mandalorian and Grogu",
+      "year": "2026",
+      "film": {
+        "id": 1228710,
+        "title": "The Mandalorian and Grogu",
+        "original_title": "The Mandalorian and Grogu",
+        "release_date": "2026-05-20",
+        "poster_path": "/uwMKWjcNID0D9jjplsjkQS2OrB4.jpg",
+        "genre_ids": [
+          28,
+          12,
+          878
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "themaskofzorro|1998",
+      "sourceTitle": "The Mask of Zorro",
+      "year": "1998",
+      "film": {
+        "id": 9342,
+        "title": "The Mask of Zorro",
+        "original_title": "The Mask of Zorro",
+        "release_date": "1998-07-16",
+        "poster_path": "/bdMufwGDDzqu4kTSQwrKc5WR4bu.jpg",
+        "genre_ids": [
+          28,
+          12
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "themidnighthour|1985",
+      "sourceTitle": "The Midnight Hour",
+      "year": "1985",
+      "film": {
+        "id": 35564,
+        "title": "The Midnight Hour",
+        "original_title": "The Midnight Hour",
+        "release_date": "1985-11-01",
+        "poster_path": "/ge4JJ1T8dD36IdEAo0U8lz3CBas.jpg",
+        "genre_ids": [
+          35,
+          27,
+          10770,
+          10749
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "themonster|1994",
+      "sourceTitle": "The Monster",
+      "year": "1994",
+      "film": {
+        "id": 22826,
+        "title": "The Monster",
+        "original_title": "Il mostro",
+        "release_date": "1994-10-22",
+        "poster_path": "/6h6ahipPd84QcyFbnsEikLt7w3Z.jpg",
+        "genre_ids": [
+          35
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "themysteryindraculascastle|1973",
+      "sourceTitle": "The Mystery in Dracula's Castle",
+      "year": "1973",
+      "film": {
+        "id": 206370,
+        "title": "The Mystery in Dracula's Castle",
+        "original_title": "The Mystery in Dracula's Castle",
+        "release_date": "1973-01-07",
+        "poster_path": "/nNQuPPhjhdQ8li38rj6FT7jOpoo.jpg",
+        "genre_ids": [
+          10751,
+          27,
+          10770
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "thenightflier|1997",
+      "sourceTitle": "The Night Flier",
+      "year": "1997",
+      "film": {
+        "id": 12238,
+        "title": "The Night Flier",
+        "original_title": "The Night Flier",
+        "release_date": "1997-04-30",
+        "poster_path": "/3bMb6CzdKfpw0pZWVW2RbQRneIC.jpg",
+        "genre_ids": [
+          27,
+          9648
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "thenightofthehunter|1955",
+      "sourceTitle": "The Night of the Hunter",
+      "year": "1955",
+      "film": {
+        "id": 3112,
+        "title": "The Night of the Hunter",
+        "original_title": "The Night of the Hunter",
+        "release_date": "1955-07-26",
+        "poster_path": "/rBka0nFWiHxabHRLr0KfIA8Yiaq.jpg",
+        "genre_ids": [
+          80,
+          18,
+          53
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "theorphanage|2007",
+      "sourceTitle": "The Orphanage",
+      "year": "2007",
+      "film": {
+        "id": 6537,
+        "title": "The Orphanage",
+        "original_title": "El orfanato",
+        "release_date": "2007-05-20",
+        "poster_path": "/vIpi1KtHLXUOfSVC2m6MqpjSPgL.jpg",
+        "genre_ids": [
+          27,
+          18,
+          53
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "thepaintedveil|2006",
+      "sourceTitle": "The Painted Veil",
+      "year": "2006",
+      "film": {
+        "id": 14202,
+        "title": "The Painted Veil",
+        "original_title": "The Painted Veil",
+        "release_date": "2006-12-09",
+        "poster_path": "/k41IvHDLgZO2ae7RuU77wQjScIj.jpg",
+        "genre_ids": [
+          10749,
+          18
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "thepeanutbutterfalcon|2019",
+      "sourceTitle": "The Peanut Butter Falcon",
+      "year": "2019",
+      "film": {
+        "id": 463257,
+        "title": "The Peanut Butter Falcon",
+        "original_title": "The Peanut Butter Falcon",
+        "release_date": "2019-08-09",
+        "poster_path": "/qyQcRGvdW3VtxHR4fSDgPOePEip.jpg",
+        "genre_ids": [
+          12,
+          35,
+          18
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "thepeanutbuttersolution|1985",
+      "sourceTitle": "The Peanut Butter Solution",
+      "year": "1985",
+      "film": {
+        "id": 19425,
+        "title": "The Peanut Butter Solution",
+        "original_title": "The Peanut Butter Solution",
+        "release_date": "1985-12-06",
+        "poster_path": "/p2DgMuccpBd5VFQA87JSMeaXw7V.jpg",
+        "genre_ids": [
+          10751,
+          14,
+          12
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "thepiedpiper|1986",
+      "sourceTitle": "The Pied Piper",
+      "year": "1986",
+      "film": {
+        "id": 82094,
+        "title": "The Pied Piper",
+        "original_title": "Krysař",
+        "release_date": "1986-07-29",
+        "poster_path": "/tYDRQvqgTUorU37ZzEFULNMvMHf.jpg",
+        "genre_ids": [
+          16,
+          14,
+          18
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "thepizzagatemassacre|2020",
+      "sourceTitle": "The Pizzagate Massacre",
+      "year": "2020",
+      "film": {
+        "id": 733049,
+        "title": "The Pizzagate Massacre",
+        "original_title": "The Pizzagate Massacre",
+        "release_date": "2020-10-21",
+        "poster_path": "/4MRYyz3CAzXsuUNDgt6L04GxP8H.jpg",
+        "genre_ids": [
+          35,
+          28,
+          80,
+          27
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "thereflectingskin|1990",
+      "sourceTitle": "The Reflecting Skin",
+      "year": "1990",
+      "film": {
+        "id": 21168,
+        "title": "The Reflecting Skin",
+        "original_title": "The Reflecting Skin",
+        "release_date": "1990-08-28",
+        "poster_path": "/ehUosbTVyCQtf6nAfpmQ8Q3XSd7.jpg",
+        "genre_ids": [
+          18,
+          53,
+          27
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "thesaragossamanuscript|1965",
+      "sourceTitle": "The Saragossa Manuscript",
+      "year": "1965",
+      "film": {
+        "id": 8785,
+        "title": "The Saragossa Manuscript",
+        "original_title": "Rękopis znaleziony w Saragossie",
+        "release_date": "1966-02-27",
+        "poster_path": "/3P8g5U4gbifjM2lnqSpZogh7FrD.jpg",
+        "genre_ids": [
+          14,
+          9648,
+          18
+        ],
+        "catalogReleaseYears": [
+          "1966",
+          "1965",
+          "1970",
+          "1971",
+          "2025",
+          "1969",
+          "2005",
+          "2012",
+          "2007",
+          "2009",
+          "2013",
+          "2020",
+          "1972",
+          "1999"
+        ],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "thescoobydooproject|1999",
+      "sourceTitle": "The Scooby-Doo Project",
+      "year": "1999",
+      "film": {
+        "id": 423336,
+        "title": "The Scooby-Doo Project",
+        "original_title": "The Scooby-Doo Project",
+        "release_date": "1999-10-31",
+        "poster_path": "/nOEdNxSqrWMiYLFJEM6poBu3bSH.jpg",
+        "genre_ids": [
+          16,
+          9648,
+          27,
+          35,
+          10770
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "theserpentandtherainbow|1988",
+      "sourceTitle": "The Serpent and the Rainbow",
+      "year": "1988",
+      "film": {
+        "id": 11503,
+        "title": "The Serpent and the Rainbow",
+        "original_title": "The Serpent and the Rainbow",
+        "release_date": "1988-02-05",
+        "poster_path": "/b7yjF5FUM2LpgjXRwDfukeFdjq4.jpg",
+        "genre_ids": [
+          27,
+          53
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "theseveredsun|2024",
+      "sourceTitle": "The Severed Sun",
+      "year": "2024",
+      "film": {
+        "id": 1231010,
+        "title": "The Severed Sun",
+        "original_title": "The Severed Sun",
+        "release_date": "2025-05-16",
+        "poster_path": "/j1ly4WT3a7BTV5QRLT1YB6xVJFB.jpg",
+        "genre_ids": [
+          27
+        ],
+        "catalogReleaseYears": [
+          "2025",
+          "2024"
+        ],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "theshadowedmind|1988",
+      "sourceTitle": "The Shadowed Mind",
+      "year": "1988",
+      "film": {
+        "id": 229078,
+        "title": "The Shadowed Mind",
+        "original_title": "The Shadowed Mind",
+        "release_date": "1988-01-01",
+        "poster_path": "/u50RM1CbT1lplHW6MSmsbJh472b.jpg",
+        "genre_ids": [
+          27,
+          53
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "thesheepdetectives|2026",
+      "sourceTitle": "The Sheep Detectives",
+      "year": "2026",
+      "film": {
+        "id": 1301421,
+        "title": "The Sheep Detectives",
+        "original_title": "The Sheep Detectives",
+        "release_date": "2026-04-30",
+        "poster_path": "/iKy5460GdsoknM8ppmGlJbKxAKa.jpg",
+        "genre_ids": [
+          35,
+          10751,
+          9648
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "theshrouds|2024",
+      "sourceTitle": "The Shrouds",
+      "year": "2024",
+      "film": {
+        "id": 970947,
+        "title": "The Shrouds",
+        "original_title": "The Shrouds",
+        "release_date": "2025-04-03",
+        "poster_path": "/xXoueIHdllGo5m0ChKvSATJYWBw.jpg",
+        "genre_ids": [
+          878,
+          18,
+          9648
+        ],
+        "catalogReleaseYears": [
+          "2024",
+          "2025",
+          "2026"
+        ],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "thesilenceofthehams|1994",
+      "sourceTitle": "The Silence of the Hams",
+      "year": "1994",
+      "film": {
+        "id": 10450,
+        "title": "The Silence of the Hams",
+        "original_title": "Il silenzio dei prosciutti",
+        "release_date": "1994-03-11",
+        "poster_path": "/s4mxntM3FM7joVGz1LECSGfvYtm.jpg",
+        "genre_ids": [
+          53,
+          35
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "thesmashingmachine|2025",
+      "sourceTitle": "The Smashing Machine",
+      "year": "2025",
+      "film": {
+        "id": 760329,
+        "title": "The Smashing Machine",
+        "original_title": "The Smashing Machine",
+        "release_date": "2025-10-01",
+        "poster_path": "/cwwvrdYeIrARXdiv09GIO6XWK5l.jpg",
+        "genre_ids": [
+          18,
+          36,
+          28
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "thesource|1999",
+      "sourceTitle": "The Source",
+      "year": "1999",
+      "film": {
+        "id": 51679,
+        "title": "The Source",
+        "original_title": "The Source",
+        "release_date": "1999-01-23",
+        "poster_path": "/cVWKNCnosCBfEmSDVNoxtrI8px0.jpg",
+        "genre_ids": [
+          99,
+          36
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "thestrangecaseofangelica|2010",
+      "sourceTitle": "The Strange Case of Angelica",
+      "year": "2010",
+      "film": {
+        "id": 53413,
+        "title": "The Strange Case of Angelica",
+        "original_title": "O Estranho Caso de Angélica",
+        "release_date": "2010-12-29",
+        "poster_path": "/rFFtcZX8cu99RcOSB1IBTXQYjAF.jpg",
+        "genre_ids": [
+          18,
+          14,
+          10749
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "thesuckling|1990",
+      "sourceTitle": "The Suckling",
+      "year": "1990",
+      "film": {
+        "id": 83292,
+        "title": "The Suckling",
+        "original_title": "The Suckling",
+        "release_date": "1990-09-24",
+        "poster_path": "/qAkU68rqKWZT5v6sFCxx85SrLr0.jpg",
+        "genre_ids": [
+          27
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "thevanishing|1988",
+      "sourceTitle": "The Vanishing",
+      "year": "1988",
+      "film": {
+        "id": 8740,
+        "title": "The Vanishing",
+        "original_title": "Spoorloos",
+        "release_date": "1988-10-27",
+        "poster_path": "/eE5bbuRJluooG2MjEAsLEYyuJoa.jpg",
+        "genre_ids": [
+          53,
+          9648
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "thevideodead|1987",
+      "sourceTitle": "The Video Dead",
+      "year": "1987",
+      "film": {
+        "id": 26677,
+        "title": "The Video Dead",
+        "original_title": "The Video Dead",
+        "release_date": "1987-11-06",
+        "poster_path": "/hsYfuS1kWb41aPf8ka7rgrYuMpP.jpg",
+        "genre_ids": [
+          27,
+          35,
+          14
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "thewildrobot|2024",
+      "sourceTitle": "The Wild Robot",
+      "year": "2024",
+      "film": {
+        "id": 1184918,
+        "title": "The Wild Robot",
+        "original_title": "The Wild Robot",
+        "release_date": "2024-09-12",
+        "poster_path": "/wTnV3PCVW5O92JMrFvvrRcV39RU.jpg",
+        "genre_ids": [
+          10751,
+          16,
+          878,
+          12
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "thewitchingofbenwagner|1987",
+      "sourceTitle": "The Witching of Ben Wagner",
+      "year": "1987",
+      "film": {
+        "id": 162934,
+        "title": "The Witching of Ben Wagner",
+        "original_title": "The Witching of Ben Wagner",
+        "release_date": "1987-12-31",
+        "poster_path": "/tCHqpKVXc7LExDWfVKUFJqyWzQh.jpg",
+        "genre_ids": [
+          12,
+          10751,
+          18,
+          10749,
+          10770
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "thewizardofgore|1970",
+      "sourceTitle": "The Wizard of Gore",
+      "year": "1970",
+      "film": {
+        "id": 23506,
+        "title": "The Wizard of Gore",
+        "original_title": "The Wizard of Gore",
+        "release_date": "1970-10-23",
+        "poster_path": "/z8zaRJb0e19jrniGoZoWzwCWTQk.jpg",
+        "genre_ids": [
+          27
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "thewolfhouse|2018",
+      "sourceTitle": "The Wolf House",
+      "year": "2018",
+      "film": {
+        "id": 499537,
+        "title": "The Wolf House",
+        "original_title": "La casa lobo",
+        "release_date": "2018-11-01",
+        "poster_path": "/kvgch2e25cd6dWhRJ6G8BCJ1Wcq.jpg",
+        "genre_ids": [
+          16,
+          27,
+          18
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "theworstwitch|1986",
+      "sourceTitle": "The Worst Witch",
+      "year": "1986",
+      "film": {
+        "id": 24054,
+        "title": "The Worst Witch",
+        "original_title": "The Worst Witch",
+        "release_date": "1986-10-22",
+        "poster_path": "/e1i5qV3z3538hO16OQWJlHgpZNI.jpg",
+        "genre_ids": [
+          10770,
+          10751,
+          35,
+          14,
+          10402
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "things|1989",
+      "sourceTitle": "Things",
+      "year": "1989",
+      "film": {
+        "id": 82126,
+        "title": "Things",
+        "original_title": "Things",
+        "release_date": "1989-09-01",
+        "poster_path": "/vuJhTarmDIhYh2KxP0hWn6azo33.jpg",
+        "genre_ids": [
+          27
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "timeofmoulting|2020",
+      "sourceTitle": "Time of Moulting",
+      "year": "2020",
+      "film": {
+        "id": 655514,
+        "title": "Time of Moulting",
+        "original_title": "Fellwechselzeit",
+        "release_date": "2020-01-21",
+        "poster_path": "/sLnDxnstH1p6k8br0WuAUMZscVY.jpg",
+        "genre_ids": [
+          18,
+          27
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "tiptoes|2002",
+      "sourceTitle": "Tiptoes",
+      "year": "2002",
+      "film": {
+        "id": 8325,
+        "title": "Tiptoes",
+        "original_title": "Tiptoes",
+        "release_date": "2002-12-17",
+        "poster_path": "/m609NhpkIUzAyIWgQYaaPSIsWFO.jpg",
+        "genre_ids": [
+          18,
+          10749,
+          35
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "tokyocowboy|1994",
+      "sourceTitle": "Tokyo Cowboy",
+      "year": "1994",
+      "film": {
+        "id": 292067,
+        "title": "Tokyo Cowboy",
+        "original_title": "Tokyo Cowboy",
+        "release_date": "1994-09-01",
+        "poster_path": "/uQvqzgrR2lQLG2VeHeWiDNacdIq.jpg",
+        "genre_ids": [
+          18,
+          10749,
+          37,
+          35
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "tokyostory|1953",
+      "sourceTitle": "Tokyo Story",
+      "year": "1953",
+      "film": {
+        "id": 18148,
+        "title": "Tokyo Story",
+        "original_title": "東京物語",
+        "release_date": "1953-11-03",
+        "poster_path": "/g2YbTYKpY7N2yDSk7BfXZ18I5QV.jpg",
+        "genre_ids": [
+          18
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "tremors|1990",
+      "sourceTitle": "Tremors",
+      "year": "1990",
+      "film": {
+        "id": 9362,
+        "title": "Tremors",
+        "original_title": "Tremors",
+        "release_date": "1990-01-19",
+        "poster_path": "/cA4ggkZ3r1d5r9hOAUWC8x5ul2i.jpg",
+        "genre_ids": [
+          35,
+          27,
+          878
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "troll2|1990",
+      "sourceTitle": "Troll 2",
+      "year": "1990",
+      "film": {
+        "id": 26914,
+        "title": "Troll 2",
+        "original_title": "Troll 2",
+        "release_date": "1990-10-12",
+        "poster_path": "/eFth6zw4PEInzr2Y64mYVN1zbBi.jpg",
+        "genre_ids": [
+          27,
+          14
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "tropicalmalady|2004",
+      "sourceTitle": "Tropical Malady",
+      "year": "2004",
+      "film": {
+        "id": 11534,
+        "title": "Tropical Malady",
+        "original_title": "สัตว์ประหลาด",
+        "release_date": "2004-06-24",
+        "poster_path": "/9WJ8ZSZp2NC7jSvweFLskldpzzg.jpg",
+        "genre_ids": [
+          18,
+          10749,
+          14
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "troubleeveryday|2001",
+      "sourceTitle": "Trouble Every Day",
+      "year": "2001",
+      "film": {
+        "id": 40723,
+        "title": "Trouble Every Day",
+        "original_title": "Trouble Every Day",
+        "release_date": "2001-07-11",
+        "poster_path": "/jn4799m6uB5P6ZUarlnxvZEZDFp.jpg",
+        "genre_ids": [
+          18,
+          27,
+          53
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "trumpvstheilluminati|2020",
+      "sourceTitle": "Trump vs the Illuminati",
+      "year": "2020",
+      "film": {
+        "id": 750578,
+        "title": "Trump vs the Illuminati",
+        "original_title": "Trump vs the Illuminati",
+        "release_date": "2020-10-06",
+        "poster_path": "/13kBDk1dMe7lM1SuNDxuUFAKqM2.jpg",
+        "genre_ids": [
+          16,
+          878,
+          35
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "twiceuponatime|1983",
+      "sourceTitle": "Twice Upon a Time",
+      "year": "1983",
+      "film": {
+        "id": 36751,
+        "title": "Twice Upon a Time",
+        "original_title": "Twice Upon a Time",
+        "release_date": "1983-08-05",
+        "poster_path": "/abx7BQF3O23LJGTDTmQQ0CTwc8c.jpg",
+        "genre_ids": [
+          16,
+          35,
+          12,
+          14
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "twinsofevil|1971",
+      "sourceTitle": "Twins of Evil",
+      "year": "1971",
+      "film": {
+        "id": 28801,
+        "title": "Twins of Evil",
+        "original_title": "Twins of Evil",
+        "release_date": "1971-10-17",
+        "poster_path": "/muBFwxCOV3duOMAMIYREOgsyABq.jpg",
+        "genre_ids": [
+          27
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "unhuman|2022",
+      "sourceTitle": "Unhuman",
+      "year": "2022",
+      "film": {
+        "id": 839678,
+        "title": "Unhuman",
+        "original_title": "Unhuman",
+        "release_date": "2022-06-03",
+        "poster_path": "/a0YCxxFhZSczKrw3FHDV0nTyHb5.jpg",
+        "genre_ids": [
+          27,
+          35
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "unicointheislandofmagic|1983",
+      "sourceTitle": "Unico in the Island of Magic",
+      "year": "1983",
+      "film": {
+        "id": 38565,
+        "title": "Unico in the Island of Magic",
+        "original_title": "ユニコ 魔法の島へ",
+        "release_date": "1983-07-16",
+        "poster_path": "/xG9cJlugwqj92ooeRrRsIJw0WER.jpg",
+        "genre_ids": [
+          16,
+          14,
+          18,
+          12,
+          10751
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "valerieandherweekofwonders|1970",
+      "sourceTitle": "Valerie and Her Week of Wonders",
+      "year": "1970",
+      "film": {
+        "id": 46315,
+        "title": "Valerie and Her Week of Wonders",
+        "original_title": "Valerie a týden divů",
+        "release_date": "1970-10-16",
+        "poster_path": "/lY0IkdouazLBpPYot8dsPAsJqHK.jpg",
+        "genre_ids": [
+          14,
+          12,
+          18
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "vampirehunterd|1985",
+      "sourceTitle": "Vampire Hunter D",
+      "year": "1985",
+      "film": {
+        "id": 9463,
+        "title": "Vampire Hunter D",
+        "original_title": "バンパイアハンターD",
+        "release_date": "1985-12-21",
+        "poster_path": "/yhKS0Wi6HNOHauWl0M3fr23hiB7.jpg",
+        "genre_ids": [
+          16,
+          14,
+          27
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "victoria|2015",
+      "sourceTitle": "Victoria",
+      "year": "2015",
+      "sourceURL": "https://letterboxd.com/film/victoria-2015/",
+      "film": {
+        "id": 320007,
+        "title": "Victoria",
+        "original_title": "Victoria",
+        "release_date": "2015-06-11",
+        "poster_path": "/9P8QgfoMcFX7vp2Gj2cYFecHVRZ.jpg",
+        "genre_ids": [],
+        "catalogReleaseYears": [
+          "2015",
+          "2016",
+          "2017"
+        ],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "visitorq|2001",
+      "sourceTitle": "Visitor Q",
+      "year": "2001",
+      "film": {
+        "id": 4241,
+        "title": "Visitor Q",
+        "original_title": "ビジターQ",
+        "release_date": "2001-03-17",
+        "poster_path": "/hkf41ujfmMwHdExD7q4j9DxgBDM.jpg",
+        "genre_ids": [
+          35,
+          18,
+          27,
+          53
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "wajib|2017",
+      "sourceTitle": "Wajib",
+      "year": "2017",
+      "film": {
+        "id": 467263,
+        "title": "Wajib",
+        "original_title": "واجب",
+        "release_date": "2017-08-20",
+        "poster_path": "/7yzu2DQmBkYpqYTm303WcSCySVJ.jpg",
+        "genre_ids": [
+          18
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "waxwork|1988",
+      "sourceTitle": "Waxwork",
+      "year": "1988",
+      "film": {
+        "id": 29095,
+        "title": "Waxwork",
+        "original_title": "Waxwork",
+        "release_date": "1988-06-17",
+        "poster_path": "/48RXt1Zu8iNL0mgCojydmqBsjsC.jpg",
+        "genre_ids": [
+          27,
+          35
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "wearetheflesh|2016",
+      "sourceTitle": "We Are the Flesh",
+      "year": "2016",
+      "film": {
+        "id": 378485,
+        "title": "We Are the Flesh",
+        "original_title": "Tenemos la carne",
+        "release_date": "2016-02-02",
+        "poster_path": "/y4vLIUysOqY16XPiaZ1W9oeXBc1.jpg",
+        "genre_ids": [
+          18,
+          27,
+          14
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "whengoodghoulsgobad|2001",
+      "sourceTitle": "When Good Ghouls Go Bad",
+      "year": "2001",
+      "film": {
+        "id": 55328,
+        "title": "When Good Ghouls Go Bad",
+        "original_title": "When Good Ghouls Go Bad",
+        "release_date": "2001-10-20",
+        "poster_path": "/2SKXCsd4a44CO9ZQU6hNt1Kk18c.jpg",
+        "genre_ids": [
+          10751,
+          10770,
+          27,
+          35
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "whitefire|1984",
+      "sourceTitle": "White Fire",
+      "year": "1984",
+      "film": {
+        "id": 89921,
+        "title": "White Fire",
+        "original_title": "Vivre pour survivre",
+        "release_date": "1984-07-05",
+        "poster_path": "/3vhrYXlOv1YgTeTTZephfNBem1S.jpg",
+        "genre_ids": [
+          18,
+          28,
+          53
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "wildatheart|1990",
+      "sourceTitle": "Wild at Heart",
+      "year": "1990",
+      "film": {
+        "id": 483,
+        "title": "Wild at Heart",
+        "original_title": "Wild at Heart",
+        "release_date": "1990-08-17",
+        "poster_path": "/uLUFI5sJIfWrBUWB2Y1dEuyvvVy.jpg",
+        "genre_ids": [
+          80,
+          53,
+          10749
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "yokaimonsters100monsters|1968",
+      "sourceTitle": "Yokai Monsters: 100 Monsters",
+      "year": "1968",
+      "film": {
+        "id": 91756,
+        "title": "Yokai Monsters: 100 Monsters",
+        "original_title": "妖怪百物語",
+        "release_date": "1968-03-20",
+        "poster_path": "/zNUlTFJ3OwwNbmejRdxF6Lq9jEZ.jpg",
+        "genre_ids": [
+          27
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    },
+    {
+      "key": "zardoz|1974",
+      "sourceTitle": "Zardoz",
+      "year": "1974",
+      "film": {
+        "id": 4923,
+        "title": "Zardoz",
+        "original_title": "Zardoz",
+        "release_date": "1974-02-06",
+        "poster_path": "/6qvQhJhvM7wWPB2LjVpivSNraIv.jpg",
+        "genre_ids": [
+          14,
+          28,
+          53,
+          878
+        ],
+        "catalogReleaseYears": [],
+        "catalogAliases": []
+      }
+    }
+  ],
+  "reviews": [
+    {
+      "key": "thetommyknockers|1993",
+      "title": "The Tommyknockers",
+      "year": "1993",
+      "reason": "TV series: Rewind’s availability checker currently handles films",
+      "candidates": [],
+      "series": {
+        "id": 16089,
+        "title": "The Tommyknockers"
+      }
+    },
+    {
+      "key": "bandofbrothers|2001",
+      "title": "Band of Brothers",
+      "year": "2001",
+      "reason": "TV series: Rewind’s availability checker currently handles films",
+      "candidates": [],
+      "series": {
+        "id": 4613,
+        "title": "Band of Brothers"
+      }
+    },
+    {
+      "key": "imaydestroyyou|2020",
+      "title": "I May Destroy You",
+      "year": "2020",
+      "reason": "TV series: Rewind’s availability checker currently handles films",
+      "candidates": [],
+      "series": {
+        "id": 102619,
+        "title": "I May Destroy You"
+      }
+    },
+    {
+      "key": "normalpeople|2020",
+      "title": "Normal People",
+      "year": "2020",
+      "reason": "TV series: Rewind’s availability checker currently handles films",
+      "candidates": [],
+      "series": {
+        "id": 89905,
+        "title": "Normal People"
+      }
+    }
+  ]
+}

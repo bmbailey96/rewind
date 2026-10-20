@@ -25,3 +25,9 @@ console.log('Aggregate storage quota: lossless recovery, reload, later saves, fu
 const priceArchive=Array.from({length:240},(_,i)=>({key:'rent:appletv:4K',kind:'rent',provider:'Apple TV',format:'4K',price:5.99,at:1780000000000+i*21600000})),bigSync={watchlist:Array.from({length:600},(_,i)=>({id:i+1,title:'Film '+i,priceHistory:priceArchive,manualNote:'Keep this.'})),seen:['one|2001'],skipped:[7],hub:{feedback:[{id:8,kind:'notforme'}]}};
 const packedSync=S.syncContent(bigSync),decodedSync=S.parseSync(packedSync);assert(Buffer.byteLength(packedSync)<10000000,'600 films with full quote histories fit a browser-readable gist');assert.equal(decodedSync.watchlist[599].priceHistory.length,240);assert.equal(decodedSync.watchlist[599].manualNote,'Keep this.');assert.deepEqual(decodedSync.hub.feedback,bigSync.hub.feedback);assert.deepEqual(S.parseSync(JSON.stringify({watchlist:[],seen:[],skipped:[]})),{watchlist:[],seen:[],skipped:[]},'Existing plain sync files still read');
 console.log('600-film cloud history: lossless packing, existing plain-file compatibility and personal choices preserved');
+
+const fullStorage={getItem:()=>null,setItem:()=>{const error=Error('Full');error.name='QuotaExceededError';throw error;}};
+assert.equal(S.save(fullStorage,'rewind-watchlist-v1',{id:1,manualNote:'Keep'}),false);assert.equal(S.failure('rewind-watchlist-v1'),'QuotaExceededError');
+const retryStore=new Map(),availableStorage={getItem:k=>retryStore.get(k)||null,setItem:(k,v)=>retryStore.set(k,v)};
+assert.equal(S.save(availableStorage,'rewind-watchlist-v1',{id:1,manualNote:'Keep'}),true);assert.equal(S.failure('rewind-watchlist-v1'),null);assert.equal(S.read(availableStorage,'rewind-watchlist-v1').manualNote,'Keep');
+console.log('Device-save diagnostics distinguish quota failures and clear only after a successful retry');

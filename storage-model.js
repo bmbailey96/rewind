@@ -7,6 +7,8 @@
   if(!value||typeof value!=='object')return value;
   const out={};for(const [k,v] of Object.entries(value)){if(refreshable.has(k))continue;if(k==='release_dates'&&v?.results){out[k]={results:v.results.map(country=>({iso_3166_1:country.iso_3166_1,release_dates:(country.release_dates||[]).map(r=>({type:r.type,release_date:r.release_date}))}))};}else if(k==='meta'||k==='detailsSnapshot'){ out[k]={};for(const field of ['id','title','release_date','runtime','overview','genres','genre_ids','keywords','credits','poster_path','backdrop_path','release_dates','production_companies'])if(v?.[field]!=null)out[k][field]=compact(v[field],field);}else out[k]=compact(v,k);}return out;
  }
+ const failures=new Map();
+ const failure=key=>failures.get(key)||null;
  const keys=['rewind-watchlist-v1','rewind-hub-v1','rewind-sync-base-v1'];
  const prefix='rwz1:';
  // Bounded LZW over UTF-8 bytes. Local storage counts UTF-16 units; one code per
@@ -21,9 +23,14 @@
   for(let i=1;i<codes.length;i++){const code=codes.charCodeAt(i),entry=dictionary[code]??(code===next?previous+previous[0]:undefined);if(entry===undefined)throw Error('Invalid saved record');parts.push(entry);if(next<65535)dictionary[next++]=previous+entry[0];previous=entry;}return decodeURIComponent(escape(parts.join('')));
  }
  function read(storage,key,fallback=null){const text=storage.getItem(key);return text?JSON.parse(decode(text)):fallback;}
- function migrate(storage,compress=false){for(const key of keys){const text=storage.getItem(key);if(!text||!compress&&text.startsWith(prefix))continue;try{const small=JSON.stringify(compact(JSON.parse(decode(text)))),value=compress||text.startsWith(prefix)||small.length>=100000?encode(small):small;if(value.length<text.length)storage.setItem(key,value);}catch{ /* Existing saved data remains available if migration cannot write. */ }}}
- function save(storage,key,value){const small=JSON.stringify(compact(value));try{const previous=storage.getItem(key)||'';storage.setItem(key,previous.startsWith(prefix)||small.length>=100000?encode(small):small);return true;}catch(error){if(error.name!=='QuotaExceededError'&&error.name!=='NS_ERROR_DOM_QUOTA_REACHED')return false;migrate(storage,true);try{storage.setItem(key,encode(small));return true;}catch{return false;}}}
+ function migrate(storage,compress=false){for(const key of keys){try{const text=storage.getItem(key);if(!text||!compress&&text.startsWith(prefix))continue;const small=JSON.stringify(compact(JSON.parse(decode(text)))),value=compress||text.startsWith(prefix)||small.length>=100000?encode(small):small;if(value.length<text.length)storage.setItem(key,value);}catch{ /* Keep the existing record if storage is blocked or a write fails. */ }}}
+ function save(storage,key,value){
+  try{const small=JSON.stringify(compact(value));
+   try{const previous=storage.getItem(key)||'';storage.setItem(key,previous.startsWith(prefix)||small.length>=100000?encode(small):small);failures.delete(key);return true;}
+   catch(error){if(error.name!=='QuotaExceededError'&&error.name!=='NS_ERROR_DOM_QUOTA_REACHED')throw error;migrate(storage,true);storage.setItem(key,encode(small));failures.delete(key);return true;}
+  }catch(error){failures.set(key,error.name||'StorageError');return false;}
+ }
  function syncContent(value){const text=JSON.stringify(value);return text.length<500000?text:JSON.stringify({format:'rewind-packed-v1',payload:encode(text)});}
  function parseSync(text){const value=JSON.parse(text);if(value?.format!=='rewind-packed-v1')return value;if(typeof value.payload!=='string')throw Error('Invalid sync payload');return JSON.parse(decode(value.payload));}
- return {compact,migrate,save,read,encode,decode,syncContent,parseSync};
+ return {failure,compact,migrate,save,read,encode,decode,syncContent,parseSync};
 });

@@ -43,3 +43,22 @@
 .calendar-film-label .calendar-film-actions{position:static;margin:8px 0 0 76px;padding:0}
 .calendar-film-label:not(:has(img,.calendar-poster-placeholder)) .calendar-film-actions{margin-left:0}
 .run-bar.channel-theater,.run-bar.channel-roxy,.run-bar.channel-digital,.run-bar.channel-national{background-image:linear-gradient(90deg,var(--channel-wash),transparent),var(--screening-art,none)!important}
+/* One source choice, one personal filter, one search. */
+.calendar-tools{display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,1fr);align-items:center;gap:14px 24px;margin:18px 0 10px}
+.calendar-source-tabs{display:flex;gap:6px;align-items:center;min-width:0}
+.calendar-source-tabs button{flex:1;min-height:44px;margin:0;padding:10px 16px;border:1px solid #43564b;background:transparent;color:#bdcbc1;border-radius:3px;font-size:13px;letter-spacing:0;text-transform:none}
+.calendar-source-tabs button[aria-pressed=true]{border-color:#d3b470;background:#302f24;color:#f0d49a}
+.calendar-saved-label{display:flex;gap:10px;align-items:center;font-size:13px;color:#ced9ce;justify-self:end;margin:0;min-height:44px}
+.calendar-saved-label input{width:18px;height:18px;accent-color:#90c5b0;margin:0}
+.calendar-tools .calendar-venue-label{justify-content:space-between;gap:12px;font-size:12px}
+.calendar-tools .calendar-venue-label select{flex:1;max-width:none;margin:0;min-width:0}
+.calendar-venue-label[hidden]{display:none!important}
+.calendar-search-label{margin:0}.calendar-search-label input{width:100%;min-height:44px;margin:0;padding:10px 12px;box-sizing:border-box;font-size:14px}
+.calendar-refresh-row{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:0 0 12px;border-bottom:1px solid #34473f;margin-bottom:12px}
+.calendar-refresh-row #cinema-status{margin:0;flex:1;max-width:none}.calendar-refresh-row button{min-height:44px;margin:0;padding:8px 2px;font-size:12px}
+#watchlist-import-review:empty{display:none}#watchlist-import-review{margin:12px 0;padding:0;border:0}
+#watchlist-import-review .import-progress{font-size:12px;line-height:1.55;max-width:75ch;margin:0 0 8px}
+#watchlist-import-review>details{margin:8px 0}#watchlist-import-review summary{font-size:12px;min-height:44px;padding:10px 0;cursor:pointer}
+.import-review-film{padding:12px 0;border-top:1px solid #34473f}.import-review-film>p{margin:5px 0}.import-review-film .text-action{min-height:44px;padding:8px 10px 8px 0;font-size:12px}
+.import-candidate{display:flex;gap:12px;justify-content:space-between;align-items:center;font-size:12px}.import-candidate a{color:#c6d9cb;text-underline-offset:3px}
+@media(max-width:700px){.calendar-tools{grid-template-columns:minmax(0,1fr);gap:10px;margin:12px 0 4px}.calendar-saved-label{justify-self:start;min-height:36px;font-size:12px}.calendar-tools .calendar-venue-label{width:100%}.calendar-source-tabs button{padding:10px 8px}.calendar-search-label input{font-size:16px}.calendar-kind-switch{margin:4px 0 10px}#tab-upcoming>.hub-lead{font-size:13px;margin-bottom:8px}}

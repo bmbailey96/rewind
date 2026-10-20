@@ -121,3 +121,14 @@ The calendar includes Cinemark Kalispell and the Roxy Theater in Missoula. The t
 `calendar-ui.css` contains the shared source labels and responsive calendar refinements. The calendar loader shares its fallback-snapshot request, caches visited weeks, and uses supplied artwork before looking up catalog artwork. Opening or following an event can still request its catalog match.
 
 Run `npm test` for source parsing, Mountain daylight-saving time conversion, venue filtering, ticket destinations, mixed national/digital labels, outage fallback and existing application regressions.
+
+
+### Calendar controls and completed film identities
+
+The calendar has one release-type choice (Theaters, Digital, Both), an independent Only my saved films toggle, a theater selector shown for theatrical views, and one search field. Anniversaries is named explicitly. The duplicate scope dropdown, calendar recommendation switch, and redundant theater checkbox were removed. Recommendation records remain intact for Discover.
+
+`catalog-matches.json` provides verified identities for all 261 films in the original 265-entry watchlist baseline, plus Jason X under its 2001 and 2002 year records. Four imported series remain saved as explicitly unsupported by the film-only availability model. Competing film names were settled using the original Letterboxd film page's linked TMDB record. `scripts/match-watchlist.cjs` can rebuild these mappings from the published source files. It preserves authoritative source links.
+
+New imports are identified automatically in bounded background batches with two concurrent requests. Successful IDs and imported-source keys persist and sync; removals, pins, notes, and release-follow choices remain independent. Unprocessed records, temporary lookup failures with backoff, uncertain film identities, and unsupported series have distinct states. An outage at the queue's head cannot starve later entries. The read-only `catalog-identity` function accepts only public Letterboxd film URLs, validates every redirect, and never fetches account pages.
+
+Local-save errors retain pending values for retry, identify full storage separately, and keep cloud sync status independent. Retry device save appears alongside the existing backup action. No saved films, notes, ratings, ownership records, or quote histories are deleted to recover space.

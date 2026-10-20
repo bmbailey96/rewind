@@ -106,7 +106,32 @@
  function titleKey(title){return String(title||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^\p{L}\p{N}]/gu,'');}
  function sourceKey(film){return titleKey(film.sourceTitle||film.title)+'|'+(film.year||String(film.release_date||'').slice(0,4));}
  function releaseYears(data){return [...new Set((data.results||[]).flatMap(country=>(country.release_dates||[]).filter(r=>[1,2,3].includes(r.type)&&/^\d{4}-/.test(r.release_date||'')).map(r=>r.release_date.slice(0,4))))];}
- function match(row,candidates){const hits=new Map();for(const film of candidates||[])if(film.id&&(String(film.release_date||'').slice(0,4)===String(row.year)||(film.catalogReleaseYears||[]).includes(String(row.year)))&&[film.title,film.original_title].some(t=>titleKey(t)===titleKey(row.title)))hits.set(film.id,film);return hits.size===1?[...hits.values()][0]:null;}
+ function match(row,candidates){const hits=new Map();for(const film of candidates||[])if(film.id&&(String(film.release_date||'').slice(0,4)===String(row.year)||(film.catalogReleaseYears||[]).includes(String(row.year)))&&[film.title,film.original_title,...(film.catalogAliases||[])].some(t=>titleKey(t)===titleKey(row.title)))hits.set(film.id,film);return hits.size===1?[...hits.values()][0]:null;}
+ // Resolve catalog identity only. This never checks streaming or follows a release.
+ async function resolveCatalog(row,lookup){
+  const search=async params=>{const data=await lookup('/search/movie',params);const candidates=[...(data.results||[])];for(let page=2;page<=Math.min(5,data.total_pages||1);page++)candidates.push(...((await lookup('/search/movie',{...params,page})).results||[]));return candidates;};
+  let candidates=await search({query:row.title,primary_release_year:row.year}),film=match(row,candidates);
+  if(!film){candidates=await search({query:row.title});film=match(row,candidates);}
+  if(!film){const exact=candidates.filter(f=>[f.title,f.original_title].some(t=>titleKey(t)===titleKey(row.title))&&Math.abs(Number(String(f.release_date||'').slice(0,4))-Number(row.year))<=2);
+   if(exact.length>0&&exact.length<=3){const verified=[];for(const candidate of exact){const releases=await lookup('/movie/'+candidate.id+'/release_dates',{});verified.push({...candidate,catalogReleaseYears:releaseYears(releases)});}candidates=verified;film=match(row,candidates);}
+  }
+  if(!film){
+   const nearby=candidates.filter(f=>String(f.release_date||'').slice(0,4)===String(row.year)).slice(0,3),aliases=[];
+   for(const candidate of nearby){const alt=await lookup('/movie/'+candidate.id+'/alternative_titles',{});aliases.push({...candidate,catalogAliases:(alt.titles||[]).map(a=>a.title)});}
+   film=match(row,aliases);
+  }
+  if(film)return {state:'matched',film};
+  const exact=candidates.filter(f=>[f.title,f.original_title].some(t=>titleKey(t)===titleKey(row.title))&&(String(f.release_date||'').slice(0,4)===String(row.year)||(f.catalogReleaseYears||[]).includes(String(row.year))));
+  if(!exact.length){const series=await lookup('/search/tv',{query:row.title,first_air_date_year:row.year});const hits=(series.results||[]).filter(s=>String(s.first_air_date||'').slice(0,4)===String(row.year)&&[s.name,s.original_name].some(t=>titleKey(t)===titleKey(row.title)));
+   if(hits.length===1)return {state:'review',reason:'TV series: Rewind’s availability checker currently handles films',candidates:[],series:{id:hits[0].id,title:hits[0].name}};
+  }
+  return {state:'review',reason:exact.length>1?'More than one possible film':'No verified title and year match',candidates:exact.slice(0,5).map(f=>({id:f.id,title:f.title,release_date:f.release_date,poster_path:f.poster_path||null}))};
+ }
+ function matchQueue(rows,at=Date.now()){
+  return [...(rows||[])].filter(r=>!['review','unsupported'].includes(r.catalogMatch?.state)&&(!r.catalogMatch?.nextAttemptAt||r.catalogMatch.nextAttemptAt<=at))
+   .sort((a,b)=>(a.catalogMatch?.lastAttemptAt||0)-(b.catalogMatch?.lastAttemptAt||0));
+ }
+ function matchSummary(rows){const counts={pending:0,retry:0,review:0,unsupported:0};for(const row of rows||[])counts[['review','retry','unsupported'].includes(row.catalogMatch?.state)?row.catalogMatch.state:'pending']++;return counts;}
  function actionable(movie,status,receipts,budget,at=Date.now()){
   if(!status||status.stale||!status.checkedAt||at-status.checkedAt<0||at-status.checkedAt>86400000)return null;
   const offers=status.offers||[];return [...(receipts||[])].filter(r=>r.movieId===movie.id&&r.at<=at&&at-r.at<=14*86400000).sort((a,b)=>b.at-a.at).find(r=>r.type==='price'&&typeof r.from==='number'&&typeof r.to==='number'&&r.to<r.from&&offers.some(o=>o.kind==='rent'&&o.provider===r.provider&&o.format===r.format&&o.price===r.to)&&status.quoteCheckedAt&&at-status.quoteCheckedAt>=0&&at-status.quoteCheckedAt<=86400000||r.type==='included'&&offers.some(o=>o.provider===r.provider&&(o.kind==='free'||o.kind==='subscription'&&o.included)))||null;
@@ -116,5 +141,5 @@
  function rewindAdditions(movies,keys=[]){const imported=new Set(keys);return movies.filter(m=>m.id&&!m.letterboxdWatchlist&&!/Letterboxd watchlist/i.test(m.source||'')&&!imported.has(sourceKey(m)));}
  function exportCSV(movies,keys=[]){const field=value=>'"'+String(value??'').replace(/"/g,'""')+'"';return 'tmdbID,Title,Year\r\n'+rewindAdditions(movies,keys).map(m=>[m.id,field(m.title),String(m.release_date||'').slice(0,4)].join(',')).join('\r\n')+'\r\n';}
  function page(results,{sort='cost',filter='all',budget=7.99,limit=60,model}){const ranks={free:0,cheap:1,premium:2,unknown:3,buy:4,waiting:5};const rows=results.map(r=>({...r,cost:model.cost(r.status.offers,budget,r.status.stale)})).filter(r=>filter==='all'||filter===r.cost.band);const compare={changed:(a,b)=>(b.entry.statusChangedAt||0)-(a.entry.statusChangedAt||0),added:(a,b)=>(b.entry.addedAt||0)-(a.entry.addedAt||0),release:(a,b)=>String(b.entry.release_date||'').localeCompare(a.entry.release_date||''),az:(a,b)=>a.entry.title.localeCompare(b.entry.title)};rows.sort((a,b)=>Number(!!b.entry.pinned)-Number(!!a.entry.pinned)||(sort==='cost'?ranks[a.cost.band]-ranks[b.cost.band]||(a.cost.price??Infinity)-(b.cost.price??Infinity):(compare[sort]||compare.changed)(a,b))||a.entry.title.localeCompare(b.entry.title));return {rows:rows.slice(0,limit),total:rows.length};}
- return {addedAt,recentRelease,recentReleases,backfillReleaseFollows,followsRelease,upcomingHome,theatricalDate,releaseOpening,releaseStage,releaseWatchPage,merge,titleKey,sourceKey,match,releaseYears,page,actionable,freshSnapshot,genreIds,rewindAdditions,exportCSV};
+ return {addedAt,recentRelease,recentReleases,backfillReleaseFollows,followsRelease,upcomingHome,theatricalDate,releaseOpening,releaseStage,releaseWatchPage,merge,titleKey,sourceKey,match,releaseYears,resolveCatalog,matchQueue,matchSummary,page,actionable,freshSnapshot,genreIds,rewindAdditions,exportCSV};
 });
