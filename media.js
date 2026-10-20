@@ -2,7 +2,7 @@
 const RewindMedia=(()=>{
  const $=id=>document.getElementById(id),el=(tag,text,cls)=>{const e=document.createElement(tag);if(text!=null)e.textContent=text;if(cls)e.className=cls;return e;};
  const today=()=>discoveryWindow().today;
- let filter='all',browseToken=0,extraRows=[],refreshTimer=null,seedFlight=null;
+ let filter='all',browseToken=0,extraRows=[],refreshTimer=null,seedFlight=null,initialTVRefreshStarted=false;
  try{const p=JSON.parse(localStorage.getItem('rewind-ui-v1')||'{}');if(['all','movie','tv'].includes(p.mediaType))filter=p.mediaType;}catch{}
  const button=(text,fn)=>{const b=el('button',text);b.type='button';b.onclick=fn;return b;};
  let groupMemo=null,linkMemo=null;
@@ -147,7 +147,7 @@ const RewindMedia=(()=>{
   const search=$('search-input');search.placeholder=filter==='tv'?'Any TV series…':filter==='movie'?'Any movie…':'Find a movie or TV series…';
   $('discover-more').textContent='MORE TITLES';$('pick-again').textContent='PICK ANOTHER';if($('pick-film').textContent==='PICK A FILM')$('pick-film').textContent='PICK A TITLE';for(const id of ['picker-intro','picker-status']){const n=$(id);if(n&&filter!=='movie')n.textContent=n.textContent.replace(/\bfilms\b/g,'titles').replace(/\bfilm\b/g,'title');}
  }
- function changed(){groupMemo=null;linkMemo=null;clearTimeout(refreshTimer);refreshTimer=setTimeout(()=>{renderWatchlist(false,true).catch(()=>{});if(typeof Hub!=='undefined')Hub.stateChanged();},120);}
+ function changed(){groupMemo=null;linkMemo=null;clearTimeout(refreshTimer);refreshTimer=setTimeout(()=>{renderWatchlist(false,true).catch(()=>{});if(typeof Hub!=='undefined')Hub.stateChanged();if(!initialTVRefreshStarted&&savedTV().length){initialTVRefreshStarted=true;refreshTV(6).catch(()=>{});}},120);}
  function setFilter(value){
   if(!['all','movie','tv'].includes(value))return;filter=value;let p={};try{p=JSON.parse(localStorage.getItem('rewind-ui-v1')||'{}')||{};}catch{}p.mediaType=filter;localStorage.setItem('rewind-ui-v1',JSON.stringify(p));scheduleSync();labelControls();
   ++discoverRequest;++searchRequest;watchlistLimit=WATCHLIST_PAGE_SIZE;changed();window.dispatchEvent(new Event('rewind:media-filter'));
@@ -179,7 +179,7 @@ const RewindMedia=(()=>{
  window.addEventListener('rewind:tv-state',changed);window.addEventListener('rewind:state',()=>{labelControls();changed();});
  document.querySelectorAll('[data-media-filter]').forEach(b=>b.onclick=()=>setFilter(b.dataset.mediaFilter));
  const originalWatchlist=renderWatchlist;renderWatchlist=async(...args)=>{const result=await originalWatchlist(...args);const all=collection(),scope=scopedWatchlist();$('watchlist-count').textContent=all.length+' saved titles · '+all.filter(isTV).length+' TV series';$('watchlist-empty').hidden=all.length>0;$('watchlist-scope-note').textContent=watchlistScope==='release'?'Followed movie releases, saved TV shows, and unfinished seasons.':'Your saved movies and TV series.';labelControls();return result;};
- async function refreshTV(limit=12,force=false){await TV.ready;const selected=groups().filter(g=>(g.intent||(hubState.seriesFollows||[]).includes(g.id)||MediaModel.positiveRecords(g).length)&&(force||!TV.cached(g.id)?.checkedAt||Date.now()-TV.cached(g.id).checkedAt>6*3600000)).sort((a,b)=>Number(!!TV.cached(a.id)?.checkedAt)-Number(!!TV.cached(b.id)?.checkedAt)).slice(0,limit);await mapLimited(selected,2,async g=>{try{await TV.check(g);}catch{}});changed();}
+ async function refreshTV(limit=12,force=false){await TV.ready;const selected=groups().filter(g=>(g.intent||(hubState.seriesFollows||[]).includes(g.id)||MediaModel.positiveRecords(g).length)&&(force||!TV.cached(g.id)?.checkedAt||Date.now()-TV.cached(g.id).checkedAt>6*3600000)).sort((a,b)=>Number(!!TV.cached(a.id)?.checkedAt)-Number(!!TV.cached(b.id)?.checkedAt)||Number(!!b.intent)-Number(!!a.intent)||Number(b.seasons.some(r=>r.partial))-Number(a.seasons.some(r=>r.partial))).slice(0,limit);await mapLimited(selected,2,async g=>{try{await TV.check(g);}catch{}});changed();}
  $('refresh-card-btn').addEventListener('click',()=>{if(filter!=='movie')refreshTV(12,true).catch(()=>{});});
  document.querySelectorAll('[data-calendar-source=digital]').forEach(b=>b.addEventListener('click',()=>refreshTV().catch(()=>{})));
  $('cinema-refresh').addEventListener('click',()=>{if(document.querySelector('[data-calendar-source=digital][aria-pressed=true]'))refreshTV(12,true).catch(()=>{});});
