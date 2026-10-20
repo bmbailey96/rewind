@@ -116,7 +116,7 @@ All hub writes merge the latest saved theater hides and restore records first. O
 
 The calendar includes Cinemark Kalispell and the Roxy Theater in Missoula. The theater selector filters concrete venue bookings while keeping national dates and digital releases independent. Cards, list entries and timeline rows identify the source in text and color. Digital availability and theater bookings can coexist on a saved film.
 
-`netlify/functions/roxy-cinema.mjs` reads the Roxy public calendar, caches each requested date window for 15 minutes, and retains a recent source snapshot during outages. Screening times use the venue's posted clock time in America/Denver, rather than the upstream feed's incorrect fixed UTC offset. Listings older than 36 hours are suppressed. No ticket price is inferred from a screening.
+`netlify/functions/roxy-cinema.mjs` reads the Roxy public calendar, caches each requested date window for 15 minutes, and retains a recent source snapshot during outages. Screening times use the venue's posted clock time in America/Denver, rather than the upstream feed's incorrect fixed UTC offset. A GitHub workflow refreshes the 90-day source snapshot every three hours, independently of Netlify’s outbound connection. Listings older than 36 hours are suppressed. No ticket price is inferred from a screening.
 
 `calendar-ui.css` contains the shared source labels and responsive calendar refinements. The calendar loader shares its fallback-snapshot request, caches visited weeks, and uses supplied artwork before looking up catalog artwork. Opening or following an event can still request its catalog match.
 

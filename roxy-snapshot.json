@@ -1398,9 +1398,785 @@
       "start": "2026-11-02",
       "end": "2026-11-02",
       "dateLabel": "1 listed days"
+    },
+    {
+      "id": "roxy:/show/girl-winter-film-tour-2/",
+      "title": "Girl Winter Film Tour",
+      "venueId": "roxy",
+      "venue": "Roxy Theater",
+      "location": "Missoula",
+      "source": "Roxy Theater official calendar",
+      "url": "https://www.theroxytheater.org/show/girl-winter-film-tour-2/",
+      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/08/gwft20banner2016x920horizontal-1024x575.jpg",
+      "dates": [
+        "2026-11-04",
+        "2026-11-05"
+      ],
+      "ranges": [],
+      "screenings": [
+        {
+          "date": "2026-11-04",
+          "time": "7:30pm",
+          "startsAt": "2026-11-05T02:30:00.000Z",
+          "url": "https://www.theroxytheater.org/show/girl-winter-film-tour-2/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-05",
+          "time": "7:30pm",
+          "startsAt": "2026-11-06T02:30:00.000Z",
+          "url": "https://www.theroxytheater.org/show/girl-winter-film-tour-2/",
+          "format": ""
+        }
+      ],
+      "start": "2026-11-04",
+      "end": "2026-11-05",
+      "dateLabel": "2 listed days"
+    },
+    {
+      "id": "roxy:/show/the-airwaves-belonged-to-the-people-wbcn-and-the-american-revolution/",
+      "title": "The Airwaves Belonged to the People: WBCN and the American Revolution",
+      "venueId": "roxy",
+      "venue": "Roxy Theater",
+      "location": "Missoula",
+      "source": "Roxy Theater official calendar",
+      "url": "https://www.theroxytheater.org/show/the-airwaves-belonged-to-the-people-wbcn-and-the-american-revolution/",
+      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/wbcn-1024x576.jpg",
+      "dates": [
+        "2026-11-05"
+      ],
+      "ranges": [],
+      "screenings": [
+        {
+          "date": "2026-11-05",
+          "time": "5:15pm",
+          "startsAt": "2026-11-06T00:15:00.000Z",
+          "url": "https://www.theroxytheater.org/show/the-airwaves-belonged-to-the-people-wbcn-and-the-american-revolution/",
+          "format": ""
+        }
+      ],
+      "start": "2026-11-05",
+      "end": "2026-11-05",
+      "dateLabel": "1 listed days"
+    },
+    {
+      "id": "roxy:/show/twin-peaks-episodes-22-23-24/",
+      "title": "Twin Peaks – Episodes 22, 23, & 24",
+      "venueId": "roxy",
+      "venue": "Roxy Theater",
+      "location": "Missoula",
+      "source": "Roxy Theater official calendar",
+      "url": "https://www.theroxytheater.org/show/twin-peaks-episodes-22-23-24/",
+      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/09/ontkean-1024x577.jpg",
+      "dates": [
+        "2026-11-06",
+        "2026-11-07",
+        "2026-11-08"
+      ],
+      "ranges": [],
+      "screenings": [
+        {
+          "date": "2026-11-06",
+          "time": "5:15pm",
+          "startsAt": "2026-11-07T00:15:00.000Z",
+          "url": "https://www.theroxytheater.org/show/twin-peaks-episodes-22-23-24/",
+          "format": "Annex"
+        },
+        {
+          "date": "2026-11-06",
+          "time": "8:00pm",
+          "startsAt": "2026-11-07T03:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/twin-peaks-episodes-22-23-24/",
+          "format": "Annex"
+        },
+        {
+          "date": "2026-11-07",
+          "time": "5:15pm",
+          "startsAt": "2026-11-08T00:15:00.000Z",
+          "url": "https://www.theroxytheater.org/show/twin-peaks-episodes-22-23-24/",
+          "format": "Annex"
+        },
+        {
+          "date": "2026-11-07",
+          "time": "8:00pm",
+          "startsAt": "2026-11-08T03:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/twin-peaks-episodes-22-23-24/",
+          "format": "Annex"
+        },
+        {
+          "date": "2026-11-08",
+          "time": "5:15pm",
+          "startsAt": "2026-11-09T00:15:00.000Z",
+          "url": "https://www.theroxytheater.org/show/twin-peaks-episodes-22-23-24/",
+          "format": "Annex"
+        },
+        {
+          "date": "2026-11-08",
+          "time": "8:00pm",
+          "startsAt": "2026-11-09T03:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/twin-peaks-episodes-22-23-24/",
+          "format": "Annex"
+        }
+      ],
+      "start": "2026-11-06",
+      "end": "2026-11-08",
+      "dateLabel": "3 listed days"
+    },
+    {
+      "id": "roxy:/show/erin-brockovich/",
+      "title": "Erin Brockovich",
+      "venueId": "roxy",
+      "venue": "Roxy Theater",
+      "location": "Missoula",
+      "source": "Roxy Theater official calendar",
+      "url": "https://www.theroxytheater.org/show/erin-brockovich/",
+      "poster": "https://www.theroxytheater.org/wp-content/uploads/2023/02/erin20b-1024x576.jpg",
+      "dates": [
+        "2026-11-07",
+        "2026-11-08"
+      ],
+      "ranges": [],
+      "screenings": [
+        {
+          "date": "2026-11-07",
+          "time": "8:00pm",
+          "startsAt": "2026-11-08T03:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/erin-brockovich/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-08",
+          "time": "3:00pm",
+          "startsAt": "2026-11-08T22:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/erin-brockovich/",
+          "format": ""
+        }
+      ],
+      "start": "2026-11-07",
+      "end": "2026-11-08",
+      "dateLabel": "2 listed days"
+    },
+    {
+      "id": "roxy:/show/burst-the-silence/",
+      "title": "Burst the Silence",
+      "venueId": "roxy",
+      "venue": "Roxy Theater",
+      "location": "Missoula",
+      "source": "Roxy Theater official calendar",
+      "url": "https://www.theroxytheater.org/show/burst-the-silence/",
+      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/08/bts20final20hi20res20300dpi20copy-1024x574.jpg",
+      "dates": [
+        "2026-11-08"
+      ],
+      "ranges": [],
+      "screenings": [
+        {
+          "date": "2026-11-08",
+          "time": "1:30pm",
+          "startsAt": "2026-11-08T20:30:00.000Z",
+          "url": "https://www.theroxytheater.org/show/burst-the-silence/",
+          "format": ""
+        }
+      ],
+      "start": "2026-11-08",
+      "end": "2026-11-08",
+      "dateLabel": "1 listed days"
+    },
+    {
+      "id": "roxy:/show/naza/",
+      "title": "NAZA",
+      "venueId": "roxy",
+      "venue": "Roxy Theater",
+      "location": "Missoula",
+      "source": "Roxy Theater official calendar",
+      "url": "https://www.theroxytheater.org/show/naza/",
+      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/naza-1024x576.jpg",
+      "dates": [
+        "2026-11-09"
+      ],
+      "ranges": [],
+      "screenings": [
+        {
+          "date": "2026-11-09",
+          "time": "6:00pm",
+          "startsAt": "2026-11-10T01:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/naza/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-09",
+          "time": "8:00pm",
+          "startsAt": "2026-11-10T03:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/naza/",
+          "format": ""
+        }
+      ],
+      "start": "2026-11-09",
+      "end": "2026-11-09",
+      "dateLabel": "1 listed days"
+    },
+    {
+      "id": "roxy:/show/nuisance-bear-2/",
+      "title": "Nuisance Bear",
+      "venueId": "roxy",
+      "venue": "Roxy Theater",
+      "location": "Missoula",
+      "source": "Roxy Theater official calendar",
+      "url": "https://www.theroxytheater.org/show/nuisance-bear-2/",
+      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/nuisance20bear20lead20still-1024x576.jpg",
+      "dates": [
+        "2026-11-10"
+      ],
+      "ranges": [],
+      "screenings": [
+        {
+          "date": "2026-11-10",
+          "time": "5:30pm",
+          "startsAt": "2026-11-11T00:30:00.000Z",
+          "url": "https://www.theroxytheater.org/show/nuisance-bear-2/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-10",
+          "time": "7:30pm",
+          "startsAt": "2026-11-11T02:30:00.000Z",
+          "url": "https://www.theroxytheater.org/show/nuisance-bear-2/",
+          "format": ""
+        }
+      ],
+      "start": "2026-11-10",
+      "end": "2026-11-10",
+      "dateLabel": "1 listed days"
+    },
+    {
+      "id": "roxy:/show/an-evening-of-stand-up-comedy-with-comedian-myq-kaplan/",
+      "title": "An Evening of Stand-Up Comedy with Comedian Myq Kaplan",
+      "venueId": "roxy",
+      "venue": "Roxy Theater",
+      "location": "Missoula",
+      "source": "Roxy Theater official calendar",
+      "url": "https://www.theroxytheater.org/show/an-evening-of-stand-up-comedy-with-comedian-myq-kaplan/",
+      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/07/myq20kaplan208pm20start20time20image20delightful-1024x576.jpg",
+      "dates": [
+        "2026-11-12"
+      ],
+      "ranges": [],
+      "screenings": [
+        {
+          "date": "2026-11-12",
+          "time": "8:00pm",
+          "startsAt": "2026-11-13T03:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/an-evening-of-stand-up-comedy-with-comedian-myq-kaplan/",
+          "format": ""
+        }
+      ],
+      "start": "2026-11-12",
+      "end": "2026-11-12",
+      "dateLabel": "1 listed days"
+    },
+    {
+      "id": "roxy:/show/twin-peaks-episodes-25-26-27/",
+      "title": "Twin Peaks – Episodes 25, 26, & 27",
+      "venueId": "roxy",
+      "venue": "Roxy Theater",
+      "location": "Missoula",
+      "source": "Roxy Theater official calendar",
+      "url": "https://www.theroxytheater.org/show/twin-peaks-episodes-25-26-27/",
+      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/09/david20and20madchen-1024x577.jpg",
+      "dates": [
+        "2026-11-13",
+        "2026-11-14",
+        "2026-11-15"
+      ],
+      "ranges": [],
+      "screenings": [
+        {
+          "date": "2026-11-13",
+          "time": "5:15pm",
+          "startsAt": "2026-11-14T00:15:00.000Z",
+          "url": "https://www.theroxytheater.org/show/twin-peaks-episodes-25-26-27/",
+          "format": "Annex"
+        },
+        {
+          "date": "2026-11-13",
+          "time": "8:00pm",
+          "startsAt": "2026-11-14T03:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/twin-peaks-episodes-25-26-27/",
+          "format": "Annex"
+        },
+        {
+          "date": "2026-11-14",
+          "time": "5:15pm",
+          "startsAt": "2026-11-15T00:15:00.000Z",
+          "url": "https://www.theroxytheater.org/show/twin-peaks-episodes-25-26-27/",
+          "format": "Annex"
+        },
+        {
+          "date": "2026-11-14",
+          "time": "8:00pm",
+          "startsAt": "2026-11-15T03:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/twin-peaks-episodes-25-26-27/",
+          "format": "Annex"
+        },
+        {
+          "date": "2026-11-15",
+          "time": "5:15pm",
+          "startsAt": "2026-11-16T00:15:00.000Z",
+          "url": "https://www.theroxytheater.org/show/twin-peaks-episodes-25-26-27/",
+          "format": "Annex"
+        },
+        {
+          "date": "2026-11-15",
+          "time": "8:00pm",
+          "startsAt": "2026-11-16T03:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/twin-peaks-episodes-25-26-27/",
+          "format": "Annex"
+        }
+      ],
+      "start": "2026-11-13",
+      "end": "2026-11-15",
+      "dateLabel": "3 listed days"
+    },
+    {
+      "id": "roxy:/show/jason-x/",
+      "title": "Jason X",
+      "venueId": "roxy",
+      "venue": "Roxy Theater",
+      "location": "Missoula",
+      "source": "Roxy Theater official calendar",
+      "url": "https://www.theroxytheater.org/show/jason-x/",
+      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/09/jason20in20spaaaaaaaaaaaace-1024x576.jpg",
+      "dates": [
+        "2026-11-13"
+      ],
+      "ranges": [],
+      "screenings": [
+        {
+          "date": "2026-11-13",
+          "time": "8:00pm",
+          "startsAt": "2026-11-14T03:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/jason-x/",
+          "format": ""
+        }
+      ],
+      "start": "2026-11-13",
+      "end": "2026-11-13",
+      "dateLabel": "1 listed days"
+    },
+    {
+      "id": "roxy:/show/if-wishes-were-horses/",
+      "title": "If Wishes Were Horses",
+      "venueId": "roxy",
+      "venue": "Roxy Theater",
+      "location": "Missoula",
+      "source": "Roxy Theater official calendar",
+      "url": "https://www.theroxytheater.org/show/if-wishes-were-horses/",
+      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/09/if-wishes-were-horses-horizontal-1024x576.jpeg",
+      "dates": [
+        "2026-11-14",
+        "2026-11-15"
+      ],
+      "ranges": [],
+      "screenings": [
+        {
+          "date": "2026-11-14",
+          "time": "1:00pm",
+          "startsAt": "2026-11-14T20:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/if-wishes-were-horses/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-14",
+          "time": "2:30pm",
+          "startsAt": "2026-11-14T21:30:00.000Z",
+          "url": "https://www.theroxytheater.org/show/if-wishes-were-horses/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-15",
+          "time": "1:00pm",
+          "startsAt": "2026-11-15T20:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/if-wishes-were-horses/",
+          "format": ""
+        }
+      ],
+      "start": "2026-11-14",
+      "end": "2026-11-15",
+      "dateLabel": "2 listed days"
+    },
+    {
+      "id": "roxy:/show/all-that-heaven-allows/",
+      "title": "All That Heaven Allows",
+      "venueId": "roxy",
+      "venue": "Roxy Theater",
+      "location": "Missoula",
+      "source": "Roxy Theater official calendar",
+      "url": "https://www.theroxytheater.org/show/all-that-heaven-allows/",
+      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/allthat-1200-1200-675-675-crop-000000-1024x576.jpg",
+      "dates": [
+        "2026-11-14",
+        "2026-11-15"
+      ],
+      "ranges": [],
+      "screenings": [
+        {
+          "date": "2026-11-14",
+          "time": "7:00pm",
+          "startsAt": "2026-11-15T02:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/all-that-heaven-allows/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-15",
+          "time": "3:00pm",
+          "startsAt": "2026-11-15T22:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/all-that-heaven-allows/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-15",
+          "time": "5:00pm",
+          "startsAt": "2026-11-16T00:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/all-that-heaven-allows/",
+          "format": ""
+        }
+      ],
+      "start": "2026-11-14",
+      "end": "2026-11-15",
+      "dateLabel": "2 listed days"
+    },
+    {
+      "id": "roxy:/show/microcosmos/",
+      "title": "Microcosmos",
+      "venueId": "roxy",
+      "venue": "Roxy Theater",
+      "location": "Missoula",
+      "source": "Roxy Theater official calendar",
+      "url": "https://www.theroxytheater.org/show/microcosmos/",
+      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/09/snaily-1024x576.jpg",
+      "dates": [
+        "2026-11-16"
+      ],
+      "ranges": [],
+      "screenings": [
+        {
+          "date": "2026-11-16",
+          "time": "7:30pm",
+          "startsAt": "2026-11-17T02:30:00.000Z",
+          "url": "https://www.theroxytheater.org/show/microcosmos/",
+          "format": ""
+        }
+      ],
+      "start": "2026-11-16",
+      "end": "2026-11-16",
+      "dateLabel": "1 listed days"
+    },
+    {
+      "id": "roxy:/show/diary-of-a-wimpy-kid/",
+      "title": "Diary of a Wimpy Kid",
+      "venueId": "roxy",
+      "venue": "Roxy Theater",
+      "location": "Missoula",
+      "source": "Roxy Theater official calendar",
+      "url": "https://www.theroxytheater.org/show/diary-of-a-wimpy-kid/",
+      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/09/weempee-1024x576.jpg",
+      "dates": [
+        "2026-11-20",
+        "2026-11-21"
+      ],
+      "ranges": [],
+      "screenings": [
+        {
+          "date": "2026-11-20",
+          "time": "1:00pm",
+          "startsAt": "2026-11-20T20:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/diary-of-a-wimpy-kid/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-21",
+          "time": "1:00pm",
+          "startsAt": "2026-11-21T20:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/diary-of-a-wimpy-kid/",
+          "format": ""
+        }
+      ],
+      "start": "2026-11-20",
+      "end": "2026-11-21",
+      "dateLabel": "2 listed days"
+    },
+    {
+      "id": "roxy:/show/twin-peaks-episodes-28-29-30/",
+      "title": "Twin Peaks – Episodes 28, 29, & 30",
+      "venueId": "roxy",
+      "venue": "Roxy Theater",
+      "location": "Missoula",
+      "source": "Roxy Theater official calendar",
+      "url": "https://www.theroxytheater.org/show/twin-peaks-episodes-28-29-30/",
+      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/09/bob20n20dale-1024x577.jpg",
+      "dates": [
+        "2026-11-20",
+        "2026-11-21",
+        "2026-11-22"
+      ],
+      "ranges": [],
+      "screenings": [
+        {
+          "date": "2026-11-20",
+          "time": "5:15pm",
+          "startsAt": "2026-11-21T00:15:00.000Z",
+          "url": "https://www.theroxytheater.org/show/twin-peaks-episodes-28-29-30/",
+          "format": "Annex"
+        },
+        {
+          "date": "2026-11-20",
+          "time": "8:00pm",
+          "startsAt": "2026-11-21T03:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/twin-peaks-episodes-28-29-30/",
+          "format": "Annex"
+        },
+        {
+          "date": "2026-11-21",
+          "time": "8:00pm",
+          "startsAt": "2026-11-22T03:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/twin-peaks-episodes-28-29-30/",
+          "format": "Annex"
+        },
+        {
+          "date": "2026-11-22",
+          "time": "5:15pm",
+          "startsAt": "2026-11-23T00:15:00.000Z",
+          "url": "https://www.theroxytheater.org/show/twin-peaks-episodes-28-29-30/",
+          "format": "Annex"
+        },
+        {
+          "date": "2026-11-22",
+          "time": "8:00pm",
+          "startsAt": "2026-11-23T03:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/twin-peaks-episodes-28-29-30/",
+          "format": "Annex"
+        }
+      ],
+      "start": "2026-11-20",
+      "end": "2026-11-22",
+      "dateLabel": "3 listed days"
+    },
+    {
+      "id": "roxy:/show/the-met-opera-live-samson-et-dalila/",
+      "title": "The Met Opera Live: Samson et Dalila",
+      "venueId": "roxy",
+      "venue": "Roxy Theater",
+      "location": "Missoula",
+      "source": "Roxy Theater official calendar",
+      "url": "https://www.theroxytheater.org/show/the-met-opera-live-samson-et-dalila/",
+      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/07/samson-1600x685-1-1024x576.jpg",
+      "dates": [
+        "2026-12-05",
+        "2026-12-14"
+      ],
+      "ranges": [],
+      "screenings": [
+        {
+          "date": "2026-12-05",
+          "time": "10:00am",
+          "startsAt": "2026-12-05T17:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/the-met-opera-live-samson-et-dalila/",
+          "format": ""
+        },
+        {
+          "date": "2026-12-14",
+          "time": "5:15pm",
+          "startsAt": "2026-12-15T00:15:00.000Z",
+          "url": "https://www.theroxytheater.org/show/the-met-opera-live-samson-et-dalila/",
+          "format": "Annex"
+        }
+      ],
+      "start": "2026-12-05",
+      "end": "2026-12-14",
+      "dateLabel": "2 listed days"
+    },
+    {
+      "id": "roxy:/show/pronghorn-passage/",
+      "title": "Pronghorn Passage",
+      "venueId": "roxy",
+      "venue": "Roxy Theater",
+      "location": "Missoula",
+      "source": "Roxy Theater official calendar",
+      "url": "https://www.theroxytheater.org/show/pronghorn-passage/",
+      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/07/pronghorn20passage20-20poster20-2016x920-20roxy20jpg-1024x576.jpg",
+      "dates": [
+        "2026-12-10"
+      ],
+      "ranges": [],
+      "screenings": [
+        {
+          "date": "2026-12-10",
+          "time": "7:00pm",
+          "startsAt": "2026-12-11T02:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/pronghorn-passage/",
+          "format": ""
+        }
+      ],
+      "start": "2026-12-10",
+      "end": "2026-12-10",
+      "dateLabel": "1 listed days"
+    },
+    {
+      "id": "roxy:/show/met-opera-encore-the-magic-flute/",
+      "title": "The Met Opera: The Magic Flute",
+      "venueId": "roxy",
+      "venue": "Roxy Theater",
+      "location": "Missoula",
+      "source": "Roxy Theater official calendar",
+      "url": "https://www.theroxytheater.org/show/met-opera-encore-the-magic-flute/",
+      "poster": "https://www.theroxytheater.org/wp-content/uploads/2022/07/mfer-1024x576.jpg",
+      "dates": [
+        "2026-12-12"
+      ],
+      "ranges": [],
+      "screenings": [
+        {
+          "date": "2026-12-12",
+          "time": "2:00pm",
+          "startsAt": "2026-12-12T21:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/met-opera-encore-the-magic-flute/",
+          "format": ""
+        }
+      ],
+      "start": "2026-12-12",
+      "end": "2026-12-12",
+      "dateLabel": "1 listed days"
+    },
+    {
+      "id": "roxy:/show/dune/",
+      "title": "Dune (1984)",
+      "venueId": "roxy",
+      "venue": "Roxy Theater",
+      "location": "Missoula",
+      "source": "Roxy Theater official calendar",
+      "url": "https://www.theroxytheater.org/show/dune/",
+      "poster": "https://www.theroxytheater.org/wp-content/uploads/2024/02/doon84-1024x580.jpg",
+      "dates": [
+        "2026-12-12"
+      ],
+      "ranges": [],
+      "screenings": [
+        {
+          "date": "2026-12-12",
+          "time": "8:00pm",
+          "startsAt": "2026-12-13T03:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/dune/",
+          "format": ""
+        }
+      ],
+      "start": "2026-12-12",
+      "end": "2026-12-12",
+      "dateLabel": "1 listed days"
+    },
+    {
+      "id": "roxy:/show/get-crazy-in-35mm/",
+      "title": "Get Crazy in 35mm",
+      "venueId": "roxy",
+      "venue": "Roxy Theater",
+      "location": "Missoula",
+      "source": "Roxy Theater official calendar",
+      "url": "https://www.theroxytheater.org/show/get-crazy-in-35mm/",
+      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/get20crazy-1024x576.jpg",
+      "dates": [
+        "2026-12-17"
+      ],
+      "ranges": [],
+      "screenings": [
+        {
+          "date": "2026-12-17",
+          "time": "8:00pm",
+          "startsAt": "2026-12-18T03:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/get-crazy-in-35mm/",
+          "format": ""
+        }
+      ],
+      "start": "2026-12-17",
+      "end": "2026-12-17",
+      "dateLabel": "1 listed days"
+    },
+    {
+      "id": "roxy:/show/the-santa-clause/",
+      "title": "The Santa Clause",
+      "venueId": "roxy",
+      "venue": "Roxy Theater",
+      "location": "Missoula",
+      "source": "Roxy Theater official calendar",
+      "url": "https://www.theroxytheater.org/show/the-santa-clause/",
+      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/09/santa20clause20loves20snow-1024x576.jpeg",
+      "dates": [
+        "2026-12-18",
+        "2026-12-19",
+        "2026-12-20",
+        "2026-12-21"
+      ],
+      "ranges": [],
+      "screenings": [
+        {
+          "date": "2026-12-18",
+          "time": "1:00pm",
+          "startsAt": "2026-12-18T20:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/the-santa-clause/",
+          "format": ""
+        },
+        {
+          "date": "2026-12-19",
+          "time": "1:00pm",
+          "startsAt": "2026-12-19T20:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/the-santa-clause/",
+          "format": ""
+        },
+        {
+          "date": "2026-12-20",
+          "time": "1:00pm",
+          "startsAt": "2026-12-20T20:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/the-santa-clause/",
+          "format": ""
+        },
+        {
+          "date": "2026-12-21",
+          "time": "1:00pm",
+          "startsAt": "2026-12-21T20:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/the-santa-clause/",
+          "format": ""
+        }
+      ],
+      "start": "2026-12-18",
+      "end": "2026-12-21",
+      "dateLabel": "4 listed days"
+    },
+    {
+      "id": "roxy:/show/my-night-at-mauds/",
+      "title": "My Night at Maud’s",
+      "venueId": "roxy",
+      "venue": "Roxy Theater",
+      "location": "Missoula",
+      "source": "Roxy Theater official calendar",
+      "url": "https://www.theroxytheater.org/show/my-night-at-mauds/",
+      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/maud20eh-1024x576.jpeg",
+      "dates": [
+        "2026-12-28"
+      ],
+      "ranges": [],
+      "screenings": [
+        {
+          "date": "2026-12-28",
+          "time": "7:30pm",
+          "startsAt": "2026-12-29T02:30:00.000Z",
+          "url": "https://www.theroxytheater.org/show/my-night-at-mauds/",
+          "format": ""
+        }
+      ],
+      "start": "2026-12-28",
+      "end": "2026-12-28",
+      "dateLabel": "1 listed days"
     }
   ],
-  "checkedAt": 1792507293295,
+  "checkedAt": 1792507861589,
   "stale": false,
   "sourceURL": "https://www.theroxytheater.org/showtimes/"
 }
