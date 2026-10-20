@@ -33,6 +33,9 @@ vm.runInContext(source.slice(source.indexOf('async function mapLimited'),source.
  const shipped=JSON.parse(fs.readFileSync(__dirname+'/../catalog-matches.json','utf8')),baseFilms=JSON.parse(fs.readFileSync(__dirname+'/../watchlist-baseline.json','utf8')).films;
  for(const film of baseFilms){const key=W.sourceKey(film);assert.ok(shipped.matches.some(m=>m.key===key&&m.film.id)||shipped.reviews.some(r=>r.key===key&&r.series?.id),'Every original import row has a verified identity or an explicit series record');}
  assert.equal(shipped.matches.find(m=>m.key==='jasonx|2001').film.id,11470);assert.equal(shipped.matches.find(m=>m.key==='jasonx|2002').film.id,11470);
+ const duplicateRow=row('Same name');context.watchlist.push({id:1500,title:'Same name',release_date:'2001-01-01',manualNote:'Other film, keep this'});context.hubState.watchlistUnmatched=[duplicateRow];context.hubState.watchlistImportedKeys=[];
+ context.reconcileWatchlistMatches([{key:W.sourceKey(duplicateRow),film:{id:1501,title:'Same name',release_date:'2001-02-01'}}]);
+ assert.equal(context.watchlist.some(m=>m.id===1501),true,'Verified catalog identity outranks a coincidentally identical saved title/year');assert.equal(context.watchlist.find(m=>m.id===1500).manualNote,'Other film, keep this');
  // The browser starts matching without another batch button.
  context.hubState.watchlistUnmatched=[row('Auto fixture')];context.hubState.watchlistImportedKeys=[];context.navigator={onLine:true};context.document.visibilityState='visible';
  let timerId=0;const timers=new Map();context.setTimeout=(fn,delay)=>{const id=++timerId;timers.set(id,{fn,delay});return id;};context.clearTimeout=id=>timers.delete(id);
