@@ -4,6 +4,6 @@
  function availableCandidates(movies,history,at=Date.now(),days=30){const recent=new Set((history||[]).filter(r=>at-r.at>=0&&at-r.at<days*86400000).map(r=>r.id));return movies.filter(m=>!recent.has(m.id));}
  function remember(history,id,at=Date.now()){return [...(history||[]).filter(r=>r.id!==id&&at-r.at<90*86400000),{id,at}].slice(-200);}
  function rewatchEvidence(movie){return !!(movie.owned||movie.favorite||Number(movie.rating)>=4.5||Number(movie.rewatches)>=2);}
- function eligibleDiscovery(movie,fit){return !!fit?.connection&&fit.score>=3&&(fit.connection.directors.length>0||fit.connection.writers.length>0||fit.connection.keywords.length>=2)||affinity(movie).score>=2;}
+ function eligibleDiscovery(movie,fit){return !!fit?.connection&&fit.score>=3&&((fit.connection.creators||[]).length>0||fit.connection.directors.length>0||fit.connection.writers.length>0||fit.connection.keywords.length>=2)||affinity(movie).score>=2;}
  return {affinity,availableCandidates,remember,rewatchEvidence,eligibleDiscovery};
 });
