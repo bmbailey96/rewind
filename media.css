@@ -1,0 +1,22 @@
+/* Type is always written out; color and shape are secondary cues. */
+:root{--media-tv:#c6b5f5;--media-movie:#e5c477}
+.media-type-filters{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0 18px}
+.media-type-filters button{min-height:44px;padding:9px 15px;margin:0;border:1px solid #486052;border-radius:4px;background:#14211c;color:#bfcfc4;letter-spacing:0;text-transform:none;font-size:13px}
+.media-type-filters button[aria-pressed=true]{border-color:#d9c28c;background:#303026;color:#f0dba3}
+.media-type-badge{display:inline-flex;gap:5px;align-items:center;width:fit-content;white-space:nowrap;font:600 10px/1.6 system-ui;letter-spacing:.04em;vertical-align:middle}
+.media-type-badge.movie{color:var(--media-movie)}.media-type-badge.tv{color:var(--media-tv)}
+.rental-card[data-media-type=tv]{border-left:3px solid #9f88d0!important}
+.rental-card[data-media-type=movie]{border-left:3px solid #a18b55!important}
+.integrated-tv-card>.tv-seasons,.integrated-tv-card>.tv-release-note,.integrated-tv-card>.offer-note,.integrated-tv-card>.tv-progress,.integrated-tv-card>button:not(.film-details-trigger){grid-column:1/-1}
+.integrated-tv-card>.tv-release-note,.integrated-tv-card>.tv-progress{font-size:12px;line-height:1.55;margin:6px 0;color:#d4c7ec}
+.integrated-tv-card .tv-seasons{margin:8px 0;gap:5px}.integrated-tv-card .tv-seasons span{font-size:10px;padding:3px 6px}
+.tv-detail-body .tv-provider-links{display:flex;flex-wrap:wrap;gap:12px;margin:15px 0}.tv-detail-body .tv-provider-links a{padding:8px;border:1px solid #675c7a;border-radius:4px}
+.tv-detail-body button{min-height:44px}.tv-rating-form{margin-top:16px}.tv-rating-form input,.tv-rating-form select{min-height:44px}
+#calendar-media-filter{grid-column:1/-1}#calendar-media-filter .media-type-filters{margin:0}
+.calendar-venue-label[hidden]{display:none!important}
+.calendar-source-tabs{grid-column:1/-1;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.calendar-source-tabs [data-calendar-source=local]{order:2}.calendar-source-tabs [data-calendar-source=digital]{order:3}
+.calendar-tools .calendar-search-label{min-width:0}.calendar-tools .calendar-saved-label{justify-self:start}
+.calendar-film-head .media-type-badge,.board-label .media-type-badge{font-size:9px}
+.tv-news-updates{margin:24px 0}.tv-news-updates>h3{color:var(--media-tv)}
+@media(max-width:700px){.media-type-filters{gap:5px}.media-type-filters button{flex:1;padding:9px 8px;font-size:12px}.calendar-source-tabs button{font-size:12px;padding:10px 5px;white-space:normal}.media-type-badge{font-size:9px}}

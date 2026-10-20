@@ -14,6 +14,7 @@
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="calendar-ui.css">
 <link rel="stylesheet" href="tv.css">
+<link rel="stylesheet" href="media.css">
 <link rel="stylesheet" href="/media-nav.css">
 </head>
 <body>
@@ -52,6 +53,7 @@
       <span class="count-stamp" id="watchlist-count">0 titles</span>
     </div>
     <div class="counter-welcome"><div><p class="welcome-kicker">WHAT TO WATCH</p><p>You picked the films. We’ll check the counter.</p></div><button id="choose-tonight">HELP ME CHOOSE</button></div>
+    <div class="media-type-filters" role="group" aria-label="Collection type"><button type="button" data-media-filter="all" aria-pressed="true">Movies + TV</button><button type="button" data-media-filter="movie" aria-pressed="false">Movies</button><button type="button" data-media-filter="tv" aria-pressed="false">TV shows</button></div>
     <section id="tonight-shelf" class="tonight-shelf" aria-labelledby="tonight-heading"><div class="panel-head"><h3 id="tonight-heading">Tonight</h3><span class="count-stamp">THREE POSSIBLE ANSWERS</span></div><p id="tonight-status" class="offer-note" role="status"></p><div id="tonight-grid"></div></section>
     <div id="watchlist-import-review" class="source-disclosure"></div>
     <div class="watchlist-toolbar"><div class="watchlist-navigation"><div class="watchlist-scope" aria-label="My films views"><button data-watchlist-scope="release" aria-pressed="true">RELEASE WATCH</button><button data-watchlist-scope="all" aria-pressed="false">ALL WATCHLIST</button><button id="watchlist-shelf-shortcut" type="button">MY SHELF</button></div><p id="watchlist-scope-note" class="offer-note"></p></div>    <details id="card-options" class="screen-options"><summary id="card-options-label">Filters</summary><div class="options-body">
@@ -87,6 +89,7 @@
       <span class="count-stamp">Recent theatrical releases</span>
     </div>
     <p id="discovery-intro" class="discovery-intro">Find something to watch. Or something worth waiting for.</p>
+    <div class="media-type-filters" role="group" aria-label="Discover type"><button type="button" data-media-filter="all" aria-pressed="true">Movies + TV</button><button type="button" data-media-filter="movie" aria-pressed="false">Movies</button><button type="button" data-media-filter="tv" aria-pressed="false">TV shows</button></div>
     <div class="hub-mode-buttons" aria-label="Find a film"><button data-find-mode="shelf" aria-pressed="true">BROWSE</button><button data-find-mode="oracle" aria-pressed="false">ORACLE</button><button data-find-mode="roulette" aria-pressed="false">MY WATCHLIST</button><button data-find-mode="news" aria-pressed="false">NEWS</button><button data-find-mode="physical" aria-pressed="false">MY SHELF</button></div>
     <div id="discovery-stages" class="discovery-stages" aria-label="Browse release stage"><button data-discovery-stage="recent" aria-pressed="true">New releases</button><button data-discovery-stage="coming" aria-pressed="false">Coming soon</button><button data-discovery-stage="circuit" aria-pressed="false">Beyond the multiplex</button></div>
     <div id="discovery-guide" class="discovery-guide"><h3 id="discovery-stage-title">New releases</h3><p id="discovery-stage-note">Recent US theatrical releases. Viewing options are checked separately.</p></div>
@@ -117,13 +120,14 @@
 
   <section id="tab-upcoming" class="tab-panel"><div class="panel-head"><h2>Calendar</h2><span class="count-stamp">LOCAL SCREENINGS & RELEASES</span></div><p class="hub-lead">Listed screenings and home releases.</p><div class="calendar-tools">
  <div class="calendar-source-tabs" role="group" aria-label="Release type">
-  <button type="button" data-calendar-source="theaters" aria-pressed="true">Theaters</button>
-  <button type="button" data-calendar-source="digital" aria-pressed="false">Digital</button>
-  <button type="button" data-calendar-source="both" aria-pressed="false">Both</button>
+  <button type="button" data-calendar-source="kalispell" aria-pressed="true">Kalispell</button>
+  <button type="button" data-calendar-source="digital" aria-pressed="false">Digital releases</button>
+  <button type="button" data-calendar-source="local" aria-pressed="false">Kalispell + Roxy</button>
  </div>
- <label class="calendar-saved-label"><input id="calendar-saved-only" type="checkbox"> Only my saved films</label>
- <label class="calendar-venue-label">Theater<select id="calendar-venue"><option value="all">Both theaters</option><option value="kalispell">Cinemark · Kalispell</option><option value="roxy">Roxy · Missoula</option></select></label>
- <label class="calendar-search-label"><span class="sr-only">Search calendar</span><input id="calendar-search" type="search" placeholder="Find a film…"></label>
+ <label class="calendar-saved-label"><input id="calendar-saved-only" type="checkbox"> Only my saved titles</label>
+ <label class="calendar-venue-label" hidden>Theater<select id="calendar-venue"><option value="all">Both theaters</option><option value="kalispell">Cinemark · Kalispell</option><option value="roxy">Roxy · Missoula</option></select></label>
+ <label class="calendar-search-label"><span class="sr-only">Search calendar</span><input id="calendar-search" type="search" placeholder="Find a title…"></label>
+<div id="calendar-media-filter" hidden><div class="media-type-filters" role="group" aria-label="Digital calendar type"><button type="button" data-media-filter="all" aria-pressed="true">Movies + TV</button><button type="button" data-media-filter="movie" aria-pressed="false">Movies</button><button type="button" data-media-filter="tv" aria-pressed="false">TV shows</button></div></div>
 </div>
 <div class="calendar-refresh-row"><p id="cinema-status" class="offer-note" role="status"></p><button id="cinema-refresh" class="text-action">Refresh</button></div>
 <div class="cinema-board"><div class="board-head"><div><h3 id="calendar-range"></h3><span id="calendar-count"></span></div><button id="calendar-view" aria-pressed="true">Timeline</button><button id="calendar-list" aria-pressed="false">List</button><div class="board-nav"><button id="calendar-prev" aria-label="Previous week">←</button><button id="calendar-today">TODAY</button><button id="calendar-next" aria-label="Next week">→</button></div></div><div id="calendar-scroll" class="calendar-scroll" tabindex="0" role="region" aria-label="Seven-day screening board. Horizontal scrolling only."><div id="calendar-bars"></div></div><div id="calendar-mobile" class="calendar-mobile"></div><div id="calendar-listings" hidden></div></div><div id="event-detail" class="event-detail" hidden></div><details class="maintenance-controls"><summary>Hidden films</summary><div id="cinema-hidden"></div></details><p class="offer-note">Cinemark Kalispell and Roxy Missoula screenings use venue dates and times in Mountain Time. “Last listed” is not a confirmed closing date. National Fathom dates do not confirm participation here.</p><div class="source-links"><a href="https://www.cinemark.com/theatres/mt-kalispell/cinemark-signature-stadium-kalispell-14" target="_blank" rel="noopener">CINEMARK KALISPELL</a><a href="https://www.theroxytheater.org/showtimes/" target="_blank" rel="noopener">ROXY MISSOULA</a><a href="https://www.fathomentertainment.com/releases/" target="_blank" rel="noopener">FATHOM CALENDAR</a></div></section>
@@ -181,7 +185,7 @@
 <dialog id="watched-dialog"><p id="return-stamp" class="return-stamp"></p><h2>Seen it.</h2><p id="watched-film-name"></p><p>Want to leave a rating on Letterboxd?</p><div class="card-actions"><a id="watched-letterboxd" class="watch-link" target="_blank" rel="noopener">OPEN LETTERBOXD</a><button id="watched-undo" class="secondary">UNDO WATCHED</button><button id="watched-close" class="secondary">DONE</button></div><p class="offer-note">Rewind records this locally. You choose whether to log or rate it on Letterboxd.</p></dialog>
 <div id="toast" class="toast" role="status" hidden></div>
 
-<footer class="site-footer">Film details: TMDB. US offers and prices: JustWatch. Sources and check times live inside each film.</footer>
+<footer class="site-footer">Movie and TV details: TMDB. US offers and prices: JustWatch. Sources and check times live inside each film.</footer>
 <script src="rewind-model.js"></script>
 <script src="release-model.js"></script>
 <script src="availability-ui.js"></script>
@@ -197,9 +201,11 @@
 <script src="static-model.js"></script>
 <script src="watchlist-model.js"></script>
 <script src="movie-news-model.js"></script>
+<script src="media-model.js"></script>
 <script src="app.js"></script>
 <script src="tv-model.js"></script>
 <script src="tv.js"></script>
+<script src="media.js"></script>
 <script src="hub.js"></script>
 <script src="static-experience.js"></script>
 <script src="flow.js"></script>

@@ -119,7 +119,8 @@
   const c=fit?.connection;
   if(c&&fit.score>0){
    const affection=c.owned?'You have '+c.seedTitle+' on your shelf.':c.rewatches>1?'You went back to '+c.seedTitle+'.':c.favorite?c.seedTitle+' is one of your saved favorites.':c.rating>=4?'You gave '+c.seedTitle+' '+c.rating+'/5.':'';
-   if(c.directors.length)text+=' '+affection+' This comes from '+c.directors.join(' and ')+'. The Oracle is following the person who made the previous mess.';
+   if(c.creators?.length)text+=' '+affection+' '+c.creators.join(' and ')+' created both series.';
+   else if(c.directors.length)text+=' '+affection+' This comes from '+c.directors.join(' and ')+'. The Oracle is following the person who made the previous mess.';
    else if(c.writers.length)text+=' '+affection+' '+c.writers.join(' and ')+' wrote both. Return to the source of the trouble.';
    else if(c.keywords.length)text+=' '+affection+' Both films share '+c.keywords.slice(0,2).join(' and ')+'.';
    else text+=' '+affection+' That is a loose genre connection, so the Oracle is leaving room to be wrong.';
