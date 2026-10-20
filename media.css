@@ -20,3 +20,6 @@
 .calendar-film-head .media-type-badge,.board-label .media-type-badge{font-size:9px}
 .tv-news-updates{margin:24px 0}.tv-news-updates>h3{color:var(--media-tv)}
 @media(max-width:700px){.media-type-filters{gap:5px}.media-type-filters button{flex:1;padding:9px 8px;font-size:12px}.calendar-source-tabs button{font-size:12px;padding:10px 5px;white-space:normal}.media-type-badge{font-size:9px}}
+
+.integrated-tv-card>.card-poster{grid-column:1;grid-row:1 / span 4;width:80px!important;height:120px!important;max-width:80px;max-height:120px;object-fit:cover;float:none;margin:0;border-radius:3px}
+.integrated-tv-card>.cost-block{grid-column:2;grid-row:4;margin:4px 0 0;padding:0;border:0}
