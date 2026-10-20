@@ -1456,8 +1456,8 @@ async function initEmailAlerts() {
     document.getElementById('price-alert-status').textContent=state.pricesConfigured?'Daily US store price checks are active. Unquoted offers stay unpriced.':'Server price checks are unavailable.';
     emailEnabled = state.enabled;
     document.getElementById('email-alert-status').textContent = state.enabled ? `Daily alerts enabled for ${state.movies.length+(state.series||[]).length} movie and TV releases.` : 'Email alerts paused. Enable alerts for your watchlist.';
-    // Migrate the old whole-watchlist digest after this device has loaded its collection.
-    if(state.enabled&&state.scope!=='release-watch'&&watchlist.some(m=>WatchlistModel.followsRelease(m)&&!isSeen(m)))await syncEmailCard(true);
+    // Refresh the explicit movie and TV follows after this device has loaded its collection.
+    if(state.enabled)await syncEmailCard(true);
   } catch (err) { document.getElementById('email-alert-status').textContent = err.message; }
 }
 renderServiceSettings();

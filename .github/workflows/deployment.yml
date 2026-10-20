@@ -1,0 +1,44 @@
+name: Verify published site
+on:
+  push:
+    branches: [main]
+    paths:
+      - app.js
+      - media.js
+      - media.css
+      - index.html
+      - sw.js
+      - .github/workflows/deployment.yml
+permissions:
+  contents: read
+jobs:
+  deployed:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Wait for Netlify and verify published assets
+        run: |
+          node --input-type=module <<'JS'
+          import {readFile} from 'node:fs/promises';
+          const paths=['index.html','app.js','media.js','media.css','sw.js'];
+          const expected=await Promise.all(paths.map(p=>readFile(p,'utf8')));
+          for(let attempt=0;attempt<60;attempt++){
+            try{
+              const actual=await Promise.all(paths.map(async p=>{
+                const r=await fetch('https://bekind-rewind.netlify.app/'+p+'?verify='+process.env.GITHUB_SHA,{cache:'no-store',signal:AbortSignal.timeout(15000)});
+                if(!r.ok)throw Error('Published asset unavailable: '+p);
+                return r.text();
+              }));
+              if(actual.every((body,i)=>body===expected[i])){
+                console.log('Verified published HTML, shared movie/TV logic, card styling, and service worker match this commit.');
+                process.exit(0);
+              }
+            }catch(error){console.log(error.message);}
+            await new Promise(resolve=>setTimeout(resolve,10000));
+          }
+          throw Error('Published assets did not match the tested commit within ten minutes.');
+          JS
