@@ -67,7 +67,7 @@ const wait=()=>new Promise(r=>setTimeout(r,100));
  const forecastDetails=w.renderRentalForecast(forecastMovie,forecastStatus,{});
  assert.match(forecastDetails.textContent,/Sep 22 · 13 days past estimate/);
  assert.doesNotMatch(forecastDetails.textContent,/still above|has not fallen/,'An old quote cannot prove the current price has not fallen');
- assert.equal(w.document.querySelectorAll('.tabs [data-tab]').length,4);
+ assert.equal(w.document.querySelectorAll('.tabs [data-tab]').length,5);
  assert.equal(w.document.getElementById('card-options').open,false);
  assert.equal(w.document.querySelector('[data-calendar-source=theaters]').getAttribute('aria-pressed'),'true');assert.equal(w.document.getElementById('calendar-saved-only').checked,false);assert.equal(w.document.getElementById('calendar-scope'),null,'Duplicate scope dropdown is removed');
  assert.match(w.document.getElementById('tonight-grid').textContent,/Included Movie/);assert.doesNotMatch(w.document.getElementById('tonight-grid').textContent,/Coyote/,'Over-budget rental is absent from Tonight');

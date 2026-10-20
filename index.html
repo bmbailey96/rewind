@@ -13,6 +13,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=optional" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="calendar-ui.css">
+<link rel="stylesheet" href="tv.css">
 <link rel="stylesheet" href="/media-nav.css">
 </head>
 <body>
@@ -29,11 +30,21 @@
     <button class="tab-btn active" data-tab="watchlist" aria-current="page">WATCHLIST</button>
     <button class="tab-btn" data-tab="discover">DISCOVER</button>
     <button class="tab-btn" data-tab="upcoming">CALENDAR</button>
+    <button class="tab-btn" data-tab="tv">TV</button>
     <button class="tab-btn" data-tab="import">SETTINGS</button>
   </nav>
 </header>
 
 <main>
+  <section id="tab-tv" class="tab-panel">
+    <div class="panel-head"><h2>Television</h2><span id="tv-count" class="count-stamp"></span></div>
+    <p>New shows, returning seasons, and things you meant to finish.</p>
+    <details class="tv-import" id="tv-import"><summary>Import TV ratings</summary><p>Choose your Rapid Fire CSV. Season answers and older whole-show ratings stay separate. Skipped or unseen shows remain eligible for recommendations.</p><input id="tv-import-file" type="file" accept=".csv,text/csv"><textarea id="tv-import-text" placeholder="Or paste your CSV" aria-label="TV ratings CSV"></textarea><button id="tv-import-save">Import answers</button><p id="tv-import-status" role="status"></p></details>
+    <div class="tv-toolbar" aria-label="TV views"><button data-tv-view="continue" aria-pressed="true">Continue watching</button><button data-tv-view="watchlist" aria-pressed="false">Watchlist</button><button data-tv-view="ratings" aria-pressed="false">Ratings</button><button data-tv-view="discover" aria-pressed="false">Discover TV</button><button type="button" id="tv-new">New & returning</button></div>
+    <form id="tv-search-form" class="tv-toolbar"><input id="tv-search" type="search" placeholder="Find a series…" aria-label="Find a TV series"><button type="submit">Search TV</button><button type="button" id="tv-check">Check shown series</button></form>
+    <p id="tv-status" role="status" class="tv-summary"></p><div id="tv-grid" class="tv-grid"></div>
+    <details class="tv-import"><summary>Letterboxd rating differences</summary><p>Compared with the ratings in your imported export. These suggestions do not change Letterboxd. A series or season must match the entry’s scope before updating.</p><div id="tv-letterboxd"></div></details>
+  </section>
 
   <section id="tab-watchlist" class="tab-panel active">
     <div class="panel-head">
@@ -187,6 +198,8 @@
 <script src="watchlist-model.js"></script>
 <script src="movie-news-model.js"></script>
 <script src="app.js"></script>
+<script src="tv-model.js"></script>
+<script src="tv.js"></script>
 <script src="hub.js"></script>
 <script src="static-experience.js"></script>
 <script src="flow.js"></script>
