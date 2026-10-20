@@ -99,7 +99,17 @@
    Number(!!b.stage.newArrival)-Number(!!a.stage.newArrival)||a.entry.title.localeCompare(b.entry.title));
   const counts={included:0,cheap:0,premium:0,theater:0,upcoming:0,waiting:0};
   for(const row of rows)counts[row.stage.group]++;
-  return {rows:rows.slice(0,limit),total:rows.length,counts};
+  let preview=rows.slice(0,limit);
+  const tv=rows.filter(r=>r.entry.mediaType==='tv');
+  if(tv.length&&tv.length<rows.length&&rows.length>limit&&limit>=2){
+   const minimum=Math.min(tv.length,Math.max(1,Math.floor(limit/4))),shown=preview.filter(r=>r.entry.mediaType==='tv').length;
+   if(shown<minimum){
+    const selected=new Set(preview),missing=tv.filter(r=>!selected.has(r)).slice(0,minimum-shown);
+    for(let i=preview.length-1;i>=0&&missing.length;i--)if(preview[i].entry.mediaType!=='tv'){selected.delete(preview[i]);selected.add(missing.shift());}
+    preview=rows.filter(r=>selected.has(r));
+   }
+  }
+  return {rows:preview,total:rows.length,counts};
  }
 
  function merge(existing,films){const byId=new Map(existing.map(f=>[f.id,f]));for(const f of films)if(f.id&&!byId.has(f.id))byId.set(f.id,{...f,addedAt:addedAt(f),importedAt:Date.now(),pinned:false,manualNote:'',lastStatusCode:null,lastStatusLabel:null,statusChangedAt:null});return [...byId.values()];}

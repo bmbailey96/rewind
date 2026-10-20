@@ -1232,6 +1232,17 @@ async function loadCatalogMatches(){
  if(!catalogMatchesPromise)catalogMatchesPromise=fetch('catalog-matches.json',{cache:'no-cache'}).then(r=>r.ok?r.json():null).then(data=>{verifiedCatalogReviews=Array.isArray(data?.reviews)?data.reviews.map(r=>({...r,checkedAt:data.checkedAt})):[];verifiedCatalogMatches=Array.isArray(data?.matches)?data.matches.filter(m=>m.key&&m.film?.id):[];return verifiedCatalogMatches;}).catch(()=>[]);
  return catalogMatchesPromise;
 }
+function importVerifiedSeries(row){
+ const series=row.catalogMatch?.series;if(typeof TVModel==='undefined'||!Number.isSafeInteger(series?.id)||series.id<=0)return false;
+ const cleanTitle=title=>String(title||'').replace(/\s*\((?:UK, )?\d{4}\)$/,'');
+ const candidates=TVModel.groups(hubState.seriesRecords||[]).filter(g=>TVModel.norm(cleanTitle(g.title))===TVModel.norm(row.title)&&(!/\(\d{4}\)$/.test(g.title)||g.title.endsWith('('+row.year+')')));
+ const cached=(hubState.seriesCatalog||[]).find(c=>c.tmdbId===series.id&&c.id?.startsWith('tv:'));
+ const id=cached?.id||(candidates.length===1?candidates[0].id:TVModel.seriesKey(row.title+' ('+row.year+')'));
+ const record={id:id+':letterboxd:watchlist',seriesId:id,title:candidates.find(g=>g.id===id)?.title||row.title+' ('+row.year+')',season:null,status:'watchlist',scope:'Series',rating:null,partial:false,source:'Letterboxd watchlist',sourceTitle:row.title,year:row.year,addedDate:row.addedDate,letterboxdURL:row.letterboxdURL||''};
+ hubState.seriesRecords=TVModel.merge(hubState.seriesRecords||[],[record]);
+ if(!cached&&!hubState.seriesCatalog?.some(c=>c.id===id))hubState.seriesCatalog=[...(hubState.seriesCatalog||[]),{id,mediaType:'tv',tmdbId:series.id,detail:{id:series.id,name:series.title||row.title,seasons:[]},providers:[]}];
+ return true;
+}
 function reconcileWatchlistMatches(known=verifiedCatalogMatches){
  const imported=new Set(hubState.watchlistImportedKeys||[]),catalog=new Map([...known,...(hubState.watchlistCatalogMatches||[])].map(m=>[m.key,m.film]));
  const queue=new Map();let matched=0,changed=false;
@@ -1240,6 +1251,7 @@ function reconcileWatchlistMatches(known=verifiedCatalogMatches){
   if(imported.has(key)){changed=true;continue;}
   if(film){if(!watchlist.some(m=>m.id===film.id))watchlist=WatchlistModel.merge(watchlist,[{...film,sourceTitle:row.title,year:row.year,addedDate:row.addedDate,letterboxdURL:row.letterboxdURL,source:'Letterboxd watchlist',letterboxdWatchlist:true}]);imported.add(key);matched++;changed=true;continue;}
   const checked=verifiedCatalogReviews.find(r=>r.key===key);if(checked&&(!row.catalogMatch||(row.catalogMatch.lastAttemptAt||0)<checked.checkedAt))row.catalogMatch={state:checked.series?'unsupported':'review',reason:checked.reason,candidates:checked.candidates||[],series:checked.series,lastAttemptAt:checked.checkedAt,attempts:1};
+  if(importVerifiedSeries(row)){imported.add(key);matched++;changed=true;continue;}
   const previous=queue.get(key);if(!previous||(row.catalogMatch?.lastAttemptAt||0)>=(previous.catalogMatch?.lastAttemptAt||0))queue.set(key,{...row,key});
  }
  if(queue.size!==(hubState.watchlistUnmatched||[]).length)changed=true;
@@ -1291,7 +1303,7 @@ async function resolveWatchlistMatches({automatic=false}={}){
      const linked=await response.json();
      if(response.ok&&Number.isInteger(linked.id)&&linked.id>0){
       if(linked.mediaType==='movie'){const detail=await tmdbGet('/movie/'+linked.id,{},controller.signal);result={state:'matched',film:detail};}
-      else if(linked.mediaType==='tv')result={state:'review',reason:'TV series: Rewind’s availability checker currently handles films',candidates:[],series:{id:linked.id,title:row.title}};
+      else if(linked.mediaType==='tv')result={state:'review',reason:'TV series catalog match',candidates:[],series:{id:linked.id,title:row.title}};
      }else if(response.status!==400&&linked.retryable!==false)throw Error('Source identity request unavailable');
     }
     const current=(hubState.watchlistUnmatched||[]).find(r=>WatchlistModel.sourceKey(r)===key);if(!current)return;
@@ -1299,6 +1311,9 @@ async function resolveWatchlistMatches({automatic=false}={}){
      const m=result.film,film={id:m.id,title:m.title,original_title:m.original_title,sourceTitle:row.title,year:row.year,release_date:m.release_date,poster_path:m.poster_path||null,genre_ids:m.genre_ids||(m.genres||[]).map(g=>g.id),catalogReleaseYears:m.catalogReleaseYears||[],catalogAliases:m.catalogAliases||[],addedDate:row.addedDate,letterboxdURL:row.letterboxdURL,source:'Letterboxd watchlist',letterboxdWatchlist:true};
      watchlist=WatchlistModel.merge(watchlist,[film]);hubState.watchlistImportedKeys=[...new Set([...(hubState.watchlistImportedKeys||[]),key])];
      hubState.watchlistCatalogMatches=[...(hubState.watchlistCatalogMatches||[]).filter(m=>m.key!==key),{key,film:{id:film.id,title:film.title,release_date:film.release_date,poster_path:film.poster_path,genre_ids:film.genre_ids,catalogReleaseYears:film.catalogReleaseYears,catalogAliases:film.catalogAliases}}];
+     hubState.watchlistUnmatched=hubState.watchlistUnmatched.filter(r=>WatchlistModel.sourceKey(r)!==key);matched++;
+    }else if(result.series&&importVerifiedSeries({...current,catalogMatch:{series:result.series}})){
+     hubState.watchlistImportedKeys=[...new Set([...(hubState.watchlistImportedKeys||[]),key])];
      hubState.watchlistUnmatched=hubState.watchlistUnmatched.filter(r=>WatchlistModel.sourceKey(r)!==key);matched++;
     }else current.catalogMatch={state:result.series?'unsupported':'review',series:result.series,reason:result.reason,candidates:result.candidates,lastAttemptAt:at,attempts:(current.catalogMatch?.attempts||0)+1};
     // Save every completed identity. Availability and release-follow choices are independent.

@@ -5,10 +5,28 @@ const RewindMedia=(()=>{
  let filter='all',browseToken=0,extraRows=[],refreshTimer=null,seedFlight=null;
  try{const p=JSON.parse(localStorage.getItem('rewind-ui-v1')||'{}');if(['all','movie','tv'].includes(p.mediaType))filter=p.mediaType;}catch{}
  const button=(text,fn)=>{const b=el('button',text);b.type='button';b.onclick=fn;return b;};
- function linkedTitle(m){const known=MediaModel.seriesForFilm(m);if(known)return known;const year=String(m?.year||m?.release_date||'').slice(0,4),title=MediaModel.norm(m?.title);if(!year||!title)return null;const hits=(hubState.seriesRecords||[]).filter(r=>r.letterboxdURL&&((m.letterboxdURL&&m.letterboxdURL.replace(/\/$/,'')===r.letterboxdURL.replace(/\/$/,''))||MediaModel.norm(MediaModel.clean(r.title))===title&&String(TV.seed(r.title)?.catalog?.seasons?.find(s=>s.number===1)?.date||'').startsWith(year)));const names=[...new Set(hits.map(r=>r.title))];return names.length===1?names[0]:null;}
+ let groupMemo=null,linkMemo=null;
+ function linkedTitle(m){
+  const known=MediaModel.seriesForFilm(m);if(known)return known;
+  const year=String(m?.year||m?.release_date||'').slice(0,4),title=MediaModel.norm(m?.title);if(!year||!title)return null;
+  const records=hubState.seriesRecords||[];
+  if(!linkMemo||linkMemo.records!==records){
+   const urls=new Map(),years=new Map(),add=(map,key,title)=>{if(!key)return;const names=map.get(key)||new Set();names.add(title);map.set(key,names);};
+   for(const r of records)if(r.letterboxdURL){
+    add(urls,r.letterboxdURL.replace(/\/$/,''),r.title);
+    const first=TV.seed(r.title)?.catalog?.seasons?.find(s=>s.number===1)?.date;
+    if(first)add(years,MediaModel.norm(clean(r.title))+'|'+String(first).slice(0,4),r.title);
+   }
+   linkMemo={records,urls,years};
+  }
+  const names=new Set([...(linkMemo.urls.get(m.letterboxdURL?.replace(/\/$/,''))||[]),...(linkMemo.years.get(title+'|'+year)||[])]);
+  return names.size===1?[...names][0]:null;
+ }
  const isTV=m=>MediaModel.type(m)==='tv'||!!linkedTitle(m);
  const clean=MediaModel.clean;
  function groups(){
+  const deps=[watchlist,hubState.taste,hubState.seriesRecords,hubState.seriesFollows,hubState.seriesCatalog];
+  if(groupMemo&&deps.every((value,i)=>value===groupMemo.deps[i]))return groupMemo.rows;
   const map=new Map(TV.groupRows().map(g=>[g.id,{...g,seasons:[...g.seasons],legacy:[...g.legacy]}]));
   for(const m of [...watchlist,...hubState.taste]){
    const title=linkedTitle(m);if(!title)continue;
@@ -19,7 +37,7 @@ const RewindMedia=(()=>{
    if((m.rating!=null||m.owned||m.favorite||m.rewatches>1)&&!g.legacy.some(r=>r.source==='Letterboxd linked entry'))g.legacy.push({id:id+':letterboxd',title,season:null,status:'watched',rating:m.rating??null,owned:!!m.owned,favorite:!!m.favorite,rewatches:m.rewatches||0,source:'Letterboxd linked entry',letterboxdURL:m.letterboxdURL});
    map.set(id,g);
   }
-  return [...map.values()];
+  const rows=[...map.values()];groupMemo={deps,rows};return rows;
  }
  function group(m){
   const title=linkedTitle(m),id=typeof m==='string'?m:m.id;
@@ -60,7 +78,13 @@ const RewindMedia=(()=>{
 
  function accepts(m){return filter==='all'||isTV(m)===(filter==='tv');}
  function select(items){return (items||[]).filter(accepts).map(m=>isTV(m)&&!String(m.id).startsWith('tv:')?asMedia(group(m)):m);}
- function savedTV(scope='all'){return groups().filter(g=>scope==='release'?(hubState.seriesFollows||[]).includes(g.id):g.intent||(hubState.seriesFollows||[]).includes(g.id)).map(asMedia);}
+ function savedTV(scope='all'){
+  return groups().filter(g=>{
+   const followed=(hubState.seriesFollows||[]).includes(g.id);
+   const unfinished=g.seasons.some(r=>r.partial)&&!!next(g);
+   return scope==='release'?followed||g.intent||unfinished:g.intent||followed||unfinished;
+  }).map(asMedia);
+ }
  function collection(items=watchlist,scope='all'){return [...new Map([...select(items).filter(m=>!isTV(m)),...savedTV(scope).filter(accepts)].map(m=>[m.id,m])).values()];}
  function evidence(){return groups().flatMap(g=>MediaModel.positiveRecords(g).map(r=>({...asMedia(g),id:g.id+':evidence:'+(r.season||'series'),title:g.title+(r.season?' · season '+r.season:''),rating:r.rating,release_date:TV.catalogFor(g).find(s=>s.number===r.season)?.date||asMedia(g).first_air_date,owned:!!r.owned,favorite:!!r.favorite,rewatches:r.rewatches||0,scope:r.scope,source:r.source})));}
  async function seeds(){if(seedFlight)return seedFlight;seedFlight=(async()=>{await TV.ready;const candidates=groups().filter(g=>MediaModel.positiveRecords(g).length&&!TV.cached(g.id)?.detail?.credits).slice(0,4);await mapLimited(candidates,2,async g=>{try{await TV.check(g);}catch{}});return evidence();})().finally(()=>{seedFlight=null;});return seedFlight;}
@@ -123,7 +147,7 @@ const RewindMedia=(()=>{
   const search=$('search-input');search.placeholder=filter==='tv'?'Any TV series…':filter==='movie'?'Any movie…':'Find a movie or TV series…';
   $('discover-more').textContent='MORE TITLES';$('pick-again').textContent='PICK ANOTHER';if($('pick-film').textContent==='PICK A FILM')$('pick-film').textContent='PICK A TITLE';for(const id of ['picker-intro','picker-status']){const n=$(id);if(n&&filter!=='movie')n.textContent=n.textContent.replace(/\bfilms\b/g,'titles').replace(/\bfilm\b/g,'title');}
  }
- function changed(){clearTimeout(refreshTimer);refreshTimer=setTimeout(()=>{renderWatchlist(false,true).catch(()=>{});if(typeof Hub!=='undefined')Hub.stateChanged();},120);}
+ function changed(){groupMemo=null;linkMemo=null;clearTimeout(refreshTimer);refreshTimer=setTimeout(()=>{renderWatchlist(false,true).catch(()=>{});if(typeof Hub!=='undefined')Hub.stateChanged();},120);}
  function setFilter(value){
   if(!['all','movie','tv'].includes(value))return;filter=value;let p={};try{p=JSON.parse(localStorage.getItem('rewind-ui-v1')||'{}')||{};}catch{}p.mediaType=filter;localStorage.setItem('rewind-ui-v1',JSON.stringify(p));scheduleSync();labelControls();
   ++discoverRequest;++searchRequest;watchlistLimit=WATCHLIST_PAGE_SIZE;changed();window.dispatchEvent(new Event('rewind:media-filter'));
@@ -154,7 +178,7 @@ const RewindMedia=(()=>{
  const originalCached=renderDiscoverCached;renderDiscoverCached=()=>{if(filter!=='tv')originalCached();else $('discover-grid').replaceChildren();if(filter!=='movie')paintTVBrowse(extraRows.filter(m=>!skipSet.has(m.id)&&unseen(m)));};
  window.addEventListener('rewind:tv-state',changed);window.addEventListener('rewind:state',()=>{labelControls();changed();});
  document.querySelectorAll('[data-media-filter]').forEach(b=>b.onclick=()=>setFilter(b.dataset.mediaFilter));
- const originalWatchlist=renderWatchlist;renderWatchlist=async(...args)=>{const result=await originalWatchlist(...args);const all=collection(),scope=scopedWatchlist();$('watchlist-count').textContent=all.length+' saved titles · '+all.filter(isTV).length+' TV series';$('watchlist-empty').hidden=all.length>0;$('watchlist-scope-note').textContent=watchlistScope==='release'?'Movie and TV releases you follow. Season ratings and progress stay with each series.':'Your saved movies and TV series.';labelControls();return result;};
+ const originalWatchlist=renderWatchlist;renderWatchlist=async(...args)=>{const result=await originalWatchlist(...args);const all=collection(),scope=scopedWatchlist();$('watchlist-count').textContent=all.length+' saved titles · '+all.filter(isTV).length+' TV series';$('watchlist-empty').hidden=all.length>0;$('watchlist-scope-note').textContent=watchlistScope==='release'?'Followed movie releases, saved TV shows, and unfinished seasons.':'Your saved movies and TV series.';labelControls();return result;};
  async function refreshTV(limit=12,force=false){await TV.ready;const selected=groups().filter(g=>(g.intent||(hubState.seriesFollows||[]).includes(g.id)||MediaModel.positiveRecords(g).length)&&(force||!TV.cached(g.id)?.checkedAt||Date.now()-TV.cached(g.id).checkedAt>6*3600000)).sort((a,b)=>Number(!!TV.cached(a.id)?.checkedAt)-Number(!!TV.cached(b.id)?.checkedAt)).slice(0,limit);await mapLimited(selected,2,async g=>{try{await TV.check(g);}catch{}});changed();}
  $('refresh-card-btn').addEventListener('click',()=>{if(filter!=='movie')refreshTV(12,true).catch(()=>{});});
  document.querySelectorAll('[data-calendar-source=digital]').forEach(b=>b.addEventListener('click',()=>refreshTV().catch(()=>{})));

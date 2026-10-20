@@ -41,12 +41,16 @@ const wait=()=>new Promise(r=>setTimeout(r,100));
  {id:'tv:fixtureseries:2:answer',seriesId:'tv:fixtureseries',title:'Fixture Series',season:2,status:'watched',rating:null,partial:true,scope:'Season 2 · partly watched: episode 3'},
  {id:'tv:fixtureseries:series:intent',seriesId:'tv:fixtureseries',title:'Fixture Series',season:null,status:'watchlist',rating:null},
  {id:'tv:neutral:1:answer',seriesId:'tv:neutral',title:'Neutral Series',season:1,status:'unseen',rating:null}
- ],seriesCatalog:[{id:'tv:fixtureseries',tmdbId:42,checkedAt:w.Date.now(),providers:[{id:8,name:'Netflix'}],providerURL:'https://www.themoviedb.org/tv/42/watch',detail:{id:42,name:'Fixture Series',first_air_date:'2020-01-01',overview:'An actual series synopsis.',poster_path:'/tv.jpg',genres:[{id:18,name:'Drama'}],created_by:[{name:'Series Creator'}],credits:{crew:[]},seasons:[{season_number:1,air_date:'2020-01-01'},{season_number:2,air_date:'2026-09-01'}],next_episode_to_air:{air_date:'2026-10-06',season_number:2,episode_number:4},episode_run_time:[45]}}],seriesFollows:['tv:fixtureseries']};
+ ],seriesCatalog:[{id:'tv:fixtureseries',tmdbId:42,checkedAt:w.Date.now(),providers:[{id:8,name:'Netflix'}],providerURL:'https://www.themoviedb.org/tv/42/watch',detail:{id:42,name:'Fixture Series',first_air_date:'2020-01-01',overview:'An actual series synopsis.',poster_path:'/tv.jpg',genres:[{id:18,name:'Drama'}],created_by:[{name:'Series Creator'}],credits:{crew:[]},seasons:[{season_number:1,air_date:'2020-01-01'},{season_number:2,air_date:'2026-09-01'}],next_episode_to_air:{air_date:'2026-10-06',season_number:2,episode_number:4},episode_run_time:[45]}}],seriesFollows:[]};
  w.localStorage.setItem('rewind-hub-v1',JSON.stringify(tvFixture));
  w.eval(['startup.js','rewind-model.js','release-model.js','availability-ui.js','counter-model.js','discovery-model.js','taste-model.js','hub-model.js','artwork-model.js','occasion-model.js','oracle.js','storage-model.js','sync-model.js','static-model.js','watchlist-model.js','movie-news-model.js','media-model.js','app.js','tv-model.js','tv.js','media.js','hub.js','static-experience.js','movie-news.js','letterboxd-diary.js'].map(file=>fs.readFileSync(__dirname+'/../'+file,'utf8')).join('\n')+'\nwindow.testState={movies:()=>watchlist,replaceMovies:m=>watchlist=m,hub:()=>hubState,hubInterface:Hub,saveFailure:()=>{cloudSavePhase="synced";failedStorageKeys.add("test-failure");renderSaveState()},clearSaveFailure:()=>{failedStorageKeys.delete("test-failure");cloudSavePhase="idle";renderSaveState()},syncBase,seen:()=>seenSet,changed:()=>Hub.stateChanged()};window.mediaTest=RewindMedia;window.mediaModel=MediaModel;');
 
  await wait();await wait();await wait();
  const media=w.mediaTest;
+ assert.ok(w.document.querySelector('#tab-watchlist .shelf-group [data-media-type=tv]'),'Default Release Watch includes saved TV without a second follow action');
+ assert.equal(media.registration('release').length,0,'Displaying a saved show does not opt it into email alerts');
+ const memo=media.groups();assert.equal(media.groups(),memo,'Repeated card lookups reuse derived TV groups');
+ w.testState.hub().seriesFollows=['tv:fixtureseries'];
  const registered=media.registration('release');
  assert.equal(registered[0].id,'tv:fixtureseries');assert.equal(registered[0].season,2);assert.equal(registered[0].episode,3);
  assert.equal('rating' in registered[0],false,'Background registry excludes private ratings');
@@ -67,6 +71,15 @@ const wait=()=>new Promise(r=>setTimeout(r,100));
  media.setFilter('movie');await wait();await wait();
  assert.equal(w.document.querySelector('#tab-watchlist .shelf-group [data-media-type=tv]'),null);
  media.setFilter('all');await wait();
+ w.testState.hub().watchlistUnmatched=[{title:'Imported Series',year:'2024',letterboxdURL:'https://letterboxd.com/film/imported-series/',catalogMatch:{state:'unsupported',series:{id:77,title:'Imported Series'}}}];
+ w.eval('reconcileWatchlistMatches()');
+ assert.equal(w.testState.hub().watchlistUnmatched.length,0,'Verified TV imports leave the unsupported-film queue');
+ assert.ok(media.savedTV('release').some(m=>m.tmdbId===77),'Imported Letterboxd series enter the default home view');
+ assert.equal(media.registration('release').some(m=>m.tmdbId===77),false,'Catalog migration never enables release email');
+ const manyMovies=Array.from({length:36},(_,i)=>({entry:{id:9000+i,title:'Movie '+i,mediaType:'movie'},status:{offers:[{kind:'subscription',provider:'Netflix',included:true}]}}));
+ const preview=w.WatchlistModel.releaseWatchPage([...manyMovies,{entry:{id:'tv:preview',title:'Saved TV',mediaType:'tv'},status:{offers:[]}}],{limit:24,model:w.ReleaseModel,today:'2026-10-05'});
+ assert.ok(preview.rows.some(r=>r.entry.mediaType==='tv'),'A full first movie page cannot bury every TV show');
+ assert.equal(preview.rows.length,24);
  const prior=w.testState.movies();
  w.testState.replaceMovies([...prior,{id:42,title:'Numeric collision movie',release_date:'2021-01-01'},{id:998,title:'Midnight Mass',release_date:'2021-09-24',letterboxdURL:'https://letterboxd.com/film/midnight-mass-2021/'}]);
  const combined=media.collection();
