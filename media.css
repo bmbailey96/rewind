@@ -23,3 +23,11 @@
 
 .integrated-tv-card>.card-poster{grid-column:1;grid-row:1 / span 4;width:80px!important;height:120px!important;max-width:80px;max-height:120px;object-fit:cover;float:none;margin:0;border-radius:3px}
 .integrated-tv-card>.cost-block{grid-column:2;grid-row:4;margin:4px 0 0;padding:0;border:0}
+
+/* TV's own shelf must receive the same card layout as the shared shelves. */
+#tv-grid{grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));align-items:start}
+#tv-grid>.rental-card.compact-film-card{display:grid;grid-template-columns:80px minmax(0,1fr);gap:4px 14px;align-content:start;align-items:start;padding:14px;width:100%;min-width:0;max-width:none;box-sizing:border-box;border-radius:6px}
+.integrated-tv-card{min-width:0;box-sizing:border-box}
+.integrated-tv-card>*{min-width:0}
+.integrated-tv-card>.card-actions{grid-column:1/-1}
+@media(max-width:600px){#tv-grid{grid-template-columns:minmax(0,1fr)}}

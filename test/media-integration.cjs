@@ -47,6 +47,14 @@ const wait=()=>new Promise(r=>setTimeout(r,100));
 
  await wait();await wait();await wait();
  const media=w.mediaTest;
+ const tvCard=media.tvCard(media.asMedia(media.groups().find(g=>g.id==='tv:fixtureseries')));
+ assert.equal(tvCard.querySelector('.card-actions button'),null,'Saved TV does not show a duplicate Save control');
+ assert.ok(![...tvCard.querySelectorAll('.card-actions button')].some(b=>/follow|save/i.test(b.textContent)),'Release email controls belong in details, not beside Save');
+ const poster=tvCard.querySelector('img.card-poster');poster.dispatchEvent(new w.Event('error'));
+ assert.equal(tvCard.querySelector('.poster-missing').textContent,'POSTER UNAVAILABLE','Broken TV images keep a stable placeholder');
+ const tvCSS=fs.readFileSync(__dirname+'/../media.css','utf8');
+ assert.match(tvCSS,/#tv-grid>\.rental-card\.compact-film-card\{display:grid;grid-template-columns:80px minmax\(0,1fr\)/,'TV shelf defines its own shared-card grid');
+
  assert.ok(w.document.querySelector('#tab-watchlist .shelf-group [data-media-type=tv]'),'Default Release Watch includes saved TV without a second follow action');
  assert.equal(media.registration('release').length,0,'Displaying a saved show does not opt it into email alerts');
  const memo=media.groups();assert.equal(media.groups(),memo,'Repeated card lookups reuse derived TV groups');

@@ -99,9 +99,12 @@ const RewindMedia=(()=>{
  async function recommendations(seed){if(isTV(seed)){const full=await hydrate(seed);return full.tmdbId?(await tmdbGet('/tv/'+full.tmdbId+'/recommendations')).results?.map(r=>asMedia(TV.fromResult(r)))||[]:[];}return (await tmdbGet('/movie/'+seed.id+'/recommendations')).results||[];}
  function recordProgress(m){const g=group(m);TV.open(g.id);const host=$('tv-grid').querySelector('article')||$('tv-grid');TV.edit(g,host);}
  function typeBadge(m){const tv=isTV(m),badge=el('span',tv?'▣ TV SERIES':'▤ MOVIE','media-type-badge '+(tv?'tv':'movie'));badge.setAttribute('aria-label',tv?'TV series':'Movie');return badge;}
+ const posterAttempts=new Set(),posterQueue=[];let posterRequests=0;
+ function loadPosters(){while(posterRequests<2&&posterQueue.length){const card=posterQueue.shift();if(!card.isConnected)continue;const id=card.dataset.movieId;if(posterAttempts.has(id))continue;posterAttempts.add(id);posterRequests++;hydrate(card._tvMedia,true).then(checked=>{if(card.isConnected)card.replaceWith(tvCard(checked,card._tvOptions||{}));}).catch(()=>{}).finally(()=>{posterRequests--;loadPosters();});}}
+ const posterObserver=typeof IntersectionObserver==='function'?new IntersectionObserver(entries=>{for(const entry of entries)if(entry.isIntersecting){posterObserver.unobserve(entry.target);posterQueue.push(entry.target);}loadPosters();},{rootMargin:'150px'}):null;
  function tvCard(m,opts={}){
-  const g=group(m),full=asMedia(g),c=el('article',null,'rental-card compact-film-card integrated-tv-card');c.dataset.movieId=g.id;c.dataset.mediaType='tv';
-  const poster=el(full.poster_path?'img':'div',full.poster_path?null:'NO POSTER','card-poster'+(full.poster_path?'':' poster-missing'));if(full.poster_path){poster.src=posterUrl(full.poster_path);poster.alt='';poster.loading='lazy';}
+  const g=group(m),full={...m,...asMedia(g)},c=el('article',null,'rental-card compact-film-card integrated-tv-card');c.dataset.movieId=g.id;c.dataset.mediaType='tv';c._tvOptions=opts;c._tvMedia=full;
+  const poster=el(full.poster_path?'img':'div',full.poster_path?null:'NO POSTER ON FILE','card-poster'+(full.poster_path?'':' poster-missing'));if(full.poster_path){poster.src=posterUrl(full.poster_path);poster.alt=g.title+' poster';poster.loading='lazy';poster.width=80;poster.height=120;poster.onerror=()=>{const fallback=el('div','POSTER UNAVAILABLE','card-poster poster-missing');poster.replaceWith(fallback);};}else if(posterObserver)posterObserver.observe(c);
   c.append(poster,el('h3',g.title,'card-title'));const meta=el('p',null,'card-meta');meta.append(typeBadge(full),document.createTextNode(' · '+((full.first_air_date||'').slice(0,4)||'Year unlisted')));c.append(meta);
   const n=next(g),progress=n?(n.partial?'Continue season '+n.number:'Next: season '+n.number):g.seasons.length?'Caught up with recorded seasons':'Season history unconfirmed';
   c.append(el('p',progress,'card-director'));
@@ -110,9 +113,8 @@ const RewindMedia=(()=>{
   if(g.seasons.length){const strip=el('div',null,'tv-seasons');for(const r of g.seasons)strip.append(el('span','S'+r.season+' · '+(r.partial?'partly watched':r.status==='watched'?(r.rating==null?'watched':r.rating+' ★'):r.status==='watchlist'?'watchlist':'not watched')));c.append(strip);}
   const dates=TV.eventsFor(g);if(dates.length)c.append(el('p',dates.slice(0,2).map(e=>formatFilmDate(e.date)+' · '+e.label).join(' / '),'tv-release-note'));
   if(!current.stale&&current.offers.length)c.append(el('p','Series-level streaming listing. Confirm the season you need on the service.','offer-note'));
-  const actions=el('div',null,'card-actions'),following=(hubState.seriesFollows||[]).includes(g.id);
-  const followButton=button(following?'FOLLOWING RELEASES':'FOLLOW RELEASES',()=>follow(full,!following));followButton.setAttribute('aria-pressed',String(following));actions.append(followButton);
-  if(!g.intent)actions.append(button('SAVE',()=>add(full)));
+  const actions=el('div',null,'card-actions');
+  if(!g.intent)actions.append(button('Add to watchlist',()=>add(full)));
   const details=button('Details, seasons & viewing options',()=>{
    const body=el('div',null,'tv-detail-body');
    openFilmDetails(full,body,details,async()=>{
@@ -121,6 +123,9 @@ const RewindMedia=(()=>{
      const providers=el('div',null,'tv-provider-links');for(const offer of s.offers){const a=el('a',offer.provider+(offer.included?' · your service':''));a.href=offer.link;a.target='_blank';a.rel='noopener noreferrer';providers.append(a);}body.append(providers,el('p',s.offers.length?'Listings describe the series; the needed season may differ.':'No subscription listing returned. This does not establish that the show is unavailable.','offer-note'));
      for(const event of TV.eventsFor(updated))body.append(el('p',formatFilmDate(event.date)+' · '+event.label));
      body.append(button('Rate / update season progress',()=>TV.edit(updated,body)));
+     body.append(el('p','Saved shows appear in release tracking on the site. Email alerts are optional and use your daily email settings.'));
+     const emailButton=button('',()=>{const enabled=!(hubState.seriesFollows||[]).includes(updated.id);follow(checked,enabled);paintEmail();});
+     const paintEmail=()=>{const enabled=(hubState.seriesFollows||[]).includes(updated.id);emailButton.textContent=enabled?'Release email alerts: on':'Release email alerts: off';emailButton.setAttribute('aria-pressed',String(enabled));};paintEmail();body.append(emailButton);
      if(checked.letterboxdURL&&HubModel.safeLink(checked.letterboxdURL)){const a=el('a','Linked Letterboxd entry ↗');a.href=checked.letterboxdURL;a.target='_blank';a.rel='noopener noreferrer';body.append(a);}
      if(updated.intent)body.append(button('Remove from watchlist',()=>{remove(updated.id);$('film-detail-dialog')?.close();}));
      body.append(button('Recheck streaming',async()=>{await hydrate(checked,true);details.click();}));
