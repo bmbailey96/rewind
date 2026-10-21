@@ -20,6 +20,7 @@ const wait=()=>new Promise(r=>setTimeout(r,100));
  w.localStorage.setItem('rewind-watchlist-v1',JSON.stringify(films));w.localStorage.setItem('rewind-coyote-seeded-v1','1');w.localStorage.setItem('rewind-watchmode-key','fixture');
  w.fetch=async(raw,opts={})=>{const u=new URL(raw,'https://bekind-rewind.netlify.app');let body;
   if(u.pathname==='/tv-catalog.json')body=[];
+  else if(u.pathname==='/3/tv/42/recommendations')body={results:[{id:901,name:'Law & Order',first_air_date:'1990-09-13',genre_ids:[80]},{id:902,name:'Strange New Series',first_air_date:'2026-09-10',genre_ids:[18]},{id:903,name:'Reality Contest',first_air_date:'2026-09-10',genre_ids:[10764]}]};
   else if(u.pathname==='/3/tv/42')body={...tvFixture.seriesCatalog[0].detail,'watch/providers':{results:{US:{link:'https://www.themoviedb.org/tv/42/watch',flatrate:[{provider_id:8,provider_name:'Netflix'}]}}}};
   else if(u.pathname.includes('rewind-cinema')||u.pathname==='/cinema-snapshot.json')body={events:{items:[{id:'event-a',title:'Coyote vs. Acme Special Screening',dates:['2026-10-06','2026-10-08'],ranges:[],start:'2026-10-06',end:'2026-10-08',dateLabel:'Oct 6 · Oct 8',url:'https://www.fathomentertainment.com/releases/test/'}],checkedAt:Date.now(),stale:false},local:{items:[{id:'local-coyote-'+cinemaRevision,title:'Coyote vs. Acme',dates:['2026-10-06','2026-10-07','2026-10-09'],start:'2026-10-06',end:'2026-10-09',screenings:[{date:'2026-10-06',time:'7:00pm',format:'Standard',url:'https://tickets.fandango.com/test'}],url:'https://www.cinemark.com/theatres/test'}],checkedAt:Date.now(),stale:false}};
   else if(u.pathname.includes('rewind-horizon')||u.pathname==='/horizon-snapshot.json')body={checkedAt:w.Date.now(),stale:false,items:[{id:1599181,title:'Chronovisor',source:'Grasshopper Film',sourceURL:'https://grasshopperfilm.com/film/chronovisor/',sourceStatus:'limited',checkedAt:w.Date.now(),screenings:[{date:'2026-10-24',time:'5:30pm',location:'Missoula, MT',label:'Montana Film Festival',sourceURL:'https://www.montanafilmfestival.org/films/feature/chronovisor/',checkedAt:w.Date.now()}]}]};
@@ -47,6 +48,7 @@ const wait=()=>new Promise(r=>setTimeout(r,100));
 
  await wait();await wait();await wait();
  const media=w.mediaTest;
+ const curatedTV=await media.tvBrowse('recent');assert.ok(curatedTV.some(m=>m.title.startsWith('Strange New Series')),'TV discovery uses positive-season recommendations');assert.ok(!curatedTV.some(m=>/Law & Order|Reality Contest/.test(m.title)),'Generic procedural and reality feeds stay off the curated shelf');assert.match(curatedTV[0].discoveryReason,/Fixture Series.*5\/5/,'Discovery explains the actual rated seed');
  const tvCard=media.tvCard(media.asMedia(media.groups().find(g=>g.id==='tv:fixtureseries')));
  assert.equal(tvCard.querySelector('.card-actions button'),null,'Saved TV does not show a duplicate Save control');
  assert.ok(![...tvCard.querySelectorAll('.card-actions button')].some(b=>/follow|save/i.test(b.textContent)),'Release email controls belong in details, not beside Save');

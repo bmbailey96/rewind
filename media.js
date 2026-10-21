@@ -111,6 +111,7 @@ const RewindMedia=(()=>{
   const current=opts.status||status(g),cost=opts.collectionCost||ReleaseModel.cost(current.offers,rentalBudget,current.stale);c.append(renderCostHeadline(cost));
   if(n?.partial)c.append(el('p',n.scope,'tv-progress'));
   if(g.seasons.length){const strip=el('div',null,'tv-seasons');for(const r of g.seasons)strip.append(el('span','S'+r.season+' · '+(r.partial?'partly watched':r.status==='watched'?(r.rating==null?'watched':r.rating+' ★'):r.status==='watchlist'?'watchlist':'not watched')));c.append(strip);}
+  if(m.discoveryReason)c.append(el('p',m.discoveryReason,'discovery-reason'));
   const dates=TV.eventsFor(g);if(dates.length)c.append(el('p',dates.slice(0,2).map(e=>formatFilmDate(e.date)+' · '+e.label).join(' / '),'tv-release-note'));
   if(!current.stale&&current.offers.length)c.append(el('p','Series-level streaming listing. Confirm the season you need on the service.','offer-note'));
   const actions=el('div',null,'card-actions');
@@ -138,11 +139,18 @@ const RewindMedia=(()=>{
  async function tvBrowse(stage='recent',page=1,query=''){
   await TV.ready;let results=[];
   if(query)results=(await tmdbGet('/search/tv',{query,page})).results||[];
-  else if(stage==='coming'){const end=ReleaseModel.addDays(today(),180);results=(await tmdbGet('/discover/tv',{'first_air_date.gte':today(),'first_air_date.lte':end,sort_by:'popularity.desc',page})).results||[];}
-  else if(stage==='circuit'){results=(await tmdbGet('/discover/tv',{sort_by:'vote_average.desc','vote_count.gte':25,page})).results||[];}
-  else {const feeds=await Promise.all([tmdbGet('/tv/on_the_air',{page}),tmdbGet('/trending/tv/week',{page})]);results=feeds.flatMap(r=>r.results||[]);}
-  const saved=new Set(savedTV().map(m=>m.id));let movies=[...new Map(results.filter(r=>r.id&&typeof r.name==='string').map(r=>{const m=asMedia(TV.fromResult(r));return [m.id,m];})).values()];
+  else {
+   const positive=groups().filter(g=>MediaModel.positiveRecords(g).length).sort((a,b)=>Math.max(...MediaModel.positiveRecords(b).map(r=>r.rating||0))-Math.max(...MediaModel.positiveRecords(a).map(r=>r.rating||0)));
+   const start=((page-1)*3)%Math.max(1,positive.length),chosen=[...positive.slice(start),...positive.slice(0,start)].slice(0,3);
+   const batches=await Promise.allSettled(chosen.map(async g=>{const m=await hydrate(asMedia(g));if(!m.tmdbId)return [];const data=await tmdbGet('/tv/'+m.tmdbId+'/recommendations',{page:1});const rating=Math.max(...MediaModel.positiveRecords(g).map(r=>r.rating||0));return (data.results||[]).slice(0,10).map(r=>({...r,discoveryReason:'Suggested from '+g.title+' · you rated it '+rating+'/5.'}));}));
+   results=batches.flatMap(r=>r.status==='fulfilled'?r.value:[]);
+   if(!results.length){const titles=['Station Eleven','Devs','Maniac','The Leftovers','Scavengers Reign','Pantheon','The Terror','Channel Zero','Brand New Cherry Flavor'];const offset=((page-1)*3)%titles.length;const fallback=await Promise.allSettled([...titles.slice(offset),...titles.slice(0,offset)].slice(0,3).map(async title=>{const g={id:TVModel.seriesKey(title),title,seasons:[],legacy:[]};const m=await hydrate(asMedia(g));return {...TV.cached(g.id)?.detail,id:m.tmdbId,name:title,discoveryReason:'From the curated shelf: strange places, limited runs, and stories with an author behind them.'};}));results=fallback.filter(r=>r.status==='fulfilled').map(r=>r.value);}
+   // News, talk, reality and soap feeds do not enter the personal shelf. Search remains unrestricted.
+   results=results.filter(r=>!(r.genre_ids||r.genres?.map(g=>g.id)||[]).some(id=>[10763,10764,10766,10767].includes(id))&&!/^(?:law & order|ncis|fbi|chicago (?:fire|med|p\.d\.))\b/i.test(r.name||''));
+  }
+  const saved=new Set(savedTV().map(m=>m.id));let movies=[...new Map(results.filter(r=>r.id&&typeof r.name==='string').map(r=>{const m={...asMedia(TV.fromResult(r)),discoveryReason:r.discoveryReason};return [m.id,m];})).values()];
   if(!query){if(stage==='coming')movies.push(...groups().map(asMedia).filter(m=>TV.eventsFor(group(m)).length));movies=movies.filter(m=>!saved.has(m.id)&&unseen(m)&&!skipSet.has(m.id));}
+  if(!query&&stage==='coming')movies=movies.filter(m=>(m.first_air_date>today()||TV.eventsFor(group(m)).some(e=>e.date>=today())));
   const genre=Number($('discover-genre')?.value||0);if(genre&&!query)movies=movies.filter(m=>m.genre_ids.includes(genre)||(genre===27||genre===53)&&new RegExp(genre===27?'horror':'thriller','i').test((m.meta.keywords?.keywords||[]).map(k=>k.name).join(' ')));
   return [...new Map(movies.map(m=>[m.id,m])).values()];
  }
@@ -188,12 +196,8 @@ const RewindMedia=(()=>{
  $('refresh-card-btn').addEventListener('click',()=>{if(filter!=='movie')refreshTV(12,true).catch(()=>{});});
  document.querySelectorAll('[data-calendar-source=digital]').forEach(b=>b.addEventListener('click',()=>refreshTV().catch(()=>{})));
  $('cinema-refresh').addEventListener('click',()=>{if(document.querySelector('[data-calendar-source=digital][aria-pressed=true]'))refreshTV(12,true).catch(()=>{});});
-  const tvNews=el('section',null,'tv-news-updates');tvNews.id='tv-news-updates';tvNews.hidden=true;tvNews.append(el('h3','TV release updates'),el('p','Catalog-listed series and season premieres. Open a title for its dated sources.','offer-note'));const tvNewsGrid=el('div',null,'card-row wrap');tvNews.append(tvNewsGrid);$('movie-news-panel').append(tvNews);
- async function news(){tvNews.hidden=filter==='movie';$('movie-news-grid').hidden=filter==='tv';if(filter==='movie')return;tvNewsGrid.textContent='Checking TV release dates…';try{await refreshTV(8);const rows=[...new Map([...(await tvBrowse('coming')),...groups().filter(g=>TV.eventsFor(g).length&&(g.intent||(hubState.seriesFollows||[]).includes(g.id)||MediaModel.positiveRecords(g).length)).map(asMedia)].map(m=>[m.id,m])).values()];tvNewsGrid.replaceChildren();for(const movie of rows.slice(0,12))tvNewsGrid.append(tvCard(movie,{context:'discover'}));if(!rows.length)tvNewsGrid.append(el('p','No dated TV premieres returned. Saved series stay available in your collection.'));}catch{tvNewsGrid.textContent='TV release updates could not refresh.';}}
- document.querySelector('[data-find-mode=news]').addEventListener('click',news);
- window.addEventListener('rewind:media-filter',()=>{if(!$('movie-news-panel').hidden)news();});
 
  labelControls();TV.ready.then(changed);
- return {registration,receiveSnapshots,isTV,accepts,select,filter:()=>filter,setFilter,collection,groups,group,next,status,asMedia,evidence,seeds,hydrate,recommendations,playable,tvBrowse,typeBadge,tvCard,changed,savedTV,
+ return {registration,receiveSnapshots,isTV,accepts,select,group,filter:()=>filter,setFilter,collection,groups,next,status,asMedia,evidence,seeds,hydrate,recommendations,playable,tvBrowse,typeBadge,tvCard,changed,savedTV,
  recordProgress,calendarRows:()=>groups().filter(g=>g.intent||(hubState.seriesFollows||[]).includes(g.id)||MediaModel.positiveRecords(g).length).flatMap(g=>TV.eventsFor(g).map(e=>({id:g.id+':'+e.date+':'+e.label,title:g.title,kind:'stream',mediaType:'tv',seriesId:g.id,theatrical:false,dates:[e.date],ranges:[],start:e.date,end:e.date,label:e.label,platform:'',sourceKind:'tv',certainty:'Listed',film:{id:g.id},art:TV.cached(g.id)?.detail,url:e.url,followed:true}))).filter(r=>accepts(r)&&!hubState.hidden.includes(r.id)),modeChanged:()=>labelControls()};
 })();
