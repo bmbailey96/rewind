@@ -1,48 +1,6 @@
 {
   "items": [
     {
-      "id": "roxy:/show/the-devils/",
-      "title": "The Devils",
-      "venueId": "roxy",
-      "venue": "Roxy Theater",
-      "location": "Missoula",
-      "source": "Roxy Theater official calendar",
-      "url": "https://www.theroxytheater.org/show/the-devils/",
-      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/were20you20sent20here20by20the20devil-1024x577.jpg",
-      "dates": [
-        "2026-10-20",
-        "2026-10-21",
-        "2026-10-22"
-      ],
-      "ranges": [],
-      "screenings": [
-        {
-          "date": "2026-10-20",
-          "time": "4:30pm",
-          "startsAt": "2026-10-20T22:30:00.000Z",
-          "url": "https://www.theroxytheater.org/show/the-devils/",
-          "format": ""
-        },
-        {
-          "date": "2026-10-21",
-          "time": "8:15pm",
-          "startsAt": "2026-10-22T02:15:00.000Z",
-          "url": "https://www.theroxytheater.org/show/the-devils/",
-          "format": ""
-        },
-        {
-          "date": "2026-10-22",
-          "time": "5:00pm",
-          "startsAt": "2026-10-22T23:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/the-devils/",
-          "format": ""
-        }
-      ],
-      "start": "2026-10-20",
-      "end": "2026-10-22",
-      "dateLabel": "3 listed days"
-    },
-    {
       "id": "roxy:/show/the-social-reckoning/",
       "title": "The Social Reckoning",
       "venueId": "roxy",
@@ -52,26 +10,11 @@
       "url": "https://www.theroxytheater.org/show/the-social-reckoning/",
       "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/social20reckoning-1024x576.jpg",
       "dates": [
-        "2026-10-20",
         "2026-10-21",
         "2026-10-22"
       ],
       "ranges": [],
       "screenings": [
-        {
-          "date": "2026-10-20",
-          "time": "5:15pm",
-          "startsAt": "2026-10-20T23:15:00.000Z",
-          "url": "https://www.theroxytheater.org/show/the-social-reckoning/",
-          "format": "Open captions"
-        },
-        {
-          "date": "2026-10-20",
-          "time": "7:45pm",
-          "startsAt": "2026-10-21T01:45:00.000Z",
-          "url": "https://www.theroxytheater.org/show/the-social-reckoning/",
-          "format": ""
-        },
         {
           "date": "2026-10-21",
           "time": "5:15pm",
@@ -94,84 +37,9 @@
           "format": ""
         }
       ],
-      "start": "2026-10-20",
+      "start": "2026-10-21",
       "end": "2026-10-22",
-      "dateLabel": "3 listed days"
-    },
-    {
-      "id": "roxy:/show/your-mother-your-mother-your-mother/",
-      "title": "Your Mother Your Mother Your Mother",
-      "venueId": "roxy",
-      "venue": "Roxy Theater",
-      "location": "Missoula",
-      "source": "Roxy Theater official calendar",
-      "url": "https://www.theroxytheater.org/show/your-mother-your-mother-your-mother/",
-      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/your20mother20x203-1024x576.jpg",
-      "dates": [
-        "2026-10-20",
-        "2026-10-21",
-        "2026-10-22"
-      ],
-      "ranges": [],
-      "screenings": [
-        {
-          "date": "2026-10-20",
-          "time": "5:30pm",
-          "startsAt": "2026-10-20T23:30:00.000Z",
-          "url": "https://www.theroxytheater.org/show/your-mother-your-mother-your-mother/",
-          "format": "Open captions"
-        },
-        {
-          "date": "2026-10-20",
-          "time": "8:00pm",
-          "startsAt": "2026-10-21T02:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/your-mother-your-mother-your-mother/",
-          "format": ""
-        },
-        {
-          "date": "2026-10-21",
-          "time": "5:45pm",
-          "startsAt": "2026-10-21T23:45:00.000Z",
-          "url": "https://www.theroxytheater.org/show/your-mother-your-mother-your-mother/",
-          "format": ""
-        },
-        {
-          "date": "2026-10-22",
-          "time": "4:30pm",
-          "startsAt": "2026-10-22T22:30:00.000Z",
-          "url": "https://www.theroxytheater.org/show/your-mother-your-mother-your-mother/",
-          "format": ""
-        }
-      ],
-      "start": "2026-10-20",
-      "end": "2026-10-22",
-      "dateLabel": "3 listed days"
-    },
-    {
-      "id": "roxy:/show/suck-it-up-buttercup/",
-      "title": "Suck It Up, Buttercup",
-      "venueId": "roxy",
-      "venue": "Roxy Theater",
-      "location": "Missoula",
-      "source": "Roxy Theater official calendar",
-      "url": "https://www.theroxytheater.org/show/suck-it-up-buttercup/",
-      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/08/siubposter_1200x675-1024x576.jpg",
-      "dates": [
-        "2026-10-20"
-      ],
-      "ranges": [],
-      "screenings": [
-        {
-          "date": "2026-10-20",
-          "time": "7:00pm",
-          "startsAt": "2026-10-21T01:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/suck-it-up-buttercup/",
-          "format": ""
-        }
-      ],
-      "start": "2026-10-20",
-      "end": "2026-10-20",
-      "dateLabel": "1 listed days"
+      "dateLabel": "2 listed days"
     },
     {
       "id": "roxy:/show/where-the-wild-things-are-trail-camera-movie-night/",
@@ -200,6 +68,40 @@
       "dateLabel": "1 listed days"
     },
     {
+      "id": "roxy:/show/your-mother-your-mother-your-mother/",
+      "title": "Your Mother Your Mother Your Mother",
+      "venueId": "roxy",
+      "venue": "Roxy Theater",
+      "location": "Missoula",
+      "source": "Roxy Theater official calendar",
+      "url": "https://www.theroxytheater.org/show/your-mother-your-mother-your-mother/",
+      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/your20mother20x203-1024x576.jpg",
+      "dates": [
+        "2026-10-21",
+        "2026-10-22"
+      ],
+      "ranges": [],
+      "screenings": [
+        {
+          "date": "2026-10-21",
+          "time": "5:45pm",
+          "startsAt": "2026-10-21T23:45:00.000Z",
+          "url": "https://www.theroxytheater.org/show/your-mother-your-mother-your-mother/",
+          "format": ""
+        },
+        {
+          "date": "2026-10-22",
+          "time": "4:30pm",
+          "startsAt": "2026-10-22T22:30:00.000Z",
+          "url": "https://www.theroxytheater.org/show/your-mother-your-mother-your-mother/",
+          "format": ""
+        }
+      ],
+      "start": "2026-10-21",
+      "end": "2026-10-22",
+      "dateLabel": "2 listed days"
+    },
+    {
       "id": "roxy:/show/red-rooms/",
       "title": "Red Rooms",
       "venueId": "roxy",
@@ -224,6 +126,40 @@
       "start": "2026-10-21",
       "end": "2026-10-21",
       "dateLabel": "1 listed days"
+    },
+    {
+      "id": "roxy:/show/the-devils/",
+      "title": "The Devils",
+      "venueId": "roxy",
+      "venue": "Roxy Theater",
+      "location": "Missoula",
+      "source": "Roxy Theater official calendar",
+      "url": "https://www.theroxytheater.org/show/the-devils/",
+      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/were20you20sent20here20by20the20devil-1024x577.jpg",
+      "dates": [
+        "2026-10-21",
+        "2026-10-22"
+      ],
+      "ranges": [],
+      "screenings": [
+        {
+          "date": "2026-10-21",
+          "time": "8:15pm",
+          "startsAt": "2026-10-22T02:15:00.000Z",
+          "url": "https://www.theroxytheater.org/show/the-devils/",
+          "format": ""
+        },
+        {
+          "date": "2026-10-22",
+          "time": "5:00pm",
+          "startsAt": "2026-10-22T23:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/the-devils/",
+          "format": ""
+        }
+      ],
+      "start": "2026-10-21",
+      "end": "2026-10-22",
+      "dateLabel": "2 listed days"
     },
     {
       "id": "roxy:/show/the-missouri-breaks-in-35mm/",
@@ -2176,7 +2112,7 @@
       "dateLabel": "1 listed days"
     }
   ],
-  "checkedAt": 1792558916397,
+  "checkedAt": 1792584250569,
   "stale": false,
   "sourceURL": "https://www.theroxytheater.org/showtimes/"
 }
