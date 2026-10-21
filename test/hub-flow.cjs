@@ -268,7 +268,8 @@ const wait=()=>new Promise(r=>setTimeout(r,100));
 
  w.Hub=w.testState.hubInterface;const flowErrors=[];w.addEventListener('error',e=>flowErrors.push(e.error));
  w.eval(fs.readFileSync(__dirname+'/../flow.js','utf8'));
- assert.equal(w.document.querySelectorAll('.discover-intents button').length,4,'Oracle, Explore, Surprise and Movie news have distinct destinations');
+ assert.equal(w.document.querySelectorAll('.discover-intents button').length,3,'Browse, Pick something and News are the three Discover destinations');
+ assert.ok(w.document.querySelector('.picker-actions [data-discover-intent=surprise]'),'Surprise remains an action inside the picker');assert.equal(w.document.getElementById('watchlist-suggestions').open,false,'Tonight suggestions do not precede the watchlist');assert.ok(w.document.querySelector('#tab-import #rental-budget'),'The rental limit is a setting');assert.equal(w.document.getElementById('watchlist-shelf-shortcut').hidden,true,'Physical shelf has a single entry point');const availabilityMenu=w.document.getElementById('watchlist-availability');availabilityMenu.value='free';availabilityMenu.dispatchEvent(new w.Event('change'));await wait();assert.equal(w.document.querySelector('[data-cost-filter=free]').getAttribute('aria-pressed'),'true');w.document.getElementById('reset-cost-filter').click();await wait();assert.equal(availabilityMenu.value,'all','Reset synchronizes the visible availability menu');
  assert.equal(w.document.querySelector('[data-tab=import]').getAttribute('aria-label'),'Settings');
  assert.ok(w.document.querySelector('.counter-inner [data-tab=import]'));
  w.document.querySelector('[data-discover-intent=pick]').click();assert.equal(w.document.getElementById('hub-picker').hidden,false);assert.ok(w.document.querySelector('.pick-adjust #picker-source'));assert.ok(w.document.querySelector('.pick-adjust #picker-cost'));
