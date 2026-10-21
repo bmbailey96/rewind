@@ -991,6 +991,7 @@ function paintWatchlist(results,append=false){
   const existing=append?new Set([...document.querySelectorAll('#tab-watchlist .shelf-group .rental-card')].map(card=>String(card.dataset.movieId))):new Set();
   document.querySelectorAll('[data-cost-filter]').forEach(btn=>{btn.classList.toggle('active',btn.dataset.costFilter===costFilter);btn.setAttribute('aria-pressed',String(btn.dataset.costFilter===costFilter));});
   for(const id of ['watch-now','paid','waiting','rw-arrived','rw-available','rw-coming','rw-theater','rw-upcoming','rw-development','rw-waiting']){if(!append){document.getElementById(id+'-grid')?.replaceChildren();const section=document.getElementById(id+'-section');if(section)section.hidden=true;}}
+  if(document.getElementById('tab-watchlist').dataset.collection==='physical'){window.dispatchEvent(new Event('rewind:card-rendered'));return;}
   if(watchlistScope==='release'){
     const page=WatchlistModel.releaseWatchPage(results,{today:discoveryWindow().today,budget:rentalBudget,receipts:hubState.changeReceipts,limit:watchlistLimit,filter:costFilter,model:ReleaseModel,localListing:m=>typeof Hub==='undefined'||typeof Hub.localListing!=='function'?null:Hub.localListing(m)});
     const groups={included:'rw-arrived',cheap:'rw-available',premium:'rw-coming',theater:'rw-theater',upcoming:'rw-upcoming',development:'rw-development',waiting:'rw-waiting'};

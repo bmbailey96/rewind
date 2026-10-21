@@ -138,7 +138,7 @@
   return {count:ranked.length,winner:{title:winner.title,score:winner.oracle.score,taste:winner.oracle.tasteScore,context:winner.oracle.atmosphereScore},alternatives};
  }
  function momentReading(movie,context,at=Date.now()){
- if(movie.mediaType==='tv'){const n=movie.episodeRuntime||movie.runtime||movie.meta?.episode_run_time?.[0],reasons=movie.fit?.reasons||[];return {heading:'Start with an episode.',text:[reasons[0]||'A saved series with a checked viewing option.',n?'Episodes run around '+n+' minutes.':'Episode length has not been verified.','The full season is a separate commitment.'].join(' ')};}
+ if(movie.mediaType==='tv'){const n=movie.episodeRuntime||movie.runtime||movie.meta?.episode_run_time?.[0],reasons=movie.fit?.reasons||[];return {heading:'Start with an episode.',text:[reasons[0]?reasons[0].replace(/[.!?]+$/,'')+'.':'A saved series with a checked viewing option.',n?'Episodes run around '+n+' minutes.':'Episode length has not been verified.','The full season is a separate commitment.'].join(' ')};}
 
   const base=reading(movie,{connection:null},at),d=movie.meta||movie,words=[movie.title,movie.overview,d.overview,...(d.genres||[]).map(g=>g.name||g),...(d.keywords?.keywords||[]).map(k=>k.name||k)].join(' ').toLowerCase();
   const parts=new Intl.DateTimeFormat('en-US',{timeZone:'America/Denver',hour:'numeric',minute:'2-digit',hourCycle:'h23'}).formatToParts(at),hour=Number(parts.find(p=>p.type==='hour').value),clock=new Intl.DateTimeFormat('en-US',{timeZone:'America/Denver',hour:'numeric',minute:'2-digit'}).format(at);
