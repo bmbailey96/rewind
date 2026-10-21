@@ -31,7 +31,7 @@
     <button class="tab-btn active" data-tab="watchlist" aria-current="page">WATCHLIST</button>
     <button class="tab-btn" data-tab="discover">DISCOVER</button>
     <button class="tab-btn" data-tab="upcoming">CALENDAR</button>
-    <button class="tab-btn" data-tab="tv">TV</button>
+    <button class="tab-btn" data-tab="tv" hidden>TV</button>
     <button class="tab-btn" data-tab="import">SETTINGS</button>
   </nav>
 </header>
@@ -56,7 +56,7 @@
     <div class="media-type-filters" role="group" aria-label="Collection type"><button type="button" data-media-filter="all" aria-pressed="true">Movies + TV</button><button type="button" data-media-filter="movie" aria-pressed="false">Movies</button><button type="button" data-media-filter="tv" aria-pressed="false">TV shows</button></div>
     <section id="tonight-shelf" class="tonight-shelf" aria-labelledby="tonight-heading"><div class="panel-head"><h3 id="tonight-heading">Tonight</h3><span class="count-stamp">THREE POSSIBLE ANSWERS</span></div><p id="tonight-status" class="offer-note" role="status"></p><div id="tonight-grid"></div></section>
     <div id="watchlist-import-review" class="source-disclosure"></div>
-    <div class="watchlist-toolbar"><div class="watchlist-navigation"><div class="watchlist-scope" aria-label="My films views"><button data-watchlist-scope="release" aria-pressed="true">RELEASE WATCH</button><button data-watchlist-scope="all" aria-pressed="false">ALL WATCHLIST</button><button id="watchlist-shelf-shortcut" type="button">MY SHELF</button></div><p id="watchlist-scope-note" class="offer-note"></p></div>    <details id="card-options" class="screen-options"><summary id="card-options-label">Filters</summary><div class="options-body">
+    <div class="watchlist-toolbar"><div class="watchlist-navigation"><div class="watchlist-scope" aria-label="Watchlist tools"><button data-watchlist-scope="release" hidden aria-pressed="true">Watchlist</button><button data-watchlist-scope="all" hidden aria-pressed="false">Archive</button><button id="watchlist-shelf-shortcut" type="button">MY SHELF</button></div><p id="watchlist-scope-note" class="offer-note"></p></div>    <details id="card-options" class="screen-options"><summary id="card-options-label">Filters</summary><div class="options-body">
     <div class="card-toolbar"><button id="refresh-card-btn" class="secondary">CHECK SHOWN FILMS</button><span id="card-check-status" role="status"></span></div>
     <div class="cost-filters" aria-label="Filter your card by cost"><button data-cost-filter="all" aria-pressed="true">ALL</button><button data-cost-filter="free" aria-pressed="false">INCLUDED / FREE</button><button data-cost-filter="cheap" aria-pressed="false">AT MY PRICE</button><button data-cost-filter="premium" aria-pressed="false">OVER MY PRICE</button><button data-cost-filter="waiting" aria-pressed="false">WAITING</button></div>
     <div class="card-controls">
@@ -211,7 +211,7 @@
 <script src="static-experience.js"></script>
 <script src="flow.js"></script>
 <script src="movie-news.js"></script>
-<script src="radar.js"></script>
+
 <script src="calendar-export-model.js"></script>
 <script src="calendar-export.js"></script>
 <script src="letterboxd-diary.js"></script>

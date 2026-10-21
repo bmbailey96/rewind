@@ -93,8 +93,8 @@
    const cost=model.cost(r.status?.offers,budget,false);
    return {...r,cost,stage:releaseStage(r.entry,r.status,today,budget,receipts,model,localListing(r.entry))};
   }).filter(r=>filter==='all'||filter==='free'&&r.stage.group==='included'||filter==='cheap'&&r.stage.group==='cheap'||filter==='premium'&&r.stage.group==='premium'||filter==='waiting'&&['waiting','upcoming','development','theater'].includes(r.stage.group));
-  rows.sort((a,b)=>order[a.stage.group]-order[b.stage.group]||
-   Number(!!b.entry.pinned)-Number(!!a.entry.pinned)||
+  const chosen=m=>m.rewindSaved===true||/^Rewind (discover|calendar|watchlist)$/.test(m.source||'');
+  rows.sort((a,b)=>Number(!!b.entry.pinned)-Number(!!a.entry.pinned)||Number(chosen(b.entry))-Number(chosen(a.entry))||order[a.stage.group]-order[b.stage.group]||
    (a.stage.group==='premium'?({premium:0,buy:1,unknown:2}[a.cost.band]??2)-({premium:0,buy:1,unknown:2}[b.cost.band]??2):0)||
    (['cheap','premium'].includes(a.stage.group)?(a.cost.price??Infinity)-(b.cost.price??Infinity):0)||
    (['waiting','upcoming','development','theater'].includes(a.stage.group)?String(a.stage.date||'9999').localeCompare(String(b.stage.date||'9999')):0)||

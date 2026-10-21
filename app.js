@@ -823,7 +823,7 @@ function renderReleaseRecovery(){
  }
  if(!candidates.length){const note=document.createElement('p');note.className='offer-note';note.textContent='No obvious older candidates found. You can follow any film from All Watchlist or Discover.';list.append(note);}
 }
-document.getElementById('rw-recovery-all').onclick=()=>{document.getElementById('film-drawer')?.close();document.querySelector('[data-watchlist-scope="all"]').click();};
+document.getElementById('rw-recovery-all').onclick=()=>{document.getElementById('film-drawer')?.close();watchlistLimit+=WATCHLIST_PAGE_SIZE;renderWatchlist();};
 function renderImportReview(){
  const box=document.getElementById('watchlist-import-review');if(!box)return;
  const wasOpen=!!box.querySelector('details[open]'),rows=hubState.watchlistUnmatched||[],counts=WatchlistModel.matchSummary(rows);box.replaceChildren();if(!rows.length)return;
@@ -902,7 +902,7 @@ async function renderWatchlist(force = false, reuse = false, background = false)
   }));
   document.querySelectorAll('[data-watchlist-scope]').forEach(btn=>btn.setAttribute('aria-pressed',String(btn.dataset.watchlistScope===watchlistScope)));
   document.getElementById('tab-watchlist').dataset.scope=watchlistScope;
-  document.getElementById('watchlist-scope-note').textContent=watchlistScope==='release'?'Films you chose to follow from Discover, Calendar, or your watchlist. No expiration date.':'Your complete Letterboxd and Rewind watchlist, including older films.';
+  document.getElementById('watchlist-scope-note').textContent='Saved movies and TV, grouped by availability. Your Rewind additions come before the imported Letterboxd backlog. Discover saves appear here automatically.';
   renderImportReview();
   renderReleaseRecovery();
   watchlistResults=[...progress.values()];

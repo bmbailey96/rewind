@@ -38,7 +38,7 @@ assert.deepEqual(W.releaseWatchPage(premiumPins,options).rows.map(r=>r.entry.id)
 const later=pin(row(66,[],{digitalDate:future})),earlier=row(67,[],{digitalDate:new Date(now+2*86400000).toISOString().slice(0,10)});
 assert.deepEqual(W.releaseWatchPage([earlier,later],options).rows.map(r=>r.entry.id),[66,67],'A pin beats date order in a waiting section');
 const mixed=W.releaseWatchPage([pin(row(68,[rent(19.99)])),row(69,[included])],options);
-assert.deepEqual(mixed.rows.map(r=>r.entry.id),[69,68],'Pins never cross availability sections');
+assert.deepEqual(mixed.rows.map(r=>r.entry.id),[68,69],'Pins get a place before the imported backlog across availability sections');
 affordable[1].entry.pinned=false;affordable[2].entry.pinned=false;
 assert.deepEqual(W.releaseWatchPage(affordable,options).rows.map(r=>r.entry.id),[61,63,62],'Unpin restores normal price ordering');
 const many=Array.from({length:600},(_,i)=>row(2000+i,[rent(1.99)]));many[599].entry.pinned=true;
