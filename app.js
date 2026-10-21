@@ -474,7 +474,7 @@ async function deriveRemoteStatus(movie, force = false) {
   const results = await Promise.allSettled([fetchWatchProviders(movie.id),fetchMovieDetails(movie.id,force),fetchAnnouncements(),fetchStreamingCalendar(),checkStorePricesCached(movie,force)]);
   const p = results[0];const d = results[1];
   const fullDetails=d.status==='fulfilled'?d.value:null;
-  const details=fullDetails?{id:fullDetails.id,runtime:fullDetails.runtime,release_dates:fullDetails.release_dates,production_companies:fullDetails.production_companies}:movie.detailsSnapshot;
+  const details=fullDetails?{id:fullDetails.id,runtime:fullDetails.runtime,status:fullDetails.status,release_dates:fullDetails.release_dates,production_companies:fullDetails.production_companies}:movie.detailsSnapshot;
   if(fullDetails){movie.detailsSnapshot=details;Object.assign(movie,{runtime:fullDetails.runtime,director:(fullDetails.credits?.crew||[]).filter(c=>c.job==='Director').map(c=>c.name).join(', '),overview:fullDetails.overview||movie.overview||''});}
   const releaseDates = ReleaseModel.datesFor(details);
   const timeline={details,announcements:ReleaseModel.matchingAnnouncements({...((results[2].status==='fulfilled'?results[2].value:null)||{}),today:discoveryWindow().today},movie.id),calendar:(results[3].status==='fulfilled'?results[3].value:[]).filter(r=>r.tmdb_id===movie.id&&r.tmdb_type==='movie')};
@@ -558,7 +558,7 @@ function balanceCardUpdates(card){
  const priority=n=>n.matches('.rental-forecast-note')?0:n.matches('.wait-advice')?1:n.matches('.useful-change')?2:n.matches('.local-card-note')?3:n.matches('.release-stage-line')?4:n.matches('.tonight-reason,.discovery-reason')?5:6;
  const first=[...notes].filter(n=>n.textContent.trim()).sort((a,b)=>priority(a)-priority(b))[0];for(const note of notes){note.classList.toggle('card-extra-update',note!==first);note.hidden=note!==first;}
 }
-function paintFollowControl(button,movie){const followed=!!watchlist.find(m=>m.id===movie.id)?.followRelease;button.dataset.followMovie=String(movie.id);button.textContent=followed?'FOLLOWING RELEASE':'FOLLOW RELEASE';button.disabled=false;button.setAttribute('aria-pressed',String(followed));button.setAttribute('aria-label',(followed?'Unfollow release: ':'Follow release: ')+movie.title);button.title=followed?'Stop release updates; keep this film saved':'Follow release and availability updates';}
+function paintFollowControl(button,movie){const followed=!!watchlist.find(m=>m.id===movie.id)?.followRelease;button.dataset.followMovie=String(movie.id);button.textContent=followed?'Release email alerts: on':'Release email alerts: off';button.disabled=false;button.setAttribute('aria-pressed',String(followed));button.setAttribute('aria-label',(followed?'Turn off release email alerts: ':'Turn on release email alerts: ')+movie.title);button.title=followed?'Turn off email checks; keep this film saved':'Optional email checks, using your daily email settings';}
 function refreshFollowControls(){for(const button of document.querySelectorAll('[data-follow-movie]')){const movie=watchlist.find(m=>String(m.id)===button.dataset.followMovie)||{id:Number(button.dataset.followMovie),title:button.dataset.filmTitle||'this film'};paintFollowControl(button,movie);}}
 function createFollowControl(movie,origin='watchlist'){const button=document.createElement('button');button.type='button';button.className='track-action';button.dataset.filmTitle=movie.title;paintFollowControl(button,movie);button.onclick=()=>{if(watchlist.find(m=>m.id===movie.id)?.followRelease)unfollowReleaseFilm(movie.id);else followReleaseFilm(movie,origin);refreshFollowControls();};return button;}
 window.addEventListener('rewind:state',refreshFollowControls);
@@ -581,6 +581,7 @@ function renderCard(movie, opts = {}) {
     const listed=/^\d{4}-\d{2}-\d{2}$/.test(movie.release_date||'')?movie.release_date:null;
     costInfo={band:'waiting',badge:listed&&!movie.releaseFile?'CATALOG DATE · '+formatFilmDate(listed):'VIEWING OPTIONS',caption:'Open details for current offers'};
   }
+  if(costInfo&&status&&!status.pending&&!opts.collectionCost)costInfo=WatchlistModel.stageCost(movie,status,WatchlistModel.releaseStage(movie,status,discoveryWindow().today,rentalBudget,[],ReleaseModel),costInfo);
   if(costInfo){const headline=renderCostHeadline(costInfo);if(opts.collectionCost?.stale){const warning=headline.querySelector('.cost-warning');if(warning)warning.textContent=status?.checkedAt?'Last checked '+formatFilmDate(new Date(status.checkedAt).toISOString())+' · not refreshed':'Previous listing · check needed';}card.appendChild(headline);}
 
   const homeOffers=(status?.offers||[]).filter(o=>['subscription','free','rent','buy'].includes(o.kind));
@@ -604,7 +605,7 @@ function renderCard(movie, opts = {}) {
     if(context==='watchlist'||context==='physical'){
       const collection=document.createElement('section');collection.className='film-collection';const heading=document.createElement('h4');heading.textContent='Your collection';collection.append(heading,secondaryActions);
       if(context==='watchlist'){
-        collection.appendChild(createFollowControl(movie,'watchlist'));
+        collection.appendChild(createFollowControl(movie,'watchlist'));const explanation=document.createElement('p');explanation.textContent='Saved films already appear in release tracking. Email checks are optional.';collection.append(explanation);
         const tools=document.createElement('div');tools.className='card-actions collection-tools';
         for(const [name,fn] of [[movie.pinned?'Unpin':'Pin this film',()=>togglePin(movie.id)],['Remove from watchlist',()=>removeFromWatchlist(movie.id)]]){const btn=document.createElement('button');btn.className='secondary';btn.textContent=name;btn.onclick=fn;tools.appendChild(btn);}collection.appendChild(tools);
         const alert=document.createElement('details');alert.className='source-disclosure film-notifications';const title=document.createElement('summary');title.textContent='Notifications';alert.append(title,renderAlertPreference(movie));collection.appendChild(alert);
@@ -614,10 +615,10 @@ function renderCard(movie, opts = {}) {
     }
   };
   const artControl=element=>{element.tabIndex=0;element.setAttribute('role','button');element.setAttribute('aria-label','Film details: '+movie.title);element.setAttribute('aria-haspopup','dialog');element.setAttribute('aria-controls','film-detail-dialog');element.classList.add('poster-action');element.onclick=()=>details.click();element.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();details.click();}};};artControl(poster);if(poster.tagName==='IMG'){const failure=poster.onerror;poster.onerror=()=>{failure();artControl(card.querySelector('.card-poster'));};}
-  details.onclick=()=>openFilmDetails(movie,body,details,async()=>{if(current){fillDetails();if(!(current.details||movie.detailsSnapshot)?.release_dates){try{const full=await fetchMovieDetails(movie.id);movie.detailsSnapshot={id:full.id,runtime:full.runtime,release_dates:full.release_dates,production_companies:full.production_companies};current={...current,details:movie.detailsSnapshot};if(body.isConnected)fillDetails();}catch{}}return;}body.textContent='Checking releases and viewing options…';try{current=await deriveStatus(movie);fillDetails();}catch{body.replaceChildren();const note=document.createElement('p');note.textContent='Could not load this film.';const retry=document.createElement('button');retry.textContent='Try again';retry.onclick=()=>details.click();body.append(note,retry);}});
+  details.onclick=()=>openFilmDetails(movie,body,details,async()=>{if(current){fillDetails();if(!(current.details||movie.detailsSnapshot)?.release_dates){try{const full=await fetchMovieDetails(movie.id);movie.detailsSnapshot={id:full.id,runtime:full.runtime,status:full.status,release_dates:full.release_dates,production_companies:full.production_companies};current={...current,details:movie.detailsSnapshot};if(body.isConnected)fillDetails();}catch{}}return;}body.textContent='Checking releases and viewing options…';try{current=await deriveStatus(movie);fillDetails();}catch{body.replaceChildren();const note=document.createElement('p');note.textContent='Could not load this film.';const retry=document.createElement('button');retry.textContent='Try again';retry.onclick=()=>details.click();body.append(note,retry);}});
   const actions=document.createElement('div');actions.className='card-actions';
   if(context==='watchlist'){
-    actions.appendChild(createFollowControl(movie,'watchlist'));
+    // Saved films already appear in release tracking; email controls live in Details.
     const watched=document.createElement('button');watched.className='secondary';watched.textContent='MARK WATCHED';watched.onclick=()=>{document.getElementById('film-detail-dialog')?.close();markMovieWatched(movie);};secondaryActions.appendChild(watched);
     const next=(!status?.stale||opts.collectionCost)?costInfo?.offer:null;
     if(next?.link){const link=document.createElement('a');link.className='watch-link';link.textContent=opts.collectionCost?.stale?'CHECK OFFER':next.kind==='buy'?'BUY':next.kind==='rent'?'RENT':'WATCH';link.href=next.link;link.target='_blank';link.rel='noopener noreferrer';actions.prepend(link);}
@@ -629,18 +630,10 @@ function renderCard(movie, opts = {}) {
     const followable=context==='discover'||context==='search';
     const followed=!!trackedFilm?.followRelease;
     const track=document.createElement('button');
-    track.textContent=followable?(followed?'FOLLOWING RELEASE':'FOLLOW RELEASE'):(inList?'SAVED':'SAVE');
+    track.textContent=inList?'On watchlist':'Add to watchlist';
     track.className=next?.link?'track-action secondary-track':'track-action';
-    track.disabled=followable?false:inList;if(followable){track.dataset.filmTitle=movie.title;paintFollowControl(track,movie);}
-    track.onclick=()=>{
-      if(followable){
-        if(watchlist.find(m=>m.id===movie.id)?.followRelease)unfollowReleaseFilm(movie.id);else followReleaseFilm(movie,context);
-        refreshFollowControls();card.classList.toggle('film-tracked',!!watchlist.find(m=>m.id===movie.id)?.followRelease);
-      }else{
-        addToWatchlist(movie);
-        track.textContent='SAVED';track.disabled=true;card.classList.add('film-tracked');
-      }
-    };
+    track.disabled=inList;
+    track.onclick=()=>{addToWatchlist(movie);track.textContent='On watchlist';track.disabled=true;card.classList.add('film-tracked');};
     actions.appendChild(track);
     if((context==='discover'||context==='search')&&!inList){const skip=document.createElement('button');skip.className='text-action hide-action';skip.textContent='HIDE';skip.onclick=()=>{skipMovie(movie.id);card.remove();updateBrowseDismissControl();};actions.appendChild(skip);}
   }
@@ -703,14 +696,14 @@ function followReleaseFilm(movie,origin='discover'){
   const existing=watchlist.find(m=>m.id===movie.id);
   if(!existing){
     addToWatchlist(movie,{followRelease:true,origin});
-    showToast(movie.title+' followed for release updates');
+    showToast(movie.title+' saved with release email alerts');
     renderWatchlist(false,true);
     return;
   }
   if(existing.followRelease===true)return;
   existing.followRelease=true;existing.followReleaseAt=Date.now();existing.followReleaseOrigin=origin;
   saveWatchlist();scheduleSync();renderWatchlist(false,true);
-  showToast('Release updates enabled for '+existing.title);
+  showToast('Release email checks enabled for '+existing.title);
 }
 function unfollowReleaseFilm(id){
   const entry=watchlist.find(m=>m.id===id);
@@ -718,7 +711,7 @@ function unfollowReleaseFilm(id){
   entry.followRelease=false;
   const priorAt=entry.followReleaseAt,priorOrigin=entry.followReleaseOrigin;
   saveWatchlist();scheduleSync();renderWatchlist(false,true);
-  showToast('Stopped release monitoring for '+entry.title+'. Film stays on your watchlist.',()=>{
+  showToast('Paused release emails for '+entry.title+'. Film stays on your watchlist.',()=>{
     entry.followRelease=true;entry.followReleaseAt=priorAt;entry.followReleaseOrigin=priorOrigin;
     saveWatchlist();scheduleSync();renderWatchlist(false,true);
   });
@@ -806,7 +799,7 @@ function watchedForRecent(movie){
     /Letterboxd (?:public )?diary/i.test(record.source||'')
   ));
 }
-function scopedWatchlist(){return watchlistScope==='all'?watchlist:watchlist.filter(m=>WatchlistModel.followsRelease(m)&&!watchedForRecent(m));}
+function scopedWatchlist(){return watchlistScope==='all'?watchlist:watchlist.filter(m=>!watchedForRecent(m));}
 window.addEventListener('rewind:seen-updated',()=>{if(watchlistScope==='release')renderWatchlist(false,true);});
 function renderReleaseRecovery(){
  const box=document.getElementById('rw-recovery'),list=document.getElementById('rw-recovery-list');
@@ -824,7 +817,7 @@ function renderReleaseRecovery(){
    const line=document.createElement('div');line.className='release-recovery-row';
    const label=document.createElement('span');
    label.textContent=movie.title+(movie.release_date?' · '+movie.release_date.slice(0,4):'');
-   const follow=document.createElement('button');follow.type='button';follow.className='secondary';follow.textContent='FOLLOW RELEASE';
+   const follow=document.createElement('button');follow.type='button';follow.className='secondary';follow.textContent='ENABLE EMAIL CHECKS';
    follow.onclick=()=>followReleaseFilm(movie,'review');
    line.append(label,follow);list.appendChild(line);
  }
@@ -894,7 +887,7 @@ async function renderWatchlist(force = false, reuse = false, background = false)
   const loading=document.getElementById('watchlist-load-status');
   const statusEl=document.getElementById('card-check-status');
   const batch=scopedWatchlist().sort((a,b)=>Number(!!b.pinned)-Number(!!a.pinned)||(b.addedAt||0)-(a.addedAt||0));
-  document.getElementById('watchlist-count').textContent=(watchlistScope==='release'?batch.length+' followed releases · '+watchlist.length+' total':watchlist.length+' total')+((hubState.watchlistUnmatched||[]).length?' · '+hubState.watchlistUnmatched.length+' films importing':'');
+  document.getElementById('watchlist-count').textContent=(watchlistScope==='release'?batch.length+' saved releases · '+watchlist.length+' total':watchlist.length+' total')+((hubState.watchlistUnmatched||[]).length?' · '+hubState.watchlistUnmatched.length+' films importing':'');
   empty.hidden=watchlist.length>0;
   // Sorting and filters still consider the entire collection. Fetching does not.
   const progress=new Map(batch.map(entry=>{
@@ -995,24 +988,24 @@ function paintWatchlist(results,append=false){
   renderChangeStrip();
   const existing=append?new Set([...document.querySelectorAll('#tab-watchlist .shelf-group .rental-card')].map(card=>String(card.dataset.movieId))):new Set();
   document.querySelectorAll('[data-cost-filter]').forEach(btn=>{btn.classList.toggle('active',btn.dataset.costFilter===costFilter);btn.setAttribute('aria-pressed',String(btn.dataset.costFilter===costFilter));});
-  for(const id of ['watch-now','paid','waiting','rw-arrived','rw-available','rw-coming','rw-theater','rw-upcoming','rw-waiting']){if(!append){document.getElementById(id+'-grid')?.replaceChildren();const section=document.getElementById(id+'-section');if(section)section.hidden=true;}}
+  for(const id of ['watch-now','paid','waiting','rw-arrived','rw-available','rw-coming','rw-theater','rw-upcoming','rw-development','rw-waiting']){if(!append){document.getElementById(id+'-grid')?.replaceChildren();const section=document.getElementById(id+'-section');if(section)section.hidden=true;}}
   if(watchlistScope==='release'){
     const page=WatchlistModel.releaseWatchPage(results,{today:discoveryWindow().today,budget:rentalBudget,receipts:hubState.changeReceipts,limit:watchlistLimit,filter:costFilter,model:ReleaseModel,localListing:m=>typeof Hub==='undefined'||typeof Hub.localListing!=='function'?null:Hub.localListing(m)});
-    const groups={included:'rw-arrived',cheap:'rw-available',premium:'rw-coming',theater:'rw-theater',upcoming:'rw-upcoming',waiting:'rw-waiting'};
-    const labels={included:'Included & free',cheap:'At your price',premium:'Waiting for a better price',theater:'In theaters',upcoming:'Not released yet',waiting:'Awaiting home release'};
-    const descriptions={included:'Your services, free streams, and your physical shelf.',cheap:'Rentals at or below $'+rentalBudget.toFixed(2)+', cheapest first.',premium:'Rentals from lowest to highest, then purchase-only and unpriced offers.',theater:'Listed local screenings. Ticket links live on each film.',upcoming:'Future releases, nearest date first.',waiting:'No known home offer. Published home dates come first; unknown dates stay labeled.'};
+    const groups={included:'rw-arrived',cheap:'rw-available',premium:'rw-coming',theater:'rw-theater',upcoming:'rw-upcoming',development:'rw-development',waiting:'rw-waiting'};
+    const labels={included:'Included & free',cheap:'At your price',premium:'Waiting for a better price',theater:'In theaters',upcoming:'Unreleased · dated',development:'Projects & dates TBA',waiting:'Released · waiting for home access'};
+    const descriptions={included:'Your services, free streams, and your physical shelf.',cheap:'Rentals at or below $'+rentalBudget.toFixed(2)+', cheapest first.',premium:'Rentals from lowest to highest, then purchase-only and unpriced offers.',theater:'Listed local screenings. Ticket links live on each film.',upcoming:'Published future releases, nearest date first.',development:'Projects in development or without a verified release date. Production status stays explicit.',waiting:'No known home offer. Published home dates come first; unknown dates stay labeled.'};
     document.getElementById('watchlist-more').hidden=page.total<=watchlistLimit;
     document.getElementById('watchlist-more').textContent='Show more · '+Math.max(0,page.total-page.rows.length)+' remaining';
     for(const row of page.rows){
       if(existing.has(String(row.entry.id)))continue;
-      const stage=row.stage,card=renderCard(row.entry,{context:'watchlist',status:row.status,changed:row.changed,prevLabel:row.entry.lastChange?.from,collectionCost:{...row.cost,...(stage.group==='upcoming'?{badge:'UPCOMING',caption:'Not released yet'}:{}),stale:stage.stale}});
+      const stage=row.stage,card=renderCard(row.entry,{context:'watchlist',status:row.status,changed:row.changed,prevLabel:row.entry.lastChange?.from,collectionCost:{...WatchlistModel.stageCost(row.entry,row.status,stage,row.cost),stale:stage.stale}});
       if(stage.newArrival&&!card.querySelector('.useful-change')){const tag=document.createElement('p');tag.className='new-tag useful-change';tag.textContent='Newly available at your price';card.querySelector('.card-meta').after(tag);}
       const note=document.createElement('p');note.className='release-stage-line';
       if(stage.group==='upcoming'){const timing=ReleaseModel.forecastTiming({likely:stage.opening.date},discoveryWindow().today);note.textContent=stage.opening.label+' · '+timing.when+' · '+timing.relative+' · '+stage.opening.source;}
       else if(stage.group==='theater')note.textContent=(stage.local.location||'Kalispell')+' screening listed '+formatFilmDate(stage.date)+(stage.local.stale?' · previous theater check':'');
       else if(stage.home&&!card.querySelector('.wait-advice'))note.textContent=stage.home.label+' on '+formatFilmDate(stage.home.date)+' · listed date; source in details';
       else if(stage.group==='waiting'&&row.entry.mediaType==='tv')note.textContent='Streaming for your next season has not been confirmed. Check Details & streaming.';
-      else if(stage.group==='waiting'){const dated=(row.status?.announcements||[]).filter(a=>['digital','subscription'].includes(a.kind)&&a.date&&a.date<=discoveryWindow().today).map(a=>({date:a.date,label:a.provider||'Digital release'}));for(const d of ReleaseModel.datesFor(row.status?.details||row.entry.detailsSnapshot))if(d.type===4&&ReleaseModel.date(d.release_date)<=discoveryWindow().today)dated.push({date:ReleaseModel.date(d.release_date),label:'Digital release'});const past=dated.sort((a,b)=>b.date.localeCompare(a.date))[0];note.textContent=past?past.label+' listed '+formatFilmDate(past.date)+' · current home availability unverified.':(stage.opening?stage.opening.label+' · '+formatFilmDate(stage.opening.date)+'. ':'Release date unannounced. ')+'Home release date unannounced.';}
+      else if(stage.group==='waiting'){const dated=(row.status?.announcements||[]).filter(a=>['digital','subscription'].includes(a.kind)&&a.date&&a.date<=discoveryWindow().today).map(a=>({date:a.date,label:a.provider||'Digital release'}));for(const d of ReleaseModel.datesFor(row.status?.details||row.entry.detailsSnapshot))if(d.type===4&&ReleaseModel.date(d.release_date)<=discoveryWindow().today)dated.push({date:ReleaseModel.date(d.release_date),label:'Digital release'});const past=dated.sort((a,b)=>b.date.localeCompare(a.date))[0];note.textContent=past?past.label+' listed '+formatFilmDate(past.date)+' · current home availability unverified.':(stage.opening?stage.opening.label+' · '+formatFilmDate(stage.opening?.date||stage.date)+'. ':'Release date unannounced. ')+'Home release date unannounced.';}
       if(note.textContent)card.querySelector('.film-details-trigger')?.before(note);balanceCardUpdates(card);
       document.getElementById(groups[stage.group]+'-grid').appendChild(card);
     }
@@ -1020,7 +1013,7 @@ function paintWatchlist(results,append=false){
       const section=document.getElementById(id+'-section'),shown=page.rows.filter(r=>r.stage.group===group).length;
       section.hidden=!page.counts[group];
       section.querySelector('h3').firstChild.textContent=labels[group]+' ';
-      document.getElementById(id+'-count').textContent='('+page.counts[group]+')';
+      document.getElementById(id+'-count').textContent='('+(page.counts[group]||0)+')';
       section.querySelector('.group-note').textContent=descriptions[group]+(shown<page.counts[group]?' Showing '+shown+' of '+page.counts[group]+'.':'');
     }
     document.getElementById('filter-empty').hidden=page.total>0||!scopedWatchlist().length;
@@ -1394,7 +1387,7 @@ function renderChangeStrip(){
  for(const [kind,count,text] of [['included',included,'newly included'],['affordable',affordable,'now within $'+rentalBudget.toFixed(2)]]){
   if(!count)continue;const button=document.createElement('button');button.type='button';button.className='text-action';button.textContent=count+' '+text;button.setAttribute('aria-pressed',String(watchlistChangeFilter===kind));button.onclick=()=>{watchlistChangeFilter=kind;costFilter='all';watchlistLimit=WATCHLIST_PAGE_SIZE;repaintWatchlist();};strip.appendChild(button);
  }
- if(watchlistChangeFilter){const clear=document.createElement('button');clear.type='button';clear.className='text-action';clear.textContent='Show all followed films';clear.onclick=()=>{watchlistChangeFilter=null;repaintWatchlist();};strip.appendChild(clear);}
+ if(watchlistChangeFilter){const clear=document.createElement('button');clear.type='button';clear.className='text-action';clear.textContent='Show all saved films';clear.onclick=()=>{watchlistChangeFilter=null;repaintWatchlist();};strip.appendChild(clear);}
 }
 let libraryTimer,libraryBusy=false;
 function scheduleBackgroundLibrary(){clearTimeout(libraryTimer);libraryTimer=setTimeout(()=>syncBackgroundLibrary().catch(()=>{}),5000);}

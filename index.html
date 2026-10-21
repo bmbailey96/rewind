@@ -67,13 +67,14 @@
     <p id="filter-empty" class="empty-note" hidden>No films in this group. <button id="reset-cost-filter" class="secondary">SHOW ALL FILMS</button></p>
     <p id="watchlist-load-status" class="offer-note" role="status"></p>
     <p id="storage-status" class="storage-status" role="alert" hidden></p><button id="storage-retry" type="button" class="secondary" hidden>Retry device save</button><button id="storage-backup" class="secondary" hidden>Download backup</button>
-    <p id="release-watch-empty" class="empty-note" hidden>No release follows yet. On Discover, choose Follow Release. You can also follow a film already saved under All Watchlist without removing it from Letterboxd.</p>
-    <section id="rw-recovery" class="source-disclosure release-recovery" hidden><h3>Find your older release follows</h3><p class="offer-note">Some old manual saves lost their origin when Letterboxd was imported. These are possible candidates from your watchlist, not confirmed prior follows. Pick the ones you want monitored.</p><div id="rw-recovery-list"></div><button type="button" id="rw-recovery-all" class="secondary">BROWSE ALL WATCHLIST</button></section>
+    <p id="release-watch-empty" class="empty-note" hidden>No saved unwatched titles yet. Add a film, series, or season from Discover or News to keep it on your radar.</p>
+    <section id="rw-recovery" class="source-disclosure release-recovery" hidden><h3>Optional email checks</h3><p class="offer-note">All saved titles already appear in release tracking. These older saves have no explicit email choice. Enable email checks individually if you want them.</p><div id="rw-recovery-list"></div><button type="button" id="rw-recovery-all" class="secondary">BROWSE ALL WATCHLIST</button></section>
     <section id="rw-arrived-section" class="shelf-group" hidden><h3>Included & free <span id="rw-arrived-count"></span></h3><p class="group-note">Your services, free streams, and your physical shelf.</p><div id="rw-arrived-grid" class="card-row wrap"></div></section>
     <section id="rw-available-section" class="shelf-group" hidden><h3>At your price <span id="rw-available-count"></span></h3><p class="group-note">Rentals at or below your limit, cheapest first.</p><div id="rw-available-grid" class="card-row wrap"></div></section>
     <section id="rw-coming-section" class="shelf-group" hidden><h3>Waiting for a better price <span id="rw-coming-count"></span></h3><p class="group-note">Higher rentals, purchase-only offers, and unpriced listings.</p><div id="rw-coming-grid" class="card-row wrap"></div></section>
     <section id="rw-theater-section" class="shelf-group" hidden><h3>In Kalispell <span id="rw-theater-count"></span></h3><p class="group-note">Listed local screenings with ticket links.</p><div id="rw-theater-grid" class="card-row wrap"></div></section>
     <section id="rw-upcoming-section" class="shelf-group" hidden><h3>Not released yet <span id="rw-upcoming-count"></span></h3><p class="group-note">Future releases, nearest date first.</p><div id="rw-upcoming-grid" class="card-row wrap"></div></section>
+    <section id="rw-development-section" class="shelf-group" hidden><h3>Projects & dates TBA <span id="rw-development-count"></span></h3><p class="group-note">Undated projects remain here until a release date is verified.</p><div id="rw-development-grid" class="card-row wrap"></div></section>
     <section id="rw-waiting-section" class="shelf-group" hidden><h3>Awaiting home release <span id="rw-waiting-count"></span></h3><p class="group-note">No known home viewing option. Confirmed upcoming dates come first.</p><div id="rw-waiting-grid" class="card-row wrap"></div></section>
     <section id="watch-now-section" class="shelf-group" hidden><h3>Watch now <span id="watch-now-count"></span></h3><p class="group-note">Included with your services, or free.</p><div id="watch-now-grid" class="card-row wrap"></div></section>
     <section id="paid-section" class="shelf-group" hidden><h3>Rent or buy <span id="paid-count"></span></h3><div id="paid-grid" class="card-row wrap"></div></section>
@@ -210,6 +211,9 @@
 <script src="static-experience.js"></script>
 <script src="flow.js"></script>
 <script src="movie-news.js"></script>
+<script src="radar.js"></script>
+<script src="calendar-export-model.js"></script>
+<script src="calendar-export.js"></script>
 <script src="letterboxd-diary.js"></script>
 </body>
 </html>

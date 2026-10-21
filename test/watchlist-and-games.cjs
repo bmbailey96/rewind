@@ -85,7 +85,7 @@ const rows=[
 ];
 const arrivals=[{movieId:5,at:checkedWatch-1000,type:'included',provider:'Shudder'}];
 const releasePage=W.releaseWatchPage(rows,{model:R,budget:7.99,today:releaseWatchToday,receipts:arrivals});
-assert.deepEqual(releasePage.rows.map(r=>r.stage.group),['included','included','upcoming','waiting','waiting']);
+assert.deepEqual(releasePage.rows.map(r=>r.stage.group),['included','included','upcoming','upcoming','development']);
 assert.equal(W.releaseStage(rows[3].entry,rows[3].status,releaseWatchToday,7.99,[],R).group,'included','A first check is not an arrival');
 assert.equal(W.releaseStage(rows[4].entry,{...rows[4].status,stale:true},releaseWatchToday,7.99,arrivals,R).newArrival,false,'A stale provider listing is not a new arrival');
 assert.equal(W.releaseStage({id:6},{checkedAt:checkedWatch,offers:[{kind:'rent',price:19.99,provider:'Apple TV'}]},releaseWatchToday,7.99,[],R).group,'premium','High premium rental belongs above the rental limit');

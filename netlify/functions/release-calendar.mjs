@@ -1,0 +1,14 @@
+import {getStore} from '@netlify/blobs';
+import {randomBytes,timingSafeEqual} from 'node:crypto';
+import model from '../../calendar-export-model.js';
+import calendar from '../../lib/release-calendar.cjs';
+const json=(data,status=200)=>Response.json(data,{status,headers:{'Cache-Control':'no-store'}});
+export default async request=>{
+ try{const url=new URL(request.url),store=getStore({name:'rewind-release-calendar-private',consistency:'strong'});const version=await store.getWithMetadata('owner',{type:'json'});let owner=version?.data;const save=value=>store.setJSON('owner',value,version?{onlyIfMatch:version.etag}:{onlyIfNew:true});
+ if(request.method==='GET'&&url.searchParams.has('token')){const token=url.searchParams.get('token');if(!owner?.enabled||!token||!/^\w{64}$/.test(token)||token.length!==owner.token.length||!timingSafeEqual(Buffer.from(token),Buffer.from(owner.token)))return new Response('Calendar unavailable',{status:404});return new Response(model.ics(calendar.events(owner)),{headers:{'Content-Type':'text/calendar; charset=utf-8','Cache-Control':'private, max-age=300','Content-Disposition':'inline; filename="rewind-releases.ics"','X-Robots-Tag':'noindex'}});}
+ const auth=request.headers.get('authorization');if(!auth?.startsWith('Bearer '))return json({error:'Connect GitHub in Settings first.'},401);const who=await fetch('https://api.github.com/user',{headers:{Authorization:auth,Accept:'application/vnd.github+json'},signal:AbortSignal.timeout(6000)});if(!who.ok||(await who.json()).login!=='bmbailey96')return json({error:'Calendar owner could not be verified.'},403);
+ if(request.method==='POST'){if(Number(request.headers.get('content-length')||0)>150000)return json({error:'Selection too large'},413);const raw=await request.text();if(raw.length>150000)return json({error:'Selection too large'},413);const body=JSON.parse(raw);const nextMembers=calendar.members(body),cache={...(owner?.cache||{})};for(const m of nextMembers){const prior=owner?.members?.find(p=>p.key===m.key);if(JSON.stringify(prior?.seasons||[])!==JSON.stringify(m.seasons||[]))delete cache[m.key];}owner={...(owner||{}),cache,enabled:body.enabled!==false,token:owner?.token||randomBytes(32).toString('hex'),members:nextMembers};if(owner.enabled)owner=await calendar.refresh(owner,fetch,Date.now(),12);const written=await save(owner);if(!written.modified)return json({error:'Calendar changed during this check. Try Update subscription again.'},409);}
+ else if(request.method!=='GET')return json({error:'Method not supported'},405);
+ const feedURL=owner?.enabled?url.origin+'/release-calendar.ics?token='+owner.token:null;return json({enabled:!!owner?.enabled,url:feedURL,events:calendar.events(owner).length,members:owner?.members?.length||0,checkedAt:owner?.checkedAt||null});
+ }catch{return json({error:'Calendar service could not refresh. Existing saved dates are retained.'},503);}
+};

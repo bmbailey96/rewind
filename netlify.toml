@@ -41,3 +41,9 @@
 
 [functions.letterboxd-diary-refresh]
   schedule = "53 */3 * * *"
+
+[[redirects]]
+  from = "/release-calendar.ics"
+  to = "/.netlify/functions/release-calendar"
+  status = 200
+  force = true
