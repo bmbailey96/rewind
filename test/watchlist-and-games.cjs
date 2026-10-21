@@ -92,3 +92,12 @@ assert.equal(W.releaseStage({id:6},{checkedAt:checkedWatch,offers:[{kind:'rent',
 assert.equal(W.releaseStage(rows[1].entry,rows[1].status,releaseWatchToday,7.99,[],R).group,'upcoming','A future US theatrical date is not a local screening');
 assert.equal(W.releaseWatchPage(rows,{model:R,budget:7.99,today:releaseWatchToday,receipts:arrivals,limit:2}).total,5,'Pagination does not truncate tracked collection');
 console.log('Release follows, conservative legacy migration, verified arrivals, published dates and entire-collection grouping passed');
+
+const crowded=[...Array.from({length:40},(_,i)=>group(100+i,'Included '+i,[{kind:'subscription',provider:'Shudder',included:true}])),...Array.from({length:110},(_,i)=>group(200+i,'Affordable '+i,[{kind:'rent',price:3.99,provider:'Apple TV'}])),...Array.from({length:61},(_,i)=>({...group(400+i,'Pinned premium '+i,[{kind:'rent',price:19.99,provider:'Apple TV'}]),entry:{id:400+i,title:'Pinned premium '+i,pinned:true}}))];
+const shelves=W.releaseWatchPage(crowded,{model:R,budget:7.99,today:releaseWatchToday,limit:24});
+assert.equal(shelves.counts.cheap,110);
+for(const group of ['included','cheap','premium'])assert.ok(shelves.rows.filter(r=>r.stage.group===group).length>=4,'Each populated shelf gets a visible preview despite competing pins');
+assert.equal(new Set(shelves.rows.map(r=>r.entry.id)).size,shelves.rows.length,'Shelf previews never duplicate cards');
+const expanded=W.releaseWatchPage(crowded,{model:R,budget:7.99,today:releaseWatchToday,limit:48});
+for(const row of shelves.rows)assert.ok(expanded.rows.some(r=>r.entry.id===row.entry.id),'Show more retains existing shelf previews');
+console.log('Crowded grouped watchlists retain visible previews and accurate counts');

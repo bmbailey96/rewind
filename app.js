@@ -997,7 +997,7 @@ function paintWatchlist(results,append=false){
     const groups={included:'rw-arrived',cheap:'rw-available',premium:'rw-coming',theater:'rw-theater',upcoming:'rw-upcoming',development:'rw-development',waiting:'rw-waiting'};
     const labels={included:'Included & free',cheap:'At your price',premium:'Waiting for a better price',theater:'In theaters',upcoming:'Unreleased · dated',development:'Projects & dates TBA',waiting:'Home availability unconfirmed'};
     const descriptions={included:'Your services, free streams, and your physical shelf.',cheap:'Rentals at or below $'+rentalBudget.toFixed(2)+', cheapest first.',premium:'Rentals from lowest to highest, then purchase-only and unpriced offers.',theater:'Listed local screenings. Ticket links live on each film.',upcoming:'Published future releases, nearest date first.',development:'Projects in development or without a verified release date. Production status stays explicit.',waiting:'Home access is unconfirmed. Check status and source age are shown on each card.'};
-    document.getElementById('watchlist-more').hidden=page.total<=watchlistLimit;
+    document.getElementById('watchlist-more').hidden=page.total<=page.rows.length;
     document.getElementById('watchlist-more').textContent='Show more · '+Math.max(0,page.total-page.rows.length)+' remaining';
     for(const row of page.rows){
       if(existing.has(String(row.entry.id)))continue;

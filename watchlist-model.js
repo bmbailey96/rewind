@@ -111,6 +111,13 @@
     preview=rows.filter(r=>selected.has(r));
    }
   }
+  // A shared page limit must not leave a populated shelf with no cards.
+  // Keep the ranked page, plus a small preview from every release group.
+  if(limit>=24){
+   const selected=new Set(preview);
+   for(const group of Object.keys(counts))for(const row of rows.filter(r=>r.stage.group===group).slice(0,4))selected.add(row);
+   preview=rows.filter(r=>selected.has(r));
+  }
   return {rows:preview,total:rows.length,counts};
  }
 
