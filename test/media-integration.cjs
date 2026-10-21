@@ -23,6 +23,7 @@ const wait=()=>new Promise(r=>setTimeout(r,100));
   else if(u.hostname==='api.tvmaze.com'&&u.pathname==='/shows/37196')body={name:'Invincible',externals:{imdb:'tt6741278'}};
   else if(u.pathname==='/3/find/tt6741278')body={tv_results:[{id:43,name:'Invincible',first_air_date:'2021-03-25'}]};
   else if(u.pathname==='/3/search/tv'&&u.searchParams.get('query')==='Invincible')body={results:[{id:43,name:'Invincible',first_air_date:'2021-03-25'},{id:44,name:'Invincible',first_air_date:'2008-01-01'}]};
+  else if(u.pathname==='/3/tv/902')body={id:902,name:'Strange New Series',first_air_date:'2026-09-10',seasons:[],created_by:[{name:'Series Creator'}]};
   else if(u.pathname==='/3/tv/43')body={id:43,name:'Invincible',poster_path:'/invincible.jpg',first_air_date:'2021-03-25',seasons:[]};
   else if(u.pathname==='/3/tv/42/recommendations')body={results:[{id:901,name:'Law & Order',first_air_date:'1990-09-13',genre_ids:[80]},{id:902,name:'Strange New Series',first_air_date:'2026-09-10',genre_ids:[18]},{id:903,name:'Reality Contest',first_air_date:'2026-09-10',genre_ids:[10764]}]};
   else if(u.pathname==='/3/tv/42')body={...tvFixture.seriesCatalog[0].detail,'watch/providers':{results:{US:{link:'https://www.themoviedb.org/tv/42/watch',flatrate:[{provider_id:8,provider_name:'Netflix'}]}}}};

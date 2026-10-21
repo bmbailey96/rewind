@@ -143,10 +143,14 @@ const RewindMedia=(()=>{
    const positive=groups().filter(g=>MediaModel.positiveRecords(g).length).sort((a,b)=>Math.max(...MediaModel.positiveRecords(b).map(r=>r.rating||0))-Math.max(...MediaModel.positiveRecords(a).map(r=>r.rating||0)));
    const start=((page-1)*3)%Math.max(1,positive.length),chosen=[...positive.slice(start),...positive.slice(0,start)].slice(0,3);
    const batches=await Promise.allSettled(chosen.map(async g=>{const m=await hydrate(asMedia(g));if(!m.tmdbId)return [];const data=await tmdbGet('/tv/'+m.tmdbId+'/recommendations',{page:1});const rating=Math.max(...MediaModel.positiveRecords(g).map(r=>r.rating||0));return (data.results||[]).slice(0,10).map(r=>({...r,discoveryReason:'Suggested from '+g.title+' · you rated it '+rating+'/5.'}));}));
-   results=batches.flatMap(r=>r.status==='fulfilled'?r.value:[]);
+   results=Array.from({length:10},(_,i)=>batches.flatMap(r=>r.status==='fulfilled'&&r.value[i]?[r.value[i]]:[])).flat();
    if(!results.length){const titles=['Station Eleven','Devs','Maniac','The Leftovers','Scavengers Reign','Pantheon','The Terror','Channel Zero','Brand New Cherry Flavor'];const offset=((page-1)*3)%titles.length;const fallback=await Promise.allSettled([...titles.slice(offset),...titles.slice(0,offset)].slice(0,3).map(async title=>{const g={id:TVModel.seriesKey(title),title,seasons:[],legacy:[]};const m=await hydrate(asMedia(g));return {...TV.cached(g.id)?.detail,id:m.tmdbId,name:title,discoveryReason:'From the curated shelf: strange places, limited runs, and stories with an author behind them.'};}));results=fallback.filter(r=>r.status==='fulfilled').map(r=>r.value);}
    // News, talk, reality and soap feeds do not enter the personal shelf. Search remains unrestricted.
    results=results.filter(r=>!(r.genre_ids||r.genres?.map(g=>g.id)||[]).some(id=>[10763,10764,10766,10767].includes(id))&&!/^(?:law & order|ncis|fbi|chicago (?:fire|med|p\.d\.))\b/i.test(r.name||''));
+   const editorial=r=>!!TV.seed(r.name),pool=results.filter(r=>editorial(r)||!(r.genre_ids||r.genres?.map(g=>g.id)||[]).some(id=>[10751,10762].includes(id)));
+   const checked=await mapLimited(pool.slice(0,15),2,async r=>{if(editorial(r))return r;try{const full=await hydrate(asMedia(TV.fromResult(r))),fit=HubModel.affinity(full,evidence(),hubState.feedback);if(!HubModel.strongConnection(fit))return null;return {...r,discoveryReason:fit.reasons.join(' · ')};}catch{return null;}});
+   results=checked.filter(Boolean);
+
   }
   const saved=new Set(savedTV().map(m=>m.id));let movies=[...new Map(results.filter(r=>r.id&&typeof r.name==='string').map(r=>{const m={...asMedia(TV.fromResult(r)),discoveryReason:r.discoveryReason};return [m.id,m];})).values()];
   if(!query){if(stage==='coming')movies.push(...groups().map(asMedia).filter(m=>TV.eventsFor(group(m)).length));movies=movies.filter(m=>!saved.has(m.id)&&unseen(m)&&!skipSet.has(m.id));}
