@@ -35,3 +35,6 @@ assert.match(M.summary({headline:'Series begins filming',mediaType:'tv',status:'
 assert.equal(M.relevance({...row('Severance Season 3 begins filming'),mediaType:'tv'},{taste:[{title:'Severance · season 1',mediaType:'tv',rating:5}]}).scope,'series');
 const tvFeed=N.parseFeed(xml('A surreal limited series begins filming'),{...source,mediaType:'tv'},at)[0];assert.equal(tvFeed.mediaType,'tv');assert.equal(tvFeed.stage,'Filming');
 assert.ok(N.SOURCES.filter(s=>s.mediaType==='tv').length>=2,'TV production reporting has dedicated sources');
+
+assert.equal(M.project('‘Old Show’ Star Joins ‘New Show’ Series'),null,'Multiple named projects do not borrow artwork from the first quoted title');
+assert.equal(M.relevance(row('Jeff Daniels To Star In ‘Bannerman’ TV Series'),{taste:[{title:'A Film',rating:5,meta:{credits:{crew:[{name:'Daniel Scheinert',job:'Director'}]}}}]}),null,'Jeff Daniels is not the Daniels directing duo');
