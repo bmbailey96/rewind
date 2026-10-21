@@ -1,7 +1,7 @@
 const assert=require('node:assert/strict'),M=require('../calendar-export-model.js'),C=require('../lib/release-calendar.cjs'),W=require('../watchlist-model.js'),R=require('../release-model.js');
 const today='2026-10-21',known={id:1,title:'Digger',detailsSnapshot:{status:'Released',release_dates:{results:[{iso_3166_1:'US',release_dates:[{type:3,release_date:'2026-10-02'}]}]}}},unknown={id:2,title:'They Follow',detailsSnapshot:{status:'Planned'}};
 const released=W.releaseStage(known,{offers:[]},today,7.99,[],R),planned=W.releaseStage(unknown,{offers:[]},today,7.99,[],R);
-assert.equal(released.group,'waiting');assert.equal(planned.group,'development');assert.equal(W.stageCost(unknown,{},planned,{}).badge,'IN DEVELOPMENT');assert.equal(W.stageCost(known,{},released,{}).badge,'NOT AT HOME');
+assert.equal(released.group,'waiting');assert.equal(planned.group,'development');assert.equal(W.stageCost(unknown,{},planned,{}).badge,'IN DEVELOPMENT');assert.equal(W.stageCost(known,{},released,{}).badge,'NOT CHECKED');
 assert.equal(M.movieEvents({id:99,title:'Foreign catalog date',release_date:'2027-01-01'},today).length,0,'Unspecified-region catalog dates do not become US calendar promises');
 assert.equal(M.movieEvents(unknown,today).length,0,'Undated projects never acquire calendar dates');
 const events=M.tvEvents({id:3,name:'True Detective',seasons:[{season_number:5,air_date:null},{season_number:6,air_date:'2028-02-29'}]},[5],today);assert.deepEqual(events,[],'A saved undated season cannot borrow another season’s date');
@@ -15,3 +15,5 @@ const movieFeed=M.ics([...batch,film,digital],0,{type:'movie',timed:true}),tvFee
 assert.equal((movieFeed.match(/BEGIN:VEVENT/g)||[]).length,1);assert.match(movieFeed,/DTSTART;TZID=America\/Denver:20261218T180000/);assert.match(movieFeed,/DTEND;TZID=America\/Denver:20261218T210000/);assert.equal((tvFeed.match(/BEGIN:VEVENT/g)||[]).length,2);assert.match(tvFeed,/DTSTART;TZID=America\/Denver:20261101T190000/);assert.match(tvFeed,/DTEND;TZID=America\/Denver:20261102T000000/);assert.match(tvFeed,/BEGIN:VTIMEZONE/);assert.match(tvFeed,/TZOFFSETTO:-0600/);assert.match(tvFeed,/TZOFFSETTO:-0700/);
 const preserved={cache:{x:{checkedAt:1,events:[film,...batch]}},exclusions:{movie:'Film',tv:'Batch Show | 2'}};assert.equal(C.events(preserved).length,0,'Existing personal events are excluded from feeds without deleting them');preserved.exclusions.tv='Batch Show | 3';assert.equal(C.events(preserved).length,2,'Excluding one season leaves other seasons eligible');
 console.log('Split calendars: movie opening blocks, Mountain DST, TV batches, midnight boundaries and existing-event exclusions passed');
+
+assert.equal(W.stageCost(known,{checkedAt:Date.now()}, {...released,stale:false},{}).badge,'NO OFFER FOUND');assert.equal(W.stageCost(known,{checkedAt:1},{...released,stale:true},{}).badge,'CHECK OUTDATED');

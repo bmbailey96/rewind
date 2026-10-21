@@ -3,7 +3,9 @@ const RewindMedia=(()=>{
  const $=id=>document.getElementById(id),el=(tag,text,cls)=>{const e=document.createElement(tag);if(text!=null)e.textContent=text;if(cls)e.className=cls;return e;};
  const today=()=>discoveryWindow().today;
  let filter='all',browseToken=0,extraRows=[],refreshTimer=null,seedFlight=null,initialTVRefreshStarted=false;
- try{const p=JSON.parse(localStorage.getItem('rewind-ui-v1')||'{}');if(['all','movie','tv'].includes(p.mediaType))filter=p.mediaType;}catch{}
+ try{const p=JSON.parse(localStorage.getItem('rewind-ui-v1')||'{}');const value=p.mediaByPage?.['tab-watchlist'];if(['all','movie','tv'].includes(value))filter=value;}catch{}
+ let pageFilters={};try{pageFilters=JSON.parse(localStorage.getItem('rewind-ui-v1')||'{}').mediaByPage||{};}catch{}
+ const pageKey=()=>document.querySelector('.tab-panel.active')?.id||'tab-watchlist';
  const button=(text,fn)=>{const b=el('button',text);b.type='button';b.onclick=fn;return b;};
  let groupMemo=null,linkMemo=null;
  function linkedTitle(m){
@@ -56,7 +58,7 @@ const RewindMedia=(()=>{
   const cache=TV.cached(g.id),d=cache?.detail||{},target=next(g),first=(MediaModel.norm(clean(g.title))==='twinpeaksthereturn'?TV.catalogFor(g).find(s=>s.number===1)?.date:null)||d.first_air_date||TV.catalogFor(g).find(s=>s.number===1)?.date||g.alias?.release_date||'';
   const genres=d.genres?.length?d.genres:(d.genre_ids||[]).map(id=>({id,name:({18:'Drama',35:'Comedy',16:'Animation',99:'Documentary',80:'Crime',9648:'Mystery',10765:'Sci-Fi & Fantasy',10759:'Action & Adventure'})[id]||''}));
   const keywords={keywords:d.keywords?.results||d.keywords?.keywords||[]};
-  return {id:g.id,mediaType:'tv',tmdbId:cache?.tmdbId||d.id,title:g.title,first_air_date:first,release_date:target?.date||first,poster_path:d.poster_path||g.alias?.poster_path,backdrop_path:d.backdrop_path,overview:d.overview||g.alias?.overview||'',runtime:d.episode_run_time?.[0]||d.last_episode_to_air?.runtime||null,genre_ids:MediaModel.movieGenres(genres),meta:{...d,genres,keywords,runtime:d.episode_run_time?.[0]||d.last_episode_to_air?.runtime||null},rewindSaved:[...g.seasons,...g.legacy].some(r=>/^(Rewind |Saved from project)/.test(r.source||'')),pinned:!!cache?.pinned,releaseState:target&&target.number>(d.last_episode_to_air?.season_number||Infinity)?'unreleased':null,followRelease:(hubState.seriesFollows||[]).includes(g.id),addedAt:Math.max(0,...[...g.seasons,...g.legacy].map(r=>r.updatedAt||0)),availabilitySnapshot:status(g),letterboxdURL:g.alias?.letterboxdURL||g.legacy.find(r=>r.letterboxdURL)?.letterboxdURL};
+  return {id:g.id,mediaType:'tv',tmdbId:cache?.tmdbId||d.id,title:g.title,first_air_date:first,release_date:target?.date||first,poster_path:d.poster_path||g.alias?.poster_path,backdrop_path:d.backdrop_path,overview:d.overview||g.alias?.overview||'',episodeRuntime:d.episode_run_time?.[0]||d.last_episode_to_air?.runtime||null,runtime:d.episode_run_time?.[0]||d.last_episode_to_air?.runtime||null,genre_ids:MediaModel.movieGenres(genres),meta:{...d,genres,keywords,runtime:d.episode_run_time?.[0]||d.last_episode_to_air?.runtime||null},rewindSaved:[...g.seasons,...g.legacy].some(r=>/^(Rewind |Saved from project)/.test(r.source||'')),pinned:!!cache?.pinned,releaseState:target&&target.number>(d.last_episode_to_air?.season_number||Infinity)?'unreleased':null,followRelease:(hubState.seriesFollows||[]).includes(g.id),addedAt:Math.max(0,...[...g.seasons,...g.legacy].map(r=>r.updatedAt||0)),availabilitySnapshot:status(g),letterboxdURL:g.alias?.letterboxdURL||g.legacy.find(r=>r.letterboxdURL)?.letterboxdURL};
  }
 
  function registration(scope='all'){
@@ -163,13 +165,13 @@ const RewindMedia=(()=>{
  function paintTVBrowse(rows,append=false){const grid=$('discover-grid');if(!append)for(const c of grid.querySelectorAll('[data-media-type=tv]'))c.remove();const existing=new Set([...grid.querySelectorAll('[data-media-type=tv]')].map(c=>c.dataset.movieId));for(const m of rows)if(!existing.has(m.id))grid.append(renderCard(m,{context:'discover'}));}
  function labelControls(){
   document.querySelector('[data-discovery-stage=recent]').textContent=filter==='tv'?'For you':'Recent releases';document.querySelector('[data-discovery-stage=circuit]').hidden=filter==='tv';
-  document.querySelectorAll('[data-media-filter]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.mediaFilter===filter)));
+  document.querySelectorAll('[data-media-filter]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.mediaFilter===(pageFilters[b.closest('.tab-panel')?.id]||'all'))));
   const search=$('search-input');search.placeholder=filter==='tv'?'Any TV series…':filter==='movie'?'Any movie…':'Find a movie or TV series…';
   $('discover-more').textContent='MORE TITLES';$('pick-again').textContent='PICK ANOTHER';if($('pick-film').textContent==='PICK A FILM')$('pick-film').textContent='PICK A TITLE';for(const id of ['picker-intro','picker-status']){const n=$(id);if(n&&filter!=='movie')n.textContent=n.textContent.replace(/\bfilms\b/g,'titles').replace(/\bfilm\b/g,'title');}
  }
  function changed(){groupMemo=null;linkMemo=null;clearTimeout(refreshTimer);refreshTimer=setTimeout(()=>{renderWatchlist(false,true).catch(()=>{});if(typeof Hub!=='undefined')Hub.stateChanged();if(!initialTVRefreshStarted&&savedTV().length){initialTVRefreshStarted=true;refreshTV(6).catch(()=>{});}},120);}
  function setFilter(value){
-  if(!['all','movie','tv'].includes(value))return;filter=value;let p={};try{p=JSON.parse(localStorage.getItem('rewind-ui-v1')||'{}')||{};}catch{}p.mediaType=filter;localStorage.setItem('rewind-ui-v1',JSON.stringify(p));scheduleSync();labelControls();
+  if(!['all','movie','tv'].includes(value))return;filter=value;pageFilters[pageKey()]=value;let p={};try{p=JSON.parse(localStorage.getItem('rewind-ui-v1')||'{}')||{};}catch{}p.mediaType=filter;p.mediaByPage=pageFilters;localStorage.setItem('rewind-ui-v1',JSON.stringify(p));scheduleSync();labelControls();
   ++discoverRequest;++searchRequest;watchlistLimit=WATCHLIST_PAGE_SIZE;changed();window.dispatchEvent(new Event('rewind:media-filter'));
   if($('tab-discover').classList.contains('active')&&$('hub-picker').hidden){if($('search-input').value.trim())$('search-form').dispatchEvent(new Event('submit',{cancelable:true}));else renderDiscover().catch(()=>{});}
   if(typeof Hub!=='undefined')Hub.mediaChanged?.();
@@ -186,7 +188,7 @@ const RewindMedia=(()=>{
  const originalRemove=removeFromWatchlist;removeFromWatchlist=id=>String(id).startsWith('tv:')?remove(id):originalRemove(id);
  const originalWatched=markMovieWatched;markMovieWatched=m=>isTV(m)?recordProgress(m):originalWatched(m);
  const originalPin=togglePin;togglePin=id=>String(id).startsWith('tv:')?pin(id):originalPin(id);
- const originalScope=scopedWatchlist;scopedWatchlist=()=>collection(originalScope(),watchlistScope);
+ const originalScope=scopedWatchlist;scopedWatchlist=()=>collection(originalScope(),watchlistScope).filter(m=>typeof savedSearchMatches!=='function'||savedSearchMatches(m));
  const originalSearch=searchMovies;searchMovies=async query=>{const jobs=await Promise.allSettled([filter==='tv'?Promise.resolve([]):originalSearch(query),filter==='movie'?Promise.resolve([]):tvBrowse('recent',1,query)]);const movies=jobs[0].status==='fulfilled'?jobs[0].value.filter(m=>!isTV(m)):[],series=jobs[1].status==='fulfilled'?jobs[1].value:[];if(jobs.every(r=>r.status==='rejected'))throw Error('Search unavailable');return select([...movies,...series]);};
  const originalRank=rankDiscovery;rankDiscovery=async movies=>{const ranked=await originalRank(movies),positive=[...HubModel.evidence(hubState.taste).filter(m=>!isTV(m)),...evidence()];const enhanced=ranked.map(m=>{const fit=HubModel.affinity(m,positive,hubState.feedback);return {...m,discoveryFit:HubModel.strongConnection(fit)?fit:m.discoveryFit};});return $('discover-sort').value==='taste'?enhanced.sort((a,b)=>(b.discoveryFit?.score||0)-(a.discoveryFit?.score||0)):enhanced;};
  const originalDiscover=renderDiscover;renderDiscover=async(append=false)=>{
@@ -199,7 +201,8 @@ const RewindMedia=(()=>{
  const originalCached=renderDiscoverCached;renderDiscoverCached=()=>{if(filter!=='tv')originalCached();else $('discover-grid').replaceChildren();if(filter!=='movie')paintTVBrowse(extraRows.filter(m=>!skipSet.has(m.id)&&unseen(m)));};
  window.addEventListener('rewind:tv-state',changed);window.addEventListener('rewind:state',()=>{labelControls();changed();});
  document.querySelectorAll('[data-media-filter]').forEach(b=>b.onclick=()=>setFilter(b.dataset.mediaFilter));
- const originalWatchlist=renderWatchlist;renderWatchlist=async(...args)=>{const result=await originalWatchlist(...args);const all=collection(),scope=scopedWatchlist();$('watchlist-count').textContent=all.length+' saved titles · '+all.filter(isTV).length+' TV series';$('watchlist-empty').hidden=all.length>0;$('watchlist-scope-note').textContent='Your Rewind saves first, then your Letterboxd backlog.';labelControls();return result;};
+ document.querySelectorAll('[data-tab]').forEach(b=>b.addEventListener('click',()=>{if(!['watchlist','discover','upcoming'].includes(b.dataset.tab))return;const value=pageFilters['tab-'+b.dataset.tab]||'all';setFilter(value);}));
+ const originalWatchlist=renderWatchlist;renderWatchlist=async(...args)=>{const result=await originalWatchlist(...args);const all=collection(),scope=scopedWatchlist(),pending=(hubState.newsFollows||[]).filter(r=>!r.movieId&&(filter==='all'||(r.mediaType||'movie')===filter)).length;$('watchlist-count').textContent=(all.length+pending)+' saved titles · '+all.filter(isTV).length+' TV series'+(pending?' · '+pending+' unmatched projects':'');$('watchlist-empty').hidden=all.length+pending>0;$('watchlist-scope-note').textContent='Your Rewind saves first, then your Letterboxd backlog.';labelControls();return result;};
  async function refreshTV(limit=12,force=false){await TV.ready;const selected=groups().filter(g=>(g.intent||(hubState.seriesFollows||[]).includes(g.id)||MediaModel.positiveRecords(g).length)&&(force||!TV.cached(g.id)?.checkedAt||Date.now()-TV.cached(g.id).checkedAt>6*3600000)).sort((a,b)=>Number(!!TV.cached(a.id)?.checkedAt)-Number(!!TV.cached(b.id)?.checkedAt)||Number(!!b.intent)-Number(!!a.intent)||Number(b.seasons.some(r=>r.partial))-Number(a.seasons.some(r=>r.partial))).slice(0,limit);await mapLimited(selected,2,async g=>{try{await TV.check(g);}catch{}});changed();}
  $('refresh-card-btn').addEventListener('click',()=>{if(filter!=='movie')refreshTV(12,true).catch(()=>{});});
  document.querySelectorAll('[data-calendar-source=digital]').forEach(b=>b.addEventListener('click',()=>refreshTV().catch(()=>{})));

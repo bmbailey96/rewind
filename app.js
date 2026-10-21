@@ -550,7 +550,7 @@ function openFilmDetails(movie,body,trigger,load){
     dialog.addEventListener('click',e=>{if(e.target===dialog){const r=dialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)dialog.close();}});
   }
   const head=document.createElement('header');head.className='film-detail-head';const title=document.createElement('h2');title.id='film-detail-title';title.textContent=movie.title;
-  const close=document.createElement('button');close.type='button';close.className='film-detail-close';close.textContent='×';close.setAttribute('aria-label','Close film details');close.onclick=()=>dialog.close();const identity=document.createElement('div');identity.className='film-detail-identity';const meta=document.createElement('p');meta.className='film-detail-meta';meta.textContent=[String(movie.release_date||'').slice(0,4),movie.runtime?movie.runtime+' min':null,movie.director].filter(Boolean).join(' · ');identity.append(title,meta);head.append(identity,close);
+  const close=document.createElement('button');close.type='button';close.className='film-detail-close';close.textContent='×';close.setAttribute('aria-label','Close film details');close.onclick=()=>dialog.close();const identity=document.createElement('div');identity.className='film-detail-identity';const meta=document.createElement('p');meta.className='film-detail-meta';meta.textContent=[String(movie.release_date||'').slice(0,4),movie.runtime?movie.runtime+(movie.mediaType==='tv'?' min per episode':' min'):null,movie.director].filter(Boolean).join(' · ');identity.append(title,meta);head.append(identity,close);
   dialog.replaceChildren(head,body);dialog.dataset.movieId=String(movie.id);dialog._returnFocus=trigger;document.body.classList.add('film-dialog-open');if(!dialog.open)dialog.showModal();dialog.scrollTop=0;load();
 }
 function balanceCardUpdates(card){
@@ -799,7 +799,9 @@ function watchedForRecent(movie){
     /Letterboxd (?:public )?diary/i.test(record.source||'')
   ));
 }
-function scopedWatchlist(){return watchlistScope==='all'?watchlist:watchlist.filter(m=>!watchedForRecent(m));}
+function searchSavedTitles(){watchlistLimit=WATCHLIST_PAGE_SIZE;return renderWatchlist(false,true);}
+function savedSearchMatches(m){const q=document.getElementById('watchlist-search')?.value.trim().toLocaleLowerCase()||'';return !q||[m.title,m.original_title,m.sourceTitle].filter(Boolean).some(t=>t.toLocaleLowerCase().includes(q));}
+function scopedWatchlist(){return (watchlistScope==='all'?watchlist:watchlist.filter(m=>!watchedForRecent(m))).filter(savedSearchMatches);}
 window.addEventListener('rewind:seen-updated',()=>{if(watchlistScope==='release')renderWatchlist(false,true);});
 function renderReleaseRecovery(){
  const box=document.getElementById('rw-recovery'),list=document.getElementById('rw-recovery-list');
@@ -992,8 +994,8 @@ function paintWatchlist(results,append=false){
   if(watchlistScope==='release'){
     const page=WatchlistModel.releaseWatchPage(results,{today:discoveryWindow().today,budget:rentalBudget,receipts:hubState.changeReceipts,limit:watchlistLimit,filter:costFilter,model:ReleaseModel,localListing:m=>typeof Hub==='undefined'||typeof Hub.localListing!=='function'?null:Hub.localListing(m)});
     const groups={included:'rw-arrived',cheap:'rw-available',premium:'rw-coming',theater:'rw-theater',upcoming:'rw-upcoming',development:'rw-development',waiting:'rw-waiting'};
-    const labels={included:'Included & free',cheap:'At your price',premium:'Waiting for a better price',theater:'In theaters',upcoming:'Unreleased · dated',development:'Projects & dates TBA',waiting:'Released · waiting for home access'};
-    const descriptions={included:'Your services, free streams, and your physical shelf.',cheap:'Rentals at or below $'+rentalBudget.toFixed(2)+', cheapest first.',premium:'Rentals from lowest to highest, then purchase-only and unpriced offers.',theater:'Listed local screenings. Ticket links live on each film.',upcoming:'Published future releases, nearest date first.',development:'Projects in development or without a verified release date. Production status stays explicit.',waiting:'No known home offer. Published home dates come first; unknown dates stay labeled.'};
+    const labels={included:'Included & free',cheap:'At your price',premium:'Waiting for a better price',theater:'In theaters',upcoming:'Unreleased · dated',development:'Projects & dates TBA',waiting:'Home availability unconfirmed'};
+    const descriptions={included:'Your services, free streams, and your physical shelf.',cheap:'Rentals at or below $'+rentalBudget.toFixed(2)+', cheapest first.',premium:'Rentals from lowest to highest, then purchase-only and unpriced offers.',theater:'Listed local screenings. Ticket links live on each film.',upcoming:'Published future releases, nearest date first.',development:'Projects in development or without a verified release date. Production status stays explicit.',waiting:'Home access is unconfirmed. Check status and source age are shown on each card.'};
     document.getElementById('watchlist-more').hidden=page.total<=watchlistLimit;
     document.getElementById('watchlist-more').textContent='Show more · '+Math.max(0,page.total-page.rows.length)+' remaining';
     for(const row of page.rows){
