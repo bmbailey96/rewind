@@ -75,26 +75,27 @@
   const offers=status?.offers||[],cost=model?.cost(offers,budget,false),home=upcomingHome(movie,status,today),opening=releaseOpening(movie,status);
   const fresh=!!status&&!status.stale&&Number.isFinite(status.checkedAt)&&Date.now()-status.checkedAt>=0&&Date.now()-status.checkedAt<24*3600000;
   let group='waiting';
-  if(cost?.band==='free')group='included';
+  if(movie.project)group='development';
+  else if(cost?.band==='free')group='included';
   else if(cost?.band==='cheap')group='cheap';
   else if(['premium','buy','unknown'].includes(cost?.band))group='premium';
   else if(local)group='theater';
-  else if(opening?.date>today||!opening&&home?.date>today&&(status?.details?.status||movie.detailsSnapshot?.status)!=='Released')group='upcoming';
-  else if(movie.releaseState==='unreleased'||movie.mediaType!=='tv'&&(!opening||/Rumored|Planned|In Production|Post Production/.test(status?.details?.status||movie.detailsSnapshot?.status||movie.productionStatus||''))&&(status?.details?.status||movie.detailsSnapshot?.status||movie.productionStatus)!=='Released')group='development';
+  else if(opening?.date>today||home?.date>today)group='upcoming';
+  else if(movie.releaseState==='unreleased'||movie.mediaType!=='tv'&&(!opening&&!(movie.release_date&&movie.release_date<today)||/Rumored|Planned|In Production|Post Production/.test(status?.details?.status||movie.detailsSnapshot?.status||movie.productionStatus||''))&&(status?.details?.status||movie.detailsSnapshot?.status||movie.productionStatus)!=='Released')group='development';
   const arrival=fresh&&(receipts||[]).filter(r=>r.movieId===movie.id&&r.at&&Date.now()-r.at<=14*86400000&&Date.now()>=r.at)
    .some(r=>r.type==='included'&&offers.some(o=>(o.kind==='free'||o.kind==='subscription'&&o.included)&&o.provider===r.provider)||
     r.type==='price'&&r.from>budget&&r.to<=budget&&offers.some(o=>o.kind==='rent'&&o.provider===r.provider&&o.format===r.format&&o.price===r.to));
-  return {group,date:group==='theater'?local.date:group==='upcoming'?(opening?.date||home?.date):home?.date||null,opening,label:home?.label||null,home,local,newArrival:arrival,stale:!fresh&&cost?.offer?.kind!=='physical'};
+  return {group,date:group==='theater'?local.date:group==='upcoming'?([opening?.date,home?.date].filter(d=>d&&d>today).sort()[0]):home?.date||null,opening,label:home?.label||null,home,local,newArrival:arrival,stale:!fresh&&cost?.offer?.kind!=='physical'};
  }
- function stageCost(movie,status,stage,cost){if(stage.group==='upcoming')return {...cost,badge:'UNRELEASED',caption:stage.date?'Release '+stage.date:'Premiere date TBA'};if(stage.group==='theater')return {...cost,badge:'LOCAL SCREENING',caption:'Listed near you'};if(stage.group==='development'){const state=status?.details?.status||movie.detailsSnapshot?.status||movie.productionStatus||'';return {...cost,badge:state==='In Production'?'IN PRODUCTION':state==='Post Production'?'POST-PRODUCTION':['Rumored','Planned'].includes(state)?'IN DEVELOPMENT':'DATE TBA',caption:movie.mediaType==='tv'?'Next season not released':state?'Release date unannounced':'Release status unverified'};}if(stage.group==='waiting')return {...cost,badge:!status?.checkedAt?'NOT CHECKED':stage.stale?'CHECK OUTDATED':movie.mediaType==='tv'?'SEASON UNVERIFIED':'NO OFFER FOUND',caption:!status?.checkedAt?'Viewing options have not been verified':stage.stale?'Check current viewing options':movie.mediaType==='tv'?'Check the season on the service':'No current home offer returned'};return cost;}
- function releaseWatchPage(results,{limit=24,model,budget=7.99,filter='all',today,receipts=[],localListing=()=>null}){
-  const order={included:0,cheap:1,premium:2,theater:3,upcoming:4,development:5,waiting:6};
+ function stageCost(movie,status,stage,cost){if(stage.group==='upcoming')return {...cost,badge:stage.home?.date===stage.date?'HOME RELEASE':'UNRELEASED',caption:stage.date?'Release '+stage.date:'Premiere date TBA'};if(stage.group==='theater')return {...cost,badge:'LOCAL SCREENING',caption:'Listed near you'};if(stage.group==='development'){const state=status?.details?.status||movie.detailsSnapshot?.status||movie.productionStatus||'';return {...cost,badge:state==='In Production'?'IN PRODUCTION':state==='Post Production'?'POST-PRODUCTION':['Rumored','Planned'].includes(state)?'IN DEVELOPMENT':'DATE TBA',caption:movie.mediaType==='tv'?'Next season not released':state?'Release date unannounced':'Release status unverified'};}if(['waiting','unchecked'].includes(stage.group))return {...cost,badge:!status?.checkedAt?'NOT CHECKED':stage.stale?'CHECK OUTDATED':movie.mediaType==='tv'?'SEASON UNVERIFIED':'NO OFFER FOUND',caption:!status?.checkedAt?'Viewing options have not been verified':stage.stale?'Check current viewing options':movie.mediaType==='tv'?'Check the season on the service':'No current home offer returned'};return cost;}
+ function releaseWatchPage(results,{limit=24,model,budget=7.99,filter='all',today,receipts=[],localListing=()=>null,browse=null}){
+  const order={included:0,cheap:1,premium:2,theater:3,upcoming:4,waiting:5,unchecked:6,development:7};
   const rows=results.map(r=>{
    const cost=model.cost(r.status?.offers,budget,false);
-   return {...r,cost,stage:releaseStage(r.entry,r.status,today,budget,receipts,model,localListing(r.entry))};
-  }).filter(r=>filter==='all'||filter==='free'&&r.stage.group==='included'||filter==='cheap'&&r.stage.group==='cheap'||filter==='premium'&&r.stage.group==='premium'||filter==='waiting'&&['waiting','upcoming','development','theater'].includes(r.stage.group));
+   const stage=releaseStage(r.entry,r.status,today,budget,receipts,model,localListing(r.entry));if(browse&&stage.group==='waiting'&&(!r.status?.checkedAt||stage.stale))stage.group='unchecked';return {...r,cost,stage};
+  }).filter(r=>filter==='all'||filter==='free'&&r.stage.group==='included'||filter==='cheap'&&r.stage.group==='cheap'||filter==='premium'&&r.stage.group==='premium'||filter==='waiting'&&['waiting','unchecked','upcoming','development','theater'].includes(r.stage.group));
   const chosen=m=>m.rewindSaved===true||/^Rewind (discover|calendar|watchlist)$/.test(m.source||'');
-  rows.sort((a,b)=>Number(!!b.entry.pinned)-Number(!!a.entry.pinned)||Number(chosen(b.entry))-Number(chosen(a.entry))||order[a.stage.group]-order[b.stage.group]||
+  rows.sort((a,b)=>Number(!!b.entry.pinned)-Number(!!a.entry.pinned)||Number(chosen(b.entry))-Number(chosen(a.entry))||(browse&&chosen(a.entry)&&chosen(b.entry)?(b.entry.addedAt||0)-(a.entry.addedAt||0):0)||order[a.stage.group]-order[b.stage.group]||
    (a.stage.group==='premium'?({premium:0,buy:1,unknown:2}[a.cost.band]??2)-({premium:0,buy:1,unknown:2}[b.cost.band]??2):0)||
    (['cheap','premium'].includes(a.stage.group)?(a.cost.price??Infinity)-(b.cost.price??Infinity):0)||
    (['waiting','upcoming','development','theater'].includes(a.stage.group)?String(a.stage.date||'9999').localeCompare(String(b.stage.date||'9999')):0)||
@@ -117,6 +118,14 @@
    const selected=new Set(preview);
    for(const group of Object.keys(counts))for(const row of rows.filter(r=>r.stage.group===group).slice(0,4))selected.add(row);
    preview=rows.filter(r=>selected.has(r));
+  }
+  if(browse){
+   if(browse.sort==='az')rows.sort((a,b)=>a.entry.title.localeCompare(b.entry.title));
+   if(browse.sort==='added')rows.sort((a,b)=>(b.entry.addedAt||0)-(a.entry.addedAt||0)||a.entry.title.localeCompare(b.entry.title));
+   if(browse.sort==='price')rows.sort((a,b)=>(a.cost.price??Infinity)-(b.cost.price??Infinity)||a.entry.title.localeCompare(b.entry.title));
+   if(browse.section)preview=rows.filter(r=>r.stage.group===browse.section);
+   else{const selected=new Set();for(const group of Object.keys(counts)){const shelf=rows.filter(r=>r.stage.group===group),first=shelf.slice(0,6),tv=shelf.find(r=>r.entry.mediaType==='tv');if(tv&&first.length===6&&!first.some(r=>r.entry.mediaType==='tv'))first[5]=tv;for(const row of first)selected.add(row);}preview=rows.filter(r=>selected.has(r));}
+
   }
   return {rows:preview,total:rows.length,counts};
  }

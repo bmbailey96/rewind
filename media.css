@@ -48,3 +48,5 @@
 .counter-inner{padding:16px 0 10px!important}.shop-name{line-height:1.15!important}.shop-tag{margin:5px 0!important}.saved-project-card{min-height:180px}
 
 .counter{padding:12px 18px 0!important}.counter-inner{padding:6px 0!important}.shop-name{font-size:clamp(30px,4vw,44px)!important}.shop-tag{font-size:12px!important}#tab-discover .discovery-guide>p{margin:6px 0 10px}.saved-project-card h3{font-size:18px}.saved-project-card .new-tag{margin:8px 0}
+
+.watchlist-section-tools{display:flex;gap:1rem;align-items:center;justify-content:space-between;margin:1rem 0;scroll-margin-top:1rem}.watchlist-section-tools[hidden]{display:none}.watchlist-section-tools label{display:flex;align-items:center;gap:.5rem}.section-show-all{margin:1rem 0 0;min-height:44px}.saved-project-card .card-poster{grid-row:1 / span 7}.saved-project-card .offer-note{overflow-wrap:anywhere}@media(max-width:600px){.watchlist-section-tools{align-items:stretch;flex-direction:column}}

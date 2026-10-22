@@ -14,7 +14,7 @@ const wait=()=>new Promise(r=>setTimeout(r,100));
  };
  w.document.getElementById('letterboxd-export-additions').remove();w.document.getElementById('letterboxd-export-note').remove(); // A cached pre-export page must still boot with the new script.
  w.IntersectionObserver=class {constructor(callback){this.callback=callback;w.offerObserver=this;}observe(target){if(target?.id==='watchlist-more')w.watchlistScrollObserver=this;}unobserve(){}};
- w.HTMLElement.prototype.scrollIntoView=function(){};w.HTMLDialogElement.prototype.showModal=function(){this.open=true};w.HTMLDialogElement.prototype.close=function(){this.open=false;this.dispatchEvent(new this.ownerDocument.defaultView.Event('close'))};
+ w.scrollTo=()=>{};w.HTMLElement.prototype.scrollIntoView=function(){};w.HTMLDialogElement.prototype.showModal=function(){this.open=true};w.HTMLDialogElement.prototype.close=function(){this.open=false;this.dispatchEvent(new this.ownerDocument.defaultView.Event('close'))};
  w.localStorage.setItem('rewind-last-visit-v1',String(w.Date.now()-3600000));
  w.localStorage.setItem('rewind-ui-v1',JSON.stringify({pickerCost:'included',pickerMode:'oracle'}));
  w.localStorage.setItem('rewind-watchlist-v1',JSON.stringify(films));w.localStorage.setItem('rewind-coyote-seeded-v1','1');w.localStorage.setItem('rewind-watchmode-key','fixture');
@@ -33,7 +33,7 @@ const wait=()=>new Promise(r=>setTimeout(r,100));
   else {const id=Number(u.pathname.split('/').at(-1));body=details(films.find(m=>m.id===id)||{id,title:'Feature',release_date:'2026-08-28',poster_path:'/f.jpg'});}
   return {ok:true,json:async()=>body};
  };
- w.eval(['startup.js','rewind-model.js','release-model.js','availability-ui.js','counter-model.js','discovery-model.js','taste-model.js','hub-model.js','artwork-model.js','occasion-model.js','oracle.js','storage-model.js','sync-model.js','static-model.js','watchlist-model.js','movie-news-model.js','app.js','hub.js','static-experience.js','movie-news.js','letterboxd-diary.js'].map(file=>fs.readFileSync(__dirname+'/../'+file,'utf8')).join('\n')+'\nwindow.testState={movies:()=>watchlist,replaceMovies:m=>watchlist=m,hub:()=>hubState,hubInterface:Hub,saveFailure:()=>{cloudSavePhase="synced";failedStorageKeys.add("test-failure");renderSaveState()},clearSaveFailure:()=>{failedStorageKeys.delete("test-failure");cloudSavePhase="idle";renderSaveState()},syncBase,seen:()=>seenSet,changed:()=>Hub.stateChanged()};');
+ w.eval(['startup.js','rewind-model.js','release-model.js','availability-ui.js','counter-model.js','discovery-model.js','taste-model.js','hub-model.js','artwork-model.js','occasion-model.js','oracle.js','storage-model.js','sync-model.js','static-model.js','watchlist-model.js','movie-news-model.js','app.js','hub.js','static-experience.js','movie-news.js','watchlist-browser.js','letterboxd-diary.js'].map(file=>fs.readFileSync(__dirname+'/../'+file,'utf8')).join('\n')+'\nwindow.testState={movies:()=>watchlist,replaceMovies:m=>watchlist=m,hub:()=>hubState,hubInterface:Hub,saveFailure:()=>{cloudSavePhase="synced";failedStorageKeys.add("test-failure");renderSaveState()},clearSaveFailure:()=>{failedStorageKeys.delete("test-failure");cloudSavePhase="idle";renderSaveState()},syncBase,seen:()=>seenSet,changed:()=>Hub.stateChanged()};');
  await wait();
  assert.equal(w.document.getElementById('tab-watchlist').dataset.scope,'release','Release Watch is the initial film view');
  assert.equal(w.document.getElementById('release-watch-empty').hidden,true,'All saved films appear in Release Watch without a second follow');
@@ -129,9 +129,9 @@ const wait=()=>new Promise(r=>setTimeout(r,100));
  assert.equal(w.document.querySelectorAll('#search-grid .rental-card').length,1,'Added film survives clearing the visible search shelf');
  assert.equal(w.document.querySelector('#search-grid .rental-card').dataset.movieId,'3');
  const reopened=new JSDOM(fs.readFileSync(__dirname+'/../index.html','utf8'),{url:'https://bekind-rewind.netlify.app',runScripts:'outside-only'}),rw=reopened.window;
- rw.HTMLElement.prototype.scrollIntoView=function(){};rw.HTMLDialogElement.prototype.showModal=function(){this.open=true};rw.HTMLDialogElement.prototype.close=function(){this.open=false;this.dispatchEvent(new this.ownerDocument.defaultView.Event('close'))};rw.fetch=w.fetch;
+ rw.scrollTo=()=>{};w.HTMLElement.prototype.scrollIntoView=function(){};rw.HTMLDialogElement.prototype.showModal=function(){this.open=true};rw.HTMLDialogElement.prototype.close=function(){this.open=false;this.dispatchEvent(new this.ownerDocument.defaultView.Event('close'))};rw.fetch=w.fetch;
  for(const key of ['rewind-watchlist-v1','rewind-skipped-v1','rewind-seen-v1','rewind-coyote-seeded-v1']){const value=w.localStorage.getItem(key);if(value!=null)rw.localStorage.setItem(key,value);}
- rw.eval(['startup.js','rewind-model.js','release-model.js','availability-ui.js','counter-model.js','discovery-model.js','taste-model.js','hub-model.js','artwork-model.js','occasion-model.js','oracle.js','storage-model.js','sync-model.js','static-model.js','watchlist-model.js','movie-news-model.js','app.js','hub.js','static-experience.js','movie-news.js','letterboxd-diary.js'].map(file=>fs.readFileSync(__dirname+'/../'+file,'utf8')).join('\n')+'\nwindow.slowState={replaceMovies:m=>watchlist=m};');await wait();
+ rw.eval(['startup.js','rewind-model.js','release-model.js','availability-ui.js','counter-model.js','discovery-model.js','taste-model.js','hub-model.js','artwork-model.js','occasion-model.js','oracle.js','storage-model.js','sync-model.js','static-model.js','watchlist-model.js','movie-news-model.js','app.js','hub.js','static-experience.js','movie-news.js','watchlist-browser.js','letterboxd-diary.js'].map(file=>fs.readFileSync(__dirname+'/../'+file,'utf8')).join('\n')+'\nwindow.slowState={replaceMovies:m=>watchlist=m};');await wait();
  rw.document.getElementById('search-input').value='Unwanted';rw.document.getElementById('search-form').dispatchEvent(new rw.Event('submit',{cancelable:true}));await wait();
  assert.equal(rw.document.querySelectorAll('#search-grid .rental-card').length,1,'Passed films stay hidden after opening a new browser session');assert.equal(rw.document.querySelector('#search-grid .rental-card').dataset.movieId,'3');reopened.window.close();
  w.eval('skipMovie(99)');w.document.querySelector('#toast button').click();
@@ -245,7 +245,7 @@ const wait=()=>new Promise(r=>setTimeout(r,100));
  const reload=new JSDOM(fs.readFileSync(__dirname+'/../index.html','utf8'),{url:'https://bekind-rewind.netlify.app',runScripts:'outside-only'}),r=reload.window;
  r.Date=w.Date;r.HTMLElement.prototype.scrollIntoView=function(){};r.HTMLDialogElement.prototype.showModal=function(){this.open=true};r.HTMLDialogElement.prototype.close=function(){this.open=false;this.dispatchEvent(new this.ownerDocument.defaultView.Event('close'))};r.fetch=w.fetch;
  for(let i=0;i<w.localStorage.length;i++){const key=w.localStorage.key(i);if(key!=='rewind-gh-token')r.localStorage.setItem(key,w.localStorage.getItem(key));}
- r.eval(['startup.js','rewind-model.js','release-model.js','availability-ui.js','counter-model.js','discovery-model.js','taste-model.js','hub-model.js','artwork-model.js','occasion-model.js','oracle.js','storage-model.js','sync-model.js','static-model.js','watchlist-model.js','movie-news-model.js','app.js','hub.js','static-experience.js','movie-news.js','letterboxd-diary.js'].map(file=>fs.readFileSync(__dirname+'/../'+file,'utf8')).join('\n')+'\nwindow.changed=()=>Hub.stateChanged();window.reloadMovies=()=>watchlist;');await wait();await wait();
+ r.eval(['startup.js','rewind-model.js','release-model.js','availability-ui.js','counter-model.js','discovery-model.js','taste-model.js','hub-model.js','artwork-model.js','occasion-model.js','oracle.js','storage-model.js','sync-model.js','static-model.js','watchlist-model.js','movie-news-model.js','app.js','hub.js','static-experience.js','movie-news.js','watchlist-browser.js','letterboxd-diary.js'].map(file=>fs.readFileSync(__dirname+'/../'+file,'utf8')).join('\n')+'\nwindow.changed=()=>Hub.stateChanged();window.reloadMovies=()=>watchlist;');await wait();await wait();
  assert.equal(r.document.querySelector('[data-calendar-source=kalispell]').getAttribute('aria-pressed'),'true','Every new visit defaults to Kalispell only');assert.equal(r.document.querySelectorAll('#calendar-bars .run-bar.local').length,0);
  [...r.document.querySelectorAll('#cinema-hidden button')].find(b=>b.textContent.startsWith('RESTORE')).click();assert.equal(r.document.querySelectorAll('#calendar-bars .run-bar.local').length,2);
  r.eval('applySyncData({...collectSyncData(),hub:{...collectSyncData().hub,hiddenTheaterFilms:'+JSON.stringify(hiddenSaved)+'}});changed()');assert.equal(r.document.querySelectorAll('#calendar-bars .run-bar.local').length,2,'Restore tombstones defeat old synced hide records');r.eval("reloadMovies().find(m=>m.id===1204680).availabilitySnapshot.announcements=[{date:'2026-10-08',provider:'Apple TV'}];changed()");r.document.querySelector('[data-calendar-source=local]').click();r.document.querySelector('[data-calendar-source=digital]').click();assert.equal(r.document.querySelectorAll('#calendar-bars .run-bar.local').length,0);assert.match(r.document.getElementById('calendar-listings').textContent,/Arrives on Apple TV/);
@@ -297,13 +297,15 @@ assert.equal(w.document.querySelector('[data-discover-intent=surprise]').getAttr
  w.testState.hub().taste.push({id:100520,title:'Scale film 520',rating:4.5});
  w.document.querySelector('[data-watchlist-scope=release]').click();await w.eval('renderWatchlist()');
  assert.match(w.document.getElementById('watchlist-count').textContent,/598 saved releases · 600 total/,'All saved unseen titles participate without changing email settings');
- assert.equal(w.document.querySelectorAll('#tab-watchlist .shelf-group[id^="rw-"] .rental-card').length,24,'Release Watch first page displays 24 of 98');
+ assert.equal(w.document.querySelectorAll('#tab-watchlist .shelf-group[id^="rw-"] .rental-card').length,12,'Overview previews six cards per populated section');
  assert.equal(w.document.getElementById('rw-coming-count').textContent,'(591)','Section total includes all saved films beyond the first page');
  assert.equal(w.document.querySelector('#rw-available-grid>.rental-card').dataset.movieId,'100599','Release Watch sorts all followed films by price before pagination');
  assert.equal(w.document.querySelector('#rw-available-grid>.rental-card[data-movie-id="100510"]'),null,'Watched titles are excluded');
  assert.equal(w.document.querySelector('#rw-available-grid>.rental-card[data-movie-id="100520"]'),null,'Rated films are excluded');
- w.document.getElementById('watchlist-more').click();await w.eval('renderWatchlist()');
- assert.equal(w.document.querySelectorAll('#tab-watchlist .shelf-group[id^="rw-"] .rental-card').length,48,'Show More grows Release Watch without revealing the other 500');
+ w.document.querySelector('#rw-coming-section .section-show-all').click();
+ assert.equal(w.document.querySelectorAll('#rw-coming-grid .rental-card').length,591,'Section expansion shows every title in that section');
+ assert.equal(w.document.getElementById('rw-available-section').hidden,true,'Other sections leave the expanded view');
+ w.document.querySelector('.watchlist-section-tools button').click();
  w.document.querySelector('[data-watchlist-scope=all]').click();await w.eval('renderWatchlist()');
  assert.match(w.document.getElementById('watchlist-count').textContent,/600 total/);
  assert.equal(w.document.querySelectorAll('#paid-grid>.rental-card').length,24,'All Watchlist is paginated, not truncated');
@@ -331,7 +333,7 @@ assert.equal(w.document.querySelector('[data-discover-intent=surprise]').getAttr
  // Individual catalog detail requests are deliberately left unresolved as well.
  const slowDom=new JSDOM(fs.readFileSync(__dirname+'/../index.html','utf8'),{url:'https://bekind-rewind.netlify.app',runScripts:'outside-only'});
  const slow=slowDom.window;
- slow.HTMLElement.prototype.scrollIntoView=function(){};
+ slow.scrollTo=()=>{};w.HTMLElement.prototype.scrollIntoView=function(){};
  slow.HTMLDialogElement.prototype.showModal=function(){this.open=true};
  slow.HTMLDialogElement.prototype.close=function(){this.open=false};
  slow.IntersectionObserver=class{observe(){}unobserve(){}disconnect(){}};
@@ -347,7 +349,7 @@ assert.equal(w.document.querySelector('[data-discover-intent=surprise]').getAttr
    if(url.pathname.includes('/movie/')){detailCalls++;return new Promise(()=>{});}
    return {ok:false,status:503,json:async()=>({})};
  };
- slow.eval(['startup.js','rewind-model.js','release-model.js','availability-ui.js','counter-model.js','discovery-model.js','taste-model.js','hub-model.js','artwork-model.js','occasion-model.js','oracle.js','storage-model.js','sync-model.js','static-model.js','watchlist-model.js','movie-news-model.js','app.js','hub.js','static-experience.js','flow.js','movie-news.js','letterboxd-diary.js'].map(file=>fs.readFileSync(__dirname+'/../'+file,'utf8')).join('\n')+'\nwindow.slowState={replaceMovies:m=>watchlist=m};');
+ slow.eval(['startup.js','rewind-model.js','release-model.js','availability-ui.js','counter-model.js','discovery-model.js','taste-model.js','hub-model.js','artwork-model.js','occasion-model.js','oracle.js','storage-model.js','sync-model.js','static-model.js','watchlist-model.js','movie-news-model.js','app.js','hub.js','static-experience.js','flow.js','movie-news.js','watchlist-browser.js','letterboxd-diary.js'].map(file=>fs.readFileSync(__dirname+'/../'+file,'utf8')).join('\n')+'\nwindow.slowState={replaceMovies:m=>watchlist=m};');
  slow.document.querySelector('[data-tab=discover]').click();
  await wait();
  assert.equal(fastCatalogCalls,4,'Discover fills sparse batches across catalog pages without waiting for cloud sync');

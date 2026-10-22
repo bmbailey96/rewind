@@ -14,7 +14,7 @@ assert.deepEqual(page.rows.filter(r=>r.stage.group==='cheap').map(r=>r.entry.id)
 assert.deepEqual(page.rows.filter(r=>r.stage.group==='premium').map(r=>r.entry.id),[1,7,9],'Purchase-only stays clearly behind rentals');
 assert.equal(page.rows.filter(r=>r.entry.id===3).length,1,'Streaming and local screening must not duplicate a film');
 assert.equal(page.rows.at(-2).entry.id,8,'Dated future home arrival precedes an undated wait');
-const one=W.releaseWatchPage(rows,{...options,limit:1});assert.equal(one.total,9);assert.equal(one.rows.length,1);assert.deepEqual(one.counts,{included:1,cheap:2,premium:3,theater:1,upcoming:0,waiting:2});
+const one=W.releaseWatchPage(rows,{...options,limit:1});assert.equal(one.total,9);assert.equal(one.rows.length,1);assert.deepEqual(one.counts,{included:1,cheap:2,premium:3,theater:1,upcoming:1,waiting:1});
 assert.equal(W.releaseWatchPage(rows,{...options,filter:'free'}).total,1);assert.equal(W.releaseWatchPage(rows,{...options,filter:'premium'}).total,3);
 const big=Array.from({length:600},(_,i)=>row(1000+i,[rent(i===599?0.99:5.99)]));const first=W.releaseWatchPage(big,{...options,limit:24});assert.equal(first.rows[0].entry.id,1599);assert.equal(first.counts.cheap,600);assert.equal(first.rows.length,24);
 console.log('Release Watch: last-known offers, upcoming notes, actual local dates, price order, unknown quotes, one film per shelf and full counts before pagination passed');
@@ -44,3 +44,10 @@ assert.deepEqual(W.releaseWatchPage(affordable,options).rows.map(r=>r.entry.id),
 const many=Array.from({length:600},(_,i)=>row(2000+i,[rent(1.99)]));many[599].entry.pinned=true;
 assert.equal(W.releaseWatchPage(many,{...options,limit:24}).rows[0].entry.id,2599,'Pins are sorted across the whole collection before pagination');
 console.log('Section pins: price/date/subgroup precedence, unchanged section order, unpin restoration and 600-film pagination passed');
+const crowded=Array.from({length:110},(_,i)=>row(3000+i,[rent(3.99)]));crowded[100].entry.pinned=true;crowded[99].entry.rewindSaved=true;crowded[99].entry.addedAt=100;crowded[98].entry.rewindSaved=true;crowded[98].entry.addedAt=200;
+const preview=W.releaseWatchPage(crowded,{...options,browse:{}});assert.equal(preview.rows.length,6);assert.equal(preview.counts.cheap,110);assert.deepEqual(preview.rows.slice(0,3).map(r=>r.entry.id),[3100,3098,3099]);
+const focused=W.releaseWatchPage(crowded,{...options,browse:{section:'cheap',sort:'az'}});assert.equal(focused.rows.length,110);assert.equal(focused.rows[0].entry.title,'Film 3000');
+const uncertainty=W.releaseWatchPage([row(5000,[],{checkedAt:null,stale:true}),{entry:{id:5001,title:'Older film',release_date:'1990-01-01'},status:{offers:[]}}, {entry:{id:'project:future',title:'Future project',project:{id:'report'}},status:{offers:[]}}],{...options,browse:{}});assert.equal(uncertainty.counts.unchecked,2);assert.equal(uncertainty.counts.development,1);
+console.log('Section browsing: six-card previews, complete counts, pins, newest explicit saves, independent full-section sorting and unchecked vs undated projects');
+
+const mixedShelf=[...crowded,{...row(6000,[rent(4.99)]),entry:{id:'tv:fixture',title:'Z Series',mediaType:'tv'}}];assert.ok(W.releaseWatchPage(mixedShelf,{...options,browse:{}}).rows.some(r=>r.entry.mediaType==='tv'),'Mixed previews keep a saved TV series visible');

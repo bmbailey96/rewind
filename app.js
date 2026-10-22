@@ -915,7 +915,7 @@ async function renderWatchlist(force = false, reuse = false, background = false)
     window.dispatchEvent(new Event('rewind:watchlist-ready'));
     return;
   }
-  const page=watchlistScope==='release'?WatchlistModel.releaseWatchPage(watchlistResults,{today:discoveryWindow().today,budget:rentalBudget,receipts:hubState.changeReceipts,limit:watchlistLimit,filter:costFilter,model:ReleaseModel,localListing:m=>typeof Hub==='undefined'||typeof Hub.localListing!=='function'?null:Hub.localListing(m)}):WatchlistModel.page(watchlistResults,{sort:watchlistSort,filter:costFilter,budget:rentalBudget,limit:watchlistLimit,model:ReleaseModel});
+  const page=watchlistScope==='release'?WatchlistModel.releaseWatchPage(watchlistResults,{today:discoveryWindow().today,budget:rentalBudget,receipts:hubState.changeReceipts,limit:watchlistLimit,filter:costFilter,model:ReleaseModel,localListing:m=>{const local=typeof Hub==='undefined'||typeof Hub.localListing!=='function'?null:Hub.localListing(m);return local&&!local.stale&&/Kalispell/i.test(local.location)?local:null;}}):WatchlistModel.page(watchlistResults,{sort:watchlistSort,filter:costFilter,budget:rentalBudget,limit:watchlistLimit,model:ReleaseModel});
   const displayed=page.rows.map(r=>r.entry);
   const targets=force?displayed:reuse?[]:displayed.filter(entry=>!WatchlistModel.freshSnapshot(entry)&&!watchlistBackgroundChecked.has(entry.id)).slice(0,WATCHLIST_BACKGROUND_CHECKS);
   if(!targets.length){
@@ -990,21 +990,22 @@ function paintWatchlist(results,append=false){
   renderChangeStrip();
   const existing=append?new Set([...document.querySelectorAll('#tab-watchlist .shelf-group .rental-card')].map(card=>String(card.dataset.movieId))):new Set();
   document.querySelectorAll('[data-cost-filter]').forEach(btn=>{btn.classList.toggle('active',btn.dataset.costFilter===costFilter);btn.setAttribute('aria-pressed',String(btn.dataset.costFilter===costFilter));});
-  for(const id of ['watch-now','paid','waiting','rw-arrived','rw-available','rw-coming','rw-theater','rw-upcoming','rw-development','rw-waiting']){if(!append){document.getElementById(id+'-grid')?.replaceChildren();const section=document.getElementById(id+'-section');if(section)section.hidden=true;}}
+  for(const id of ['watch-now','paid','waiting','rw-arrived','rw-available','rw-coming','rw-theater','rw-upcoming','rw-development','rw-waiting','rw-unchecked']){if(!append){document.getElementById(id+'-grid')?.replaceChildren();const section=document.getElementById(id+'-section');if(section)section.hidden=true;}}
   if(document.getElementById('tab-watchlist').dataset.collection==='physical'){window.dispatchEvent(new Event('rewind:card-rendered'));return;}
   if(watchlistScope==='release'){
-    const page=WatchlistModel.releaseWatchPage(results,{today:discoveryWindow().today,budget:rentalBudget,receipts:hubState.changeReceipts,limit:watchlistLimit,filter:costFilter,model:ReleaseModel,localListing:m=>typeof Hub==='undefined'||typeof Hub.localListing!=='function'?null:Hub.localListing(m)});
-    const groups={included:'rw-arrived',cheap:'rw-available',premium:'rw-coming',theater:'rw-theater',upcoming:'rw-upcoming',development:'rw-development',waiting:'rw-waiting'};
-    const labels={included:'Included & free',cheap:'At your price',premium:'Waiting for a better price',theater:'In theaters',upcoming:'Unreleased · dated',development:'Projects & dates TBA',waiting:'Home availability unconfirmed'};
-    const descriptions={included:'Your services, free streams, and your physical shelf.',cheap:'Rentals at or below $'+rentalBudget.toFixed(2)+', cheapest first.',premium:'Rentals from lowest to highest, then purchase-only and unpriced offers.',theater:'Listed local screenings. Ticket links live on each film.',upcoming:'Published future releases, nearest date first.',development:'Projects in development or without a verified release date. Production status stays explicit.',waiting:'Home access is unconfirmed. Check status and source age are shown on each card.'};
-    document.getElementById('watchlist-more').hidden=page.total<=page.rows.length;
+    const page=WatchlistModel.releaseWatchPage([...results,...(window.SavedProjects?.rows()||[])],{browse:window.WatchlistBrowser?.options()||{},today:discoveryWindow().today,budget:rentalBudget,receipts:hubState.changeReceipts,limit:watchlistLimit,filter:costFilter,model:ReleaseModel,localListing:m=>{const local=typeof Hub==='undefined'||typeof Hub.localListing!=='function'?null:Hub.localListing(m);return local&&!local.stale&&/Kalispell/i.test(local.location)?local:null;}});
+    const groups={included:'rw-arrived',cheap:'rw-available',premium:'rw-coming',theater:'rw-theater',upcoming:'rw-upcoming',development:'rw-development',waiting:'rw-waiting',unchecked:'rw-unchecked'};
+    const labels={included:'Included & free',cheap:'At your price',premium:'Higher prices',theater:'In Kalispell theaters',upcoming:'Upcoming releases',development:'Announced · no date',waiting:'Waiting for home release',unchecked:'Availability unchecked'};
+    const descriptions={included:'Your services, free streams, and your physical shelf.',cheap:'Rentals at or below $'+rentalBudget.toFixed(2)+'. Pins and your Rewind saves come first.',premium:'Rentals from lowest to highest, then purchase-only and unpriced offers.',theater:'Confirmed Kalispell listings. Ticket links live on each film.',upcoming:'Published future releases, nearest date first.',development:'Projects in development or without a verified release date. Production status stays explicit.',waiting:'Released titles with no current home offer found.',unchecked:'Missing or outdated checks. Availability has not been established.'};
+    document.getElementById('watchlist-more').hidden=true;
     document.getElementById('watchlist-more').textContent='Show more · '+Math.max(0,page.total-page.rows.length)+' remaining';
     for(const row of page.rows){
       if(existing.has(String(row.entry.id)))continue;
+      if(row.entry.project){document.getElementById('rw-development-grid').appendChild(SavedProjects.card(row.entry.project));continue;}
       const stage=row.stage,card=renderCard(row.entry,{context:'watchlist',status:row.status,changed:row.changed,prevLabel:row.entry.lastChange?.from,collectionCost:{...WatchlistModel.stageCost(row.entry,row.status,stage,row.cost),stale:stage.stale}});
       if(stage.newArrival&&!card.querySelector('.useful-change')){const tag=document.createElement('p');tag.className='new-tag useful-change';tag.textContent='Newly available at your price';card.querySelector('.card-meta').after(tag);}
       const note=document.createElement('p');note.className='release-stage-line';
-      if(stage.group==='upcoming'){const timing=ReleaseModel.forecastTiming({likely:stage.opening.date},discoveryWindow().today);note.textContent=stage.opening.label+' · '+timing.when+' · '+timing.relative+' · '+stage.opening.source;}
+      if(stage.group==='upcoming'){const timing=ReleaseModel.forecastTiming({likely:stage.date},discoveryWindow().today);note.textContent=(stage.home?.date===stage.date?stage.home.label:stage.opening?.label||'Release')+' · '+timing.when+' · '+timing.relative+(stage.opening?.source?' · '+stage.opening.source:'');}
       else if(stage.group==='theater')note.textContent=(stage.local.location||'Kalispell')+' screening listed '+formatFilmDate(stage.date)+(stage.local.stale?' · previous theater check':'');
       else if(stage.home&&!card.querySelector('.wait-advice'))note.textContent=stage.home.label+' on '+formatFilmDate(stage.home.date)+' · listed date; source in details';
       else if(stage.group==='waiting'&&row.entry.mediaType==='tv')note.textContent='Streaming for your next season has not been confirmed. Check Details & streaming.';
@@ -1014,14 +1015,15 @@ function paintWatchlist(results,append=false){
     }
     for(const [group,id] of Object.entries(groups)){
       const section=document.getElementById(id+'-section'),shown=page.rows.filter(r=>r.stage.group===group).length;
-      section.hidden=!page.counts[group];
+      section.hidden=!page.counts[group]||!!window.WatchlistBrowser?.options().section&&window.WatchlistBrowser.options().section!==group;
       section.querySelector('h3').firstChild.textContent=labels[group]+' ';
       document.getElementById(id+'-count').textContent='('+(page.counts[group]||0)+')';
       section.querySelector('.group-note').textContent=descriptions[group]+(shown<page.counts[group]?' Showing '+shown+' of '+page.counts[group]+'.':'');
     }
     document.getElementById('filter-empty').hidden=page.total>0||!scopedWatchlist().length;
-    document.getElementById('release-watch-empty').hidden=!!scopedWatchlist().length;
+    document.getElementById('release-watch-empty').hidden=page.total>0||!!scopedWatchlist().length;
     renderReleaseRecovery();
+    window.WatchlistBrowser?.decorate(page);
     document.getElementById('card-summary').textContent='';
     window.dispatchEvent(new Event('rewind:card-rendered'));
     return;
