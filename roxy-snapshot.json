@@ -1,66 +1,6 @@
 {
   "items": [
     {
-      "id": "roxy:/show/the-social-reckoning/",
-      "title": "The Social Reckoning",
-      "venueId": "roxy",
-      "venue": "Roxy Theater",
-      "location": "Missoula",
-      "source": "Roxy Theater official calendar",
-      "url": "https://www.theroxytheater.org/show/the-social-reckoning/",
-      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/social20reckoning-1024x576.jpg",
-      "dates": [
-        "2026-10-21",
-        "2026-10-22"
-      ],
-      "ranges": [],
-      "screenings": [
-        {
-          "date": "2026-10-21",
-          "time": "5:15pm",
-          "startsAt": "2026-10-21T23:15:00.000Z",
-          "url": "https://www.theroxytheater.org/show/the-social-reckoning/",
-          "format": ""
-        },
-        {
-          "date": "2026-10-22",
-          "time": "5:30pm",
-          "startsAt": "2026-10-22T23:30:00.000Z",
-          "url": "https://www.theroxytheater.org/show/the-social-reckoning/",
-          "format": ""
-        }
-      ],
-      "start": "2026-10-21",
-      "end": "2026-10-22",
-      "dateLabel": "2 listed days"
-    },
-    {
-      "id": "roxy:/show/where-the-wild-things-are-trail-camera-movie-night/",
-      "title": "Where the Wild Things Are: Trail Camera Movie Night",
-      "venueId": "roxy",
-      "venue": "Roxy Theater",
-      "location": "Missoula",
-      "source": "Roxy Theater official calendar",
-      "url": "https://www.theroxytheater.org/show/where-the-wild-things-are-trail-camera-movie-night/",
-      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/09/pyoomas-1024x577.jpg",
-      "dates": [
-        "2026-10-21"
-      ],
-      "ranges": [],
-      "screenings": [
-        {
-          "date": "2026-10-21",
-          "time": "5:30pm",
-          "startsAt": "2026-10-21T23:30:00.000Z",
-          "url": "https://www.theroxytheater.org/show/where-the-wild-things-are-trail-camera-movie-night/",
-          "format": ""
-        }
-      ],
-      "start": "2026-10-21",
-      "end": "2026-10-21",
-      "dateLabel": "1 listed days"
-    },
-    {
       "id": "roxy:/show/your-mother-your-mother-your-mother/",
       "title": "Your Mother Your Mother Your Mother",
       "venueId": "roxy",
@@ -70,18 +10,10 @@
       "url": "https://www.theroxytheater.org/show/your-mother-your-mother-your-mother/",
       "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/your20mother20x203-1024x576.jpg",
       "dates": [
-        "2026-10-21",
         "2026-10-22"
       ],
       "ranges": [],
       "screenings": [
-        {
-          "date": "2026-10-21",
-          "time": "5:45pm",
-          "startsAt": "2026-10-21T23:45:00.000Z",
-          "url": "https://www.theroxytheater.org/show/your-mother-your-mother-your-mother/",
-          "format": ""
-        },
         {
           "date": "2026-10-22",
           "time": "4:30pm",
@@ -90,9 +22,9 @@
           "format": ""
         }
       ],
-      "start": "2026-10-21",
+      "start": "2026-10-22",
       "end": "2026-10-22",
-      "dateLabel": "2 listed days"
+      "dateLabel": "1 listed days"
     },
     {
       "id": "roxy:/show/the-devils/",
@@ -113,6 +45,32 @@
           "time": "5:00pm",
           "startsAt": "2026-10-22T23:00:00.000Z",
           "url": "https://www.theroxytheater.org/show/the-devils/",
+          "format": ""
+        }
+      ],
+      "start": "2026-10-22",
+      "end": "2026-10-22",
+      "dateLabel": "1 listed days"
+    },
+    {
+      "id": "roxy:/show/the-social-reckoning/",
+      "title": "The Social Reckoning",
+      "venueId": "roxy",
+      "venue": "Roxy Theater",
+      "location": "Missoula",
+      "source": "Roxy Theater official calendar",
+      "url": "https://www.theroxytheater.org/show/the-social-reckoning/",
+      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/social20reckoning-1024x576.jpg",
+      "dates": [
+        "2026-10-22"
+      ],
+      "ranges": [],
+      "screenings": [
+        {
+          "date": "2026-10-22",
+          "time": "5:30pm",
+          "startsAt": "2026-10-22T23:30:00.000Z",
+          "url": "https://www.theroxytheater.org/show/the-social-reckoning/",
           "format": ""
         }
       ],
@@ -190,7 +148,7 @@
     },
     {
       "id": "roxy:/show/you-can-see-everything/",
-      "title": "You Can See Everything – THURSDAY SCREENING ADDED!",
+      "title": "You Can See Everything",
       "venueId": "roxy",
       "venue": "Roxy Theater",
       "location": "Missoula",
@@ -2069,9 +2027,35 @@
       "start": "2026-12-28",
       "end": "2026-12-28",
       "dateLabel": "1 listed days"
+    },
+    {
+      "id": "roxy:/show/grizzly-man/",
+      "title": "Grizzly Man",
+      "venueId": "roxy",
+      "venue": "Roxy Theater",
+      "location": "Missoula",
+      "source": "Roxy Theater official calendar",
+      "url": "https://www.theroxytheater.org/show/grizzly-man/",
+      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/09/timmay20no-1024x577.jpg",
+      "dates": [
+        "2027-01-19"
+      ],
+      "ranges": [],
+      "screenings": [
+        {
+          "date": "2027-01-19",
+          "time": "7:30pm",
+          "startsAt": "2027-01-20T02:30:00.000Z",
+          "url": "https://www.theroxytheater.org/show/grizzly-man/",
+          "format": ""
+        }
+      ],
+      "start": "2027-01-19",
+      "end": "2027-01-19",
+      "dateLabel": "1 listed days"
     }
   ],
-  "checkedAt": 1792645478732,
+  "checkedAt": 1792670829382,
   "stale": false,
   "sourceURL": "https://www.theroxytheater.org/showtimes/"
 }
