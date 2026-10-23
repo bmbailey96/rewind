@@ -1,84 +1,6 @@
 {
   "items": [
     {
-      "id": "roxy:/show/your-mother-your-mother-your-mother/",
-      "title": "Your Mother Your Mother Your Mother",
-      "venueId": "roxy",
-      "venue": "Roxy Theater",
-      "location": "Missoula",
-      "source": "Roxy Theater official calendar",
-      "url": "https://www.theroxytheater.org/show/your-mother-your-mother-your-mother/",
-      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/your20mother20x203-1024x576.jpg",
-      "dates": [
-        "2026-10-22"
-      ],
-      "ranges": [],
-      "screenings": [
-        {
-          "date": "2026-10-22",
-          "time": "4:30pm",
-          "startsAt": "2026-10-22T22:30:00.000Z",
-          "url": "https://www.theroxytheater.org/show/your-mother-your-mother-your-mother/",
-          "format": ""
-        }
-      ],
-      "start": "2026-10-22",
-      "end": "2026-10-22",
-      "dateLabel": "1 listed days"
-    },
-    {
-      "id": "roxy:/show/the-devils/",
-      "title": "The Devils",
-      "venueId": "roxy",
-      "venue": "Roxy Theater",
-      "location": "Missoula",
-      "source": "Roxy Theater official calendar",
-      "url": "https://www.theroxytheater.org/show/the-devils/",
-      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/were20you20sent20here20by20the20devil-1024x577.jpg",
-      "dates": [
-        "2026-10-22"
-      ],
-      "ranges": [],
-      "screenings": [
-        {
-          "date": "2026-10-22",
-          "time": "5:00pm",
-          "startsAt": "2026-10-22T23:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/the-devils/",
-          "format": ""
-        }
-      ],
-      "start": "2026-10-22",
-      "end": "2026-10-22",
-      "dateLabel": "1 listed days"
-    },
-    {
-      "id": "roxy:/show/the-social-reckoning/",
-      "title": "The Social Reckoning",
-      "venueId": "roxy",
-      "venue": "Roxy Theater",
-      "location": "Missoula",
-      "source": "Roxy Theater official calendar",
-      "url": "https://www.theroxytheater.org/show/the-social-reckoning/",
-      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/social20reckoning-1024x576.jpg",
-      "dates": [
-        "2026-10-22"
-      ],
-      "ranges": [],
-      "screenings": [
-        {
-          "date": "2026-10-22",
-          "time": "5:30pm",
-          "startsAt": "2026-10-22T23:30:00.000Z",
-          "url": "https://www.theroxytheater.org/show/the-social-reckoning/",
-          "format": ""
-        }
-      ],
-      "start": "2026-10-22",
-      "end": "2026-10-22",
-      "dateLabel": "1 listed days"
-    },
-    {
       "id": "roxy:/show/you-can-see-everything/",
       "title": "You Can See Everything",
       "venueId": "roxy",
@@ -2190,7 +2112,7 @@
       "dateLabel": "1 listed days"
     }
   ],
-  "checkedAt": 1792731859166,
+  "checkedAt": 1792756270703,
   "stale": false,
   "sourceURL": "https://www.theroxytheater.org/showtimes/"
 }
