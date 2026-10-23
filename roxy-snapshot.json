@@ -1151,6 +1151,58 @@
       "dateLabel": "1 listed days"
     },
     {
+      "id": "roxy:/show/revival-comedy-workshop/",
+      "title": "Revival Comedy Workshop",
+      "venueId": "roxy",
+      "venue": "Roxy Theater",
+      "location": "Missoula",
+      "source": "Roxy Theater official calendar",
+      "url": "https://www.theroxytheater.org/show/revival-comedy-workshop/",
+      "poster": "https://www.theroxytheater.org/wp-content/uploads/2022/01/revival20comedy20workshop.jpg",
+      "dates": [
+        "2026-11-03"
+      ],
+      "ranges": [],
+      "screenings": [
+        {
+          "date": "2026-11-03",
+          "time": "5:30pm",
+          "startsAt": "2026-11-04T00:30:00.000Z",
+          "url": "https://www.theroxytheater.org/show/revival-comedy-workshop/",
+          "format": "Annex"
+        }
+      ],
+      "start": "2026-11-03",
+      "end": "2026-11-03",
+      "dateLabel": "1 listed days"
+    },
+    {
+      "id": "roxy:/show/revival-comedy-open-mic/",
+      "title": "Revival Comedy Open Mic",
+      "venueId": "roxy",
+      "venue": "Roxy Theater",
+      "location": "Missoula",
+      "source": "Roxy Theater official calendar",
+      "url": "https://www.theroxytheater.org/show/revival-comedy-open-mic/",
+      "poster": "https://www.theroxytheater.org/wp-content/uploads/2022/01/revival20comedy20open20mic.png",
+      "dates": [
+        "2026-11-03"
+      ],
+      "ranges": [],
+      "screenings": [
+        {
+          "date": "2026-11-03",
+          "time": "7:00pm",
+          "startsAt": "2026-11-04T02:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/revival-comedy-open-mic/",
+          "format": "Annex"
+        }
+      ],
+      "start": "2026-11-03",
+      "end": "2026-11-03",
+      "dateLabel": "1 listed days"
+    },
+    {
       "id": "roxy:/show/girl-winter-film-tour-2/",
       "title": "Girl Winter Film Tour",
       "venueId": "roxy",
@@ -1623,6 +1675,32 @@
       "dateLabel": "1 listed days"
     },
     {
+      "id": "roxy:/show/missoulas-homegrown-comedy/",
+      "title": "Missoula’s HomeGrown Comedy",
+      "venueId": "roxy",
+      "venue": "Roxy Theater",
+      "location": "Missoula",
+      "source": "Roxy Theater official calendar",
+      "url": "https://www.theroxytheater.org/show/missoulas-homegrown-comedy/",
+      "poster": "https://www.theroxytheater.org/wp-content/uploads/2022/02/howardcool-1024x576.jpg",
+      "dates": [
+        "2026-11-18"
+      ],
+      "ranges": [],
+      "screenings": [
+        {
+          "date": "2026-11-18",
+          "time": "8:00pm",
+          "startsAt": "2026-11-19T03:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/missoulas-homegrown-comedy/",
+          "format": ""
+        }
+      ],
+      "start": "2026-11-18",
+      "end": "2026-11-18",
+      "dateLabel": "1 listed days"
+    },
+    {
       "id": "roxy:/show/diary-of-a-wimpy-kid/",
       "title": "Diary of a Wimpy Kid",
       "venueId": "roxy",
@@ -2086,6 +2164,32 @@
       "dateLabel": "1 listed days"
     },
     {
+      "id": "roxy:/show/tokyo-godfathers/",
+      "title": "Tokyo Godfathers",
+      "venueId": "roxy",
+      "venue": "Roxy Theater",
+      "location": "Missoula",
+      "source": "Roxy Theater official calendar",
+      "url": "https://www.theroxytheater.org/show/tokyo-godfathers/",
+      "poster": "https://www.theroxytheater.org/wp-content/uploads/2022/11/tokgod-1024x576.jpeg",
+      "dates": [
+        "2026-12-29"
+      ],
+      "ranges": [],
+      "screenings": [
+        {
+          "date": "2026-12-29",
+          "time": "7:30pm",
+          "startsAt": "2026-12-30T02:30:00.000Z",
+          "url": "https://www.theroxytheater.org/show/tokyo-godfathers/",
+          "format": "Digital"
+        }
+      ],
+      "start": "2026-12-29",
+      "end": "2026-12-29",
+      "dateLabel": "1 listed days"
+    },
+    {
       "id": "roxy:/show/grizzly-man/",
       "title": "Grizzly Man",
       "venueId": "roxy",
@@ -2112,7 +2216,7 @@
       "dateLabel": "1 listed days"
     }
   ],
-  "checkedAt": 1792775907255,
+  "checkedAt": 1792791118996,
   "stale": false,
   "sourceURL": "https://www.theroxytheater.org/showtimes/"
 }
