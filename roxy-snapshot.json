@@ -10,7 +10,6 @@
       "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
       "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/holmes-1024x575.jpg",
       "dates": [
-        "2026-10-23",
         "2026-10-24",
         "2026-10-25",
         "2026-10-26",
@@ -20,20 +19,6 @@
       ],
       "ranges": [],
       "screenings": [
-        {
-          "date": "2026-10-23",
-          "time": "2:00pm",
-          "startsAt": "2026-10-23T20:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
-          "format": "Open captions"
-        },
-        {
-          "date": "2026-10-23",
-          "time": "4:30pm",
-          "startsAt": "2026-10-23T22:30:00.000Z",
-          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
-          "format": ""
-        },
         {
           "date": "2026-10-24",
           "time": "11:30am",
@@ -119,140 +104,9 @@
           "format": "Open captions"
         }
       ],
-      "start": "2026-10-23",
+      "start": "2026-10-24",
       "end": "2026-10-29",
-      "dateLabel": "7 listed days"
-    },
-    {
-      "id": "roxy:/show/twin-peaks-episodes-16-17-18/",
-      "title": "Twin Peaks – Episodes 16, 17, & 18",
-      "venueId": "roxy",
-      "venue": "Roxy Theater",
-      "location": "Missoula",
-      "source": "Roxy Theater official calendar",
-      "url": "https://www.theroxytheater.org/show/twin-peaks-episodes-16-17-18/",
-      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/09/mural-1024x576.jpeg",
-      "dates": [
-        "2026-10-23",
-        "2026-10-24",
-        "2026-10-25"
-      ],
-      "ranges": [],
-      "screenings": [
-        {
-          "date": "2026-10-23",
-          "time": "5:15pm",
-          "startsAt": "2026-10-23T23:15:00.000Z",
-          "url": "https://www.theroxytheater.org/show/twin-peaks-episodes-16-17-18/",
-          "format": "Annex"
-        },
-        {
-          "date": "2026-10-23",
-          "time": "8:00pm",
-          "startsAt": "2026-10-24T02:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/twin-peaks-episodes-16-17-18/",
-          "format": "Annex"
-        },
-        {
-          "date": "2026-10-24",
-          "time": "5:15pm",
-          "startsAt": "2026-10-24T23:15:00.000Z",
-          "url": "https://www.theroxytheater.org/show/twin-peaks-episodes-16-17-18/",
-          "format": "Annex"
-        },
-        {
-          "date": "2026-10-24",
-          "time": "8:00pm",
-          "startsAt": "2026-10-25T02:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/twin-peaks-episodes-16-17-18/",
-          "format": "Annex"
-        },
-        {
-          "date": "2026-10-25",
-          "time": "5:15pm",
-          "startsAt": "2026-10-25T23:15:00.000Z",
-          "url": "https://www.theroxytheater.org/show/twin-peaks-episodes-16-17-18/",
-          "format": "Annex"
-        },
-        {
-          "date": "2026-10-25",
-          "time": "8:00pm",
-          "startsAt": "2026-10-26T02:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/twin-peaks-episodes-16-17-18/",
-          "format": "Annex"
-        }
-      ],
-      "start": "2026-10-23",
-      "end": "2026-10-25",
-      "dateLabel": "3 listed days"
-    },
-    {
-      "id": "roxy:/show/baby-love/",
-      "title": "Baby Love",
-      "venueId": "roxy",
-      "venue": "Roxy Theater",
-      "location": "Missoula",
-      "source": "Roxy Theater official calendar",
-      "url": "https://www.theroxytheater.org/show/baby-love/",
-      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/oooh20my20baby20love-1024x576.jpg",
-      "dates": [
-        "2026-10-23",
-        "2026-10-24"
-      ],
-      "ranges": [],
-      "screenings": [
-        {
-          "date": "2026-10-23",
-          "time": "5:15pm",
-          "startsAt": "2026-10-23T23:15:00.000Z",
-          "url": "https://www.theroxytheater.org/show/baby-love/",
-          "format": ""
-        },
-        {
-          "date": "2026-10-24",
-          "time": "7:30pm",
-          "startsAt": "2026-10-25T01:30:00.000Z",
-          "url": "https://www.theroxytheater.org/show/baby-love/",
-          "format": ""
-        }
-      ],
-      "start": "2026-10-23",
-      "end": "2026-10-24",
-      "dateLabel": "2 listed days"
-    },
-    {
-      "id": "roxy:/show/drinking-and-driving/",
-      "title": "Drinking and Driving",
-      "venueId": "roxy",
-      "venue": "Roxy Theater",
-      "location": "Missoula",
-      "source": "Roxy Theater official calendar",
-      "url": "https://www.theroxytheater.org/show/drinking-and-driving/",
-      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/drinkinganddrivingavalonfastjillianfrank-1024x575.jpeg",
-      "dates": [
-        "2026-10-23",
-        "2026-10-24"
-      ],
-      "ranges": [],
-      "screenings": [
-        {
-          "date": "2026-10-23",
-          "time": "5:30pm",
-          "startsAt": "2026-10-23T23:30:00.000Z",
-          "url": "https://www.theroxytheater.org/show/drinking-and-driving/",
-          "format": ""
-        },
-        {
-          "date": "2026-10-24",
-          "time": "5:00pm",
-          "startsAt": "2026-10-24T23:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/drinking-and-driving/",
-          "format": ""
-        }
-      ],
-      "start": "2026-10-23",
-      "end": "2026-10-24",
-      "dateLabel": "2 listed days"
+      "dateLabel": "6 listed days"
     },
     {
       "id": "roxy:/show/test-3/",
@@ -264,18 +118,10 @@
       "url": "https://www.theroxytheater.org/show/test-3/",
       "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/test-1024x576.jpg",
       "dates": [
-        "2026-10-23",
         "2026-10-24"
       ],
       "ranges": [],
       "screenings": [
-        {
-          "date": "2026-10-23",
-          "time": "7:45pm",
-          "startsAt": "2026-10-24T01:45:00.000Z",
-          "url": "https://www.theroxytheater.org/show/test-3/",
-          "format": ""
-        },
         {
           "date": "2026-10-24",
           "time": "2:30pm",
@@ -284,68 +130,8 @@
           "format": ""
         }
       ],
-      "start": "2026-10-23",
+      "start": "2026-10-24",
       "end": "2026-10-24",
-      "dateLabel": "2 listed days"
-    },
-    {
-      "id": "roxy:/show/honeyjoon/",
-      "title": "Honeyjoon",
-      "venueId": "roxy",
-      "venue": "Roxy Theater",
-      "location": "Missoula",
-      "source": "Roxy Theater official calendar",
-      "url": "https://www.theroxytheater.org/show/honeyjoon/",
-      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/honeyjoon-1024x576.jpg",
-      "dates": [
-        "2026-10-23",
-        "2026-10-25"
-      ],
-      "ranges": [],
-      "screenings": [
-        {
-          "date": "2026-10-23",
-          "time": "8:00pm",
-          "startsAt": "2026-10-24T02:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/honeyjoon/",
-          "format": ""
-        },
-        {
-          "date": "2026-10-25",
-          "time": "2:45pm",
-          "startsAt": "2026-10-25T20:45:00.000Z",
-          "url": "https://www.theroxytheater.org/show/honeyjoon/",
-          "format": ""
-        }
-      ],
-      "start": "2026-10-23",
-      "end": "2026-10-25",
-      "dateLabel": "2 listed days"
-    },
-    {
-      "id": "roxy:/show/shorts-program-1-desperate-characters/",
-      "title": "Shorts Program 1: Desperate Characters",
-      "venueId": "roxy",
-      "venue": "Roxy Theater",
-      "location": "Missoula",
-      "source": "Roxy Theater official calendar",
-      "url": "https://www.theroxytheater.org/show/shorts-program-1-desperate-characters/",
-      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/getar-1024x576.jpg",
-      "dates": [
-        "2026-10-23"
-      ],
-      "ranges": [],
-      "screenings": [
-        {
-          "date": "2026-10-23",
-          "time": "8:15pm",
-          "startsAt": "2026-10-24T02:15:00.000Z",
-          "url": "https://www.theroxytheater.org/show/shorts-program-1-desperate-characters/",
-          "format": ""
-        }
-      ],
-      "start": "2026-10-23",
-      "end": "2026-10-23",
       "dateLabel": "1 listed days"
     },
     {
@@ -409,6 +195,80 @@
       "dateLabel": "1 listed days"
     },
     {
+      "id": "roxy:/show/drinking-and-driving/",
+      "title": "Drinking and Driving",
+      "venueId": "roxy",
+      "venue": "Roxy Theater",
+      "location": "Missoula",
+      "source": "Roxy Theater official calendar",
+      "url": "https://www.theroxytheater.org/show/drinking-and-driving/",
+      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/drinkinganddrivingavalonfastjillianfrank-1024x575.jpeg",
+      "dates": [
+        "2026-10-24"
+      ],
+      "ranges": [],
+      "screenings": [
+        {
+          "date": "2026-10-24",
+          "time": "5:00pm",
+          "startsAt": "2026-10-24T23:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/drinking-and-driving/",
+          "format": ""
+        }
+      ],
+      "start": "2026-10-24",
+      "end": "2026-10-24",
+      "dateLabel": "1 listed days"
+    },
+    {
+      "id": "roxy:/show/twin-peaks-episodes-16-17-18/",
+      "title": "Twin Peaks – Episodes 16, 17, & 18",
+      "venueId": "roxy",
+      "venue": "Roxy Theater",
+      "location": "Missoula",
+      "source": "Roxy Theater official calendar",
+      "url": "https://www.theroxytheater.org/show/twin-peaks-episodes-16-17-18/",
+      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/09/mural-1024x576.jpeg",
+      "dates": [
+        "2026-10-24",
+        "2026-10-25"
+      ],
+      "ranges": [],
+      "screenings": [
+        {
+          "date": "2026-10-24",
+          "time": "5:15pm",
+          "startsAt": "2026-10-24T23:15:00.000Z",
+          "url": "https://www.theroxytheater.org/show/twin-peaks-episodes-16-17-18/",
+          "format": "Annex"
+        },
+        {
+          "date": "2026-10-24",
+          "time": "8:00pm",
+          "startsAt": "2026-10-25T02:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/twin-peaks-episodes-16-17-18/",
+          "format": "Annex"
+        },
+        {
+          "date": "2026-10-25",
+          "time": "5:15pm",
+          "startsAt": "2026-10-25T23:15:00.000Z",
+          "url": "https://www.theroxytheater.org/show/twin-peaks-episodes-16-17-18/",
+          "format": "Annex"
+        },
+        {
+          "date": "2026-10-25",
+          "time": "8:00pm",
+          "startsAt": "2026-10-26T02:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/twin-peaks-episodes-16-17-18/",
+          "format": "Annex"
+        }
+      ],
+      "start": "2026-10-24",
+      "end": "2026-10-25",
+      "dateLabel": "2 listed days"
+    },
+    {
       "id": "roxy:/show/shorts-program-3-dark-matters/",
       "title": "Shorts Program 3: Dark Matters",
       "venueId": "roxy",
@@ -469,6 +329,32 @@
       "dateLabel": "2 listed days"
     },
     {
+      "id": "roxy:/show/baby-love/",
+      "title": "Baby Love",
+      "venueId": "roxy",
+      "venue": "Roxy Theater",
+      "location": "Missoula",
+      "source": "Roxy Theater official calendar",
+      "url": "https://www.theroxytheater.org/show/baby-love/",
+      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/oooh20my20baby20love-1024x576.jpg",
+      "dates": [
+        "2026-10-24"
+      ],
+      "ranges": [],
+      "screenings": [
+        {
+          "date": "2026-10-24",
+          "time": "7:30pm",
+          "startsAt": "2026-10-25T01:30:00.000Z",
+          "url": "https://www.theroxytheater.org/show/baby-love/",
+          "format": ""
+        }
+      ],
+      "start": "2026-10-24",
+      "end": "2026-10-24",
+      "dateLabel": "1 listed days"
+    },
+    {
       "id": "roxy:/show/act-one/",
       "title": "Act One",
       "venueId": "roxy",
@@ -521,7 +407,7 @@
           "time": "11:00am",
           "startsAt": "2026-10-25T17:00:00.000Z",
           "url": "https://www.theroxytheater.org/show/omfg-live-podcast-with-in-memoriam-writer-director-rob-burnett/",
-          "format": "Annex"
+          "format": ""
         }
       ],
       "start": "2026-10-25",
@@ -573,6 +459,32 @@
           "time": "2:30pm",
           "startsAt": "2026-10-25T20:30:00.000Z",
           "url": "https://www.theroxytheater.org/show/in-memoriam/",
+          "format": ""
+        }
+      ],
+      "start": "2026-10-25",
+      "end": "2026-10-25",
+      "dateLabel": "1 listed days"
+    },
+    {
+      "id": "roxy:/show/honeyjoon/",
+      "title": "Honeyjoon",
+      "venueId": "roxy",
+      "venue": "Roxy Theater",
+      "location": "Missoula",
+      "source": "Roxy Theater official calendar",
+      "url": "https://www.theroxytheater.org/show/honeyjoon/",
+      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/honeyjoon-1024x576.jpg",
+      "dates": [
+        "2026-10-25"
+      ],
+      "ranges": [],
+      "screenings": [
+        {
+          "date": "2026-10-25",
+          "time": "2:45pm",
+          "startsAt": "2026-10-25T20:45:00.000Z",
+          "url": "https://www.theroxytheater.org/show/honeyjoon/",
           "format": ""
         }
       ],
@@ -2216,7 +2128,7 @@
       "dateLabel": "1 listed days"
     }
   ],
-  "checkedAt": 1792817340618,
+  "checkedAt": 1792840710349,
   "stale": false,
   "sourceURL": "https://www.theroxytheater.org/showtimes/"
 }
