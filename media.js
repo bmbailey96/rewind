@@ -120,7 +120,7 @@ const RewindMedia=(()=>{
   if(!current.stale&&current.offers.length)c.append(el('p','Series-level streaming listing. Confirm the season you need on the service.','offer-note'));
   const actions=el('div',null,'card-actions');
   if(!g.intent)actions.append(button('Add to watchlist',()=>add(full)));
-  const details=button('Details, seasons & viewing options',()=>{
+  const details=button('Details & viewing',()=>{
    const body=el('div',null,'tv-detail-body');
    openFilmDetails(full,body,details,async()=>{
     body.replaceChildren(el('p','Checking series and seasons…'));
@@ -137,7 +137,11 @@ const RewindMedia=(()=>{
     }catch(e){body.replaceChildren(el('p',e.message),button('Try again',()=>details.click()));}
    });
   });details.className='film-details-trigger';details.setAttribute('aria-haspopup','dialog');
-  c.append(actions,details);if(opts.context==='watchlist'){const pinButton=button('',()=>pin(g.id));pinButton.className='poster-pin';pinButton.setAttribute('aria-label',(full.pinned?'Unpin ':'Pin ')+g.title);pinButton.setAttribute('aria-pressed',String(!!full.pinned));pinButton.title=full.pinned?'Unpin':'Pin';pinButton.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6l-1 6 4 4v2h-5v6l-1 2-1-2v-6H6v-2l4-4z"/></svg>';c.append(pinButton);}
+  // Poster interaction mirrors film cards, including keyboard access.
+  const posterAction=element=>{element.tabIndex=0;element.setAttribute('role','button');element.setAttribute('aria-label','Details for '+g.title);element.setAttribute('aria-haspopup','dialog');element.classList.add('poster-action');element.onclick=()=>details.click();element.onkeydown=event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();details.click();}};};
+  c.append(actions,details);posterAction(poster);
+  if(full.poster_path)poster.onerror=()=>{const fallback=el('div','POSTER UNAVAILABLE','card-poster poster-missing');poster.replaceWith(fallback);posterAction(fallback);};
+  if(opts.context==='watchlist'){const pinButton=button('',()=>pin(g.id));pinButton.className='poster-pin';pinButton.setAttribute('aria-label',(full.pinned?'Unpin ':'Pin ')+g.title);pinButton.setAttribute('aria-pressed',String(!!full.pinned));pinButton.title=full.pinned?'Unpin':'Pin';pinButton.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6l-1 6 4 4v2h-5v6l-1 2-1-2v-6H6v-2l4-4z"/></svg>';c.append(pinButton);}
   return c;
  }
  async function tvBrowse(stage='recent',page=1,query=''){
