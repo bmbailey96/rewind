@@ -47,7 +47,7 @@
  availability.onchange=()=>document.querySelector('[data-cost-filter='+availability.value+']').click();
  const syncAvailability=()=>{availability.value=document.querySelector('[data-cost-filter][aria-pressed=true]')?.dataset.costFilter||'all';};
  window.addEventListener('rewind:card-rendered',syncAvailability);
- const sort=by('sort-select');sort.hidden=false;sort.replaceChildren();for(const [value,label] of [['cost','Recommended'],['added','Recently saved'],['release','Release date'],['az','Title A–Z']]){const option=document.createElement('option');option.value=value;option.textContent=label;sort.append(option);}sort.value='cost';
+ const sort=by('sort-select');sort.hidden=false;sort.replaceChildren();for(const [value,label] of [['cost','Recommended'],['price','Price: low to high'],['changed','Recent changes'],['added','Recently saved'],['release','Release date'],['az','Title A–Z']]){const option=document.createElement('option');option.value=value;option.textContent=label;sort.append(option);}sort.value='cost';
  const budget=by('rental-budget');budget.hidden=false;budget.setAttribute('aria-label','Rental price limit in dollars');budget.inputMode='decimal';
  primary.append(typeFilters,savedSearch,field('Availability',availability,'availability-field'),field('Sort by',sort,'sort-field'),field('Rental limit ($)',budget,'budget-field'));
  document.querySelector('#tab-watchlist > .panel-head').after(primary);
