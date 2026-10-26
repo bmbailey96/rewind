@@ -303,7 +303,13 @@ assert.equal(w.document.querySelector('[data-discover-intent=surprise]').getAttr
  assert.equal(w.document.querySelector('#rw-available-grid>.rental-card[data-movie-id="100510"]'),null,'Watched titles are excluded');
  assert.equal(w.document.querySelector('#rw-available-grid>.rental-card[data-movie-id="100520"]'),null,'Rated films are excluded');
  w.document.querySelector('#rw-coming-section .section-show-all').click();
- assert.equal(w.document.querySelectorAll('#rw-coming-grid .rental-card').length,591,'Section expansion shows every title in that section');
+ const firstExpanded=w.document.querySelector('#rw-coming-grid .rental-card');
+ assert.equal(w.document.querySelectorAll('#rw-coming-grid .rental-card').length,24,'Section expansion renders the first 24 rather than all 591 cards');
+ assert.equal(w.document.getElementById('watchlist-more').hidden,false,'Further section pages are available on scroll');
+ w.watchlistScrollObserver.callback([{isIntersecting:true,target:w.document.getElementById('watchlist-more')}]);await wait();
+ assert.equal(w.document.querySelectorAll('#rw-coming-grid .rental-card').length,48,'Scrolling adds the next section batch');
+ assert.equal(w.document.querySelector('#rw-coming-grid .rental-card'),firstExpanded,'Appending does not rebuild visible cards');
+ assert.equal(priceCalls,0,'Scrolling through expanded sections does not request new provider data');
  assert.equal(w.document.getElementById('rw-available-section').hidden,true,'Other sections leave the expanded view');
  w.document.querySelector('.watchlist-section-tools button').click();
  w.document.querySelector('[data-watchlist-scope=all]').click();await w.eval('renderWatchlist()');

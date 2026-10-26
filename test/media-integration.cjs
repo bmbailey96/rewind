@@ -138,7 +138,7 @@ const wait=()=>new Promise(r=>setTimeout(r,100));
  w.testState.replaceMovies(Array.from({length:14},(_,i)=>({id:800000+i,title:'Browse fixture '+String(i).padStart(2,'0'),release_date:'2020-01-01',availabilitySnapshot:{checkedAt:w.Date.now(),quoteCheckedAt:w.Date.now(),offers:[{kind:'rent',provider:'Apple TV',price:3.99,format:'HD'}]}})));
  await w.eval('renderWatchlist(false,true)');
  assert.equal(w.document.querySelectorAll('#rw-available-grid > .rental-card').length,6);
- const expand=w.document.querySelector('#rw-available-section .section-show-all');assert.equal(expand.textContent,'Show all 14');expand.click();await wait();
+ const expand=w.document.querySelector('#rw-available-section .section-show-all');assert.equal(expand.textContent,'Browse all 14');expand.click();await wait();
  assert.equal(w.document.querySelectorAll('#rw-available-grid > .rental-card').length,14);
  assert.equal(w.document.querySelector('.watchlist-section-tools').hidden,false);
  const sectionSort=w.document.querySelector('[aria-label="Sort this watchlist section"]');sectionSort.value='az';sectionSort.dispatchEvent(new w.Event('change'));

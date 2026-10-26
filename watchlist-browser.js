@@ -8,8 +8,8 @@ window.WatchlistBrowser=(()=>{
  for(const [value,text] of [['default','Recommended order'],['added','Recently saved'],['price','Price'],['az','A–Z']]){const option=document.createElement('option');option.value=value;option.textContent=text;select.append(option);}label.append(select);const empty=document.createElement('p');empty.className='offer-note';empty.textContent='No titles match this section. Try another search or return to Watchlist.';empty.hidden=true;toolbar.append(back,label,empty);
  document.getElementById('rw-arrived-section').before(toolbar);
  const move=fn=>(window.requestAnimationFrame||window.setTimeout)(()=>{fn();});
- back.onclick=()=>{const focus=returnSection;section=null;sort='default';select.value=sort;repaintWatchlist();move(()=>{window.scrollTo?.(0,returnY);document.querySelector('#'+focus+'-section .section-show-all')?.focus({preventScroll:true});});};
- select.onchange=()=>{sort=select.value;repaintWatchlist();};
+ back.onclick=()=>{const focus=returnSection;section=null;sort='default';select.value=sort;watchlistLimit=WATCHLIST_PAGE_SIZE;repaintWatchlist();move(()=>{window.scrollTo?.(0,returnY);document.querySelector('#'+focus+'-section .section-show-all')?.focus({preventScroll:true});});};
+ select.onchange=()=>{sort=select.value;watchlistLimit=WATCHLIST_PAGE_SIZE;repaintWatchlist();};
  function decorate(page){
   empty.hidden=!section||page.rows.length>0;
   toolbar.hidden=!section||document.getElementById('tab-watchlist').dataset.collection==='physical';
@@ -17,7 +17,7 @@ window.WatchlistBrowser=(()=>{
    const shelf=document.getElementById(id+'-section');if(!shelf)continue;
    shelf.querySelector('.section-show-all')?.remove();
    const count=page.counts[group]||0,shown=page.rows.filter(r=>r.stage.group===group).length;
-   if(!section&&count>shown){const button=document.createElement('button');button.className='secondary section-show-all';button.textContent='Show all '+count;button.setAttribute('aria-label','Show all '+count+' '+shelf.querySelector('h3').firstChild.textContent.trim()+' titles');button.onclick=()=>{returnY=window.scrollY;returnSection=id;section=group;sort='default';select.value=sort;repaintWatchlist();move(()=>{toolbar.scrollIntoView?.({block:'start'});back.focus({preventScroll:true});});};shelf.append(button);}
+   if(!section&&count>shown){const button=document.createElement('button');button.className='secondary section-show-all';button.textContent='Browse all '+count;button.setAttribute('aria-label','Show all '+count+' '+shelf.querySelector('h3').firstChild.textContent.trim()+' titles');button.onclick=()=>{returnY=window.scrollY;returnSection=id;section=group;sort='default';select.value=sort;watchlistLimit=WATCHLIST_PAGE_SIZE;repaintWatchlist();move(()=>{toolbar.scrollIntoView?.({block:'start'});back.focus({preventScroll:true});});};shelf.append(button);}
   }
  }
  window.addEventListener('rewind:card-rendered',()=>{if(document.getElementById('tab-watchlist').dataset.collection==='physical')toolbar.hidden=true;});

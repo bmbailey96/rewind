@@ -123,11 +123,11 @@
    if(browse.sort==='az')rows.sort((a,b)=>a.entry.title.localeCompare(b.entry.title));
    if(browse.sort==='added')rows.sort((a,b)=>(b.entry.addedAt||0)-(a.entry.addedAt||0)||a.entry.title.localeCompare(b.entry.title));
    if(browse.sort==='price')rows.sort((a,b)=>(a.cost.price??Infinity)-(b.cost.price??Infinity)||a.entry.title.localeCompare(b.entry.title));
-   if(browse.section)preview=rows.filter(r=>r.stage.group===browse.section);
+   if(browse.section)preview=rows.filter(r=>r.stage.group===browse.section).slice(0,limit);
    else{const selected=new Set();for(const group of Object.keys(counts)){const shelf=rows.filter(r=>r.stage.group===group),first=shelf.slice(0,6),tv=shelf.find(r=>r.entry.mediaType==='tv');if(tv&&first.length===6&&!first.some(r=>r.entry.mediaType==='tv'))first[5]=tv;for(const row of first)selected.add(row);}preview=rows.filter(r=>selected.has(r));}
 
   }
-  return {rows:preview,total:rows.length,counts};
+  return {rows:preview,total:browse?.section?(counts[browse.section]||0):rows.length,counts};
  }
 
  function merge(existing,films){const byId=new Map(existing.map(f=>[f.id,f]));for(const f of films)if(f.id&&!byId.has(f.id))byId.set(f.id,{...f,addedAt:addedAt(f),importedAt:Date.now(),pinned:false,manualNote:'',lastStatusCode:null,lastStatusLabel:null,statusChangedAt:null});return [...byId.values()];}

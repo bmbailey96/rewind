@@ -46,7 +46,9 @@ assert.equal(W.releaseWatchPage(many,{...options,limit:24}).rows[0].entry.id,259
 console.log('Section pins: price/date/subgroup precedence, unchanged section order, unpin restoration and 600-film pagination passed');
 const crowded=Array.from({length:110},(_,i)=>row(3000+i,[rent(3.99)]));crowded[100].entry.pinned=true;crowded[99].entry.rewindSaved=true;crowded[99].entry.addedAt=100;crowded[98].entry.rewindSaved=true;crowded[98].entry.addedAt=200;
 const preview=W.releaseWatchPage(crowded,{...options,browse:{}});assert.equal(preview.rows.length,6);assert.equal(preview.counts.cheap,110);assert.deepEqual(preview.rows.slice(0,3).map(r=>r.entry.id),[3100,3098,3099]);
-const focused=W.releaseWatchPage(crowded,{...options,browse:{section:'cheap',sort:'az'}});assert.equal(focused.rows.length,110);assert.equal(focused.rows[0].entry.title,'Film 3000');
+const focused=W.releaseWatchPage(crowded,{...options,limit:24,browse:{section:'cheap',sort:'az'}});assert.equal(focused.total,110);assert.equal(focused.rows.length,24,'Only the first section batch should be rendered');assert.equal(focused.rows[0].entry.title,'Film 3000');
+const moreFocused=W.releaseWatchPage(crowded,{...options,limit:48,browse:{section:'cheap',sort:'az'}});assert.equal(moreFocused.rows.length,48);assert.deepEqual(moreFocused.rows.slice(0,24).map(r=>r.entry.id),focused.rows.map(r=>r.entry.id),'Scrolling should append without changing prior cards');
+const entireFocused=W.releaseWatchPage(crowded,{...options,limit:120,browse:{section:'cheap',sort:'az'}});assert.equal(entireFocused.rows.length,110,'Every film remains accessible by scrolling');
 const uncertainty=W.releaseWatchPage([row(5000,[],{checkedAt:null,stale:true}),{entry:{id:5001,title:'Older film',release_date:'1990-01-01'},status:{offers:[]}}, {entry:{id:'project:future',title:'Future project',project:{id:'report'}},status:{offers:[]}}],{...options,browse:{}});assert.equal(uncertainty.counts.unchecked,2);assert.equal(uncertainty.counts.development,1);
 console.log('Section browsing: six-card previews, complete counts, pins, newest explicit saves, independent full-section sorting and unchecked vs undated projects');
 
