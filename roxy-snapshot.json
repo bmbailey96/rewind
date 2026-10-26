@@ -10,7 +10,6 @@
       "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
       "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/holmes-1024x575.jpg",
       "dates": [
-        "2026-10-25",
         "2026-10-26",
         "2026-10-27",
         "2026-10-28",
@@ -18,20 +17,6 @@
       ],
       "ranges": [],
       "screenings": [
-        {
-          "date": "2026-10-25",
-          "time": "11:00am",
-          "startsAt": "2026-10-25T17:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
-          "format": "Open captions"
-        },
-        {
-          "date": "2026-10-25",
-          "time": "6:30pm",
-          "startsAt": "2026-10-26T00:30:00.000Z",
-          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
-          "format": ""
-        },
         {
           "date": "2026-10-26",
           "time": "1:45pm",
@@ -89,250 +74,9 @@
           "format": "Open captions"
         }
       ],
-      "start": "2026-10-25",
+      "start": "2026-10-26",
       "end": "2026-10-29",
-      "dateLabel": "5 listed days"
-    },
-    {
-      "id": "roxy:/show/omfg-live-podcast-with-in-memoriam-writer-director-rob-burnett/",
-      "title": "OMFG Live Podcast with In Memoriam Writer/Director Rob Burnett",
-      "venueId": "roxy",
-      "venue": "Roxy Theater",
-      "location": "Missoula",
-      "source": "Roxy Theater official calendar",
-      "url": "https://www.theroxytheater.org/show/omfg-live-podcast-with-in-memoriam-writer-director-rob-burnett/",
-      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/untitled_artwork-1024x512.jpg",
-      "dates": [
-        "2026-10-25"
-      ],
-      "ranges": [],
-      "screenings": [
-        {
-          "date": "2026-10-25",
-          "time": "11:00am",
-          "startsAt": "2026-10-25T17:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/omfg-live-podcast-with-in-memoriam-writer-director-rob-burnett/",
-          "format": ""
-        }
-      ],
-      "start": "2026-10-25",
-      "end": "2026-10-25",
-      "dateLabel": "1 listed days"
-    },
-    {
-      "id": "roxy:/show/the-missouri-breaks-in-35mm/",
-      "title": "The Missouri Breaks in 35mm",
-      "venueId": "roxy",
-      "venue": "Roxy Theater",
-      "location": "Missoula",
-      "source": "Roxy Theater official calendar",
-      "url": "https://www.theroxytheater.org/show/the-missouri-breaks-in-35mm/",
-      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/missouri20breaks-1024x576.jpg",
-      "dates": [
-        "2026-10-25"
-      ],
-      "ranges": [],
-      "screenings": [
-        {
-          "date": "2026-10-25",
-          "time": "2:15pm",
-          "startsAt": "2026-10-25T20:15:00.000Z",
-          "url": "https://www.theroxytheater.org/show/the-missouri-breaks-in-35mm/",
-          "format": "35 MM"
-        }
-      ],
-      "start": "2026-10-25",
-      "end": "2026-10-25",
-      "dateLabel": "1 listed days"
-    },
-    {
-      "id": "roxy:/show/in-memoriam/",
-      "title": "In Memoriam",
-      "venueId": "roxy",
-      "venue": "Roxy Theater",
-      "location": "Missoula",
-      "source": "Roxy Theater official calendar",
-      "url": "https://www.theroxytheater.org/show/in-memoriam/",
-      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/in20memoriam20hero20still-1024x576.jpg",
-      "dates": [
-        "2026-10-25"
-      ],
-      "ranges": [],
-      "screenings": [
-        {
-          "date": "2026-10-25",
-          "time": "2:30pm",
-          "startsAt": "2026-10-25T20:30:00.000Z",
-          "url": "https://www.theroxytheater.org/show/in-memoriam/",
-          "format": ""
-        }
-      ],
-      "start": "2026-10-25",
-      "end": "2026-10-25",
-      "dateLabel": "1 listed days"
-    },
-    {
-      "id": "roxy:/show/honeyjoon/",
-      "title": "Honeyjoon",
-      "venueId": "roxy",
-      "venue": "Roxy Theater",
-      "location": "Missoula",
-      "source": "Roxy Theater official calendar",
-      "url": "https://www.theroxytheater.org/show/honeyjoon/",
-      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/honeyjoon-1024x576.jpg",
-      "dates": [
-        "2026-10-25"
-      ],
-      "ranges": [],
-      "screenings": [
-        {
-          "date": "2026-10-25",
-          "time": "2:45pm",
-          "startsAt": "2026-10-25T20:45:00.000Z",
-          "url": "https://www.theroxytheater.org/show/honeyjoon/",
-          "format": ""
-        }
-      ],
-      "start": "2026-10-25",
-      "end": "2026-10-25",
-      "dateLabel": "1 listed days"
-    },
-    {
-      "id": "roxy:/show/shorts-program-4-the-new-old-west/",
-      "title": "Shorts Program 4: The New Old West",
-      "venueId": "roxy",
-      "venue": "Roxy Theater",
-      "location": "Missoula",
-      "source": "Roxy Theater official calendar",
-      "url": "https://www.theroxytheater.org/show/shorts-program-4-the-new-old-west/",
-      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/bbw-1024x576.jpg",
-      "dates": [
-        "2026-10-25"
-      ],
-      "ranges": [],
-      "screenings": [
-        {
-          "date": "2026-10-25",
-          "time": "5:00pm",
-          "startsAt": "2026-10-25T23:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/shorts-program-4-the-new-old-west/",
-          "format": ""
-        }
-      ],
-      "start": "2026-10-25",
-      "end": "2026-10-25",
-      "dateLabel": "1 listed days"
-    },
-    {
-      "id": "roxy:/show/twin-peaks-episodes-16-17-18/",
-      "title": "Twin Peaks – Episodes 16, 17, & 18",
-      "venueId": "roxy",
-      "venue": "Roxy Theater",
-      "location": "Missoula",
-      "source": "Roxy Theater official calendar",
-      "url": "https://www.theroxytheater.org/show/twin-peaks-episodes-16-17-18/",
-      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/09/mural-1024x576.jpeg",
-      "dates": [
-        "2026-10-25"
-      ],
-      "ranges": [],
-      "screenings": [
-        {
-          "date": "2026-10-25",
-          "time": "5:15pm",
-          "startsAt": "2026-10-25T23:15:00.000Z",
-          "url": "https://www.theroxytheater.org/show/twin-peaks-episodes-16-17-18/",
-          "format": "Annex"
-        },
-        {
-          "date": "2026-10-25",
-          "time": "8:00pm",
-          "startsAt": "2026-10-26T02:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/twin-peaks-episodes-16-17-18/",
-          "format": "Annex"
-        }
-      ],
-      "start": "2026-10-25",
-      "end": "2026-10-25",
-      "dateLabel": "1 listed days"
-    },
-    {
-      "id": "roxy:/show/chronovisor/",
-      "title": "Chronovisor",
-      "venueId": "roxy",
-      "venue": "Roxy Theater",
-      "location": "Missoula",
-      "source": "Roxy Theater official calendar",
-      "url": "https://www.theroxytheater.org/show/chronovisor/",
-      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/chronivisor-1024x576.jpg",
-      "dates": [
-        "2026-10-25"
-      ],
-      "ranges": [],
-      "screenings": [
-        {
-          "date": "2026-10-25",
-          "time": "5:15pm",
-          "startsAt": "2026-10-25T23:15:00.000Z",
-          "url": "https://www.theroxytheater.org/show/chronovisor/",
-          "format": ""
-        }
-      ],
-      "start": "2026-10-25",
-      "end": "2026-10-25",
-      "dateLabel": "1 listed days"
-    },
-    {
-      "id": "roxy:/show/shorts-block-5-microbudget-missoula/",
-      "title": "Shorts Program 5: Microbudget Missoula",
-      "venueId": "roxy",
-      "venue": "Roxy Theater",
-      "location": "Missoula",
-      "source": "Roxy Theater official calendar",
-      "url": "https://www.theroxytheater.org/show/shorts-block-5-microbudget-missoula/",
-      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/microbudget-1024x574.jpeg",
-      "dates": [
-        "2026-10-25"
-      ],
-      "ranges": [],
-      "screenings": [
-        {
-          "date": "2026-10-25",
-          "time": "7:30pm",
-          "startsAt": "2026-10-26T01:30:00.000Z",
-          "url": "https://www.theroxytheater.org/show/shorts-block-5-microbudget-missoula/",
-          "format": ""
-        }
-      ],
-      "start": "2026-10-25",
-      "end": "2026-10-25",
-      "dateLabel": "1 listed days"
-    },
-    {
-      "id": "roxy:/show/act-one/",
-      "title": "Act One",
-      "venueId": "roxy",
-      "venue": "Roxy Theater",
-      "location": "Missoula",
-      "source": "Roxy Theater official calendar",
-      "url": "https://www.theroxytheater.org/show/act-one/",
-      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/actone_robleitzell_0005201-1024x576.jpg",
-      "dates": [
-        "2026-10-25"
-      ],
-      "ranges": [],
-      "screenings": [
-        {
-          "date": "2026-10-25",
-          "time": "7:45pm",
-          "startsAt": "2026-10-26T01:45:00.000Z",
-          "url": "https://www.theroxytheater.org/show/act-one/",
-          "format": ""
-        }
-      ],
-      "start": "2026-10-25",
-      "end": "2026-10-25",
-      "dateLabel": "1 listed days"
+      "dateLabel": "4 listed days"
     },
     {
       "id": "roxy:/show/poltergeist/",
@@ -1942,9 +1686,35 @@
       "start": "2027-01-19",
       "end": "2027-01-19",
       "dateLabel": "1 listed days"
+    },
+    {
+      "id": "roxy:/show/the-met-opera-live-la-fanciulla-del-west/",
+      "title": "The Met Opera Live: La Fanciulla del West",
+      "venueId": "roxy",
+      "venue": "Roxy Theater",
+      "location": "Missoula",
+      "source": "Roxy Theater official calendar",
+      "url": "https://www.theroxytheater.org/show/the-met-opera-live-la-fanciulla-del-west/",
+      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/07/fanciulla-1024x576.jpg",
+      "dates": [
+        "2027-01-23"
+      ],
+      "ranges": [],
+      "screenings": [
+        {
+          "date": "2027-01-23",
+          "time": "11:00am",
+          "startsAt": "2027-01-23T18:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/the-met-opera-live-la-fanciulla-del-west/",
+          "format": ""
+        }
+      ],
+      "start": "2027-01-23",
+      "end": "2027-01-23",
+      "dateLabel": "1 listed days"
     }
   ],
-  "checkedAt": 1792990875560,
+  "checkedAt": 1793020806012,
   "stale": false,
   "sourceURL": "https://www.theroxytheater.org/showtimes/"
 }
