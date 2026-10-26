@@ -50,3 +50,55 @@
 .counter{padding:12px 18px 0!important}.counter-inner{padding:6px 0!important}.shop-name{font-size:clamp(30px,4vw,44px)!important}.shop-tag{font-size:12px!important}#tab-discover .discovery-guide>p{margin:6px 0 10px}.saved-project-card h3{font-size:18px}.saved-project-card .new-tag{margin:8px 0}
 
 .watchlist-section-tools{display:flex;gap:1rem;align-items:center;justify-content:space-between;margin:1rem 0;scroll-margin-top:1rem}.watchlist-section-tools[hidden]{display:none}.watchlist-section-tools label{display:flex;align-items:center;gap:.5rem}.section-show-all{margin:1rem 0 0;min-height:44px}.saved-project-card .card-poster{grid-row:1 / span 7}.saved-project-card .offer-note{overflow-wrap:anywhere}@media(max-width:600px){.watchlist-section-tools{align-items:stretch;flex-direction:column}}
+
+
+/* Shared watchlist controls: filtering, order and rental limit are visible and
+   use the same control styling on desktop and phones. */
+#tab-watchlist .watchlist-primary{
+ display:grid;grid-template-columns:minmax(180px,1.7fr) repeat(3,minmax(125px,1fr));
+ align-items:end;gap:12px;margin:16px 0 8px;
+}
+#tab-watchlist .watchlist-primary>.media-type-filters{
+ grid-column:1/-1;margin:0 0 4px;align-self:start;
+}
+#tab-watchlist .watchlist-primary>input[type=search]{
+ grid-column:1;box-sizing:border-box;min-width:0;width:100%;min-height:44px;
+ padding:10px 12px;font-size:16px;
+}
+#tab-watchlist .watchlist-primary .watchlist-field{
+ display:flex;flex-direction:column;align-items:stretch;gap:5px;
+ margin:0;min-width:0;width:auto;justify-content:flex-end;
+ font-size:12px;color:#b8c8bd;
+}
+#tab-watchlist .watchlist-field>span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+#tab-watchlist .watchlist-field select,
+#tab-watchlist .watchlist-field input{
+ box-sizing:border-box;width:100%;max-width:none;min-width:0;min-height:44px;
+ padding:9px 10px;font-size:14px;border:1px solid #52615c!important;
+ border-radius:4px;background:#151e1d!important;color:#e7e9e3!important;
+}
+#tab-watchlist .watchlist-field select{padding-right:22px;}
+#tab-watchlist .watchlist-field:focus-within>span{color:#e1c47b;}
+#tab-watchlist .watchlist-price-help{margin:0 0 14px;padding:0;border:0;font-size:12px;}
+#tab-watchlist .watchlist-price-help summary{
+ min-height:40px;display:inline-flex;align-items:center;padding:8px 0;
+ color:#adbdaf;cursor:pointer;
+}
+#tab-watchlist .watchlist-price-help .offer-note{margin:2px 0 12px;max-width:75ch;line-height:1.55;}
+#tab-watchlist .watchlist-section-tools select{min-height:44px;max-width:100%;}
+#tab-watchlist .watchlist-section-tools label{font-size:12px;}
+#tab-watchlist .watchlist-section-tools[hidden]{display:none!important;}
+#tab-watchlist .card-actions .track-action{min-height:44px;}
+#tab-watchlist .card-actions .watch-link{min-height:44px;}
+@media(max-width:850px){
+ #tab-watchlist .watchlist-primary{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;}
+ #tab-watchlist .watchlist-primary>input[type=search]{grid-column:1/-1;}
+}
+@media(max-width:600px){
+ #tab-watchlist .watchlist-primary{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;}
+ #tab-watchlist .watchlist-primary>.media-type-filters,
+ #tab-watchlist .watchlist-primary>input[type=search]{grid-column:1/-1;}
+ #tab-watchlist .watchlist-primary .budget-field{grid-column:1/-1;max-width:100%;}
+ #tab-watchlist .watchlist-primary .budget-field input{max-width:140px;}
+ #tab-watchlist .watchlist-field select{font-size:13px;}
+}

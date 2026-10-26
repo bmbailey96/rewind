@@ -590,7 +590,7 @@ function renderCard(movie, opts = {}) {
   if(movie.discoveryFit||movie.requestedInterest){const reason=document.createElement('p');reason.className='discovery-reason';reason.textContent=movie.requestedInterest?'You asked to keep an eye on this one.':movie.discoveryFit.connection?.directors?.length?'From '+movie.discoveryFit.connection.directors.join(' and ')+', behind '+movie.discoveryFit.connection.seedTitle+'.':FilmOracle.reading(movie,{connection:null}).text;card.appendChild(reason);}if(movie.releaseFile&&context!=='watchlist')card.appendChild(renderReleaseFile(movie,status,true));
   if(status){const upcoming=(status.announcements||[]).filter(a=>a.kind==='subscription'&&a.date&&a.date>discoveryWindow().today).sort((a,b)=>a.date.localeCompare(b.date))[0];if(upcoming){const note=document.createElement('p');note.className='wait-advice';note.textContent=upcoming.provider+' on '+formatFilmDate(upcoming.date)+' · announced';card.appendChild(note);}else if(costInfo?.band==='premium'){const note=document.createElement('p');note.className='wait-advice';const pref=ReleaseModel.preference(movie.alert);const estimate=ReleaseModel.rentalForecast(movie,status,watchlist,discoveryWindow().today,pref.mode==='rental'?pref.maxPrice:rentalBudget);if(estimate){const timing=ReleaseModel.forecastTiming(estimate,discoveryWindow().today);note.classList.add('rental-forecast-note');const label=document.createElement('span');label.className='forecast-note-label';label.textContent='Cheaper rental · estimate';const when=document.createElement('span');when.className='forecast-note-date';when.textContent=timing.when;const away=document.createElement('span');away.className='forecast-note-away';away.textContent=timing.relative;note.append(label,when,document.createTextNode(' · '),away);note.title=(estimate.kind==='provisional'?'Low-confidence estimate from typical premium-rental timing.':'Estimate from comparable observed price drops.')+(status.stale?' Price needs a fresh check.':timing.daysAway<0?' No lower price verified yet.':' Not an announced reduction.');}else note.textContent='Above your $'+rentalBudget.toFixed(2)+' limit. No drop date announced.';card.appendChild(note);}}
 
-  const details=document.createElement('button');details.type='button';details.className='film-details-trigger';details.textContent='Details & viewing options';details.setAttribute('aria-haspopup','dialog');details.setAttribute('aria-controls','film-detail-dialog');
+  const details=document.createElement('button');details.type='button';details.className='film-details-trigger';details.textContent='Details & viewing';details.setAttribute('aria-haspopup','dialog');details.setAttribute('aria-controls','film-detail-dialog');
   const body=document.createElement('div');body.className='film-details-body';
   const secondaryActions=document.createElement('div');secondaryActions.className='card-actions secondary-actions';
   let current=status;
@@ -620,7 +620,7 @@ function renderCard(movie, opts = {}) {
   if(context==='watchlist'){
     // Saved films already appear in release tracking; email controls live in Details.
     const watched=document.createElement('button');watched.className='secondary';watched.textContent='MARK WATCHED';watched.onclick=()=>{document.getElementById('film-detail-dialog')?.close();markMovieWatched(movie);};secondaryActions.appendChild(watched);
-    const next=(!status?.stale||opts.collectionCost)?costInfo?.offer:null;
+    const next=status&&!status.stale?costInfo?.offer:null;
     if(next?.link){const link=document.createElement('a');link.className='watch-link';link.textContent=opts.collectionCost?.stale?'CHECK OFFER':next.kind==='buy'?'BUY':next.kind==='rent'?'RENT':'WATCH';link.href=next.link;link.target='_blank';link.rel='noopener noreferrer';actions.prepend(link);}
     if(costInfo?.band==='premium'){const wait=document.createElement('button');wait.className='secondary wait-button';const pref=ReleaseModel.preference(movie.alert);wait.textContent=pref.mode==='rental'?'WAITING FOR $'+pref.maxPrice.toFixed(2):'WAIT FOR $'+rentalBudget.toFixed(2);wait.onclick=()=>{movie.alert={mode:'rental',maxPrice:rentalBudget};saveWatchlist();scheduleSync();showToast('Watching for a rental at $'+rentalBudget.toFixed(2)+' or less');renderWatchlist();};secondaryActions.appendChild(wait);}
   }else{
@@ -638,7 +638,7 @@ function renderCard(movie, opts = {}) {
     if((context==='discover'||context==='search')&&!inList){const skip=document.createElement('button');skip.className='text-action hide-action';skip.textContent='HIDE';skip.onclick=()=>{skipMovie(movie.id);card.remove();updateBrowseDismissControl();};actions.appendChild(skip);}
   }
   if(!current)body.appendChild(secondaryActions);
-  actions.querySelectorAll('.watch-link').forEach(link=>link.remove());if(context==='physical'||context==='picker'&&actions.querySelector('.track-action:disabled'))actions.querySelector('.track-action')?.remove();
+  if(context!=='watchlist')actions.querySelectorAll('.watch-link').forEach(link=>link.remove());if(context==='physical'||context==='picker'&&actions.querySelector('.track-action:disabled'))actions.querySelector('.track-action')?.remove();
   if(actions.children.length)card.appendChild(actions);card.appendChild(details);balanceCardUpdates(card);
   if(!status&&context==='search')observeCardOffers(card,async()=>{
    try{const found=await deriveStatus(movie);if(!card.isConnected)return;current=found;if(movie.releaseFile)card.querySelector('.release-file')?.replaceWith(renderReleaseFile(movie,found,true));costInfo=ReleaseModel.cost(found.offers,rentalBudget,found.stale);card.querySelector('.cost-block')?.remove();actions.before(renderCostHeadline(costInfo));
@@ -1050,7 +1050,7 @@ document.getElementById('rental-budget').value=rentalBudget;
 document.getElementById('rental-budget').onchange=e=>{const value=Number(e.target.value);if(e.target.value===''||!Number.isFinite(value)||value<0||value>100)return;rentalBudget=value;localStorage.setItem('rewind-rental-budget-v1',String(value));scheduleSync();watchlistLimit=WATCHLIST_PAGE_SIZE;repaintWatchlist();};
 document.getElementById('reset-cost-filter').onclick=()=>{costFilter='all';watchlistLimit=WATCHLIST_PAGE_SIZE;repaintWatchlist();};
 document.querySelectorAll('[data-cost-filter]').forEach(btn=>btn.onclick=()=>{costFilter=btn.dataset.costFilter;watchlistChangeFilter=null;watchlistLimit=WATCHLIST_PAGE_SIZE;repaintWatchlist();});
-document.getElementById('sort-select').addEventListener('change',e=>{watchlistSort=e.target.value;watchlistLimit=WATCHLIST_PAGE_SIZE;repaintWatchlist();});
+document.getElementById('sort-select').addEventListener('change',e=>{watchlistSort=e.target.value;window.WatchlistBrowser?.setSort?.(watchlistSort);watchlistLimit=WATCHLIST_PAGE_SIZE;repaintWatchlist();});
 
 function renderTrackingNote(movie,status){
  const section=document.createElement('section');section.className='film-tracking-note';const heading=document.createElement('h4');heading.textContent=watchlist.some(m=>m.id===movie.id)?'What we’re watching for':'Next development';section.appendChild(heading);
