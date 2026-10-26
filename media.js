@@ -119,7 +119,7 @@ const RewindMedia=(()=>{
   const dates=TV.eventsFor(g);if(dates.length)c.append(el('p',dates.slice(0,2).map(e=>formatFilmDate(e.date)+' · '+e.label).join(' / '),'tv-release-note'));
   if(!current.stale&&current.offers.length)c.append(el('p','Series-level streaming listing. Confirm the season you need on the service.','offer-note'));
   const actions=el('div',null,'card-actions');
-  if(!g.intent)actions.append(button('Add to watchlist',()=>add(full)));
+  if(!g.intent){const save=button('Add to watchlist',()=>add(full));save.className='track-action';actions.append(save);}
   const details=button('Details & viewing',()=>{
    const body=el('div',null,'tv-detail-body');
    openFilmDetails(full,body,details,async()=>{
