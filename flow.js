@@ -4,9 +4,14 @@
  const nav=document.createElement('nav');nav.className='discover-intents';nav.setAttribute('aria-label','Discover');
  const hint=document.createElement('p');hint.className='flow-note';
  const intro=by('discovery-intro');intro.before(nav,hint);document.querySelector('.hub-mode-buttons').hidden=true;
- let intent='explore',pickMethod='oracle';
+ let intent='explore',pickMethod='oracle',oracleSource='all';
  const mark=next=>{intent=next;hint.hidden=next==='news'||next==='surprise';document.querySelectorAll('[data-discover-intent]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.discoverIntent===next||next==='surprise'&&b.dataset.discoverIntent==='pick')));hint.textContent=next==='news'?'Announcements, discoveries, and reports worth keeping an eye on.':next==='pick'?'One film for right now. Your taste, this hour, and a little outside interference.':next==='surprise'?'One unexpected discovery connected to your taste.':'Find something new to follow. Saved and watched films stay off this shelf.';};
- const show=next=>{mark(next);const mode=next==='pick'?pickMethod:next==='news'?'news':'shelf';document.querySelector('[data-find-mode='+mode+']').click();intro.hidden=true;by('discovery-stages').hidden=next!=='explore';if(methods)methods.hidden=next!=='pick';if(next==='pick')by('pick-film').textContent=pickMethod==='oracle'?'ASK THE ORACLE':'PICK RANDOMLY';};
+ const show=next=>{mark(next);const mode=next==='pick'?pickMethod:next==='news'?'news':'shelf';document.querySelector('[data-find-mode='+mode+']').click();intro.hidden=true;by('discovery-stages').hidden=next!=='explore';if(methods)methods.hidden=next!=='pick';
+ if(next==='pick'){
+  const selection=by('picker-source');
+  if(selection){if(pickMethod==='roulette'){if(selection.value!=='watchlist')oracleSource=selection.value;selection.value='watchlist';selection.closest('label').hidden=true;by('picker-order').value='shuffle';by('picker-priorities').hidden=true;}else{selection.closest('label').hidden=false;selection.value=oracleSource;}}
+  by('pick-film').textContent=pickMethod==='oracle'?'ASK THE ORACLE':'PICK RANDOMLY';
+ }};
  for(const [key,label] of [['explore','Browse'],['pick','Pick for me'],['news','News'],['surprise','Surprise discovery']]){const b=make(label,()=>key==='surprise'?document.querySelector('.surprise-command').click():show(key));b.dataset.discoverIntent=key;if(key==='surprise'){b.className='secondary';document.querySelector('.picker-actions').append(b);}else nav.append(b);}
  const methods=document.createElement('div');methods.className='picker-methods';methods.setAttribute('role','group');methods.setAttribute('aria-label','How to choose a film');
  for(const [mode,label] of [['oracle','Best match'],['roulette','Random draw']]){const control=make(label,()=>{pickMethod=mode;paintMethods();show('pick');});control.dataset.pickMethod=mode;methods.append(control);}
@@ -15,7 +20,7 @@
  const adjust=document.createElement('details');adjust.className='pick-adjust';const adjustLabel=document.createElement('summary');adjustLabel.textContent='Adjust this pick';adjust.append(adjustLabel);
  const sourceLabel=document.createElement('label');sourceLabel.textContent='Choose from';const source=document.createElement('select');source.id='picker-source';source.setAttribute('aria-label','Film recommendation source');
  for(const [value,label] of [['all','Watchlist + connected discoveries'],['watchlist','My watchlist only'],['physical','My physical shelf only']]){const o=document.createElement('option');o.value=value;o.textContent=label;source.append(o);}const updateShelfChoice=()=>{const option=source.querySelector('[value=physical]');option.hidden=!Hub.hasPhysicalShelf();if(option.hidden&&source.value==='physical')source.value='all';};window.addEventListener('rewind:state',updateShelfChoice);updateShelfChoice();sourceLabel.append(source);adjust.append(sourceLabel,by('picker-cost').closest('.picker-controls'));by('picker-priorities').hidden=true;by('hub-picker').insertBefore(adjust,document.querySelector('.picker-actions'));
- source.onchange=()=>{if(by('picker-cost').value==='physical')by('picker-cost').value='budget';show('pick');};
+ source.onchange=()=>{oracleSource=source.value;if(by('picker-cost').value==='physical')by('picker-cost').value='budget';show('pick');};
  by('picker-results').after(document.querySelector('.picker-actions'),by('picker-feedback'),document.querySelector('.aside-management'));
  by('picker-heading').textContent='The Oracle';document.querySelector('[data-discovery-stage=recent]').textContent='Recent releases';document.querySelector('[data-discovery-stage=coming]').textContent='Coming soon';document.querySelector('[data-discovery-stage=circuit]').textContent='Festival & limited';
  by('choose-tonight').onclick=()=>{document.querySelector('[data-tab=discover]').click();show('pick');by('pick-film').focus();};
