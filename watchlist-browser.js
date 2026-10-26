@@ -2,13 +2,13 @@
 window.WatchlistBrowser=(()=>{
  let section=null,sort='default',returnY=0,returnSection=null;
  const ids={included:'rw-arrived',cheap:'rw-available',premium:'rw-coming',theater:'rw-theater',upcoming:'rw-upcoming',waiting:'rw-waiting',unchecked:'rw-unchecked',development:'rw-development'};
- const sortForGlobal=value=>({cost:'default',added:'added',release:'release',az:'az',changed:'changed'})[value]||'default';
- const sortForSection=value=>({default:'cost',price:'cost',added:'added',release:'release',az:'az',changed:'changed'})[value]||'cost';
+ const sortForGlobal=value=>({cost:'default',price:'price',added:'added',release:'release',az:'az',changed:'changed'})[value]||'default';
+ const sortForSection=value=>({default:'cost',price:'price',added:'added',release:'release',az:'az',changed:'changed'})[value]||'cost';
  const setSort=value=>{sort=sortForGlobal(value);select.value=sort;};
  const toolbar=document.createElement('div');toolbar.className='watchlist-section-tools';toolbar.hidden=true;
  const back=document.createElement('button');back.textContent='← Back to Watchlist';back.className='secondary';
  const label=document.createElement('label');label.textContent='Sort ';const select=document.createElement('select');select.setAttribute('aria-label','Sort this watchlist section');
- for(const [value,text] of [['default','Recommended'],['added','Recently saved'],['release','Release date'],['az','Title A–Z']]){const option=document.createElement('option');option.value=value;option.textContent=text;select.append(option);}label.append(select);const empty=document.createElement('p');empty.className='offer-note';empty.textContent='No titles match this section. Try another search or return to Watchlist.';empty.hidden=true;toolbar.append(back,label,empty);
+ for(const [value,text] of [['default','Recommended'],['price','Price: low to high'],['changed','Recent changes'],['added','Recently saved'],['release','Release date'],['az','Title A–Z']]){const option=document.createElement('option');option.value=value;option.textContent=text;select.append(option);}label.append(select);const empty=document.createElement('p');empty.className='offer-note';empty.textContent='No titles match this section. Try another search or return to Watchlist.';empty.hidden=true;toolbar.append(back,label,empty);
  document.getElementById('rw-arrived-section').before(toolbar);
  const move=fn=>(window.requestAnimationFrame||window.setTimeout)(()=>{fn();});
  back.onclick=()=>{const focus=returnSection;section=null;watchlistLimit=WATCHLIST_PAGE_SIZE;repaintWatchlist();move(()=>{window.scrollTo?.(0,returnY);document.querySelector('#'+focus+'-section .section-show-all')?.focus({preventScroll:true});});};
