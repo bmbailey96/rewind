@@ -565,7 +565,7 @@ window.addEventListener('rewind:state',refreshFollowControls);
 function renderCard(movie, opts = {}) {
   const {context='discover',status=null,changed=false}=opts;
   const card=document.createElement('article');card.className='rental-card compact-film-card'+(movie.releaseFile?' release-card':'');card.dataset.movieId=movie.id;
-  const image=posterUrl(movie.poster_path);const poster=document.createElement(image?'img':'div');poster.className='card-poster'+(image?'':' poster-missing');if(image){poster.loading='lazy';poster.src=image;poster.alt=movie.title+' poster';poster.onerror=()=>{const fallback=document.createElement('div');fallback.className='card-poster poster-missing';fallback.textContent='POSTER UNAVAILABLE';poster.replaceWith(fallback);};}else{poster.textContent='NO POSTER ON FILE';}card.appendChild(poster);
+  const image=posterUrl(movie.poster_path);const poster=document.createElement(image?'img':'div');poster.className='card-poster'+(image?'':' poster-missing');if(image){poster.loading='lazy';poster.decoding='async';poster.width=200;poster.height=300;poster.src=image;poster.alt=movie.title+' poster';poster.onerror=()=>{const fallback=document.createElement('div');fallback.className='card-poster poster-missing';fallback.textContent='POSTER UNAVAILABLE';poster.replaceWith(fallback);};}else{poster.textContent='NO POSTER ON FILE';}card.appendChild(poster);
   const title=document.createElement('h3');title.className='card-title';title.textContent=movie.title;title.title=movie.title;card.appendChild(title);
   const meta=document.createElement('p');meta.className='card-meta';meta.textContent=[(movie.release_date||'').slice(0,4),movie.runtime?movie.runtime+' min':null].filter(Boolean).join(' · ');card.appendChild(meta);
   if(movie.director){const director=document.createElement('p');director.className='card-director';director.textContent=movie.director;director.title=movie.director;card.appendChild(director);}
@@ -997,8 +997,10 @@ function paintWatchlist(results,append=false){
     const groups={included:'rw-arrived',cheap:'rw-available',premium:'rw-coming',theater:'rw-theater',upcoming:'rw-upcoming',development:'rw-development',waiting:'rw-waiting',unchecked:'rw-unchecked'};
     const labels={included:'Included & free',cheap:'At your price',premium:'Higher prices',theater:'In Kalispell theaters',upcoming:'Upcoming releases',development:'Announced · no date',waiting:'Waiting for home release',unchecked:'Availability unchecked'};
     const descriptions={included:'Your services, free streams, and your physical shelf.',cheap:'Rentals at or below $'+rentalBudget.toFixed(2)+'. Pins and your Rewind saves come first.',premium:'Rentals from lowest to highest, then purchase-only and unpriced offers.',theater:'Confirmed Kalispell listings. Ticket links live on each film.',upcoming:'Published future releases, nearest date first.',development:'Projects in development or without a verified release date. Production status stays explicit.',waiting:'Released titles with no current home offer found.',unchecked:'Missing or outdated checks. Availability has not been established.'};
-    document.getElementById('watchlist-more').hidden=true;
-    document.getElementById('watchlist-more').textContent='Show more · '+Math.max(0,page.total-page.rows.length)+' remaining';
+    // The overview retains short section previews; a focused section grows in small scroll batches.
+    const focusedSection=!!window.WatchlistBrowser?.options().section;
+    document.getElementById('watchlist-more').hidden=!focusedSection||page.rows.length>=page.total;
+    document.getElementById('watchlist-more').textContent='Show 24 more · '+Math.max(0,page.total-page.rows.length)+' remaining';
     for(const row of page.rows){
       if(existing.has(String(row.entry.id)))continue;
       if(row.entry.project){document.getElementById('rw-development-grid').appendChild(SavedProjects.card(row.entry.project));continue;}
