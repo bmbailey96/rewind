@@ -820,6 +820,12 @@ function renderSearchCached() {
   lastSearchResults.filter(m=>!skipSet.has(m.id)).forEach(m=>grid.appendChild(renderCard(m,{context:'search',markSeen:true})));
   updateBrowseDismissControl();
 }
+document.getElementById('discover-import-watchlist').onclick=()=>{
+ document.querySelector('[data-tab=import]').click();
+ const input=document.getElementById('import-watchlist');
+ input.closest('details')?.setAttribute('open','');
+ input.scrollIntoView({block:'center'});
+};
 document.getElementById('browse-dismiss').onclick=dismissVisibleBrowse;
 document.getElementById('restore-dismissed').onclick=()=>{
  const prior=[...skipSet];skipSet.clear();saveSkipSet();scheduleSync();discoverPage=1;
