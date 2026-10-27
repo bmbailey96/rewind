@@ -52,4 +52,17 @@ const entireFocused=W.releaseWatchPage(crowded,{...options,limit:120,browse:{sec
 const uncertainty=W.releaseWatchPage([row(5000,[],{checkedAt:null,stale:true}),{entry:{id:5001,title:'Older film',release_date:'1990-01-01'},status:{offers:[]}}, {entry:{id:'project:future',title:'Future project',project:{id:'report'}},status:{offers:[]}}],{...options,browse:{}});assert.equal(uncertainty.counts.unchecked,2);assert.equal(uncertainty.counts.development,1);
 console.log('Section browsing: six-card previews, complete counts, pins, newest explicit saves, independent full-section sorting and unchecked vs undated projects');
 
+// Availability scanner never depends on the six-card homepage preview.
+const queue=Array.from({length:265},(_,i)=>({id:i+1,title:'Queue '+(i+1)})),attempted=new Set();
+assert.deepEqual(W.refreshCandidates(queue,attempted,6,now).map(m=>m.id),[1,2,3,4,5,6]);
+for(const m of W.refreshCandidates(queue,attempted,6,now))attempted.add(m.id);
+assert.deepEqual(W.refreshCandidates(queue,attempted,6,now).map(m=>m.id),[7,8,9,10,11,12],'Successive automatic batches advance through the full backlog');
+const fresh={id:13,availabilitySnapshot:{checkedAt:now,offers:[],stale:false}};
+queue[12]=fresh;
+assert.deepEqual(W.refreshCandidates(queue,attempted,12,now).map(m=>m.id),[14,15,16,17,18,19,20,21,22,23,24,25],'Successfully checked titles are skipped until their check expires');
+assert.equal(W.refreshCandidates(queue,new Set(queue.map(m=>m.id)),6,now).length,0,'A session must stop once every title has been attempted');
+assert.equal(W.refreshCandidates(queue,attempted,6,now+7*3600000).some(m=>m.id===13),false,'Previously skipped entries retain earlier queue priority after more hours');
+assert.equal(W.refreshCandidates([fresh],new Set(),6,now+7*3600000)[0].id,13,'Expired snapshots become eligible on later visits');
+console.log('Availability scan: bounded batches advance through all saved titles, preserve fresh results, and retry expired evidence');
+
 const mixedShelf=[...crowded,{...row(6000,[rent(4.99)]),entry:{id:'tv:fixture',title:'Z Series',mediaType:'tv'}}];assert.ok(W.releaseWatchPage(mixedShelf,{...options,browse:{}}).rows.some(r=>r.entry.mediaType==='tv'),'Mixed previews keep a saved TV series visible');
