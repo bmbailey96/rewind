@@ -1,5 +1,6 @@
 const assert=require('node:assert/strict'),R=require('../release-model');
 const today='2026-10-15',at=d=>Date.parse(d+'T12:00:00Z');
+assert.equal(R.date('2027-02-29'),null,'Impossible future release dates are rejected');assert.equal(R.date('2028-02-29'),'2028-02-29','Leap-day dates remain valid');assert.equal(R.date('2026-13-01'),null,'Invalid month rejected');
 const details={release_dates:{results:[{iso_3166_1:'FR',release_dates:[{type:1,release_date:'2026-05-18',note:'Cannes Film Festival'}]},{iso_3166_1:'US',release_dates:[{type:2,release_date:'2026-07-24'},{type:3,release_date:'2026-08-07'},{type:4,release_date:'2026-09-01'}]}]}};
 const history=[['2026-09-01',19.99],['2026-09-20',9.99],['2026-10-05',5.99],['2026-10-07',7.99],['2026-10-10',4.99]].map(([d,price])=>({kind:'rent',provider:'Apple TV Store',format:'4K',price,at:at(d)}));
 history.push({kind:'rent',provider:'Prime Video',format:'HD',price:1.99,at:at('2026-09-10')},{kind:'buy',provider:'Apple TV Store',format:'4K',price:0.99,at:at('2026-09-12')},{kind:'rent',provider:'Apple TV Store',format:'HD',price:0.99,at:at('2026-09-13')});
