@@ -94,3 +94,15 @@ const relevant={id:8002,title:'Horror match',genre_ids:[27],director:'Alex Direc
 const unrelated={id:8003,title:'Unrelated film',genre_ids:[35],director:'Someone Else'};
 assert.ok(W.recommendationScore(relevant,genreTaste,[])>W.recommendationScore(unrelated,genreTaste,[]),'Imported rating, genre and director evidence affect ranking');
 console.log('Recommendation ordering: personal fit, pins, explicit sort and physical-disc separation passed');
+
+const imported=[{title:'Tremors',year:'1990',letterboxdURL:'https://boxd.it/1YSe'},{title:'The Thing',year:'1982'},{title:'The Thing',year:'2011'},{title:'Unmatched Film',year:'1974'}];
+const tremors={id:9362,title:'Tremors',release_date:'1990-01-01'};
+assert.equal(W.savedIdentity(tremors,[],imported).state,'pending','A Letterboxd import without TMDb ID still marks Discover result as saved');
+assert.equal(W.savedIdentity(tremors,[tremors],imported).state,'saved','Explicit catalog ID always takes precedence');
+assert.equal(W.savedIdentity({id:12,title:'The Thing',release_date:'1982-06-01'},[],imported).row.year,'1982','Same-title remakes require year matching');
+assert.equal(W.savedIdentity({id:13,title:'The Thing',release_date:'2011-10-01'},[],imported).row.year,'2011','A different-year film is not the original');
+assert.equal(W.savedIdentity({id:14,title:'The Thing',release_date:'2000-10-01'},[],imported),null,'A same-title film with another year must remain new');
+assert.equal(W.savedIdentity({id:14,title:'Tremors',release_date:''},[],imported),null,'Do not guess identity when the catalog year is absent');
+assert.equal(W.savedIdentity({id:14,title:'Tremors',release_date:'1990-01-01'},[{id:22,title:'Tremors',release_date:'1990-01-01'}],imported).state,'saved','Stored title and year prevents duplicate records even if IDs disagree');
+assert.equal(W.savedIdentity({id:14,title:'Amélie',release_date:'2001-01-01'},[],[{title:'Amelie',year:'2001'}]).state,'pending','Unicode title normalization keeps imported identity');
+console.log('Discover watchlist identity: pending Letterboxd exports, year-sensitive remakes and saved ID mismatches passed');
