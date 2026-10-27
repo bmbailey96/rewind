@@ -9,7 +9,7 @@
  }
  const failures=new Map();
  const failure=key=>failures.get(key)||null;
- const keys=['rewind-watchlist-v1','rewind-hub-v1','rewind-sync-base-v1'];
+ const keys=['rewind-watchlist-v1','rewind-hub-v1','rewind-sync-base-v1','rewind-seen-v1','rewind-skipped-v1'];
  const prefix='rwz1:';
  // Bounded LZW over UTF-8 bytes. Local storage counts UTF-16 units; one code per
  // phrase keeps repeated catalog fields small without dropping personal records.
