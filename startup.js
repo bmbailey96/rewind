@@ -5,7 +5,7 @@
  const panel=document.createElement('aside');panel.id='rewind-startup';panel.className='startup-progress';panel.setAttribute('aria-label','Loading Rewind');
  const label=document.createElement('p');label.id='startup-label';label.setAttribute('role','status');label.setAttribute('aria-live','polite');
  const bar=document.createElement('progress');bar.setAttribute('aria-labelledby','startup-label');panel.append(label,bar);
- const updates=document.createElement('button');updates.id='rewind-pending-updates';updates.className='pending-film-updates';updates.type='button';updates.hidden=true;updates.textContent='Updated films ready · Show updates';
+ const updates=document.createElement('button');updates.id='rewind-pending-updates';updates.className='pending-film-updates';updates.type='button';updates.hidden=true;updates.textContent='Updates ready · Apply';updates.setAttribute('aria-label','Apply refreshed film details without losing your scroll position');
  document.body.append(panel,updates);
  const pending=new Map();let finished=false,hideTimer,applying=false;
  function paint(){const rows=[...tasks.values()],settled=rows.filter(t=>t.state!=='pending').length;bar.max=rows.length;bar.value=settled;const next=rows.find(t=>t.state==='pending');

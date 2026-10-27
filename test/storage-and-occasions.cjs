@@ -30,4 +30,13 @@ const fullStorage={getItem:()=>null,setItem:()=>{const error=Error('Full');error
 assert.equal(S.save(fullStorage,'rewind-watchlist-v1',{id:1,manualNote:'Keep'}),false);assert.equal(S.failure('rewind-watchlist-v1'),'QuotaExceededError');
 const retryStore=new Map(),availableStorage={getItem:k=>retryStore.get(k)||null,setItem:(k,v)=>retryStore.set(k,v)};
 assert.equal(S.save(availableStorage,'rewind-watchlist-v1',{id:1,manualNote:'Keep'}),true);assert.equal(S.failure('rewind-watchlist-v1'),null);assert.equal(S.read(availableStorage,'rewind-watchlist-v1').manualNote,'Keep');
+const seen=Array.from({length:14000},(_,i)=>'long watched title '+i+'|2026'),skipped=Array.from({length:10000},(_,i)=>i+1);
+const twoLists=new Map([['rewind-seen-v1',JSON.stringify(seen)],['rewind-skipped-v1',JSON.stringify(skipped)]]);
+const before=twoLists.get('rewind-seen-v1').length+twoLists.get('rewind-skipped-v1').length;
+const listStore={getItem:k=>twoLists.get(k)||null,setItem:(k,v)=>twoLists.set(k,v)};
+S.migrate(listStore,true);
+const after=twoLists.get('rewind-seen-v1').length+twoLists.get('rewind-skipped-v1').length;
+assert.ok(after<before,'Seen and passed-over lists free room under quota without deleting entries');
+assert.deepEqual(S.read(listStore,'rewind-seen-v1'),seen);
+assert.deepEqual(S.read(listStore,'rewind-skipped-v1'),skipped);
 console.log('Device-save diagnostics distinguish quota failures and clear only after a successful retry');

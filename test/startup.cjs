@@ -3,7 +3,7 @@ const dom=new JSDOM('<section id="tab-watchlist" class="active"><article class="
 const timers=new Map();let timer=0;w.setTimeout=(fn,ms)=>{timers.set(++timer,{fn,ms});return timer;};w.clearTimeout=id=>timers.delete(id);
 let scrolledBy=0;Object.defineProperty(w,'scrollY',{value:300,writable:true});w.scrollBy=(_,y)=>{scrolledBy+=y;};
 w.document.querySelector('article').getBoundingClientRect=()=>({top:100,bottom:200});
-w.eval(fs.readFileSync(__dirname+'/../startup.js','utf8'));const startup=w.RewindStartup,progress=w.document.querySelector('progress');
+w.eval(fs.readFileSync(__dirname+'/../startup.js','utf8'));const startup=w.RewindStartup,progress=w.document.querySelector('progress');assert.equal(w.document.getElementById('rewind-pending-updates').textContent,'Updates ready · Apply','Floating action is concise enough for an iPhone');
 assert.equal(progress.max,4);assert.equal(progress.value,0);
 startup.begin('sync','Cloud sync');startup.finish('saved');assert.equal(progress.max,5);assert.equal(progress.value,1,'Progress counts actual startup tasks');
 let draws=0;assert.equal(startup.defer('watchlist',()=>{draws+=100}),true);startup.defer('watchlist',()=>{draws++;w.document.querySelector('article').textContent='Updated';w.document.querySelector('article').getBoundingClientRect=()=>({top:130,bottom:230});assert.equal(startup.defer('nested',()=>{}),false,'Applying updates must not enqueue itself');});

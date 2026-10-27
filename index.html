@@ -52,6 +52,7 @@
       <h2>Watchlist</h2>
       <span class="count-stamp" id="watchlist-count">0 titles</span>
     </div>
+    <section id="storage-recovery" class="storage-recovery" role="alert" hidden><p id="storage-status" class="storage-status" hidden></p><div class="storage-actions"><button id="storage-backup" type="button" class="secondary" hidden>Download backup</button><button id="storage-retry" type="button" class="secondary" hidden>Retry save</button></div></section>
     <div class="counter-welcome"><div><p class="welcome-kicker">WHAT TO WATCH</p><p>You picked the films. We’ll check the counter.</p></div><button id="choose-tonight">HELP ME CHOOSE</button></div>
     <div class="media-type-filters" role="group" aria-label="Collection type"><button type="button" data-media-filter="all" aria-pressed="true">Movies + TV</button><button type="button" data-media-filter="movie" aria-pressed="false">Movies</button><button type="button" data-media-filter="tv" aria-pressed="false">TV shows</button></div>
     <section id="tonight-shelf" class="tonight-shelf" aria-labelledby="tonight-heading"><div class="panel-head"><h3 id="tonight-heading">Tonight</h3><span class="count-stamp">THREE POSSIBLE ANSWERS</span></div><p id="tonight-status" class="offer-note" role="status"></p><div id="tonight-grid"></div></section>
@@ -66,7 +67,7 @@
     </div></details><details id="watchlist-updates" class="watchlist-updates"><summary id="watchlist-updates-label">Updates</summary><div class="watchlist-updates-body"><section id="change-drawer" class="change-drawer"><h3 id="change-summary">Changes</h3><div id="change-receipts"></div><button id="changes-read" class="secondary">MARK CHANGES READ</button></section><p id="card-summary" hidden></p></div></details></div>
     <p id="filter-empty" class="empty-note" hidden>No films in this group. <button id="reset-cost-filter" class="secondary">SHOW ALL FILMS</button></p>
     <p id="watchlist-load-status" class="offer-note" role="status"></p>
-    <p id="storage-status" class="storage-status" role="alert" hidden></p><button id="storage-retry" type="button" class="secondary" hidden>Retry device save</button><button id="storage-backup" class="secondary" hidden>Download backup</button>
+    
     <p id="release-watch-empty" class="empty-note" hidden>No saved unwatched titles yet. Add a film, series, or season from Discover or News to keep it on your radar.</p>
     <section id="rw-recovery" class="source-disclosure release-recovery" hidden><h3>Optional email checks</h3><p class="offer-note">All saved titles already appear in release tracking. These older saves have no explicit email choice. Enable email checks individually if you want them.</p><div id="rw-recovery-list"></div><button type="button" id="rw-recovery-all" class="secondary">BROWSE ALL WATCHLIST</button></section>
     <section id="rw-arrived-section" class="shelf-group" hidden><h3>Included & free <span id="rw-arrived-count"></span></h3><p class="group-note">Your services, free streams, and your physical shelf.</p><div id="rw-arrived-grid" class="card-row wrap"></div></section>
