@@ -53,6 +53,7 @@ const wait=()=>new Promise(r=>setTimeout(r,100));
 
  await wait();await wait();await wait();
  const media=w.mediaTest;
+ w.eval('watchlistLimit=48');media.setFilter(media.filter());assert.equal(w.eval('watchlistLimit'),48,'Re-selecting the active Movies/TV filter must not reset incremental Watchlist scrolling');w.eval('watchlistLimit=24');
  const beforeRatings=JSON.stringify(w.testState.hub().seriesRecords.filter(r=>r.rating!=null));media.saveSeason(media.asMedia(media.groups().find(g=>g.id==='tv:fixtureseries')),5);assert.ok(media.groups().find(g=>g.id==='tv:fixtureseries').seasons.some(r=>r.season===5&&r.status==='watchlist'),'News can save a future season without a date');assert.equal(JSON.stringify(w.testState.hub().seriesRecords.filter(r=>r.rating!=null)),beforeRatings,'Future-season saves preserve existing ratings');
  const resolvedPoster=await w.mediaTV.check({id:'tv:invincible',title:'Invincible',seasons:[],legacy:[]});assert.equal(resolvedPoster.tmdbId,43,'Ambiguous TV titles resolve through the source IMDb identity');assert.equal(resolvedPoster.detail.poster_path,'/invincible.jpg');
  const curatedTV=await media.tvBrowse('recent');assert.ok(curatedTV.some(m=>m.title.startsWith('Strange New Series')),'TV discovery uses positive-season recommendations');assert.ok(!curatedTV.some(m=>/Law & Order|Reality Contest/.test(m.title)),'Generic procedural and reality feeds stay off the curated shelf');assert.match(curatedTV[0].discoveryReason,/Fixture Series.*5\/5/,'Discovery explains the actual rated seed');

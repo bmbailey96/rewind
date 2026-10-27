@@ -175,7 +175,11 @@ const RewindMedia=(()=>{
  }
  function changed(){groupMemo=null;linkMemo=null;clearTimeout(refreshTimer);refreshTimer=setTimeout(()=>{renderWatchlist(false,true).catch(()=>{});if(typeof Hub!=='undefined')Hub.stateChanged();if(!initialTVRefreshStarted&&savedTV().length){initialTVRefreshStarted=true;refreshTV(6).catch(()=>{});}},120);}
  function setFilter(value){
-  if(!['all','movie','tv'].includes(value))return;filter=value;pageFilters[pageKey()]=value;let p={};try{p=JSON.parse(localStorage.getItem('rewind-ui-v1')||'{}')||{};}catch{}p.mediaType=filter;p.mediaByPage=pageFilters;localStorage.setItem('rewind-ui-v1',JSON.stringify(p));scheduleSync();labelControls();
+  if(!['all','movie','tv'].includes(value))return;
+  // Reopening a tab or tapping the already-active filter must not rebuild hundreds
+  // of cards, reset incremental scrolling, or schedule a redundant cloud sync.
+  const page=pageKey();if(filter===value&&(pageFilters[page]||'all')===value){labelControls();return;}
+  filter=value;pageFilters[page]=value;let p={};try{p=JSON.parse(localStorage.getItem('rewind-ui-v1')||'{}')||{};}catch{}p.mediaType=filter;p.mediaByPage=pageFilters;localStorage.setItem('rewind-ui-v1',JSON.stringify(p));scheduleSync();labelControls();
   ++discoverRequest;++searchRequest;watchlistLimit=WATCHLIST_PAGE_SIZE;changed();window.dispatchEvent(new Event('rewind:media-filter'));
   if($('tab-discover').classList.contains('active')&&$('hub-picker').hidden&&$('movie-news-panel').hidden){if($('search-input').value.trim())$('search-form').dispatchEvent(new Event('submit',{cancelable:true}));else renderDiscover().catch(()=>{});}
   if(typeof Hub!=='undefined')Hub.mediaChanged?.();

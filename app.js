@@ -790,7 +790,7 @@ let watchlistScope='release',watchlistLimit=WATCHLIST_PAGE_SIZE,watchlistResults
 const watchlistBackgroundChecked=new Set();
 let watchlistMatching=false,watchlistMatchProgress='';
 let watchlistChangeFilter=null;
-function repaintWatchlist(append=false){const visibleIds=new Set(scopedWatchlist().map(m=>m.id)),changedIds=watchlistChangeFilter?usefulChangeIds(watchlistChangeFilter):null;paintWatchlist(watchlistResults.filter(r=>visibleIds.has(r.entry.id)&&(watchlist.some(m=>m.id===r.entry.id)||typeof RewindMedia!=='undefined'&&RewindMedia.isTV(r.entry))&&(!changedIds||changedIds.has(r.entry.id))),append);}
+function repaintWatchlist(append=false){const visibleIds=new Set(scopedWatchlist().map(m=>m.id)),savedIds=new Set(watchlist.map(m=>m.id)),changedIds=watchlistChangeFilter?usefulChangeIds(watchlistChangeFilter):null;paintWatchlist(watchlistResults.filter(r=>visibleIds.has(r.entry.id)&&(savedIds.has(r.entry.id)||typeof RewindMedia!=='undefined'&&RewindMedia.isTV(r.entry))&&(!changedIds||changedIds.has(r.entry.id))),append);}
 function watchedForRecent(movie){
   if(isSeen(movie))return true;
   return hubState.taste.some(record=>record.id===movie.id&&(
