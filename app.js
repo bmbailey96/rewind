@@ -1013,7 +1013,8 @@ function paintWatchlist(results,append=false){
     for(const row of page.rows){
       if(existing.has(String(row.entry.id)))continue;
       if(row.entry.project){document.getElementById('rw-development-grid').appendChild(SavedProjects.card(row.entry.project));continue;}
-      const stage=row.stage,card=renderCard(row.entry,{context:'watchlist',status:row.status,changed:row.changed,prevLabel:row.entry.lastChange?.from,collectionCost:{...WatchlistModel.stageCost(row.entry,row.status,stage,row.cost),stale:stage.stale}});
+      const stage=row.stage,headline=WatchlistModel.stageCost(row.entry,row.status,stage,row.cost);if(stage.group==='upcoming')headline.caption='';
+      const card=renderCard(row.entry,{context:'watchlist',status:row.status,changed:row.changed,prevLabel:row.entry.lastChange?.from,collectionCost:{...headline,stale:stage.stale}});
       if(stage.newArrival&&!card.querySelector('.useful-change')){const tag=document.createElement('p');tag.className='new-tag useful-change';tag.textContent='Newly available at your price';card.querySelector('.card-meta').after(tag);}
       const note=document.createElement('p');note.className='release-stage-line';
       if(stage.group==='upcoming'){const timing=ReleaseModel.forecastTiming({likely:stage.date},discoveryWindow().today);note.textContent=(stage.home?.date===stage.date?stage.home.label:stage.opening?.label||'Release')+' · '+timing.when+' · '+timing.relative+(stage.opening?.source?' · '+stage.opening.source:'');}
