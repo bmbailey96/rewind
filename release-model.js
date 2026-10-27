@@ -113,13 +113,18 @@
   function storeKey(name){const n=String(name||'').toLowerCase().replace(/[^a-z0-9]/g,'');if(['appletv','appletvstore','itunes'].includes(n))return 'apple';if(['amazon','amazonvideo','primevideo','amazonprimevideo'].includes(n))return 'amazon';return n;}
   function storeLabel(name){const key=storeKey(name);return key==='apple'?'Apple TV':key==='amazon'?'Prime Video':name;}
   function qualityRank(value){return /4k|uhd/i.test(value||'')?0:/hd/i.test(value||'')?1:/sd/i.test(value||'')?3:2;}
+  function physicalPurchase(o){
+    // Vendor formats and storefront names identify mail-order discs, not
+    // a digital license. Treat missing format as unknown, never guess a disc.
+    return o?.kind==='buy'&&/\\b(?:dvd|blu[ -]?ray|uhd[ -]?disc|4k[ -]?disc|vhs|laserdisc|physical[ -]?(?:copy|media)|disc[ -]?(?:set|edition))\\b/i.test([o.provider,o.format,o.mediaType,o.fulfillment].filter(Boolean).join(' '));
+  }
   function cost(offers,budget=7.99,stale=false){
     const all=offers||[];
     const physical=all.filter(o=>o.kind==='physical');if(physical.length)return {band:'free',badge:'ON YOUR SHELF',caption:[...new Set(physical.map(o=>o.format||'Physical copy'))].join(' / '),price:0,offer:physical[0],stale:false};
     const included=all.filter(o=>o.kind==='subscription'&&o.included);
     if(included.length)return {band:stale?'waiting':'free',badge:'INCLUDED',caption:[...new Set(included.map(o=>o.provider))].join(' · '),price:0,offer:included[0],stale};
     const free=all.filter(o=>o.kind==='free');if(free.length)return {band:stale?'waiting':'free',badge:'FREE',caption:free[0].provider+(free[0].adSupported?' · with ads':''),price:0,offer:free[0],stale};
-    const rent=all.filter(o=>o.kind==='rent'),buy=all.filter(o=>o.kind==='buy');
+    const rent=all.filter(o=>o.kind==='rent'),buy=all.filter(o=>o.kind==='buy'),digitalBuys=buy.filter(o=>!physicalPurchase(o)),discBuys=buy.filter(physicalPurchase);
     const quoted=rent.filter(o=>typeof o.price==='number'&&Number.isFinite(o.price)&&o.price>=0);
     // Compare HD/4K where supplied. An SD-only bargain should not mask an HD rental.
     const highQuality=quoted.filter(o=>qualityRank(o.format)<=1),usable=highQuality.length?highQuality:quoted;
@@ -128,7 +133,7 @@
     const chosen=[...(preferred.length?preferred:usable)].sort(sort)[0];
     if(chosen){const cheaper=[...usable].sort(sort).find(o=>o.price<chosen.price);const same=usable.filter(o=>o.price===chosen.price&&qualityRank(o.format)===qualityRank(chosen.format)&&['apple','amazon'].includes(storeKey(o.provider)));const names=[...new Set(same.map(o=>storeLabel(o.provider)))];return {band:stale?'waiting':chosen.price<=budget?'cheap':'premium',badge:'$'+chosen.price.toFixed(2),caption:'Rent · '+(names.length?names.join(' / '):storeLabel(chosen.provider))+(chosen.format?' · '+chosen.format:''),price:chosen.price,offer:chosen,cheaper,stale};}
     if(rent.length)return {band:stale?'waiting':'unknown',badge:'RENT',caption:'Price not checked',price:null,offer:rent.find(o=>['apple','amazon'].includes(storeKey(o.provider)))||rent[0],stale};
-    if(buy.length){const quotes=buy.filter(o=>typeof o.price==='number'&&Number.isFinite(o.price)&&o.price>=0).sort(sort);return {band:stale?'waiting':'buy',badge:quotes.length?'$'+quotes[0].price.toFixed(2):'BUY',caption:'Purchase only · '+(quotes.length?storeLabel(quotes[0].provider):'no rental listed'),price:quotes[0]?.price??null,offer:quotes[0]||buy[0],stale};}
+    if(buy.length){const physicalOnly=!digitalBuys.length&&discBuys.length>0,choices=physicalOnly?discBuys:digitalBuys;const quotes=choices.filter(o=>typeof o.price==='number'&&Number.isFinite(o.price)&&o.price>=0).sort(sort);const selected=quotes[0]||choices[0];return {band:stale?'waiting':physicalOnly?'physicalbuy':'buy',badge:quotes.length?'$'+quotes[0].price.toFixed(2):'BUY',caption:(physicalOnly?'Physical copy · ':'Digital purchase · ')+(selected?.provider||'store')+(selected?.format?' · '+selected.format:''),price:quotes[0]?.price??null,offer:selected,stale,physicalPurchase:physicalOnly};}
     return {band:'waiting',badge:'WAITING',caption:all.some(o=>o.kind==='subscription')?'Separate subscription needed':'No current offer',price:null,offer:null,stale};
   }
   function compactOffers(offers){const groups=new Map();for(const o of offers||[]){const key=[o.kind,storeKey(o.provider),o.channel,typeof o.price==='number'?o.price:'?',o.included].join(':');if(!groups.has(key))groups.set(key,{...o,provider:['rent','buy'].includes(o.kind)?storeLabel(o.provider):o.provider,formats:[]});const row=groups.get(key);if(o.format&&!row.formats.includes(o.format))row.formats.push(o.format);if(qualityRank(o.format)<qualityRank(row.format)){row.format=o.format;row.link=o.link||row.link;}}return [...groups.values()].map(o=>({...o,format:o.formats.sort((a,b)=>qualityRank(a)-qualityRank(b)).join(' / ')||null}));}
