@@ -30,7 +30,7 @@ let seenSet = loadSeenSet();
 function loadSeenSet() {
   try {
     const raw = localStorage.getItem(SEEN_KEY);
-    return raw ? new Set(JSON.parse(raw)) : new Set();
+    return raw ? new Set(StorageModel.read(localStorage,SEEN_KEY,[])) : new Set();
   } catch (e) {
     return new Set();
   }
@@ -171,7 +171,7 @@ let skipSet = loadSkipSet();
 function loadSkipSet() {
   try {
     const raw = localStorage.getItem(SKIP_KEY);
-    return raw ? new Set(JSON.parse(raw)) : new Set();
+    return raw ? new Set(StorageModel.read(localStorage,SKIP_KEY,[])) : new Set();
   } catch (e) {
     return new Set();
   }
