@@ -116,7 +116,7 @@
   function physicalPurchase(o){
     // Vendor formats and storefront names identify mail-order discs, not
     // a digital license. Treat missing format as unknown, never guess a disc.
-    return o?.kind==='buy'&&/\\b(?:dvd|blu[ -]?ray|uhd[ -]?disc|4k[ -]?disc|vhs|laserdisc|physical[ -]?(?:copy|media)|disc[ -]?(?:set|edition))\\b/i.test([o.provider,o.format,o.mediaType,o.fulfillment].filter(Boolean).join(' '));
+    return o?.kind==='buy'&&/\b(?:dvd|blu[ -]?ray|uhd[ -]?disc|4k[ -]?disc|vhs|laserdisc|physical[ -]?(?:copy|media)|disc[ -]?(?:set|edition))\b/i.test([o.provider,o.format,o.mediaType,o.fulfillment].filter(Boolean).join(' '));
   }
   function cost(offers,budget=7.99,stale=false){
     const all=offers||[];
