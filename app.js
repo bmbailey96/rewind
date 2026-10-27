@@ -475,8 +475,8 @@ async function deriveRemoteStatus(movie, force = false) {
   const results = await Promise.allSettled([fetchWatchProviders(movie.id),fetchMovieDetails(movie.id,force),fetchAnnouncements(),fetchStreamingCalendar(),checkStorePricesCached(movie,force)]);
   const p = results[0];const d = results[1];
   const fullDetails=d.status==='fulfilled'?d.value:null;
-  const details=fullDetails?{id:fullDetails.id,runtime:fullDetails.runtime,status:fullDetails.status,release_dates:fullDetails.release_dates,production_companies:fullDetails.production_companies}:movie.detailsSnapshot;
-  if(fullDetails){movie.detailsSnapshot=details;Object.assign(movie,{runtime:fullDetails.runtime,director:(fullDetails.credits?.crew||[]).filter(c=>c.job==='Director').map(c=>c.name).join(', '),overview:fullDetails.overview||movie.overview||''});}
+  const details=fullDetails?{id:fullDetails.id,runtime:fullDetails.runtime,status:fullDetails.status,release_dates:fullDetails.release_dates,production_companies:fullDetails.production_companies,poster_path:fullDetails.poster_path||movie.poster_path||null}:movie.detailsSnapshot;
+  if(fullDetails){movie.detailsSnapshot=details;if(!movie.poster_path&&fullDetails.poster_path)movie.poster_path=fullDetails.poster_path;Object.assign(movie,{runtime:fullDetails.runtime,director:(fullDetails.credits?.crew||[]).filter(c=>c.job==='Director').map(c=>c.name).join(', '),overview:fullDetails.overview||movie.overview||''});}
   const releaseDates = ReleaseModel.datesFor(details);
   const timeline={details,announcements:ReleaseModel.matchingAnnouncements({...((results[2].status==='fulfilled'?results[2].value:null)||{}),today:discoveryWindow().today},movie.id),calendar:(results[3].status==='fulfilled'?results[3].value:[]).filter(r=>r.tmdb_id===movie.id&&r.tmdb_type==='movie')};
   if (p.status === 'rejected') {
