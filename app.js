@@ -847,7 +847,7 @@ function renderImportReview(){
    };choice.append(source,use);group.append(choice);
   }
   if(row.catalogMatch.state==='unsupported'){details.append(group);continue;}
-  const search=document.createElement('button');search.type='button';search.className='text-action';search.textContent='Search by title';search.onclick=()=>{document.querySelector('[data-tab=watchlist]').click();const input=document.getElementById('search-input');input.value=row.title;document.getElementById('search-form').dispatchEvent(new Event('submit',{bubbles:true,cancelable:true}));input.scrollIntoView({block:'center'});};group.append(search);
+  const search=document.createElement('button');search.type='button';search.className='text-action';search.textContent='Search by title';search.onclick=()=>{document.querySelector('[data-tab=discover]').click();(document.querySelector('[data-discover-intent=explore]')||document.querySelector('[data-find-mode=shelf]'))?.click();const input=document.getElementById('search-input');input.value=row.title;document.getElementById('search-form').dispatchEvent(new Event('submit',{bubbles:true,cancelable:true}));input.scrollIntoView({block:'center'});};group.append(search);
   const retry=document.createElement('button');retry.type='button';retry.className='text-action';retry.textContent='Try lookup again';retry.onclick=()=>{row.catalogMatch={state:'pending',lastAttemptAt:Date.now()};persistHubState();renderImportReview();scheduleWatchlistMatching(0);};group.append(retry);details.append(group);
  }
  box.append(details);
@@ -1047,7 +1047,7 @@ function paintWatchlist(results,append=false){
   window.dispatchEvent(new Event('rewind:card-rendered'));
 }
 document.getElementById('rental-budget').value=rentalBudget;
-document.getElementById('rental-budget').onchange=e=>{const value=Number(e.target.value);if(e.target.value===''||!Number.isFinite(value)||value<0||value>100)return;rentalBudget=value;localStorage.setItem('rewind-rental-budget-v1',String(value));scheduleSync();watchlistLimit=WATCHLIST_PAGE_SIZE;repaintWatchlist();};
+document.getElementById('rental-budget').onchange=e=>{const value=Number(e.target.value);if(e.target.value===''||!Number.isFinite(value)||value<0||value>100){e.target.value=rentalBudget.toFixed(2);showToast('Rental limit must be between $0 and $100.');return;}rentalBudget=value;localStorage.setItem('rewind-rental-budget-v1',String(value));scheduleSync();watchlistLimit=WATCHLIST_PAGE_SIZE;repaintWatchlist();};
 document.getElementById('reset-cost-filter').onclick=()=>{costFilter='all';watchlistLimit=WATCHLIST_PAGE_SIZE;repaintWatchlist();};
 document.querySelectorAll('[data-cost-filter]').forEach(btn=>btn.onclick=()=>{costFilter=btn.dataset.costFilter;watchlistChangeFilter=null;watchlistLimit=WATCHLIST_PAGE_SIZE;repaintWatchlist();});
 document.getElementById('sort-select').addEventListener('change',e=>{watchlistSort=e.target.value;window.WatchlistBrowser?.setSort?.(watchlistSort);watchlistLimit=WATCHLIST_PAGE_SIZE;repaintWatchlist();});

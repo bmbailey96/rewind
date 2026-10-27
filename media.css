@@ -102,3 +102,12 @@
  #tab-watchlist .watchlist-primary .budget-field input{max-width:140px;}
  #tab-watchlist .watchlist-field select{font-size:13px;}
 }
+
+/* Author display rules must not override the HTML hidden attribute.
+   This matters when switching between the Watchlist and physical shelf. */
+body [hidden]{display:none!important}
+
+/* One shared Sort selector follows the user into a focused Watchlist section. */
+#tab-watchlist .watchlist-section-tools>.sort-field{display:flex;align-items:center;gap:8px;min-width:0;font-size:12px;color:#b8c8bd}
+#tab-watchlist .watchlist-section-tools>.sort-field select{min-width:135px;max-width:220px;min-height:44px;padding:9px 10px;background:#151e1d!important;color:#e7e9e3!important;border:1px solid #52615c!important;border-radius:4px}
+@media(max-width:600px){#tab-watchlist .watchlist-section-tools>.sort-field{width:100%;justify-content:space-between}#tab-watchlist .watchlist-section-tools>.sort-field select{flex:1;max-width:none}}
