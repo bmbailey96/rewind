@@ -136,7 +136,7 @@ const RewindMedia=(()=>{
      body.append(button('Recheck streaming',async()=>{await hydrate(checked,true);details.click();}));
     }catch(e){body.replaceChildren(el('p',e.message),button('Try again',()=>details.click()));}
    });
-  });details.className='film-details-trigger';details.setAttribute('aria-haspopup','dialog');
+  });details.className='film-details-trigger';if(opts.context==='watchlist')details.textContent='Details';details.setAttribute('aria-label','Details and viewing options for '+g.title);details.setAttribute('aria-haspopup','dialog');
   // Poster interaction mirrors film cards, including keyboard access.
   const posterAction=element=>{element.tabIndex=0;element.setAttribute('role','button');element.setAttribute('aria-label','Details for '+g.title);element.setAttribute('aria-haspopup','dialog');element.classList.add('poster-action');element.onclick=()=>details.click();element.onkeydown=event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();details.click();}};};
   if(opts.context==='watchlist'){
