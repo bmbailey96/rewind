@@ -1050,7 +1050,7 @@ function updateAvailabilityCountWithoutRepaint(){
   const unchecked=page.counts.unchecked||0;
   countEl.textContent='('+unchecked+')';
   const browse=section.querySelector('.section-show-all');
-  if(browse)browse.textContent='Browse all '+unchecked;
+  if(browse){browse.textContent='Browse all '+unchecked;browse.setAttribute('aria-label','Show all '+unchecked+' Needs availability check titles');}
   return unchecked;
 }
 function paintWatchlist(results,append=false){
