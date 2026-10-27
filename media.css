@@ -168,3 +168,93 @@ body [hidden]{display:none!important}
  #tab-watchlist .rental-card.compact-film-card>.card-title{font-size:16px!important}
  #tab-watchlist .rental-card.compact-film-card .cost-badge{font-size:18px!important}
 }
+
+
+/* REWIND identity: a short, quiet transport strip instead of a giant hero.
+   The text stays readable at rest; occasional VHS chromatic slips are decoration. */
+body>.counter{padding:8px 16px 0!important;background:#101415}
+body>.counter .counter-inner{
+  display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;
+  max-width:1080px;min-height:0;padding:4px 0 2px!important;text-align:left;
+}
+body>.counter .brand-lockup{
+  grid-column:1;display:inline-flex;align-items:center;gap:10px;width:max-content;
+  max-width:calc(100% - 45px);min-width:0;position:relative;
+}
+body>.counter .brand-reverse{
+  color:#e8bd7b;font:700 22px/1 'JetBrains Mono',ui-monospace,monospace;
+  letter-spacing:-.3em;padding-right:7px;flex:none;text-shadow:2px 0 #77c7b54a;
+}
+body>.counter .shop-name,body>.counter .counter-inner h1{
+  position:relative;display:block;margin:0!important;min-width:0;
+  font:700 clamp(28px,4.5vw,48px)/1.1 'JetBrains Mono',ui-monospace,monospace!important;
+  letter-spacing:.075em;color:#f1eee6;text-shadow:1px 0 #f1eee622;
+  isolation:isolate;white-space:nowrap;
+}
+body>.counter .shop-name::before,body>.counter .shop-name::after{
+  content:attr(data-text);position:absolute;inset:0;opacity:0;pointer-events:none;
+  white-space:nowrap;font:inherit;letter-spacing:inherit;
+}
+body>.counter .shop-name::before{color:#79e5d2}
+body>.counter .shop-name::after{color:#e18b80}
+body>.counter .save-state{
+  grid-column:1;display:block;margin:0!important;padding:1px 0 0;
+  color:#9bb1a6;font:11px/1.3 'Space Grotesk',system-ui,sans-serif;
+  letter-spacing:.035em;opacity:.9;
+}
+body>.counter .header-settings{top:0!important;right:0!important}
+body>.counter .tabs{
+  display:flex;justify-content:center;align-items:center;gap:clamp(16px,6vw,38px);
+  padding:3px 0 0;margin-top:3px;min-height:44px;
+}
+body>.counter .tabs .tab-btn{min-height:44px;padding:9px 2px;font-size:12px;line-height:1.3}
+@media(max-width:600px){
+ body>.counter{padding:5px 16px 0!important}
+ body>.counter .counter-inner{padding:3px 0 1px!important}
+ body>.counter .brand-lockup{gap:9px}
+ body>.counter .brand-reverse{font-size:18px}
+ body>.counter .shop-name,body>.counter .counter-inner h1{
+   font-size:clamp(27px,7.1vw,36px)!important;letter-spacing:.04em
+ }
+ body>.counter .save-state{font-size:10px}
+ body>.counter .tabs{gap:clamp(14px,6vw,30px);margin-top:1px}
+ body>.counter .tabs .tab-btn{font-size:11px}
+}
+@media(prefers-reduced-motion:no-preference){
+ body>.counter .shop-name::before{animation:rw-tape-cyan 8.8s steps(1,end) infinite}
+ body>.counter .shop-name::after{animation:rw-tape-red 8.8s steps(1,end) infinite}
+ body>.counter .brand-reverse{animation:rw-transport-blink 8.8s steps(1,end) infinite}
+ @keyframes rw-tape-cyan{
+   0%,19.9%,21.2%,64.9%,66.1%,100%{opacity:0;transform:none;clip-path:inset(0)}
+   20%,20.5%{opacity:.75;transform:translate(-3px,-1px);clip-path:inset(18% 0 56% 0)}
+   20.8%{opacity:.8;transform:translate(2px,1px);clip-path:inset(63% 0 10% 0)}
+   65.1%,65.6%{opacity:.55;transform:translate(2px,0);clip-path:inset(40% 0 34% 0)}
+ }
+ @keyframes rw-tape-red{
+   0%,20.1%,21%,65%,65.8%,100%{opacity:0;transform:none;clip-path:inset(0)}
+   20.25%,20.7%{opacity:.8;transform:translate(3px,1px);clip-path:inset(49% 0 18% 0)}
+   65.25%{opacity:.7;transform:translate(-2px,-1px);clip-path:inset(12% 0 69% 0)}
+ }
+ @keyframes rw-transport-blink{0%,19.9%,21.2%,64.9%,66.1%,100%{opacity:1}20%,21%,65%,66%{opacity:.45}}
+}
+@media(prefers-reduced-motion:reduce){
+ body>.counter .shop-name::before,body>.counter .shop-name::after,
+ body>.counter .brand-reverse{animation:none!important}
+}
+
+/* A consistent, unbroken details action follows the headline and date notes.
+   No oversized pseudo-arrow, baseline wrapping, or early auto-grid placement. */
+#tab-watchlist .rental-card.compact-film-card>.cost-block{order:2}
+#tab-watchlist .rental-card.compact-film-card>.release-stage-line{order:3}
+#tab-watchlist .rental-card.compact-film-card>.film-details-trigger{
+ order:8;grid-column:2;grid-row:auto;align-self:end;justify-self:start;
+ display:inline-flex;align-items:center;gap:7px;max-width:100%;width:max-content;
+ white-space:nowrap;text-decoration:none!important;border:0!important;
+ border-bottom:1px solid #729b88!important;line-height:1.3;min-height:35px;
+ padding:6px 0!important;margin:4px 0 0!important;color:#d5e3d8!important;
+}
+#tab-watchlist .rental-card.compact-film-card>.film-details-trigger::after{
+ content:'↗';display:inline-block;font-size:13px;line-height:1;
+ text-decoration:none;vertical-align:middle;color:#9acbb2
+}
+#tab-watchlist #rw-upcoming-grid .cost-warning{display:none!important}
