@@ -445,8 +445,8 @@ assert.equal(w.document.querySelector('[data-discover-intent=surprise]').getAttr
  w.addToWatchlist(pendingFilm);
  assert.equal(w.testState.movies().length,oldCount+1,'Repeated Add never duplicates the imported title');
  const savedCard=w.renderCard({...pendingFilm,id:65128},{context:'discover'});
- assert.equal(savedCard.querySelector('.track-action').textContent,'On watchlist','Title and year protect against duplicate catalog IDs');
- assert.equal(savedCard.querySelector('.track-action').disabled,true);
+ assert.equal(savedCard.querySelector('.track-action').textContent,'Add to watchlist','A different verified TMDb ID is a distinct film even with the same title and year');
+ assert.equal(savedCard.querySelector('.track-action').disabled,false);
  w.testState.hub().watchlistUnmatched=pendingOriginal;
  const importLink=w.document.getElementById('discover-import-watchlist');
  assert.ok(importLink,'Discover supplies a route to refresh the stale imported watchlist');
