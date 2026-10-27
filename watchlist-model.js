@@ -160,6 +160,22 @@
  function merge(existing,films){const byId=new Map(existing.map(f=>[f.id,f]));for(const f of films)if(f.id&&!byId.has(f.id))byId.set(f.id,{...f,addedAt:addedAt(f),importedAt:Date.now(),pinned:false,manualNote:'',lastStatusCode:null,lastStatusLabel:null,statusChangedAt:null});return [...byId.values()];}
  function titleKey(title){return String(title||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^\p{L}\p{N}]/gu,'');}
  function sourceKey(film){return titleKey(film.sourceTitle||film.title)+'|'+(film.year||String(film.release_date||'').slice(0,4));}
+ // Exact year + title/known alternate title is required when no stable TMDb ID
+ // is available. Never identify a remake from its title alone.
+ function savedIdentity(movie,films=[],unmatched=[]){
+  const id=movie?.id;
+  if(id!=null){const byId=(films||[]).find(f=>String(f.id)===String(id));if(byId)return {state:'saved',entry:byId};}
+  const year=String(movie?.release_date||movie?.primary_release_date||movie?.year||'').slice(0,4);
+  const names=new Set([movie?.title,movie?.original_title,...(movie?.catalogAliases||[])].map(titleKey).filter(Boolean));
+  if(!/^\\d{4}$/.test(year)||!names.size)return null;
+  const matchTitleYear=row=>String(row?.year||row?.release_date||row?.primary_release_date||'').slice(0,4)===year&&
+   [row?.title,row?.sourceTitle,row?.original_title].some(t=>names.has(titleKey(t)));
+  const known=(films||[]).filter(matchTitleYear);
+  if(known.length===1)return {state:'saved',entry:known[0]};
+  if(known.length>1)return null;
+  const pending=(unmatched||[]).filter(matchTitleYear);
+  return pending.length===1?{state:'pending',row:pending[0]}:null;
+ }
  function releaseYears(data){return [...new Set((data.results||[]).flatMap(country=>(country.release_dates||[]).filter(r=>[1,2,3].includes(r.type)&&/^\d{4}-/.test(r.release_date||'')).map(r=>r.release_date.slice(0,4))))];}
  function match(row,candidates){const hits=new Map();for(const film of candidates||[])if(film.id&&(String(film.release_date||'').slice(0,4)===String(row.year)||(film.catalogReleaseYears||[]).includes(String(row.year)))&&[film.title,film.original_title,...(film.catalogAliases||[])].some(t=>titleKey(t)===titleKey(row.title)))hits.set(film.id,film);return hits.size===1?[...hits.values()][0]:null;}
  // Resolve catalog identity only. This never checks streaming or follows a release.
@@ -199,5 +215,5 @@
  function rewindAdditions(movies,keys=[]){const imported=new Set(keys);return movies.filter(m=>m.id&&!m.letterboxdWatchlist&&!/Letterboxd watchlist/i.test(m.source||'')&&!imported.has(sourceKey(m)));}
  function exportCSV(movies,keys=[]){const field=value=>'"'+String(value??'').replace(/"/g,'""')+'"';return 'tmdbID,Title,Year\r\n'+rewindAdditions(movies,keys).map(m=>[m.id,field(m.title),String(m.release_date||'').slice(0,4)].join(',')).join('\r\n')+'\r\n';}
  function page(results,{sort='cost',filter='all',budget=7.99,limit=60,model}){const ranks={free:0,cheap:1,premium:2,unknown:3,buy:4,waiting:5};const rows=results.map(r=>({...r,cost:model.cost(r.status.offers,budget,r.status.stale)})).filter(r=>filter==='all'||filter===r.cost.band);const compare={price:(a,b)=>(a.cost.price??Infinity)-(b.cost.price??Infinity),changed:(a,b)=>(b.entry.statusChangedAt||0)-(a.entry.statusChangedAt||0),added:(a,b)=>(b.entry.addedAt||0)-(a.entry.addedAt||0),release:(a,b)=>String(b.entry.release_date||'').localeCompare(a.entry.release_date||''),az:(a,b)=>a.entry.title.localeCompare(b.entry.title)};rows.sort((a,b)=>Number(!!b.entry.pinned)-Number(!!a.entry.pinned)||(sort==='cost'?ranks[a.cost.band]-ranks[b.cost.band]||(a.cost.price??Infinity)-(b.cost.price??Infinity):(compare[sort]||compare.changed)(a,b))||a.entry.title.localeCompare(b.entry.title));return {rows:rows.slice(0,limit),total:rows.length};}
- return {addedAt,recentRelease,recentReleases,backfillReleaseFollows,followsRelease,upcomingHome,theatricalDate,releaseOpening,stageCost,releaseStage,releaseWatchPage,recommendationScore,merge,titleKey,sourceKey,match,releaseYears,resolveCatalog,matchQueue,matchSummary,page,actionable,freshSnapshot,refreshCandidates,genreIds,rewindAdditions,exportCSV};
+ return {addedAt,recentRelease,recentReleases,backfillReleaseFollows,followsRelease,upcomingHome,theatricalDate,releaseOpening,stageCost,releaseStage,releaseWatchPage,recommendationScore,merge,titleKey,sourceKey,match,savedIdentity,releaseYears,resolveCatalog,matchQueue,matchSummary,page,actionable,freshSnapshot,refreshCandidates,genreIds,rewindAdditions,exportCSV};
 });
