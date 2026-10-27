@@ -274,11 +274,11 @@ const wait=()=>new Promise(r=>setTimeout(r,100));
  w.document.querySelector('.header-saved').click();
  w.document.querySelector('.collection-switch [data-collection=physical]').click();
  assert.equal(w.document.getElementById('tab-watchlist').dataset.collection,'physical');
- assert.equal(w.document.getElementById('physical-shelf').hidden,false,'My Shelf opens from Saved titles');
+ assert.equal(w.document.getElementById('physical-shelf').hidden,false,'My Shelf opens from Saved titles');assert.equal(w.document.querySelector('#tab-watchlist .panel-head h2').textContent,'My Shelf');assert.equal(w.document.querySelector('#tab-watchlist .watchlist-primary').hidden,true,'Watchlist filters do not appear above My Shelf');assert.equal(w.document.querySelector('.watchlist-price-help').hidden,true,'Price-filter explanation does not appear in My Shelf');
  w.document.querySelector('[data-find-mode=shelf]').click();
  assert.equal(w.document.getElementById('physical-shelf').hidden,false,'Changing Discover modes does not erase My Shelf');
  w.document.querySelector('.collection-switch [data-collection=tracked]').click();
- assert.equal(w.document.getElementById('physical-shelf').hidden,true);
+ assert.equal(w.document.getElementById('physical-shelf').hidden,true);assert.equal(w.document.querySelector('#tab-watchlist .panel-head h2').textContent,'Watchlist');assert.equal(w.document.querySelector('.watchlist-price-help').hidden,false);
  // Import-review catalog searches must open a visible Discover search, not the hidden Watchlist panel.
  w.testState.hub().watchlistUnmatched=[{title:'A Lost Movie',year:2026,catalogMatch:{state:'review',reason:'No verified catalog match',candidates:[]}}];
  w.eval('renderImportReview()');
