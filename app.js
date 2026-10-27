@@ -1380,7 +1380,7 @@ function reconcileWatchlistMatches(known=verifiedCatalogMatches){
   const key=WatchlistModel.sourceKey(row),saved=WatchlistModel.match(row,watchlist),film=catalog.get(key)||saved;
   if(imported.has(key)){changed=true;continue;}
   if(film){
-   const existing=watchlist.find(m=>String(m.id)===String(film.id));
+   const existing=WatchlistModel.savedIdentity(film,watchlist)?.entry||null;
    if(existing){existing.letterboxdWatchlist=true;existing.letterboxdURL=existing.letterboxdURL||row.letterboxdURL||null;}
    else watchlist=WatchlistModel.merge(watchlist,[{...film,sourceTitle:row.title,year:row.year,addedDate:row.addedDate,letterboxdURL:row.letterboxdURL,source:'Letterboxd watchlist',letterboxdWatchlist:true}]);
    imported.add(key);matched++;changed=true;continue;
