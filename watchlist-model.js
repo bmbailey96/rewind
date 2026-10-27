@@ -172,7 +172,7 @@
    [row?.title,row?.sourceTitle,row?.original_title].some(t=>names.has(titleKey(t)));
   const known=(films||[]).filter(matchTitleYear);
   if(known.length===1&&(!id||!known[0].id))return {state:'saved',entry:known[0]};
-  if(known.length>1)return null;
+  if(known.length)return null; // Verified identity conflict: don't infer a pending match.
   const pending=(unmatched||[]).filter(matchTitleYear);
   return pending.length===1?{state:'pending',row:pending[0]}:null;
  }
