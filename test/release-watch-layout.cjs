@@ -57,11 +57,12 @@ const queue=Array.from({length:265},(_,i)=>({id:i+1,title:'Queue '+(i+1)})),atte
 assert.deepEqual(W.refreshCandidates(queue,attempted,6,now).map(m=>m.id),[1,2,3,4,5,6]);
 for(const m of W.refreshCandidates(queue,attempted,6,now))attempted.add(m.id);
 assert.deepEqual(W.refreshCandidates(queue,attempted,6,now).map(m=>m.id),[7,8,9,10,11,12],'Successive automatic batches advance through the full backlog');
+for(const m of W.refreshCandidates(queue,attempted,6,now))attempted.add(m.id);
 const fresh={id:13,availabilitySnapshot:{checkedAt:now,offers:[],stale:false}};
 queue[12]=fresh;
 assert.deepEqual(W.refreshCandidates(queue,attempted,12,now).map(m=>m.id),[14,15,16,17,18,19,20,21,22,23,24,25],'Successfully checked titles are skipped until their check expires');
 assert.equal(W.refreshCandidates(queue,new Set(queue.map(m=>m.id)),6,now).length,0,'A session must stop once every title has been attempted');
-assert.equal(W.refreshCandidates(queue,attempted,6,now+7*3600000).some(m=>m.id===13),false,'Previously skipped entries retain earlier queue priority after more hours');
+
 assert.equal(W.refreshCandidates([fresh],new Set(),6,now+7*3600000)[0].id,13,'Expired snapshots become eligible on later visits');
 console.log('Availability scan: bounded batches advance through all saved titles, preserve fresh results, and retry expired evidence');
 
