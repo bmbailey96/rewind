@@ -142,7 +142,7 @@ const wait=()=>new Promise(r=>setTimeout(r,100));
  const expand=w.document.querySelector('#rw-available-section .section-show-all');assert.equal(expand.textContent,'Browse all 14');expand.click();await wait();
  assert.equal(w.document.querySelectorAll('#rw-available-grid > .rental-card').length,14);
  assert.equal(w.document.querySelector('.watchlist-section-tools').hidden,false);
- assert.equal(w.document.querySelector('.watchlist-section-tools select'),null,'Expanded sections reuse the global sorting control');const sectionSort=w.document.getElementById('sort-select');assert.ok(sectionSort.closest('.watchlist-section-tools'),'Global sort moves beside Back for an expanded section');sectionSort.value='az';sectionSort.dispatchEvent(new w.Event('change'));
+ assert.equal(w.document.querySelectorAll('.watchlist-section-tools select').length,1,'Expanded sections show only the existing global sort control');assert.equal(w.document.querySelector('.watchlist-section-tools select'),w.document.getElementById('sort-select'),'Focused sort is the same DOM control');const sectionSort=w.document.getElementById('sort-select');assert.ok(sectionSort.closest('.watchlist-section-tools'),'Global sort moves beside Back for an expanded section');sectionSort.value='az';sectionSort.dispatchEvent(new w.Event('change'));
  assert.equal(w.document.querySelector('#rw-available-grid .card-title').textContent,'Browse fixture 00');
  w.document.querySelector('.watchlist-section-tools button').click();await wait();assert.ok(sectionSort.closest('.watchlist-primary'),'Same sort selector returns to the Watchlist toolbar');assert.equal(w.document.querySelectorAll('#rw-available-grid > .rental-card').length,6);
  assert.equal(w.document.getElementById('watchlist-more').hidden,true);
