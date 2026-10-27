@@ -964,8 +964,7 @@ async function renderWatchlist(force = false, reuse = false, background = false)
     return;
   }
   loading.textContent=(force?'Checking saved films':'Updating a few saved films')+' · 0 of '+targets.length;
-  if(!force)statusEl.textContent='Checking availability · '+targets.length+' titles in this batch…';
-  statusEl.textContent=force?'Checking '+targets.length+' saved titles. Existing cards stay visible.':'Checking a few saved titles in the background.';
+  statusEl.textContent=force?'Checking '+targets.length+' saved titles now…':'Checking availability automatically · '+targets.length+' titles this batch…';
   // Give iOS Safari a frame to draw the cards before beginning any API work.
   if(!force){
     await new Promise(resolve=>setTimeout(resolve,700));
