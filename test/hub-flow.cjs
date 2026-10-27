@@ -429,6 +429,26 @@ assert.equal(w.document.querySelector('[data-discover-intent=surprise]').getAttr
 
  assert.ok(w.document.querySelector('#tonight-grid .rental-card.compact-film-card'),'Tonight uses the shared film-card renderer');
  const consistent=w.renderCard({id:65123,title:'Consistent test film'},{context:'discover'});w.document.body.appendChild(consistent);assert.match(consistent.querySelector('.cost-block').textContent,/VIEWING OPTIONS/);const save=consistent.querySelector('.track-action');assert.equal(save.textContent,'Add to watchlist');save.click();await wait();assert.equal(w.testState.movies().find(m=>m.id===65123).followRelease,false,'Saving does not silently opt into email alerts');assert.equal(save.disabled,true);assert.ok(w.testState.movies().find(m=>m.id===65123),'Saved film remains in the collection');consistent.remove();
+ const pendingOriginal=w.testState.hub().watchlistUnmatched;
+ w.testState.hub().watchlistUnmatched=[{title:'Phantom of the Paradise',year:'1974',addedDate:'2026-09-01',letterboxdURL:'https://boxd.it/123'}];
+ const pendingFilm={id:65126,title:'Phantom of the Paradise',release_date:'1974-10-31',poster_path:'/p.jpg'};
+ const pendingCard=w.renderCard(pendingFilm,{context:'discover'});
+ assert.equal(pendingCard.querySelector('.track-action').textContent,'On imported watchlist','Unmatched Letterboxd films are never presented as new saves');
+ assert.equal(pendingCard.querySelector('.track-action').disabled,true);
+ const different=w.renderCard({id:65127,title:'Phantom of the Paradise',release_date:'2011-10-31'},{context:'discover'});
+ assert.equal(different.querySelector('.track-action').textContent,'Add to watchlist','Do not conflate a different-year film');
+ const oldCount=w.testState.movies().length;
+ w.addToWatchlist(pendingFilm);
+ assert.equal(w.testState.movies().length,oldCount+1,'An imported entry is resolved exactly once');
+ assert.equal(w.testState.movies().find(m=>m.id===65126).letterboxdWatchlist,true,'An imported match remains identified as belonging to Letterboxd');
+ assert.equal(w.testState.hub().watchlistUnmatched.length,0,'A resolved title leaves the unmatched import queue');
+ w.addToWatchlist(pendingFilm);
+ assert.equal(w.testState.movies().length,oldCount+1,'Repeated Add never duplicates the imported title');
+ const savedCard=w.renderCard({...pendingFilm,id:65128},{context:'discover'});
+ assert.equal(savedCard.querySelector('.track-action').textContent,'On watchlist','Title and year protect against duplicate catalog IDs');
+ assert.equal(savedCard.querySelector('.track-action').disabled,true);
+ w.testState.hub().watchlistUnmatched=pendingOriginal;
+ console.log('Discover membership: imported pending titles are recognized, exact matches are adopted, and duplicates are prevented');
  const dated=w.renderCard({id:65125,title:'Catalog lead',release_date:'2026-09-01'},{context:'discover'});assert.match(dated.querySelector('.cost-block').textContent,/CATALOG DATE/);assert.doesNotMatch(dated.textContent,/NOT CHECKED/);
  const premiumNote=w.renderTrackingNote({id:65125},{offers:[{kind:'rent',provider:'Apple TV',price:19.99}]});assert.match(premiumNote.textContent,/Available to rent now/);assert.doesNotMatch(premiumNote.textContent,/confirmed home release/);
  const releasedNote=w.renderTrackingNote({id:65125,detailsSnapshot:{release_dates:{results:[{iso_3166_1:'US',release_dates:[{type:4,release_date:'2026-09-01'}]}]}}},{offers:[],stale:true});assert.match(releasedNote.textContent,/A home release is listed/);
