@@ -80,6 +80,12 @@ const wait=()=>new Promise(r=>setTimeout(r,100));
  assert.ok([...w.document.querySelectorAll('#tab-import>.settings-group>summary')].some(s=>s.textContent==='Taste & physical shelf'));assert.ok(w.document.getElementById('gh-connect-btn').closest('details.settings-group'));
 
  assert.match(w.document.getElementById('watch-now-grid').textContent,/Included Movie/);assert.match(w.document.getElementById('paid-grid').textContent,/Coyote/);assert.match(w.document.getElementById('waiting-grid').textContent,/The Cycle/);
+ const decorated=w.document.querySelector('#paid-grid .rental-card[data-movie-id="1204680"]');
+ w.testState.hubInterface.stateChanged();
+ const firstCinemaNote=decorated?.querySelector('.local-card-note');
+ assert.ok(firstCinemaNote,'Known local screening is annotated on its movie card');
+ w.testState.hubInterface.stateChanged();
+ assert.equal(decorated.querySelector('.local-card-note'),firstCinemaNote,'Unchanged venue checks reuse notes instead of recreating them on every repaint');
  assert.equal(JSON.parse(w.localStorage.getItem('rewind-watchlist-v1')).find(m=>m.id===3).includedSince,undefined,'First observation is not a new arrival');
  included3=false;await w.eval('renderWatchlist(true)');included3=true;await w.eval('renderWatchlist(true)');
  assert.equal(JSON.parse(w.localStorage.getItem('rewind-watchlist-v1')).find(m=>m.id===3).includedSince,w.Date.now(),'Only a confirmed transition earns arrival priority');
