@@ -789,6 +789,28 @@ let watchlistSort = 'cost';
 const WATCHLIST_PAGE_SIZE=24, WATCHLIST_BACKGROUND_CHECKS=6;
 let watchlistScope='release',watchlistLimit=WATCHLIST_PAGE_SIZE,watchlistResults=[];
 const watchlistBackgroundChecked=new Set();
+let availabilityAutoTimer=null,availabilitySourceFailures=0;
+// The scan runs only in an open, visible Watchlist tab. Browser timers stop
+// naturally when Safari is closed; saved results persist across visits.
+function canAutoCheckAvailability(){
+  return !document.hidden&&navigator.onLine!==false&&
+    !navigator.connection?.saveData&&
+    watchlistScope==='release'&&
+    document.getElementById('tab-watchlist')?.classList.contains('active')&&
+    document.getElementById('tab-watchlist')?.dataset.collection!=='physical'&&
+    !document.getElementById('watchlist-search')?.value.trim()&&
+    !window.WatchlistBrowser?.options().section;
+}
+function queueAutoAvailabilityCheck(delay=16000){
+  clearTimeout(availabilityAutoTimer);availabilityAutoTimer=null;
+  if(!canAutoCheckAvailability()||availabilitySourceFailures>=2)return;
+  const pending=scopedWatchlist().some(m=>!WatchlistModel.freshSnapshot(m)&&!watchlistBackgroundChecked.has(m.id));
+  if(!pending)return;
+  availabilityAutoTimer=setTimeout(()=>{
+    availabilityAutoTimer=null;
+    if(canAutoCheckAvailability())renderWatchlist(false,false,true).catch(()=>{availabilitySourceFailures++;});
+  },delay);
+}
 let watchlistMatching=false,watchlistMatchProgress='';
 let watchlistChangeFilter=null;
 function repaintWatchlist(append=false){const visibleIds=new Set(scopedWatchlist().map(m=>m.id)),savedIds=new Set(watchlist.map(m=>m.id)),changedIds=watchlistChangeFilter?usefulChangeIds(watchlistChangeFilter):null;paintWatchlist(watchlistResults.filter(r=>visibleIds.has(r.entry.id)&&(savedIds.has(r.entry.id)||typeof RewindMedia!=='undefined'&&RewindMedia.isTV(r.entry))&&(!changedIds||changedIds.has(r.entry.id))),append);}
@@ -879,13 +901,14 @@ localStorage.setItem('rewind-last-visit-v1',String(Date.now()));
 let watchlistRequest = 0;
 
 async function renderWatchlist(force = false, reuse = false, background = false) {
-  if(background&&window.RewindStartup?.defer('watchlist',()=>renderWatchlist(force,reuse)))return;
+  // Check in the background even while someone is scrolling; defer only the
+  // DOM repaint, not the availability lookup itself.
   if(watchlistScope==='release'&&(!document.getElementById('rw-arrived-grid')||!document.getElementById('rw-upcoming-grid'))){
     watchlistScope='all';
     const notice=document.getElementById('watchlist-load-status');
     if(notice)notice.textContent='Updating the saved page files. All Watchlist remains available. Reload to restore Release Watch.';
   }
-  const request=++watchlistRequest;
+  const request=++watchlistRequest,quiet=background&&watchlistResults.length>0;
   const empty=document.getElementById('watchlist-empty');
   const loading=document.getElementById('watchlist-load-status');
   const statusEl=document.getElementById('card-check-status');
@@ -909,7 +932,7 @@ async function renderWatchlist(force = false, reuse = false, background = false)
   renderImportReview();
   renderReleaseRecovery();
   watchlistResults=[...progress.values()];
-  repaintWatchlist(); // First paint uses local data, without waiting on GitHub or film APIs.
+  if(!quiet)repaintWatchlist(); // Background passes leave the current cards in place.
   if(!batch.length){
     loading.textContent='';
     statusEl.textContent='Saved results · no films in this view.';
@@ -920,12 +943,12 @@ async function renderWatchlist(force = false, reuse = false, background = false)
   const displayed=page.rows.map(r=>r.entry);
   // Large watchlists advance through unverified titles, six automatically or
   // twelve on a manual check, never hundreds of network requests on a phone.
-  const candidates=watchlistScope==='release'&&force&&batch.length>WATCHLIST_PAGE_SIZE
+  const candidates=watchlistScope==='release'&&batch.length>WATCHLIST_PAGE_SIZE
     ?batch.filter(entry=>!WatchlistModel.freshSnapshot(entry)&&!watchlistBackgroundChecked.has(entry.id))
     :displayed;
   const targets=force
     ?candidates.slice(0,batch.length>WATCHLIST_PAGE_SIZE?12:displayed.length)
-    :reuse?[]:displayed.filter(entry=>!WatchlistModel.freshSnapshot(entry)&&!watchlistBackgroundChecked.has(entry.id)).slice(0,WATCHLIST_BACKGROUND_CHECKS);
+    :reuse?[]:candidates.filter(entry=>!WatchlistModel.freshSnapshot(entry)&&!watchlistBackgroundChecked.has(entry.id)).slice(0,WATCHLIST_BACKGROUND_CHECKS);
   if(force&&batch.length>WATCHLIST_PAGE_SIZE)targets.forEach(entry=>watchlistBackgroundChecked.add(entry.id));
   if(!targets.length){
     loading.textContent='';
@@ -988,12 +1011,19 @@ async function renderWatchlist(force = false, reuse = false, background = false)
   watchlistResults=[...progress.values()];
   if(!force&&window.RewindStartup?.defer('watchlist',()=>repaintWatchlist())){}else repaintWatchlist();
   const failed=results.filter(r=>r?.status?.stale).length;
-  statusEl.textContent=checked+' checked'+(failed?' · '+failed+' could not be verified':'')+'. You can check another batch without rechecking these titles.';
+  if(!force&&!reuse&&failed>=Math.max(3,Math.ceil(targets.length/2)))availabilitySourceFailures++;
+  else if(!force&&!reuse)availabilitySourceFailures=0;
+  const left=batch.filter(m=>!WatchlistModel.freshSnapshot(m)&&!watchlistBackgroundChecked.has(m.id)).length;
+  statusEl.textContent=availabilitySourceFailures>=2
+    ?'Availability source not responding. Automatic checks paused; existing data is safe.'
+    :checked+' titles checked'+(failed?' · '+failed+' unverified':'')+
+      (left?' · '+left+' still queued for this visit.':' · Current pass complete.');
   if(receiptsDirty)persistHubState();
   saveWatchlist();
   window.dispatchEvent(new Event('rewind:watchlist-ready'));
   if(checked)scheduleSync();
   loading.textContent='';
+  if(watchlistScope==='release'&&canAutoCheckAvailability()&&availabilitySourceFailures<2)queueAutoAvailabilityCheck();
 }
 function paintWatchlist(results,append=false){
   renderChangeStrip();
@@ -1374,7 +1404,9 @@ async function init() {
   const retrySave=document.getElementById('storage-retry');if(retrySave)retrySave.onclick=retryDeviceSaves;
   window.addEventListener('focus',()=>{if(failedStorageKeys.size)retryDeviceSaves();});
   const saveStatus=document.getElementById('save-state');if(saveStatus)saveStatus.onkeydown=event=>{if(failedStorageKeys.size&&['Enter',' '].includes(event.key)){event.preventDefault();saveStatus.click();}};if(saveStatus)saveStatus.onclick=()=>{if(failedStorageKeys.size){document.querySelector('[data-tab=import]').click();const backup=document.getElementById('storage-backup');backup.closest('details')?.setAttribute('open','');backup.scrollIntoView({block:'center'});}};
-  window.addEventListener('online',()=>scheduleWatchlistMatching());
+  window.addEventListener('online',()=>{scheduleWatchlistMatching();availabilitySourceFailures=0;queueAutoAvailabilityCheck(1500);});
+  document.addEventListener('visibilitychange',()=>{if(document.hidden){clearTimeout(availabilityAutoTimer);availabilityAutoTimer=null;}else queueAutoAvailabilityCheck(2000);});
+  document.querySelectorAll('[data-tab]').forEach(b=>b.addEventListener('click',()=>{if(b.dataset.tab==='watchlist')queueAutoAvailabilityCheck(2000);else{clearTimeout(availabilityAutoTimer);availabilityAutoTimer=null;}}));
   window.addEventListener('rewind:state',()=>{if(!watchlistMatching&&(hubState.watchlistUnmatched||[]).length){reconcileWatchlistMatches();renderImportReview();scheduleWatchlistMatching();}});
   document.addEventListener('visibilitychange',()=>{if(document.visibilityState!=='hidden')scheduleWatchlistMatching();});
   // Background sync can update the local watchlist when finished, but never
