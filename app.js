@@ -918,15 +918,23 @@ async function renderWatchlist(force = false, reuse = false, background = false)
   }
   const page=watchlistScope==='release'?WatchlistModel.releaseWatchPage(watchlistResults,{today:discoveryWindow().today,budget:rentalBudget,receipts:hubState.changeReceipts,limit:watchlistLimit,filter:costFilter,model:ReleaseModel,localListing:m=>{const local=typeof Hub==='undefined'||typeof Hub.localListing!=='function'?null:Hub.localListing(m);return local&&!local.stale&&/Kalispell/i.test(local.location)?local:null;}}):WatchlistModel.page(watchlistResults,{sort:watchlistSort,filter:costFilter,budget:rentalBudget,limit:watchlistLimit,model:ReleaseModel});
   const displayed=page.rows.map(r=>r.entry);
-  const targets=force?displayed:reuse?[]:displayed.filter(entry=>!WatchlistModel.freshSnapshot(entry)&&!watchlistBackgroundChecked.has(entry.id)).slice(0,WATCHLIST_BACKGROUND_CHECKS);
+  // Large watchlists advance through unverified titles, six automatically or
+  // twelve on a manual check, never hundreds of network requests on a phone.
+  const candidates=watchlistScope==='release'&&force&&batch.length>WATCHLIST_PAGE_SIZE
+    ?batch.filter(entry=>!WatchlistModel.freshSnapshot(entry)&&!watchlistBackgroundChecked.has(entry.id))
+    :displayed;
+  const targets=force
+    ?candidates.slice(0,batch.length>WATCHLIST_PAGE_SIZE?12:displayed.length)
+    :reuse?[]:displayed.filter(entry=>!WatchlistModel.freshSnapshot(entry)&&!watchlistBackgroundChecked.has(entry.id)).slice(0,WATCHLIST_BACKGROUND_CHECKS);
+  if(force&&batch.length>WATCHLIST_PAGE_SIZE)targets.forEach(entry=>watchlistBackgroundChecked.add(entry.id));
   if(!targets.length){
     loading.textContent='';
-    statusEl.textContent=''; // No persistent status message when all results are already painted.
+    statusEl.textContent=force?'No more unchecked titles in this view.':'';
     window.dispatchEvent(new Event('rewind:watchlist-ready'));
     return;
   }
-  loading.textContent=(force?'Checking shown films':'Updating a few saved films')+' · 0 of '+targets.length;
-  statusEl.textContent=force?'Checking '+targets.length+' displayed films, not the whole watchlist.':'Loading saved films first · limited background checks.';
+  loading.textContent=(force?'Checking saved films':'Updating a few saved films')+' · 0 of '+targets.length;
+  statusEl.textContent=force?'Checking '+targets.length+' saved titles. Existing cards stay visible.':'Checking a few saved titles in the background.';
   // Give iOS Safari a frame to draw the cards before beginning any API work.
   if(!force){
     await new Promise(resolve=>setTimeout(resolve,700));
@@ -971,7 +979,7 @@ async function renderWatchlist(force = false, reuse = false, background = false)
     const result={entry,status,changed,prevLabel};
     progress.set(entry.id,result);
     checked++;
-    loading.textContent=(force?'Checking shown films':'Updating a few saved films')+' · '+checked+' of '+targets.length;
+    loading.textContent=(force?'Checking saved films':'Updating a few saved films')+' · '+checked+' of '+targets.length;
     return result;
   });
   if(request!==watchlistRequest)return;
@@ -980,7 +988,7 @@ async function renderWatchlist(force = false, reuse = false, background = false)
   watchlistResults=[...progress.values()];
   if(!force&&window.RewindStartup?.defer('watchlist',()=>repaintWatchlist())){}else repaintWatchlist();
   const failed=results.filter(r=>r?.status?.stale).length;
-  statusEl.textContent=checked+' film'+(checked===1?'':'s')+' checked'+(failed?' · '+failed+' previous or unavailable results':'')+' · remaining films use saved data.';
+  statusEl.textContent=checked+' checked'+(failed?' · '+failed+' could not be verified':'')+'. You can check another batch without rechecking these titles.';
   if(receiptsDirty)persistHubState();
   saveWatchlist();
   window.dispatchEvent(new Event('rewind:watchlist-ready'));
@@ -996,8 +1004,8 @@ function paintWatchlist(results,append=false){
   if(watchlistScope==='release'){
     const page=WatchlistModel.releaseWatchPage([...results,...(window.SavedProjects?.rows()||[])],{browse:window.WatchlistBrowser?.options()||{},today:discoveryWindow().today,budget:rentalBudget,receipts:hubState.changeReceipts,limit:watchlistLimit,filter:costFilter,model:ReleaseModel,localListing:m=>{const local=typeof Hub==='undefined'||typeof Hub.localListing!=='function'?null:Hub.localListing(m);return local&&!local.stale&&/Kalispell/i.test(local.location)?local:null;}});
     const groups={included:'rw-arrived',cheap:'rw-available',premium:'rw-coming',theater:'rw-theater',upcoming:'rw-upcoming',development:'rw-development',waiting:'rw-waiting',unchecked:'rw-unchecked'};
-    const labels={included:'Included & free',cheap:'At your price',premium:'Higher prices',theater:'In Kalispell theaters',upcoming:'Upcoming releases',development:'Announced · no date',waiting:'Waiting for home release',unchecked:'Availability unchecked'};
-    const descriptions={included:'Your services, free streams, and your physical shelf.',cheap:'Rentals at or below $'+rentalBudget.toFixed(2)+'. Pins and your Rewind saves come first.',premium:'Rentals from lowest to highest, then purchase-only and unpriced offers.',theater:'Confirmed Kalispell listings. Ticket links live on each film.',upcoming:'Published future releases, nearest date first.',development:'Projects in development or without a verified release date. Production status stays explicit.',waiting:'Released titles with no current home offer found.',unchecked:'Missing or outdated checks. Availability has not been established.'};
+    const labels={included:'Included & free',cheap:'At your price',premium:'Higher prices',theater:'In Kalispell theaters',upcoming:'Upcoming releases',development:'Announced · no date',waiting:'Waiting for home release',unchecked:'Needs availability check'};
+    const descriptions={included:'On your services or your own shelf.',cheap:'Rentals up to $'+rentalBudget.toFixed(2)+'.',premium:'Higher rentals and purchase-only.',theater:'Confirmed local screenings.',upcoming:'Published dates, earliest first.',development:'Date not verified.',waiting:'Current home viewing not confirmed.',unchecked:'Unverified or outdated offers. Check the next batch, or browse the backlog.'};
     // The overview retains short section previews; a focused section grows in small scroll batches.
     const focusedSection=!!window.WatchlistBrowser?.options().section;
     document.getElementById('watchlist-more').hidden=!focusedSection||page.rows.length>=page.total;
@@ -1011,17 +1019,18 @@ function paintWatchlist(results,append=false){
       if(stage.group==='upcoming'){const timing=ReleaseModel.forecastTiming({likely:stage.date},discoveryWindow().today);note.textContent=(stage.home?.date===stage.date?stage.home.label:stage.opening?.label||'Release')+' · '+timing.when+' · '+timing.relative+(stage.opening?.source?' · '+stage.opening.source:'');}
       else if(stage.group==='theater')note.textContent=(stage.local.location||'Kalispell')+' screening listed '+formatFilmDate(stage.date)+(stage.local.stale?' · previous theater check':'');
       else if(stage.home&&!card.querySelector('.wait-advice'))note.textContent=stage.home.label+' on '+formatFilmDate(stage.home.date)+' · listed date; source in details';
-      else if(stage.group==='waiting'&&row.entry.mediaType==='tv')note.textContent='Streaming for your next season has not been confirmed. Check Details & streaming.';
+      else if(stage.group==='waiting'&&row.entry.mediaType==='tv')note.textContent=''; // Season caveat remains in Details.
       else if(stage.group==='waiting'){const dated=(row.status?.announcements||[]).filter(a=>['digital','subscription'].includes(a.kind)&&a.date&&a.date<=discoveryWindow().today).map(a=>({date:a.date,label:a.provider||'Digital release'}));for(const d of ReleaseModel.datesFor(row.status?.details||row.entry.detailsSnapshot))if(d.type===4&&ReleaseModel.date(d.release_date)<=discoveryWindow().today)dated.push({date:ReleaseModel.date(d.release_date),label:'Digital release'});const past=dated.sort((a,b)=>b.date.localeCompare(a.date))[0];note.textContent=past?past.label+' listed '+formatFilmDate(past.date)+' · current home availability unverified.':(stage.opening?stage.opening.label+' · '+formatFilmDate(stage.opening?.date||stage.date)+'. ':'Release date unannounced. ')+'Home release date unannounced.';}
       if(note.textContent)card.querySelector('.film-details-trigger')?.before(note);balanceCardUpdates(card);
       document.getElementById(groups[stage.group]+'-grid').appendChild(card);
     }
     for(const [group,id] of Object.entries(groups)){
       const section=document.getElementById(id+'-section'),shown=page.rows.filter(r=>r.stage.group===group).length;
+      section.dataset.focused=String(focusedSection&&window.WatchlistBrowser?.options().section===group);
       section.hidden=!page.counts[group]||!!window.WatchlistBrowser?.options().section&&window.WatchlistBrowser.options().section!==group;
       section.querySelector('h3').firstChild.textContent=labels[group]+' ';
       document.getElementById(id+'-count').textContent='('+(page.counts[group]||0)+')';
-      section.querySelector('.group-note').textContent=descriptions[group]+(shown<page.counts[group]?' Showing '+shown+' of '+page.counts[group]+'.':'');
+      section.querySelector('.group-note').textContent=descriptions[group]+(shown<page.counts[group]&&group!=='unchecked'?' Showing '+shown+' of '+page.counts[group]+'.':'');
     }
     document.getElementById('filter-empty').hidden=page.total>0||!scopedWatchlist().length;
     document.getElementById('release-watch-empty').hidden=page.total>0||!!scopedWatchlist().length;
@@ -1351,7 +1360,16 @@ async function init() {
     return renderWatchlist(false,true,true).catch(err=>showToast(err.message));
   });
   window.RewindStartup?.track('collection',localReady);
-  localReady.finally(()=>scheduleWatchlistMatching());
+  localReady.finally(()=>{
+    scheduleWatchlistMatching();
+    const initialRequest=watchlistRequest;
+    setTimeout(()=>{
+      if(initialRequest===watchlistRequest&&!document.hidden&&watchlistScope==='release'&&
+         !window.WatchlistBrowser?.options().section&&
+         document.getElementById('tab-watchlist').classList.contains('active'))
+        renderWatchlist(false,false,true).catch(()=>{});
+    },1500);
+  });
   const retrySave=document.getElementById('storage-retry');if(retrySave)retrySave.onclick=retryDeviceSaves;
   window.addEventListener('focus',()=>{if(failedStorageKeys.size)retryDeviceSaves();});
   const saveStatus=document.getElementById('save-state');if(saveStatus)saveStatus.onkeydown=event=>{if(failedStorageKeys.size&&['Enter',' '].includes(event.key)){event.preventDefault();saveStatus.click();}};if(saveStatus)saveStatus.onclick=()=>{if(failedStorageKeys.size){document.querySelector('[data-tab=import]').click();const backup=document.getElementById('storage-backup');backup.closest('details')?.setAttribute('open','');backup.scrollIntoView({block:'center'});}};
@@ -1478,7 +1496,7 @@ async function initEmailAlerts() {
   } catch (err) { document.getElementById('email-alert-status').textContent = err.message; }
 }
 renderServiceSettings();
-document.getElementById('refresh-card-btn').onclick=async()=>{const btn=document.getElementById('refresh-card-btn');btn.disabled=true;try{await renderWatchlist(true);}catch(err){showToast(err.message);}finally{btn.disabled=false;}};
+document.getElementById('refresh-card-btn').onclick=async()=>{const btn=document.getElementById('refresh-card-btn');btn.disabled=true;btn.textContent='Checking…';try{await renderWatchlist(true);}catch(err){showToast(err.message);}finally{btn.disabled=false;btn.textContent='Check next 12';}};
 init().then(()=>setTimeout(initEmailAlerts,10000));
 
 document.querySelectorAll('[data-discovery-stage]').forEach(button=>button.onclick=()=>{searchRequest++;document.getElementById('search-input').value='';document.getElementById('search-clear-btn').hidden=true;document.getElementById('search-grid').hidden=true;document.getElementById('discover-grid').hidden=false;discoveryStage=button.dataset.discoveryStage;discoverPage=1;updateDiscoveryGuide();renderDiscover().catch(e=>showToast(e.message));});

@@ -145,3 +145,26 @@ body [hidden]{display:none!important}
  #tab-watchlist .watchlist-section-tools{margin:8px 0}
 }
 .pending-film-updates{right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));width:auto;max-width:min(190px,55vw);min-height:40px;padding:8px 11px;font-size:11px;line-height:1.3;text-align:center}
+
+
+/* Put useful movie information first. Unchecked titles live behind one
+   explicit Browse control, instead of six near-identical warning cards. */
+#tab-watchlist[data-scope="release"] #rw-unchecked-section[data-focused="false"] #rw-unchecked-grid{display:none!important}
+#tab-watchlist[data-scope="release"] #rw-unchecked-section[data-focused="false"]{margin:22px 0 14px;padding:10px 14px;border:1px solid #37483f;border-radius:6px;background:#151e1c}
+#tab-watchlist[data-scope="release"] #rw-unchecked-section[data-focused="false"]>h3{font-size:16px;margin:0 0 4px;color:#d9d9cf}
+#tab-watchlist[data-scope="release"] #rw-unchecked-section[data-focused="false"]>.group-note{margin:0 0 8px;color:#a7b8ad}
+#tab-watchlist[data-scope="release"] #rw-unchecked-section[data-focused="false"]>.section-show-all{min-height:40px;margin:2px 0 0;padding:8px 12px;font-size:12px}
+#tab-watchlist .rental-card.compact-film-card>.film-details-trigger{grid-column:2;grid-row:auto;justify-self:start;display:inline-flex;width:auto;min-height:34px;margin:2px 0 0!important;padding:4px 0!important;border-top:0!important;text-align:left;font-size:12px;line-height:1.4}
+#tab-watchlist .rental-card.compact-film-card>.release-stage-line{grid-column:2;margin:3px 0 0;padding:0;border:0;font-size:11px;line-height:1.4;color:#b8c4b8}
+#tab-watchlist #rw-unchecked-grid .rental-card.compact-film-card .cost-warning,
+#tab-watchlist #rw-development-grid .rental-card.compact-film-card .cost-warning{display:none!important}
+#tab-watchlist .rental-card.compact-film-card>.poster-pin{left:auto!important;right:10px!important;top:10px!important;width:36px;height:36px;min-height:36px}
+#tab-watchlist .rental-card.compact-film-card>.card-title{padding-right:40px;box-sizing:border-box}
+#tab-watchlist .rental-card.compact-film-card>.film-details-trigger:focus-visible{outline:2px solid #e5c477;outline-offset:3px}
+@media(max-width:600px){
+ #tab-watchlist .shelf-group>.card-row.wrap{gap:10px}
+ #tab-watchlist .rental-card.compact-film-card{padding:12px;row-gap:3px}
+ #tab-watchlist .rental-card.compact-film-card>.poster-pin{right:8px!important;top:9px!important}
+ #tab-watchlist .rental-card.compact-film-card>.card-title{font-size:16px!important}
+ #tab-watchlist .rental-card.compact-film-card .cost-badge{font-size:18px!important}
+}
