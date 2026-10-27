@@ -2,8 +2,16 @@
  const themes=[[/\bfound footage\b|\bmockumentary\b|\bfake documentary\b|\banalog horror\b/i,'recovered tapes and unreliable documents',2.5],[/\bsurreal\w*\b|\bexperimental\b|\bdream logic\b|\bdeadpan\b/i,'reality becoming less cooperative',2],[/\barchiv\w*\b|\binternet archaeology\b|\bobsess\w*\b/i,'archives and obsession spirals',1.5],[/\bfolk horror\b|\bwitchcraft\b|\bcosmic horror\b|\bliminal\b/i,'something spiritually off',2],[/\bmicrobudget\b|\boutsider art\b|\bregional filmmaking\b|\bunderground film\b/i,'outsider filmmaking',2]];
  function affinity(movie){const d=movie.meta||movie,words=[movie.overview,d.overview,...(d.keywords?.keywords||[]).map(k=>k.name||k)].filter(Boolean).join(' '),matches=themes.filter(([p])=>p.test(words));return {score:Math.min(6,matches.reduce((n,r)=>n+r[2],0)),themes:matches.map(r=>r[1]),source:'Your STATIC profile'};}
  function availableCandidates(movies,history,at=Date.now(),days=30){const recent=new Set((history||[]).filter(r=>at-r.at>=0&&at-r.at<days*86400000).map(r=>r.id));return movies.filter(m=>!recent.has(m.id));}
+ function viewingEligible(status,choice,budget,costModel){
+  // Discovery considers films independently from provider coverage. A chosen
+  // verified-only filter still requires a nonstale price/service observation.
+  if(choice==='any')return true;
+  if(!status||status.stale||!costModel)return false;
+  const cost=costModel.cost(status.offers||[],budget,false);
+  return cost.band==='free'||choice==='budget'&&cost.band==='cheap';
+ }
  function remember(history,id,at=Date.now()){return [...(history||[]).filter(r=>r.id!==id&&at-r.at<90*86400000),{id,at}].slice(-200);}
  function rewatchEvidence(movie){return !!(movie.owned||movie.favorite||Number(movie.rating)>=4.5||Number(movie.rewatches)>=2);}
  function eligibleDiscovery(movie,fit){return !!fit?.connection&&fit.score>=3&&((fit.connection.creators||[]).length>0||fit.connection.directors.length>0||fit.connection.writers.length>0||fit.connection.keywords.length>=2)||affinity(movie).score>=2;}
- return {affinity,availableCandidates,remember,rewatchEvidence,eligibleDiscovery};
+ return {affinity,availableCandidates,viewingEligible,remember,rewatchEvidence,eligibleDiscovery};
 });
