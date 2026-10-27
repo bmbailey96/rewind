@@ -566,7 +566,7 @@ window.addEventListener('rewind:state',refreshFollowControls);
 function renderCard(movie, opts = {}) {
   const {context='discover',status=null,changed=false}=opts;
   const card=document.createElement('article');card.className='rental-card compact-film-card'+(movie.releaseFile?' release-card':'');card.dataset.movieId=movie.id;
-  const image=posterUrl(movie.poster_path);const poster=document.createElement(image?'img':'div');poster.className='card-poster'+(image?'':' poster-missing');if(image){poster.loading='lazy';poster.decoding='async';poster.width=200;poster.height=300;poster.src=image;poster.alt=movie.title+' poster';poster.onerror=()=>{const fallback=document.createElement('div');fallback.className='card-poster poster-missing';fallback.textContent='POSTER UNAVAILABLE';poster.replaceWith(fallback);};}else{poster.textContent='NO POSTER ON FILE';}card.appendChild(poster);
+  const image=posterUrl(movie.poster_path||movie.detailsSnapshot?.poster_path||movie.meta?.poster_path);const poster=document.createElement(image?'img':'div');poster.className='card-poster'+(image?'':' poster-missing');if(image){poster.loading='lazy';poster.decoding='async';poster.width=200;poster.height=300;poster.src=image;poster.alt=movie.title+' poster';poster.onerror=()=>{if(!poster.dataset.retry){poster.dataset.retry='1';poster.src=image.replace('/w342/','/w185/');return;}const fallback=document.createElement('div');fallback.className='card-poster poster-missing';fallback.textContent='POSTER UNAVAILABLE';poster.replaceWith(fallback);};}else{poster.textContent='NO POSTER ON FILE';}card.appendChild(poster);
   const title=document.createElement('h3');title.className='card-title';title.textContent=movie.title;title.title=movie.title;card.appendChild(title);
   const meta=document.createElement('p');meta.className='card-meta';meta.textContent=[(movie.release_date||'').slice(0,4),movie.runtime?movie.runtime+' min':null].filter(Boolean).join(' · ');card.appendChild(meta);
   if(movie.director){const director=document.createElement('p');director.className='card-director';director.textContent=movie.director;director.title=movie.director;card.appendChild(director);}
@@ -586,7 +586,14 @@ function renderCard(movie, opts = {}) {
   if(costInfo){const headline=renderCostHeadline(costInfo);if(opts.collectionCost?.stale){const warning=headline.querySelector('.cost-warning');if(warning)warning.textContent=status?.checkedAt?'Last checked '+formatFilmDate(new Date(status.checkedAt).toISOString())+' · not refreshed':'Previous listing · check needed';}card.appendChild(headline);}
 
   const homeOffers=(status?.offers||[]).filter(o=>['subscription','free','rent','buy'].includes(o.kind));
-  if(homeOffers.length){const channels=document.createElement('div');channels.className='release-channels';const badge=document.createElement('span');badge.className='release-channel digital';badge.textContent=status.stale?'Digital · previous check':'Digital';channels.append(badge);card.append(channels);}
+  // Physical mail-order discs must never carry a DIGITAL badge.
+  const physicalOnly=costInfo?.physicalPurchase||costInfo?.band==='physicalbuy';
+  if(physicalOnly||homeOffers.length&&context!=='watchlist'){
+   const channels=document.createElement('div');channels.className='release-channels';
+   const badge=document.createElement('span');badge.className='release-channel '+(physicalOnly?'physical':'digital');
+   badge.textContent=physicalOnly?'PHYSICAL COPY':status?.stale?'Digital · previous check':'Digital';
+   channels.append(badge);card.append(channels);
+  }
 
   if(movie.discoveryFit||movie.requestedInterest){const reason=document.createElement('p');reason.className='discovery-reason';reason.textContent=movie.requestedInterest?'You asked to keep an eye on this one.':movie.discoveryFit.connection?.directors?.length?'From '+movie.discoveryFit.connection.directors.join(' and ')+', behind '+movie.discoveryFit.connection.seedTitle+'.':FilmOracle.reading(movie,{connection:null}).text;card.appendChild(reason);}if(movie.releaseFile&&context!=='watchlist')card.appendChild(renderReleaseFile(movie,status,true));
   if(status){const upcoming=(status.announcements||[]).filter(a=>a.kind==='subscription'&&a.date&&a.date>discoveryWindow().today).sort((a,b)=>a.date.localeCompare(b.date))[0];if(upcoming){const note=document.createElement('p');note.className='wait-advice';note.textContent=upcoming.provider+' on '+formatFilmDate(upcoming.date)+' · announced';card.appendChild(note);}else if(costInfo?.band==='premium'){const note=document.createElement('p');note.className='wait-advice';const pref=ReleaseModel.preference(movie.alert);const estimate=ReleaseModel.rentalForecast(movie,status,watchlist,discoveryWindow().today,pref.mode==='rental'?pref.maxPrice:rentalBudget);if(estimate){const timing=ReleaseModel.forecastTiming(estimate,discoveryWindow().today);note.classList.add('rental-forecast-note');const label=document.createElement('span');label.className='forecast-note-label';label.textContent='Cheaper rental · estimate';const when=document.createElement('span');when.className='forecast-note-date';when.textContent=timing.when;const away=document.createElement('span');away.className='forecast-note-away';away.textContent=timing.relative;note.append(label,when,document.createTextNode(' · '),away);note.title=(estimate.kind==='provisional'?'Low-confidence estimate from typical premium-rental timing.':'Estimate from comparable observed price drops.')+(status.stale?' Price needs a fresh check.':timing.daysAway<0?' No lower price verified yet.':' Not an announced reduction.');}else note.textContent='Above your $'+rentalBudget.toFixed(2)+' limit. No drop date announced.';card.appendChild(note);}}
@@ -622,10 +629,10 @@ function renderCard(movie, opts = {}) {
     // Saved films already appear in release tracking; email controls live in Details.
     const watched=document.createElement('button');watched.className='secondary';watched.textContent='MARK WATCHED';watched.onclick=()=>{document.getElementById('film-detail-dialog')?.close();markMovieWatched(movie);};secondaryActions.appendChild(watched);
     const next=status&&!status.stale?costInfo?.offer:null;
-    if(next?.link){const link=document.createElement('a');link.className='watch-link';link.textContent=opts.collectionCost?.stale?'CHECK OFFER':next.kind==='buy'?'BUY':next.kind==='rent'?'RENT':'WATCH';link.href=next.link;link.target='_blank';link.rel='noopener noreferrer';actions.prepend(link);}
+    if(next?.link){const link=document.createElement('a');link.className='watch-link';link.textContent=opts.collectionCost?.stale?'CHECK OFFER':ReleaseModel.physicalPurchase(next)?'BUY DISC':next.kind==='buy'?'BUY':next.kind==='rent'?'RENT':'WATCH';link.href=next.link;link.target='_blank';link.rel='noopener noreferrer';actions.prepend(link);}
     if(costInfo?.band==='premium'){const wait=document.createElement('button');wait.className='secondary wait-button';const pref=ReleaseModel.preference(movie.alert);wait.textContent=pref.mode==='rental'?'WAITING FOR $'+pref.maxPrice.toFixed(2):'WAIT FOR $'+rentalBudget.toFixed(2);wait.onclick=()=>{movie.alert={mode:'rental',maxPrice:rentalBudget};saveWatchlist();scheduleSync();showToast('Watching for a rental at $'+rentalBudget.toFixed(2)+' or less');renderWatchlist();};secondaryActions.appendChild(wait);}
   }else{
-    const next=!status?.stale?costInfo?.offer:null;if(next?.link){const watch=document.createElement('a');watch.className='watch-link';watch.textContent=next.kind==='rent'?'RENT':next.kind==='buy'?'BUY':'WATCH';watch.href=next.link;watch.target='_blank';watch.rel='noopener noreferrer';actions.appendChild(watch);}
+    const next=!status?.stale?costInfo?.offer:null;if(next?.link){const watch=document.createElement('a');watch.className='watch-link';watch.textContent=next.kind==='rent'?'RENT':ReleaseModel.physicalPurchase(next)?'BUY DISC':next.kind==='buy'?'BUY':'WATCH';watch.href=next.link;watch.target='_blank';watch.rel='noopener noreferrer';actions.appendChild(watch);}
     if(context==='physical'){const watched=document.createElement('button');watched.className='secondary';watched.textContent='MARK WATCHED';watched.onclick=()=>{document.getElementById('film-detail-dialog')?.close();markMovieWatched(movie);};secondaryActions.appendChild(watched);}
     const inList=watchlist.some(w=>w.id===movie.id),trackedFilm=watchlist.find(w=>w.id===movie.id);
     const followable=context==='discover'||context==='search';
@@ -640,7 +647,12 @@ function renderCard(movie, opts = {}) {
   }
   if(!current)body.appendChild(secondaryActions);
   if(context!=='watchlist')actions.querySelectorAll('.watch-link').forEach(link=>link.remove());if(context==='physical'||context==='picker'&&actions.querySelector('.track-action:disabled'))actions.querySelector('.track-action')?.remove();
-  if(actions.children.length)card.appendChild(actions);card.appendChild(details);balanceCardUpdates(card);
+  if(context==='watchlist'){
+    const footer=document.createElement('div');footer.className='film-card-footer';
+    if(!actions.children.length)footer.classList.add('no-primary-action');
+    footer.append(actions,details);card.appendChild(footer);
+  }else{if(actions.children.length)card.appendChild(actions);card.appendChild(details);}
+  balanceCardUpdates(card);
   if(!status&&context==='search')observeCardOffers(card,async()=>{
    try{const found=await deriveStatus(movie);if(!card.isConnected)return;current=found;if(movie.releaseFile)card.querySelector('.release-file')?.replaceWith(renderReleaseFile(movie,found,true));costInfo=ReleaseModel.cost(found.offers,rentalBudget,found.stale);card.querySelector('.cost-block')?.remove();actions.before(renderCostHeadline(costInfo));
     if(body.closest('dialog')?.open)fillDetails();
@@ -946,7 +958,7 @@ async function renderWatchlist(force = false, reuse = false, background = false)
     window.dispatchEvent(new Event('rewind:watchlist-ready'));
     return;
   }
-  const page=watchlistScope==='release'?WatchlistModel.releaseWatchPage(watchlistResults,{today:discoveryWindow().today,budget:rentalBudget,receipts:hubState.changeReceipts,limit:watchlistLimit,filter:costFilter,model:ReleaseModel,localListing:m=>{const local=typeof Hub==='undefined'||typeof Hub.localListing!=='function'?null:Hub.localListing(m);return local&&!local.stale&&/Kalispell/i.test(local.location)?local:null;}}):WatchlistModel.page(watchlistResults,{sort:watchlistSort,filter:costFilter,budget:rentalBudget,limit:watchlistLimit,model:ReleaseModel});
+  const page=watchlistScope==='release'?WatchlistModel.releaseWatchPage(watchlistResults,{today:discoveryWindow().today,budget:rentalBudget,receipts:hubState.changeReceipts,limit:watchlistLimit,filter:costFilter,model:ReleaseModel,ranker:watchlistTasteRanker(),localListing:m=>{const local=typeof Hub==='undefined'||typeof Hub.localListing!=='function'?null:Hub.localListing(m);return local&&!local.stale&&/Kalispell/i.test(local.location)?local:null;}}):WatchlistModel.page(watchlistResults,{sort:watchlistSort,filter:costFilter,budget:rentalBudget,limit:watchlistLimit,model:ReleaseModel});
   const displayed=page.rows.map(r=>r.entry);
   // Large watchlists advance through unverified titles, six automatically or
   // twelve on a manual check, never hundreds of network requests on a phone.
@@ -1053,17 +1065,23 @@ function updateAvailabilityCountWithoutRepaint(){
   if(browse){browse.textContent='Browse all '+unchecked;browse.setAttribute('aria-label','Show all '+unchecked+' Needs availability check titles');}
   return unchecked;
 }
+function watchlistTasteRanker(){
+ const seeds=HubModel.evidence(hubState.taste||[]),feedback=hubState.feedback||[];
+ const seedFeatures=new Map(seeds.map(seed=>[seed,HubModel.features(seed)]));
+ const ranked=new Map();
+ return film=>{const key=String(film.id||film.title);if(!ranked.has(key))ranked.set(key,WatchlistModel.recommendationScore(film,seeds,feedback,HubModel,TasteModel,seedFeatures));return ranked.get(key);};
+}
 function paintWatchlist(results,append=false){
   renderChangeStrip();
   const existing=append?new Set([...document.querySelectorAll('#tab-watchlist .shelf-group .rental-card')].map(card=>String(card.dataset.movieId))):new Set();
   document.querySelectorAll('[data-cost-filter]').forEach(btn=>{btn.classList.toggle('active',btn.dataset.costFilter===costFilter);btn.setAttribute('aria-pressed',String(btn.dataset.costFilter===costFilter));});
-  for(const id of ['watch-now','paid','waiting','rw-arrived','rw-available','rw-coming','rw-theater','rw-upcoming','rw-development','rw-waiting','rw-unchecked']){if(!append){document.getElementById(id+'-grid')?.replaceChildren();const section=document.getElementById(id+'-section');if(section)section.hidden=true;}}
+  for(const id of ['watch-now','paid','waiting','rw-arrived','rw-available','rw-coming','rw-physicalbuy','rw-theater','rw-upcoming','rw-development','rw-waiting','rw-unchecked']){if(!append){document.getElementById(id+'-grid')?.replaceChildren();const section=document.getElementById(id+'-section');if(section)section.hidden=true;}}
   if(document.getElementById('tab-watchlist').dataset.collection==='physical'){window.dispatchEvent(new Event('rewind:card-rendered'));return;}
   if(watchlistScope==='release'){
     const page=WatchlistModel.releaseWatchPage([...results,...(window.SavedProjects?.rows()||[])],{browse:window.WatchlistBrowser?.options()||{},today:discoveryWindow().today,budget:rentalBudget,receipts:hubState.changeReceipts,limit:watchlistLimit,filter:costFilter,model:ReleaseModel,localListing:m=>{const local=typeof Hub==='undefined'||typeof Hub.localListing!=='function'?null:Hub.localListing(m);return local&&!local.stale&&/Kalispell/i.test(local.location)?local:null;}});
-    const groups={included:'rw-arrived',cheap:'rw-available',premium:'rw-coming',theater:'rw-theater',upcoming:'rw-upcoming',development:'rw-development',waiting:'rw-waiting',unchecked:'rw-unchecked'};
-    const labels={included:'Included & free',cheap:'At your price',premium:'Higher prices',theater:'In Kalispell theaters',upcoming:'Upcoming releases',development:'Announced · no date',waiting:'Waiting for home release',unchecked:'Needs availability check'};
-    const descriptions={included:'On your services or your own shelf.',cheap:'Rentals up to $'+rentalBudget.toFixed(2)+'.',premium:'Higher rentals and purchase-only.',theater:'Confirmed local screenings.',upcoming:'Published dates, earliest first.',development:'Date not verified.',waiting:'Current home viewing not confirmed.',unchecked:'Unverified or outdated offers. Check the next batch, or browse the backlog.'};
+    const groups={included:'rw-arrived',cheap:'rw-available',premium:'rw-coming',physicalpurchase:'rw-physicalbuy',theater:'rw-theater',upcoming:'rw-upcoming',development:'rw-development',waiting:'rw-waiting',unchecked:'rw-unchecked'};
+    const labels={included:'Included & free',cheap:'At your price',premium:'Higher prices',physicalpurchase:'Physical editions for sale',theater:'In Kalispell theaters',upcoming:'Upcoming releases',development:'Announced · no date',waiting:'Waiting for home release',unchecked:'Needs availability check'};
+    const descriptions={included:'On your services or your own shelf.',cheap:'Rentals up to $'+rentalBudget.toFixed(2)+'.',premium:'Higher rentals and digital purchases.',physicalpurchase:'DVD, Blu-ray and other discs. Not digital downloads.',theater:'Confirmed local screenings.',upcoming:'Published dates, earliest first.',development:'Date not verified.',waiting:'Current home viewing not confirmed.',unchecked:'Unverified or outdated offers. Check the next batch, or browse the backlog.'};
     // The overview retains short section previews; a focused section grows in small scroll batches.
     const focusedSection=!!window.WatchlistBrowser?.options().section;
     document.getElementById('watchlist-more').hidden=!focusedSection||page.rows.length>=page.total;
