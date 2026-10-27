@@ -1028,6 +1028,7 @@ function paintWatchlist(results,append=false){
     }
     for(const [group,id] of Object.entries(groups)){
       const section=document.getElementById(id+'-section'),shown=page.rows.filter(r=>r.stage.group===group).length;
+      section.dataset.focused=String(focusedSection&&window.WatchlistBrowser?.options().section===group);
       section.hidden=!page.counts[group]||!!window.WatchlistBrowser?.options().section&&window.WatchlistBrowser.options().section!==group;
       section.querySelector('h3').firstChild.textContent=labels[group]+' ';
       document.getElementById(id+'-count').textContent='('+(page.counts[group]||0)+')';
