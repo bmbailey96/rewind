@@ -1,6 +1,6 @@
 (function(root,factory){const api=factory();if(typeof module==='object'&&module.exports)module.exports=api;else root.ReleaseModel=api;})(typeof globalThis!=='undefined'?globalThis:this,function(){
   const DAY=86400000;
-  const date = x => typeof x==='string' && /^\d{4}-\d{2}-\d{2}/.test(x) && Number.isFinite(Date.parse(x.slice(0,10)+'T12:00:00Z')) ? x.slice(0,10) : null;
+  const date=x=>{if(typeof x!=='string'||!/^\d{4}-\d{2}-\d{2}(?:$|T)/.test(x))return null;const day=x.slice(0,10),parsed=new Date(day+'T12:00:00Z');return Number.isFinite(parsed.getTime())&&parsed.toISOString().slice(0,10)===day?day:null;};
   const days=(a,b)=>Math.round((Date.parse(b+'T12:00:00Z')-Date.parse(a+'T12:00:00Z'))/DAY);
   const addDays=(d,n)=>new Date(Date.parse(d+'T12:00:00Z')+n*DAY).toISOString().slice(0,10);
   function datesFor(details){return details?.release_dates?.results?.find(r=>r.iso_3166_1==='US')?.release_dates || [];}
