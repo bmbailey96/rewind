@@ -133,6 +133,7 @@ const wait=()=>new Promise(r=>setTimeout(r,100));
  assert.ok(w.eval('collectSyncData().hub.seriesFollows').includes('tv:fixtureseries'));
  assert.equal(w.document.querySelectorAll('[data-media-filter=tv]').length,3,'Same explicit type choice exists in collection, Discover and digital Calendar');
  w.requestAnimationFrame=fn=>setTimeout(fn,0);w.scrollTo=()=>{};
+ w.Hub=w.testState.hubInterface;w.eval(fs.readFileSync(__dirname+'/../flow.js','utf8')); // Test the actual current interface, not just the legacy shell.
  const originalMovies=w.testState.movies();
  w.document.querySelector('[data-tab=watchlist]').click();media.setFilter('movie');
  w.testState.replaceMovies(Array.from({length:14},(_,i)=>({id:800000+i,title:'Browse fixture '+String(i).padStart(2,'0'),release_date:'2020-01-01',availabilitySnapshot:{checkedAt:w.Date.now(),quoteCheckedAt:w.Date.now(),offers:[{kind:'rent',provider:'Apple TV',price:3.99,format:'HD'}]}})));
