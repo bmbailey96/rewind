@@ -167,7 +167,7 @@
   if(id!=null){const byId=(films||[]).find(f=>String(f.id)===String(id));if(byId)return {state:'saved',entry:byId};}
   const year=String(movie?.release_date||movie?.primary_release_date||movie?.year||'').slice(0,4);
   const names=new Set([movie?.title,movie?.original_title,...(movie?.catalogAliases||[])].map(titleKey).filter(Boolean));
-  if(!/^\\d{4}$/.test(year)||!names.size)return null;
+  if(!/^\d{4}$/.test(year)||!names.size)return null;
   const matchTitleYear=row=>String(row?.year||row?.release_date||row?.primary_release_date||'').slice(0,4)===year&&
    [row?.title,row?.sourceTitle,row?.original_title].some(t=>names.has(titleKey(t)));
   const known=(films||[]).filter(matchTitleYear);
