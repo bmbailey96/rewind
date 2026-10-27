@@ -18,4 +18,14 @@ assert.match(html,/data-text="REWIND"/,'The visible site title remains accessibl
 assert.match(css,/prefers-reduced-motion:reduce/,'Logo respects reduced motion preferences');
 assert.match(css,/rw-tape-cyan/,'Logo has a real, CSS-only intermittent tape distortion');
 assert.match(css,/\.film-details-trigger::after\s*\{[\s\S]*?content:'↗'/,'Details arrow stays an inline typographic control');
+const Taste=require('../taste-model'),Release=require('../release-model');
+const providerOutage={stale:true,offers:[{kind:'rent',provider:'Prime Video',price:2.99}]};
+assert.equal(Taste.viewingEligible(null,'any',7.99,Release),true,'No price check must not exclude a taste recommendation');
+assert.equal(Taste.viewingEligible(providerOutage,'any',7.99,Release),true,'Provider outages do not make films ineligible for taste-only picks');
+assert.equal(Taste.viewingEligible(providerOutage,'budget',7.99,Release),false,'Old rental quotes cannot satisfy an explicitly verified budget filter');
+assert.equal(Taste.viewingEligible({stale:false,offers:[{kind:'rent',provider:'Prime Video',price:5.99}]},'budget',7.99,Release),true,'Verified affordable rental passes user filter');
+assert.equal(Taste.viewingEligible({stale:false,offers:[{kind:'subscription',provider:'HBO Max',included:true}]},'included',7.99,Release),true,'Verified included viewing passes streaming filter');
+assert.match(html,/<select id="picker-cost"><option value="any">/,'Best-match Oracle defaults to considering all films before checking where to watch');
+assert.match(fs.readFileSync(__dirname+'/../hub.js','utf8'),/TasteModel.viewingEligible/,'Oracle uses the separate verification eligibility rule');
+console.log('Taste-first recommendations: unchecked films eligible; explicitly verified viewing filters remain strict');
 console.log('STATIC interactions: diverse shelves, valid anniversaries, fresh moment prose, and cross-device additions/removals passed');
