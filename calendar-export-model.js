@@ -3,7 +3,7 @@
  const safe=s=>{try{const u=new URL(s);return u.protocol==='https:'?u.href:'';}catch{return '';}};
  const titleKey=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]/g,'');
  function localMovieEvent(m,items,today){
-  const matches=(items||[]).filter(r=>r.scope!=='national'&&(r.tmdbId===m.id||titleKey(r.title)===titleKey(m.title)));
+  const matches=(items||[]).filter(r=>r.scope!=='national'&&(Number.isSafeInteger(r.tmdbId)?r.tmdbId===m.id:titleKey(r.title)===titleKey(m.title)));
   if(matches.length!==1)return null;
   const r=matches[0],days=[...(r.dates||[]),...(r.screenings||[]).map(x=>x.date)].filter(d=>date(d)&&d>=today).sort(),day=days[0];
   if(!day||!safe(r.url))return null;
