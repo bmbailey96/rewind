@@ -117,7 +117,7 @@ const RewindMedia=(()=>{
   if(g.seasons.length){const strip=el('div',null,'tv-seasons');for(const r of g.seasons)strip.append(el('span','S'+r.season+' · '+(r.partial?'partly watched':r.status==='watched'?(r.rating==null?'watched':r.rating+' ★'):r.status==='watchlist'?'watchlist':'not watched')));c.append(strip);}
   if(m.discoveryReason)c.append(el('p',m.discoveryReason,'discovery-reason'));
   const dates=TV.eventsFor(g);if(dates.length)c.append(el('p',dates.slice(0,2).map(e=>formatFilmDate(e.date)+' · '+e.label).join(' / '),'tv-release-note'));
-  if(!current.stale&&current.offers.length)c.append(el('p','Series-level streaming listing. Confirm the season you need on the service.','offer-note'));
+  if(!current.stale&&current.offers.length&&opts.context!=='watchlist')c.append(el('p','Series-level streaming listing. Confirm the season you need on the service.','offer-note'));
   const actions=el('div',null,'card-actions');
   if(!g.intent){const save=button('Add to watchlist',()=>add(full));save.className='track-action';actions.append(save);}
   const details=button('Details & viewing',()=>{
