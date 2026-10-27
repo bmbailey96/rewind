@@ -6,10 +6,11 @@ function renderSaveState(){const el=document.getElementById('save-state');if(!el
 
 const pendingDeviceSaves=new Map();
 function paintStorageRecovery(){
- const backup=document.getElementById('storage-backup'),status=document.getElementById('storage-status');
+ const backup=document.getElementById('storage-backup'),status=document.getElementById('storage-status'),panel=document.getElementById('storage-recovery');
+ if(panel)panel.hidden=!failedStorageKeys.size;
  if(backup)backup.hidden=!failedStorageKeys.size;
  if(status){status.hidden=!failedStorageKeys.size;const full=[...failedStorageKeys].some(key=>['QuotaExceededError','NS_ERROR_DOM_QUOTA_REACHED'].includes(StorageModel.failure(key)));
-  status.textContent=failedStorageKeys.size?(full?'This device’s storage is full. ':'This device could not save the latest changes. ')+'The previous local save is intact. Cloud sync has a separate status. Retry the device save or download a backup before closing.':'';
+  status.textContent=failedStorageKeys.size?(full?'Device storage full. ':'Device save failed. ')+'Your last saved copy is intact, but recent changes may not be saved here. Download a backup before closing.':'';
  }
  const retry=document.getElementById('storage-retry');if(retry)retry.hidden=!failedStorageKeys.size;renderSaveState();
 }
@@ -36,7 +37,7 @@ function loadSeenSet() {
 }
 
 function saveSeenSet() {
-  localStorage.setItem(SEEN_KEY, JSON.stringify([...seenSet]));
+  persistData(SEEN_KEY,[...seenSet]);
   window.dispatchEvent(new Event('rewind:seen-updated'));
 }
 
@@ -177,7 +178,7 @@ function loadSkipSet() {
 }
 
 function saveSkipSet() {
-  localStorage.setItem(SKIP_KEY, JSON.stringify([...skipSet]));
+  persistData(SKIP_KEY,[...skipSet]);
   updateBrowseDismissControl();
 }
 
@@ -920,7 +921,7 @@ async function renderWatchlist(force = false, reuse = false, background = false)
   const targets=force?displayed:reuse?[]:displayed.filter(entry=>!WatchlistModel.freshSnapshot(entry)&&!watchlistBackgroundChecked.has(entry.id)).slice(0,WATCHLIST_BACKGROUND_CHECKS);
   if(!targets.length){
     loading.textContent='';
-    statusEl.textContent='Showing saved results. Check shown films for current availability.';
+    statusEl.textContent=''; // No persistent status message when all results are already painted.
     window.dispatchEvent(new Event('rewind:watchlist-ready'));
     return;
   }
