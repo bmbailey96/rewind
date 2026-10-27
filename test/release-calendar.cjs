@@ -1,7 +1,7 @@
 const assert=require('node:assert/strict'),M=require('../calendar-export-model.js'),C=require('../lib/release-calendar.cjs'),W=require('../watchlist-model.js'),R=require('../release-model.js');
 const today='2026-10-21',known={id:1,title:'Digger',detailsSnapshot:{status:'Released',release_dates:{results:[{iso_3166_1:'US',release_dates:[{type:3,release_date:'2026-10-02'}]}]}}},unknown={id:2,title:'They Follow',detailsSnapshot:{status:'Planned'}};
 const released=W.releaseStage(known,{offers:[]},today,7.99,[],R),planned=W.releaseStage(unknown,{offers:[]},today,7.99,[],R);
-assert.equal(released.group,'waiting');assert.equal(planned.group,'development');assert.equal(W.stageCost(unknown,{},planned,{}).badge,'IN DEVELOPMENT');assert.equal(W.stageCost(known,{},released,{}).badge,'NOT CHECKED');
+assert.equal(released.group,'unchecked','Unchecked or old offer data is not proof of present access');assert.equal(planned.group,'development');assert.equal(W.stageCost(unknown,{},planned,{}).badge,'IN DEVELOPMENT');assert.equal(W.stageCost(known,{},released,{}).badge,'NOT CHECKED');
 assert.equal(M.movieEvents({id:99,title:'Foreign catalog date',release_date:'2027-01-01'},today).length,0,'Unspecified-region catalog dates do not become US calendar promises');
 assert.equal(M.movieEvents(unknown,today).length,0,'Undated projects never acquire calendar dates');
 const events=M.tvEvents({id:3,name:'True Detective',seasons:[{season_number:5,air_date:null},{season_number:6,air_date:'2028-02-29'}]},[5],today);assert.deepEqual(events,[],'A saved undated season cannot borrow another season’s date');
@@ -23,14 +23,22 @@ const local=[{title:accessFilm.title,scope:'local',dates:['2027-01-08','2027-01-
 const booked=M.movieEvents(accessFilm,today,local);assert.equal(booked.find(e=>e.key.endsWith(':kalispell')).date,'2027-01-08');assert.equal(M.movieEvents(accessFilm,today,[{...local[0],scope:'national'}]).some(e=>e.key.endsWith(':kalispell')),false);assert.equal(M.movieEvents(accessFilm,today,[local[0],local[0]]).some(e=>e.key.endsWith(':kalispell')),false,'Ambiguous matches do not create bookings');
 assert.equal(M.ics([{key:'movie:77:theatrical',title:'US theater',date:'2027-01-01'}],0,{type:'movie'}).includes('BEGIN:VEVENT'),false,'Old cached national events are excluded immediately');
 assert.equal(C.events({cache:{'movie:77':{checkedAt:1,events:[{key:'movie:77:theatrical',date:'2027-01-01',title:'Cliff · US theaters'}]}}}).length,0);
+const conflict=M.movieEvents(accessFilm,today,[{...local[0],tmdbId:987654}]);assert.equal(conflict.some(e=>e.key.endsWith(':kalispell')),false,'A matching title with a conflicting catalog identity is not a confirmed booking');
+const laterDay=new Date(Date.now()+14*86400000).toISOString().slice(0,10),earlierDay=new Date(Date.now()-40*3600000).toISOString().slice(0,10);
+const expired={enabled:true,members:[{key:'movie:77',type:'movie',id:77,title:accessFilm.title}],local:{items:[{...local[0],dates:[laterDay]}],checkedAt:Date.now()-40*3600000},cache:{'movie:77':{checkedAt:Date.now(),title:accessFilm.title,events:[{key:'movie:77:kalispell',date:laterDay,title:accessFilm.title+' · Kalispell Cinemark'},{key:'movie:77:digital',date:laterDay,title:accessFilm.title+' · Digital rent / buy'}]}}};
+assert.equal(C.events(expired).some(e=>e.key.endsWith(':kalispell')),false,'Expired local listing must not remain a future confirmed calendar event');
+assert.equal(C.events(expired).some(e=>e.key.endsWith(':digital')),true,'Expiry of cinema checks must not erase independent digital dates');
+const previouslyPlayed={...expired,cache:{'movie:77':{...expired.cache['movie:77'],events:[{key:'movie:77:kalispell',date:earlierDay,title:accessFilm.title+' · Kalispell Cinemark'}]}}};
+assert.equal(C.events(previouslyPlayed).some(e=>e.key.endsWith(':kalispell')),true,'Historical verified screenings may remain in calendar history');
+
 console.log('Movie calendar access: confirmed Kalispell, Netflix and digital dates; national and ambiguous bookings excluded');
 
 (async()=>{
  const at=Date.parse('2027-01-08T18:00:00Z'),member={key:'movie:77',type:'movie',id:77,title:accessFilm.title};
  const owner={enabled:true,members:[member],cache:{'movie:77':{title:member.title,checkedAt:at,events:[]}}};let calls=0;
- const refreshed=await C.refresh(owner,async url=>{calls++;assert.match(String(url),/rewind-cinema/);return {ok:true,json:async()=>({local:{stale:false,items:local}})};},at);
+ const refreshed=await C.refresh(owner,async url=>{calls++;assert.match(String(url),/rewind-cinema/);return {ok:true,json:async()=>({local:{stale:false,items:local,checkedAt:at}})};},at);
  assert.equal(calls,1,'Local listings refresh independently of the catalog batch');assert.equal(refreshed.cache['movie:77'].events[0].date,'2027-01-08');
- const again=await C.refresh(refreshed,async()=>({ok:true,json:async()=>({local:{stale:false,items:[{...local[0],dates:['2027-01-09']}]}})}),at+86400000,0);
+ const again=await C.refresh(refreshed,async()=>({ok:true,json:async()=>({local:{stale:false,items:[{...local[0],dates:['2027-01-09']}],checkedAt:at+86400000}})}),at+86400000,0);
  assert.equal(again.cache['movie:77'].events[0].date,'2027-01-08','A screening run does not move its opening event forward every day');
  console.log('Local calendar refresh: independent listings and stable opening day across subsequent screening checks');
 })().catch(e=>{console.error(e);process.exitCode=1;});
