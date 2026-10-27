@@ -111,3 +111,37 @@ body [hidden]{display:none!important}
 #tab-watchlist .watchlist-section-tools>.sort-field{display:flex;align-items:center;gap:8px;min-width:0;font-size:12px;color:#b8c8bd}
 #tab-watchlist .watchlist-section-tools>.sort-field select{min-width:135px;max-width:220px;min-height:44px;padding:9px 10px;background:#151e1d!important;color:#e7e9e3!important;border:1px solid #52615c!important;border-radius:4px}
 @media(max-width:600px){#tab-watchlist .watchlist-section-tools>.sort-field{width:100%;justify-content:space-between}#tab-watchlist .watchlist-section-tools>.sort-field select{flex:1;max-width:none}}
+
+
+/* Mobile Watchlist: visible sort, compact actions, and safety-first storage recovery.
+   Overrides retired Release Watch rule that hid the shared Sort select. */
+#tab-watchlist[data-scope="release"] #sort-select:not([hidden]){display:block}
+#tab-watchlist>.panel-head{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px}
+#tab-watchlist>.panel-head .header-saved{flex:0 0 auto;width:auto;max-width:none;margin-left:auto;min-height:36px;padding:7px 10px;border:1px solid #52645b;border-radius:4px;background:transparent;color:#c5d4c7;font-size:12px;white-space:nowrap}
+#tab-watchlist .watchlist-navigation{display:none}
+#tab-watchlist .watchlist-toolbar{margin:2px 0 6px;gap:0}
+#tab-watchlist .watchlist-primary{margin:9px 0 3px;row-gap:8px;column-gap:10px}
+#tab-watchlist .watchlist-primary>.media-type-filters{margin:0}
+#tab-watchlist .watchlist-primary>.watchlist-check{grid-column:4;display:flex;align-items:end;justify-content:stretch;gap:6px;min-width:0;margin:0}
+#tab-watchlist .watchlist-primary>.watchlist-check button{width:100%;min-width:0;min-height:42px;padding:8px 10px;font-size:12px;line-height:1.25;white-space:normal}
+#tab-watchlist .watchlist-primary>.watchlist-check [role=status]:empty{display:none}
+#tab-watchlist .watchlist-primary>.watchlist-check [role=status]:not(:empty){display:block;font-size:11px;line-height:1.3}
+#tab-watchlist .watchlist-price-help{margin:0 0 5px}
+#tab-watchlist .watchlist-price-help summary{min-height:28px;padding:2px 0;font-size:11px}
+#tab-watchlist .storage-recovery{margin:8px 0 10px;padding:11px 12px;border:1px solid #80564e;border-left:3px solid #d3a18b;border-radius:4px;background:#241b1a}
+#tab-watchlist .storage-recovery .storage-status{padding:0;margin:0 0 9px;border:0;background:transparent;font-size:12px;line-height:1.45;color:#f0cbbb}
+#tab-watchlist .storage-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+#tab-watchlist .storage-actions button{width:auto;flex:1 1 120px;min-height:40px;padding:8px 10px;margin:0;font-size:12px;line-height:1.25}
+@media(max-width:850px){#tab-watchlist .watchlist-primary>.watchlist-check{grid-column:3}}
+@media(max-width:600px){
+ #tab-watchlist .watchlist-primary{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+ #tab-watchlist .watchlist-primary>.media-type-filters,
+ #tab-watchlist .watchlist-primary>input[type=search]{grid-column:1/-1}
+ #tab-watchlist .watchlist-primary .budget-field{grid-column:1;max-width:none}
+ #tab-watchlist .watchlist-primary .budget-field input{max-width:none;width:100%}
+ #tab-watchlist .watchlist-primary>.watchlist-check{grid-column:2;align-self:end}
+ #tab-watchlist .watchlist-field select,#tab-watchlist .watchlist-field input{min-height:42px}
+ #tab-watchlist .watchlist-primary>.watchlist-check button{min-height:42px}
+ #tab-watchlist .watchlist-section-tools{margin:8px 0}
+}
+.pending-film-updates{right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));width:auto;max-width:min(190px,55vw);min-height:40px;padding:8px 11px;font-size:11px;line-height:1.3;text-align:center}
