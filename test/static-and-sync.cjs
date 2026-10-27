@@ -11,4 +11,11 @@ assert.deepEqual(D.mixed([{...a,discoveryCategory:'Horror'},{...b,discoveryCateg
 const at=Date.parse('2026-10-09T18:48:00Z'),film={id:8,title:'A Strange Film',overview:'A surreal mystery.',meta:{genres:[{name:'Mystery'}]}};
 const reading=O.momentReading(film,{checkedAt:at,weather:{current:{temperature_2m:71,cloud_cover:10}}},at);assert.match(reading.text,/12:48 PM/);assert.match(reading.text,/71°F/);assert.match(reading.text,/If daylight/);assert.match(reading.text,/A Strange Film/);assert.match(reading.text,/fictional excuse/);
 assert.doesNotMatch(O.momentReading(film,{checkedAt:at-86400000,weather:{current:{temperature_2m:71}}},at).text,/71°F/,'Stale weather stays out of the reading');assert.doesNotMatch(reading.text,/you rated|shares.*with/i);
+const fs=require('node:fs');const html=fs.readFileSync(__dirname+'/../index.html','utf8'),css=fs.readFileSync(__dirname+'/../media.css','utf8');
+assert.doesNotMatch(html,/a good night starts with a bad idea/i,'Homepage no longer uses the unwanted tagline');
+assert.match(html,/class="brand-lockup"/,'REWIND has a dedicated compact logo');
+assert.match(html,/data-text="REWIND"/,'The visible site title remains accessible');
+assert.match(css,/prefers-reduced-motion:reduce/,'Logo respects reduced motion preferences');
+assert.match(css,/rw-tape-cyan/,'Logo has a real, CSS-only intermittent tape distortion');
+assert.match(css,/\.film-details-trigger::after\s*\{[\s\S]*?content:'↗'/,'Details arrow stays an inline typographic control');
 console.log('STATIC interactions: diverse shelves, valid anniversaries, fresh moment prose, and cross-device additions/removals passed');
