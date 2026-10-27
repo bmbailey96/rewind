@@ -256,7 +256,7 @@ const Hub = (()=>{
    const event=events.find(e=>HubModel.matchEvent(e,movie)&&e.end>=day&&!hubState.hidden.includes(e.id));
    let channels=card.querySelector('.release-channels');
    for(const screening of matched){
-    if(!channels){channels=node('div',null,'release-channels');card.querySelector('.film-details-trigger')?.before(channels);}
+    if(!channels){channels=node('div',null,'release-channels');card.querySelector('.film-card-footer,.film-details-trigger')?.before(channels);}
     if(!channels.querySelector('.'+(screening.venueId==='roxy'?'roxy':'theater')))channels.append(channelBadge({...screening,kind:'local'}));
    }
    const r=local||event;
@@ -266,7 +266,7 @@ const Hub = (()=>{
       document.querySelector('[data-tab="upcoming"]').click();
       showEvent({...r,kind:local?'local':'event',stale:!!feed?.stale});
     },'local-card-note');
-    card.querySelector('.film-details-trigger')?.before(note);
+    card.querySelector('.film-card-footer,.film-details-trigger')?.before(note);
     // A previous venue snapshot is not proof the film is in theaters now.
     if(local&&!feed?.stale&&!movie.availabilitySnapshot?.offers?.length){
      const badge=card.querySelector('.cost-badge'),caption=card.querySelector('.cost-caption');

@@ -60,8 +60,9 @@ const wait=()=>new Promise(r=>setTimeout(r,100));
  const tvCard=media.tvCard(media.asMedia(media.groups().find(g=>g.id==='tv:fixtureseries')));
  assert.equal(tvCard.querySelector('.card-actions button'),null,'Saved TV does not show a duplicate Save control');
  assert.ok(![...tvCard.querySelectorAll('.card-actions button')].some(b=>/follow|save/i.test(b.textContent)),'Release email controls belong in details, not beside Save');
- const poster=tvCard.querySelector('img.card-poster');poster.dispatchEvent(new w.Event('error'));
- assert.equal(tvCard.querySelector('.poster-missing').textContent,'POSTER UNAVAILABLE','Broken TV images keep a stable placeholder');
+ const poster=tvCard.querySelector('img.card-poster');poster.dispatchEvent(new w.Event('error'));assert.match(poster.src,/w185/,'Broken poster retries a smaller thumbnail');poster.dispatchEvent(new w.Event('error'));
+ assert.equal(tvCard.querySelector('.poster-missing').textContent,'POSTER UNAVAILABLE','Broken TV images keep a stable placeholder after retry');
+ const savedTVCard=media.tvCard(media.asMedia(media.groups().find(g=>g.id==='tv:fixtureseries')),{context:'watchlist'});assert.ok(savedTVCard.querySelector('.film-card-footer .film-details-trigger'),'Saved TV shares the compact Details action row');
  const tvCSS=fs.readFileSync(__dirname+'/../media.css','utf8');
  assert.match(tvCSS,/#tv-grid>\.rental-card\.compact-film-card\{display:grid;grid-template-columns:80px minmax\(0,1fr\)/,'TV shelf defines its own shared-card grid');
 

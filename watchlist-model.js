@@ -80,6 +80,7 @@
   else if(cost?.offer?.kind==='physical')group='included';
   else if(fresh&&cost?.band==='free')group='included';
   else if(fresh&&cost?.band==='cheap')group='cheap';
+  else if(fresh&&cost?.band==='physicalbuy')group='physicalpurchase';
   else if(fresh&&['premium','buy','unknown'].includes(cost?.band))group='premium';
   else if(local&&!local.stale)group='theater';
   else if(opening?.date>today||home?.date>today)group='upcoming';
@@ -92,14 +93,34 @@
   return {group,date:group==='theater'?local.date:group==='upcoming'?([opening?.date,home?.date].filter(d=>d&&d>today).sort()[0]):home?.date||null,opening,label:home?.label||null,home,local,newArrival:arrival,stale:!fresh&&cost?.offer?.kind!=='physical'};
  }
  function stageCost(movie,status,stage,cost){if(stage.group==='upcoming')return {...cost,badge:stage.home?.date===stage.date?'HOME RELEASE':'UNRELEASED',caption:stage.date?'Release '+stage.date:'Premiere date TBA'};if(stage.group==='theater')return {...cost,badge:'LOCAL SCREENING',caption:'Listed near you'};if(stage.group==='development'){const state=status?.details?.status||movie.detailsSnapshot?.status||movie.productionStatus||'';return {...cost,badge:state==='In Production'?'IN PRODUCTION':state==='Post Production'?'POST-PRODUCTION':['Rumored','Planned'].includes(state)?'IN DEVELOPMENT':'DATE TBA',caption:movie.mediaType==='tv'?'Next season not released':state?'Release date unannounced':'Release status unverified'};}if(['waiting','unchecked'].includes(stage.group))return {...cost,badge:!status?.checkedAt?'NOT CHECKED':stage.stale?'CHECK OUTDATED':movie.mediaType==='tv'?'SEASON UNVERIFIED':'NO OFFER FOUND',caption:!status?.checkedAt?'Viewing options have not been verified':stage.stale?'Check current viewing options':movie.mediaType==='tv'?'Check the season on the service':'No current home offer returned'};return cost;}
- function releaseWatchPage(results,{limit=24,model,budget=7.99,filter='all',today,receipts=[],localListing=()=>null,browse=null}){
-  const order={included:0,cheap:1,premium:2,theater:3,upcoming:4,waiting:5,unchecked:6,development:7};
+ function recommendationScore(movie,seeds=[],feedback=[],hub=null,staticProfile=null,seedFeatures=null){
+  const meta={...(movie.detailsSnapshot||{}),...(movie.meta||{})};
+  if(!meta.genres?.length&&movie.genre_ids?.length)meta.genres=movie.genre_ids.map(id=>({id,name:String(id)}));
+  if(!meta.credits?.crew?.length&&movie.director)meta.credits={crew:String(movie.director).split(',').map(name=>({job:'Director',name:name.trim()}))};
+  const candidate={...movie,meta};
+  const affinity=hub?.affinity?.(candidate,seeds,feedback,seedFeatures)?.score||0;
+  const profile=staticProfile?.affinity?.(candidate)?.score||0;
+  const candidateGenres=new Set(genreIds(movie));
+  let genreMatch=0,directorMatch=0;
+  const directors=new Set(String(movie.director||'').split(',').map(x=>x.trim().toLowerCase()).filter(Boolean));
+  for(const seed of seeds){
+   if(seed.id===movie.id)continue;
+   const similarity=[...candidateGenres].filter(id=>genreIds(seed).includes(id)).length;
+   const weight=Math.max(0.4,Number(seed.rating)>=4?Number(seed.rating)-3:seed.favorite?1.4:0.6);
+   genreMatch=Math.max(genreMatch,Math.min(similarity,3)*weight);
+   if(directors.size){const other=String(seed.director||'').split(',').map(x=>x.trim().toLowerCase());if(other.some(name=>directors.has(name)))directorMatch=Math.max(directorMatch,5*weight);}
+  }
+  const negative=feedback.some(r=>r.id===movie.id&&r.kind==='notforme')?-30:0;
+  return affinity*1.5+profile*0.65+genreMatch*0.8+directorMatch+negative;
+ }
+ function releaseWatchPage(results,{limit=24,model,budget=7.99,filter='all',today,receipts=[],localListing=()=>null,browse=null,ranker=null}){
+  const order={included:0,cheap:1,premium:2,physicalpurchase:3,theater:4,upcoming:5,waiting:6,unchecked:7,development:8};
   const rows=results.map(r=>{
    const cost=model.cost(r.status?.offers,budget,false);
-   const stage=releaseStage(r.entry,r.status,today,budget,receipts,model,localListing(r.entry));if(browse&&stage.group==='waiting'&&(!r.status?.checkedAt||stage.stale))stage.group='unchecked';return {...r,cost,stage};
-  }).filter(r=>filter==='all'||filter==='free'&&r.stage.group==='included'||filter==='cheap'&&r.stage.group==='cheap'||filter==='premium'&&r.stage.group==='premium'||filter==='waiting'&&['waiting','unchecked','upcoming','development','theater'].includes(r.stage.group));
+   const stage=releaseStage(r.entry,r.status,today,budget,receipts,model,localListing(r.entry));if(browse&&stage.group==='waiting'&&(!r.status?.checkedAt||stage.stale))stage.group='unchecked';return {...r,cost,stage,rank:typeof ranker==='function'&&r.entry&&!r.entry.project?Number(ranker(r.entry))||0:0};
+  }).filter(r=>filter==='all'||filter==='free'&&r.stage.group==='included'||filter==='cheap'&&r.stage.group==='cheap'||filter==='premium'&&['premium','physicalpurchase'].includes(r.stage.group)||filter==='waiting'&&['waiting','unchecked','upcoming','development','theater'].includes(r.stage.group));
   const chosen=m=>m.rewindSaved===true||/^Rewind (discover|calendar|watchlist)$/.test(m.source||'');
-  rows.sort((a,b)=>Number(!!b.entry.pinned)-Number(!!a.entry.pinned)||Number(chosen(b.entry))-Number(chosen(a.entry))||(browse&&chosen(a.entry)&&chosen(b.entry)?(b.entry.addedAt||0)-(a.entry.addedAt||0):0)||order[a.stage.group]-order[b.stage.group]||
+  rows.sort((a,b)=>Number(!!b.entry.pinned)-Number(!!a.entry.pinned)||(ranker?(order[a.stage.group]-order[b.stage.group]||b.rank-a.rank):0)||Number(chosen(b.entry))-Number(chosen(a.entry))||(browse&&chosen(a.entry)&&chosen(b.entry)?(b.entry.addedAt||0)-(a.entry.addedAt||0):0)||order[a.stage.group]-order[b.stage.group]||
    (a.stage.group==='premium'?({premium:0,buy:1,unknown:2}[a.cost.band]??2)-({premium:0,buy:1,unknown:2}[b.cost.band]??2):0)||
    (['cheap','premium'].includes(a.stage.group)?(a.cost.price??Infinity)-(b.cost.price??Infinity):0)||
    (['waiting','upcoming','development','theater'].includes(a.stage.group)?String(a.stage.date||'9999').localeCompare(String(b.stage.date||'9999')):0)||
@@ -130,7 +151,7 @@
    if(browse.sort==='changed')rows.sort((a,b)=>(b.entry.statusChangedAt||b.entry.lastChange?.at||0)-(a.entry.statusChangedAt||a.entry.lastChange?.at||0)||a.entry.title.localeCompare(b.entry.title));
    if(browse.sort==='price')rows.sort((a,b)=>(a.cost.price??Infinity)-(b.cost.price??Infinity)||a.entry.title.localeCompare(b.entry.title));
    if(browse.section)preview=rows.filter(r=>r.stage.group===browse.section).slice(0,limit);
-   else{const selected=new Set();for(const group of Object.keys(counts)){const shelf=rows.filter(r=>r.stage.group===group),first=shelf.slice(0,6),tv=shelf.find(r=>r.entry.mediaType==='tv');if(tv&&first.length===6&&!first.some(r=>r.entry.mediaType==='tv'))first[5]=tv;for(const row of first)selected.add(row);}preview=rows.filter(r=>selected.has(r));}
+   else{const selected=new Set();for(const group of Object.keys(counts))for(const row of rows.filter(r=>r.stage.group===group).slice(0,6))selected.add(row);preview=rows.filter(r=>selected.has(r));}
 
   }
   return {rows:preview,total:browse?.section?(counts[browse.section]||0):rows.length,counts};
@@ -178,5 +199,5 @@
  function rewindAdditions(movies,keys=[]){const imported=new Set(keys);return movies.filter(m=>m.id&&!m.letterboxdWatchlist&&!/Letterboxd watchlist/i.test(m.source||'')&&!imported.has(sourceKey(m)));}
  function exportCSV(movies,keys=[]){const field=value=>'"'+String(value??'').replace(/"/g,'""')+'"';return 'tmdbID,Title,Year\r\n'+rewindAdditions(movies,keys).map(m=>[m.id,field(m.title),String(m.release_date||'').slice(0,4)].join(',')).join('\r\n')+'\r\n';}
  function page(results,{sort='cost',filter='all',budget=7.99,limit=60,model}){const ranks={free:0,cheap:1,premium:2,unknown:3,buy:4,waiting:5};const rows=results.map(r=>({...r,cost:model.cost(r.status.offers,budget,r.status.stale)})).filter(r=>filter==='all'||filter===r.cost.band);const compare={price:(a,b)=>(a.cost.price??Infinity)-(b.cost.price??Infinity),changed:(a,b)=>(b.entry.statusChangedAt||0)-(a.entry.statusChangedAt||0),added:(a,b)=>(b.entry.addedAt||0)-(a.entry.addedAt||0),release:(a,b)=>String(b.entry.release_date||'').localeCompare(a.entry.release_date||''),az:(a,b)=>a.entry.title.localeCompare(b.entry.title)};rows.sort((a,b)=>Number(!!b.entry.pinned)-Number(!!a.entry.pinned)||(sort==='cost'?ranks[a.cost.band]-ranks[b.cost.band]||(a.cost.price??Infinity)-(b.cost.price??Infinity):(compare[sort]||compare.changed)(a,b))||a.entry.title.localeCompare(b.entry.title));return {rows:rows.slice(0,limit),total:rows.length};}
- return {addedAt,recentRelease,recentReleases,backfillReleaseFollows,followsRelease,upcomingHome,theatricalDate,releaseOpening,stageCost,releaseStage,releaseWatchPage,merge,titleKey,sourceKey,match,releaseYears,resolveCatalog,matchQueue,matchSummary,page,actionable,freshSnapshot,refreshCandidates,genreIds,rewindAdditions,exportCSV};
+ return {addedAt,recentRelease,recentReleases,backfillReleaseFollows,followsRelease,upcomingHome,theatricalDate,releaseOpening,stageCost,releaseStage,releaseWatchPage,recommendationScore,merge,titleKey,sourceKey,match,releaseYears,resolveCatalog,matchQueue,matchSummary,page,actionable,freshSnapshot,refreshCandidates,genreIds,rewindAdditions,exportCSV};
 });

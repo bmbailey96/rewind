@@ -264,3 +264,61 @@ body>.counter .tabs .tab-btn{min-height:44px;padding:9px 2px;font-size:12px;line
 #tab-watchlist #card-check-status:not([hidden]){display:block;margin:7px 0 11px;font-size:12px;line-height:1.5;color:#a8bdb0;max-width:80ch}
 #tab-watchlist #card-check-status:empty{display:none!important}
 #tab-watchlist[data-collection=physical] #card-check-status{display:none!important}
+
+/* Browseable availability shelves use one short, predictable action row.
+   Streaming format is already present in each price caption, so keep only
+   the physical-disc badge to distinguish products from digital licenses. */
+#tab-watchlist .rental-card.compact-film-card>.film-card-footer{
+ grid-column:1/-1;grid-row:auto;display:flex;align-items:center;
+ justify-content:space-between;gap:10px;margin:5px 0 0;
+ width:100%;min-width:0;
+}
+#tab-watchlist .rental-card.compact-film-card>.film-card-footer.no-primary-action{
+ grid-column:2;justify-content:flex-start;margin-top:1px;
+}
+#tab-watchlist .film-card-footer>.card-actions{
+ display:flex;flex:0 1 auto;min-width:0;gap:6px;margin:0;padding:0;
+ align-items:center;flex-wrap:wrap;
+}
+#tab-watchlist .film-card-footer>.card-actions:empty{display:none}
+#tab-watchlist .film-card-footer>.card-actions .watch-link{
+ display:inline-flex;align-items:center;justify-content:center;
+ min-height:38px;padding:8px 12px;margin:0;font-size:12px;line-height:1.3;
+ width:auto;white-space:nowrap;
+}
+#tab-watchlist .film-card-footer>.film-details-trigger{
+ display:inline-flex;align-items:center;gap:5px;flex:0 0 auto;
+ min-width:0;max-width:100%;min-height:38px;
+ width:auto!important;padding:6px 0!important;margin:0!important;
+ border:0!important;border-bottom:1px solid #729b88!important;
+ white-space:nowrap;font-size:12px;line-height:1.35;
+ text-align:left;text-decoration:none!important;
+ color:#d5e3d8!important;
+}
+#tab-watchlist .film-card-footer>.film-details-trigger::after{
+ content:'↗';font-size:13px;line-height:1;
+ color:#9acbb2;display:inline-block;
+}
+#tab-watchlist .rental-card.compact-film-card>.release-channels{
+ grid-column:2;grid-row:auto;margin:2px 0 0;
+ font-size:11px;line-height:1.3;
+}
+#tab-watchlist .release-channel.physical{
+ border-color:#ac9369;color:#e5c88f;background:#292720;
+}
+#tab-watchlist .rental-card.compact-film-card>.card-poster{
+ background:#23332e;object-position:center;
+}
+#tab-watchlist .rental-card.compact-film-card>.poster-missing{
+ background:#26352f!important;color:#bdcabf;min-height:100px;
+}
+@media(max-width:600px){
+ #tab-watchlist .rental-card.compact-film-card{row-gap:4px;padding:12px}
+ #tab-watchlist .rental-card.compact-film-card>.film-card-footer{gap:8px}
+ #tab-watchlist .film-card-footer>.card-actions .watch-link{
+   min-height:38px;padding:7px 11px;font-size:11px;
+ }
+ #tab-watchlist .film-card-footer>.film-details-trigger{
+   min-height:38px;font-size:11px;padding:6px 0!important;
+ }
+}
