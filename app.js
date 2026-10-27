@@ -1337,7 +1337,12 @@ function reconcileWatchlistMatches(known=verifiedCatalogMatches){
  for(const row of hubState.watchlistUnmatched||[]){
   const key=WatchlistModel.sourceKey(row),saved=WatchlistModel.match(row,watchlist),film=catalog.get(key)||saved;
   if(imported.has(key)){changed=true;continue;}
-  if(film){if(!watchlist.some(m=>m.id===film.id))watchlist=WatchlistModel.merge(watchlist,[{...film,sourceTitle:row.title,year:row.year,addedDate:row.addedDate,letterboxdURL:row.letterboxdURL,source:'Letterboxd watchlist',letterboxdWatchlist:true}]);imported.add(key);matched++;changed=true;continue;}
+  if(film){
+   const existing=watchlist.find(m=>String(m.id)===String(film.id));
+   if(existing){existing.letterboxdWatchlist=true;existing.letterboxdURL=existing.letterboxdURL||row.letterboxdURL||null;}
+   else watchlist=WatchlistModel.merge(watchlist,[{...film,sourceTitle:row.title,year:row.year,addedDate:row.addedDate,letterboxdURL:row.letterboxdURL,source:'Letterboxd watchlist',letterboxdWatchlist:true}]);
+   imported.add(key);matched++;changed=true;continue;
+  }
   const checked=verifiedCatalogReviews.find(r=>r.key===key);if(checked&&(!row.catalogMatch||(row.catalogMatch.lastAttemptAt||0)<checked.checkedAt))row.catalogMatch={state:checked.series?'unsupported':'review',reason:checked.reason,candidates:checked.candidates||[],series:checked.series,lastAttemptAt:checked.checkedAt,attempts:1};
   if(importVerifiedSeries(row)){imported.add(key);matched++;changed=true;continue;}
   const previous=queue.get(key);if(!previous||(row.catalogMatch?.lastAttemptAt||0)>=(previous.catalogMatch?.lastAttemptAt||0))queue.set(key,{...row,key});
