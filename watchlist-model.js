@@ -120,7 +120,7 @@
    const stage=releaseStage(r.entry,r.status,today,budget,receipts,model,localListing(r.entry));if(browse&&stage.group==='waiting'&&(!r.status?.checkedAt||stage.stale))stage.group='unchecked';return {...r,cost,stage,rank:typeof ranker==='function'&&r.entry&&!r.entry.project?Number(ranker(r.entry))||0:0};
   }).filter(r=>filter==='all'||filter==='free'&&r.stage.group==='included'||filter==='cheap'&&r.stage.group==='cheap'||filter==='premium'&&['premium','physicalpurchase'].includes(r.stage.group)||filter==='waiting'&&['waiting','unchecked','upcoming','development','theater'].includes(r.stage.group));
   const chosen=m=>m.rewindSaved===true||/^Rewind (discover|calendar|watchlist)$/.test(m.source||'');
-  rows.sort((a,b)=>Number(!!b.entry.pinned)-Number(!!a.entry.pinned)||Number(chosen(b.entry))-Number(chosen(a.entry))||(browse&&chosen(a.entry)&&chosen(b.entry)?(b.entry.addedAt||0)-(a.entry.addedAt||0):0)||order[a.stage.group]-order[b.stage.group]||(ranker?b.rank-a.rank:0)||
+  rows.sort((a,b)=>Number(!!b.entry.pinned)-Number(!!a.entry.pinned)||(ranker?(order[a.stage.group]-order[b.stage.group]||b.rank-a.rank):0)||Number(chosen(b.entry))-Number(chosen(a.entry))||(browse&&chosen(a.entry)&&chosen(b.entry)?(b.entry.addedAt||0)-(a.entry.addedAt||0):0)||order[a.stage.group]-order[b.stage.group]||
    (a.stage.group==='premium'?({premium:0,buy:1,unknown:2}[a.cost.band]??2)-({premium:0,buy:1,unknown:2}[b.cost.band]??2):0)||
    (['cheap','premium'].includes(a.stage.group)?(a.cost.price??Infinity)-(b.cost.price??Infinity):0)||
    (['waiting','upcoming','development','theater'].includes(a.stage.group)?String(a.stage.date||'9999').localeCompare(String(b.stage.date||'9999')):0)||
