@@ -1364,10 +1364,12 @@ async function init() {
   window.RewindStartup?.track('collection',localReady);
   localReady.finally(()=>{
     scheduleWatchlistMatching();
-    // The initial paint uses saved data for speed. Perform one small real
-    // availability batch afterward so the homepage does not remain all unchecked.
+    // Only one six-film startup batch. Navigation and edits take priority.
+    const initialRequest=watchlistRequest;
     setTimeout(()=>{
-      if(!document.hidden&&document.getElementById('tab-watchlist').classList.contains('active'))
+      if(initialRequest===watchlistRequest&&!document.hidden&&watchlistScope==='release'&&
+         !window.WatchlistBrowser?.options().section&&
+         document.getElementById('tab-watchlist').classList.contains('active'))
         renderWatchlist(false,false,true).catch(()=>{});
     },1500);
   });
