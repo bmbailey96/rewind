@@ -76,12 +76,16 @@
   const fresh=!!status&&!status.stale&&Number.isFinite(status.checkedAt)&&Date.now()-status.checkedAt>=0&&Date.now()-status.checkedAt<24*3600000;
   let group='waiting';
   if(movie.project)group='development';
-  else if(cost?.band==='free')group='included';
-  else if(cost?.band==='cheap')group='cheap';
-  else if(['premium','buy','unknown'].includes(cost?.band))group='premium';
-  else if(local)group='theater';
+  // Ownership is known without a network check, but home offers must be fresh.
+  else if(cost?.offer?.kind==='physical')group='included';
+  else if(fresh&&cost?.band==='free')group='included';
+  else if(fresh&&cost?.band==='cheap')group='cheap';
+  else if(fresh&&['premium','buy','unknown'].includes(cost?.band))group='premium';
+  else if(local&&!local.stale)group='theater';
   else if(opening?.date>today||home?.date>today)group='upcoming';
-  else if(movie.releaseState==='unreleased'||movie.mediaType!=='tv'&&(!opening&&!(movie.release_date&&movie.release_date<today)||/Rumored|Planned|In Production|Post Production/.test(status?.details?.status||movie.detailsSnapshot?.status||movie.productionStatus||''))&&(status?.details?.status||movie.detailsSnapshot?.status||movie.productionStatus)!=='Released')group='development';
+  else if(movie.releaseState==='unreleased'||movie.mediaType!=='tv'&&(!opening&&!(movie.release_date&&movie.release_date<today)||/Rumored|Planned|In Production|Post Production/.test(status?.details?.status||movie.detailsSnapshot?.status||movie.productionStatus||''))&&(status?.details?.status||movie.productionStatus||movie.detailsSnapshot?.status)!=='Released')group='development';
+  // A previous price or provider listing is evidence, not verified current access.
+  else if(!fresh)group='unchecked';
   const arrival=fresh&&(receipts||[]).filter(r=>r.movieId===movie.id&&r.at&&Date.now()-r.at<=14*86400000&&Date.now()>=r.at)
    .some(r=>r.type==='included'&&offers.some(o=>(o.kind==='free'||o.kind==='subscription'&&o.included)&&o.provider===r.provider)||
     r.type==='price'&&r.from>budget&&r.to<=budget&&offers.some(o=>o.kind==='rent'&&o.provider===r.provider&&o.format===r.format&&o.price===r.to));
