@@ -172,7 +172,7 @@ const wait=()=>new Promise(r=>setTimeout(r,100));
  w.fetch=async(raw,opts)=>{if(String(raw).includes('/watch/providers'))await refreshGate;return steadyFetch(raw,opts);};
  const refreshing=w.eval('renderWatchlist(true)');await wait();
  assert.ok(w.document.querySelectorAll('#tab-watchlist .rental-card').length>0,'Saved cards remain during refresh');
- assert.match(w.document.getElementById('watchlist-load-status').textContent,/Checking shown films · 0 of 3/);
+ assert.match(w.document.getElementById('watchlist-load-status').textContent,/Checking saved films · 0 of 3/);
  releaseRefresh();await refreshing;w.fetch=steadyFetch;assert.equal(w.document.getElementById('watchlist-load-status').textContent,'');
  // An optional key is no longer required for verified public store quotes.
  w.localStorage.removeItem('rewind-watchmode-key');const publicFilm={id:1091,title:'The Thing'};
