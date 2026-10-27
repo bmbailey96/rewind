@@ -102,3 +102,7 @@
  #tab-watchlist .watchlist-primary .budget-field input{max-width:140px;}
  #tab-watchlist .watchlist-field select{font-size:13px;}
 }
+
+/* Author display rules must not override the HTML hidden attribute.
+   This matters when switching between the Watchlist and physical shelf. */
+body [hidden]{display:none!important}
