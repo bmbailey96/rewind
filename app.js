@@ -804,7 +804,7 @@ function canAutoCheckAvailability(){
 function queueAutoAvailabilityCheck(delay=16000){
   clearTimeout(availabilityAutoTimer);availabilityAutoTimer=null;
   if(!canAutoCheckAvailability()||availabilitySourceFailures>=2)return;
-  const pending=scopedWatchlist().some(m=>!WatchlistModel.freshSnapshot(m)&&!watchlistBackgroundChecked.has(m.id));
+  const pending=WatchlistModel.refreshCandidates(scopedWatchlist(),watchlistBackgroundChecked,1).length>0;
   if(!pending)return;
   availabilityAutoTimer=setTimeout(()=>{
     availabilityAutoTimer=null;
@@ -944,11 +944,11 @@ async function renderWatchlist(force = false, reuse = false, background = false)
   // Large watchlists advance through unverified titles, six automatically or
   // twelve on a manual check, never hundreds of network requests on a phone.
   const candidates=watchlistScope==='release'&&batch.length>WATCHLIST_PAGE_SIZE
-    ?batch.filter(entry=>!WatchlistModel.freshSnapshot(entry)&&!watchlistBackgroundChecked.has(entry.id))
+    ?WatchlistModel.refreshCandidates(batch,watchlistBackgroundChecked,batch.length)
     :displayed;
   const targets=force
     ?candidates.slice(0,batch.length>WATCHLIST_PAGE_SIZE?12:displayed.length)
-    :reuse?[]:candidates.filter(entry=>!WatchlistModel.freshSnapshot(entry)&&!watchlistBackgroundChecked.has(entry.id)).slice(0,WATCHLIST_BACKGROUND_CHECKS);
+    :reuse?[]:WatchlistModel.refreshCandidates(candidates,watchlistBackgroundChecked,WATCHLIST_BACKGROUND_CHECKS);
   if(force&&batch.length>WATCHLIST_PAGE_SIZE)targets.forEach(entry=>watchlistBackgroundChecked.add(entry.id));
   if(!targets.length){
     loading.textContent='';
@@ -1013,7 +1013,7 @@ async function renderWatchlist(force = false, reuse = false, background = false)
   const failed=results.filter(r=>r?.status?.stale).length;
   if(!force&&!reuse&&failed>=Math.max(3,Math.ceil(targets.length/2)))availabilitySourceFailures++;
   else if(!force&&!reuse)availabilitySourceFailures=0;
-  const left=batch.filter(m=>!WatchlistModel.freshSnapshot(m)&&!watchlistBackgroundChecked.has(m.id)).length;
+  const left=WatchlistModel.refreshCandidates(batch,watchlistBackgroundChecked,batch.length).length;
   statusEl.textContent=availabilitySourceFailures>=2
     ?'Availability source not responding. Automatic checks paused; existing data is safe.'
     :checked+' titles checked'+(failed?' · '+failed+' unverified':'')+
