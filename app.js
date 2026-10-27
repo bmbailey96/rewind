@@ -634,11 +634,11 @@ function renderCard(movie, opts = {}) {
   }else{
     const next=!status?.stale?costInfo?.offer:null;if(next?.link){const watch=document.createElement('a');watch.className='watch-link';watch.textContent=next.kind==='rent'?'RENT':ReleaseModel.physicalPurchase(next)?'BUY DISC':next.kind==='buy'?'BUY':'WATCH';watch.href=next.link;watch.target='_blank';watch.rel='noopener noreferrer';actions.appendChild(watch);}
     if(context==='physical'){const watched=document.createElement('button');watched.className='secondary';watched.textContent='MARK WATCHED';watched.onclick=()=>{document.getElementById('film-detail-dialog')?.close();markMovieWatched(movie);};secondaryActions.appendChild(watched);}
-    const inList=watchlist.some(w=>w.id===movie.id),trackedFilm=watchlist.find(w=>w.id===movie.id);
+    const savedState=discoverSavedIdentity(movie),inList=!!savedState,trackedFilm=savedState?.entry;
     const followable=context==='discover'||context==='search';
     const followed=!!trackedFilm?.followRelease;
     const track=document.createElement('button');
-    track.textContent=inList?'On watchlist':'Add to watchlist';
+    track.textContent=inList?(savedState?.state==='pending'?'On imported watchlist':'On watchlist'):'Add to watchlist';
     track.className=next?.link?'track-action secondary-track':'track-action';
     track.disabled=inList;
     track.onclick=()=>{addToWatchlist(movie);track.textContent='On watchlist';track.disabled=true;card.classList.add('film-tracked');};
@@ -679,8 +679,41 @@ function markMovieWatched(movie){
 
 // ---------- watchlist actions ----------
 
+function discoverSavedIdentity(movie){
+ return WatchlistModel.savedIdentity(movie,watchlist,hubState.watchlistUnmatched||[]);
+}
+function acceptMatchedImports(matches){
+ // A precise film/title/year match resolves a previously uploaded Letterboxd
+ // watchlist row. This is catalog identification, not a new user save.
+ const importedKeys=new Set(hubState.watchlistImportedKeys||[]),accepted=new Set();
+ let changed=false;
+ for(const {movie,row} of matches){
+  if(!row||!movie?.id||discoverSavedIdentity(movie)?.state==='saved')continue;
+  const key=WatchlistModel.sourceKey(row);
+  if(importedKeys.has(key)||accepted.has(key))continue;
+  const matching=WatchlistModel.savedIdentity(movie,watchlist,hubState.watchlistUnmatched||[]);
+  if(matching?.state!=='pending'||WatchlistModel.sourceKey(matching.row)!==key)continue;
+  watchlist=WatchlistModel.merge(watchlist,[{...movie,source:'Letterboxd watchlist',sourceTitle:row.title,year:row.year,addedDate:row.addedDate,letterboxdURL:row.letterboxdURL,letterboxdWatchlist:true}]);
+  const saved=watchlist.find(m=>String(m.id)===String(movie.id));
+  if(saved){saved.letterboxdWatchlist=true;saved.letterboxdURL=saved.letterboxdURL||row.letterboxdURL||null;}
+  importedKeys.add(key);accepted.add(key);changed=true;
+ }
+ if(changed){
+  hubState.watchlistImportedKeys=[...importedKeys];
+  hubState.watchlistUnmatched=(hubState.watchlistUnmatched||[]).filter(row=>!accepted.has(WatchlistModel.sourceKey(row)));
+  saveWatchlist(false);persistHubState();scheduleSync();
+  renderWatchlist(false,true,true).catch(()=>{});
+ }
+ return changed;
+}
 function addToWatchlist(movie,options={}) {
-  if (watchlist.some(w => w.id === movie.id)) return;
+  const already=discoverSavedIdentity(movie);
+  if(already?.state==='saved')return;
+  if(already?.state==='pending'){
+    acceptMatchedImports([{movie,row:already.row}]);
+    renderDiscoverCached();
+    return;
+  }
   watchlist.push({
     id: movie.id,
     title: movie.title,
@@ -779,7 +812,7 @@ function dismissVisibleBrowse(){
 }
 function renderDiscoverCached() {
   const grid=document.getElementById('discover-grid');grid.replaceChildren();
-  lastDiscoverResults.filter(m=>!isSeen(m)&&!skipSet.has(m.id)&&!watchlist.some(saved=>saved.id===m.id)).forEach(m=>grid.appendChild(renderCard(m,{context:'discover'})));if(discoveryStage==='circuit'){const unresolved=(horizonFeed?.items||[]).filter(m=>!m.id);if(unresolved.length)grid.appendChild(renderSourceLinks(unresolved));}
+  lastDiscoverResults.filter(m=>!isSeen(m)&&!skipSet.has(m.id)&&!discoverSavedIdentity(m)).forEach(m=>grid.appendChild(renderCard(m,{context:'discover'})));if(discoveryStage==='circuit'){const unresolved=(horizonFeed?.items||[]).filter(m=>!m.id);if(unresolved.length)grid.appendChild(renderSourceLinks(unresolved));}
   updateBrowseDismissControl();
 }
 function renderSearchCached() {
@@ -787,6 +820,12 @@ function renderSearchCached() {
   lastSearchResults.filter(m=>!skipSet.has(m.id)).forEach(m=>grid.appendChild(renderCard(m,{context:'search',markSeen:true})));
   updateBrowseDismissControl();
 }
+document.getElementById('discover-import-watchlist').onclick=()=>{
+ document.querySelector('[data-tab=import]').click();
+ const input=document.getElementById('import-watchlist');
+ input.closest('details')?.setAttribute('open','');
+ input.scrollIntoView({block:'center'});
+};
 document.getElementById('browse-dismiss').onclick=dismissVisibleBrowse;
 document.getElementById('restore-dismissed').onclick=()=>{
  const prior=[...skipSet];skipSet.clear();saveSkipSet();scheduleSync();discoverPage=1;
@@ -1204,19 +1243,22 @@ async function renderDiscover(append = false) {
     if(filter.stage==='circuit'){await renderCircuit(request);return;}
     grid.querySelectorAll('.empty-note').forEach(el=>el.remove());
     // Fill a useful batch across sparse catalog pages without per-film API calls.
-    const seen=new Set(append?lastDiscoverResults.map(m=>m.id):[]),savedIds=new Set(watchlist.map(m=>m.id));
+    const seen=new Set(append?lastDiscoverResults.map(m=>m.id):[]),savedIds=new Set(watchlist.map(m=>m.id)),importedMatches=[];
     const catalog=[];let pageNumber=discoverPage,data={total_pages:1},pagesRead=0;
     do{
       data=await fetchDiscover(pageNumber,filter);pagesRead++;
       if(request!==discoverRequest)return;
       for(const movie of data.results||[]){
        if(!movie.id||seen.has(movie.id)||savedIds.has(movie.id)||isSeen(movie)||skipSet.has(movie.id)||Number.isFinite(movie.runtime)&&movie.runtime<60)continue;
+       const identity=discoverSavedIdentity(movie);
+       if(identity){if(identity.state==='pending')importedMatches.push({movie,row:identity.row});continue;}
        if(filter.stage==='coming'&&movie.release_date&&movie.release_date<filter.window.today)continue;
        if(filter.stage==='recent'&&movie.release_date&&(movie.release_date<filter.window.start||movie.release_date>filter.window.end))continue;
        seen.add(movie.id);catalog.push(movie);
       }
       pageNumber++;
     }while(catalog.length<18&&pagesRead<8&&pageNumber<=(data.total_pages||1));
+    if(importedMatches.length)acceptMatchedImports(importedMatches);
     const filtered=await rankDiscovery(catalog);
     if(request!==discoverRequest)return;
     discoverPage=pageNumber;
@@ -1337,7 +1379,12 @@ function reconcileWatchlistMatches(known=verifiedCatalogMatches){
  for(const row of hubState.watchlistUnmatched||[]){
   const key=WatchlistModel.sourceKey(row),saved=WatchlistModel.match(row,watchlist),film=catalog.get(key)||saved;
   if(imported.has(key)){changed=true;continue;}
-  if(film){if(!watchlist.some(m=>m.id===film.id))watchlist=WatchlistModel.merge(watchlist,[{...film,sourceTitle:row.title,year:row.year,addedDate:row.addedDate,letterboxdURL:row.letterboxdURL,source:'Letterboxd watchlist',letterboxdWatchlist:true}]);imported.add(key);matched++;changed=true;continue;}
+  if(film){
+   const existing=watchlist.find(m=>String(m.id)===String(film.id));
+   if(existing){existing.letterboxdWatchlist=true;existing.letterboxdURL=existing.letterboxdURL||row.letterboxdURL||null;}
+   else watchlist=WatchlistModel.merge(watchlist,[{...film,sourceTitle:row.title,year:row.year,addedDate:row.addedDate,letterboxdURL:row.letterboxdURL,source:'Letterboxd watchlist',letterboxdWatchlist:true}]);
+   imported.add(key);matched++;changed=true;continue;
+  }
   const checked=verifiedCatalogReviews.find(r=>r.key===key);if(checked&&(!row.catalogMatch||(row.catalogMatch.lastAttemptAt||0)<checked.checkedAt))row.catalogMatch={state:checked.series?'unsupported':'review',reason:checked.reason,candidates:checked.candidates||[],series:checked.series,lastAttemptAt:checked.checkedAt,attempts:1};
   if(importVerifiedSeries(row)){imported.add(key);matched++;changed=true;continue;}
   const previous=queue.get(key);if(!previous||(row.catalogMatch?.lastAttemptAt||0)>=(previous.catalogMatch?.lastAttemptAt||0))queue.set(key,{...row,key});
@@ -1434,6 +1481,7 @@ async function init() {
   });
   const localReady=loadWatchlistBaseline().catch(()=>{}).then(()=>{
     if(WatchlistModel.backfillReleaseFollows(watchlist)){saveWatchlist(false);scheduleSync();}
+    renderDiscoverCached();renderSearchCached();
     return renderWatchlist(false,true,true).catch(err=>showToast(err.message));
   });
   window.RewindStartup?.track('collection',localReady);
@@ -1458,7 +1506,7 @@ async function init() {
       try{
         if(localStorage.getItem(SYNC_DIRTY_KEY))await pushToGist();else await pullFromGist();
         syncNotice('Synced '+new Date().toLocaleTimeString());
-        renderWatchlist(false,true,true);await syncBackgroundLibrary();
+        renderWatchlist(false,true,true);renderDiscoverCached();renderSearchCached();await syncBackgroundLibrary();
       }catch(err){syncNotice('Cloud sync delayed. Local watchlist remains available.',true);}finally{window.RewindStartup?.finish('sync');}
     });
   }
