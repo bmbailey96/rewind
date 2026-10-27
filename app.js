@@ -789,7 +789,7 @@ let watchlistSort = 'cost';
 const WATCHLIST_PAGE_SIZE=24, WATCHLIST_BACKGROUND_CHECKS=6;
 let watchlistScope='release',watchlistLimit=WATCHLIST_PAGE_SIZE,watchlistResults=[];
 const watchlistBackgroundChecked=new Set();
-let availabilityAutoTimer=null,availabilitySourceFailures=0;
+let availabilityAutoTimer=null,availabilityAutoInFlight=false,availabilitySourceFailures=0;
 // The scan runs only in an open, visible Watchlist tab. Browser timers stop
 // naturally when Safari is closed; saved results persist across visits.
 function canAutoCheckAvailability(){
@@ -803,12 +803,19 @@ function canAutoCheckAvailability(){
 }
 function queueAutoAvailabilityCheck(delay=16000){
   clearTimeout(availabilityAutoTimer);availabilityAutoTimer=null;
-  if(!canAutoCheckAvailability()||availabilitySourceFailures>=2)return;
+  if(!canAutoCheckAvailability()||availabilitySourceFailures>=2||availabilityAutoInFlight)return;
   const pending=WatchlistModel.refreshCandidates(scopedWatchlist(),watchlistBackgroundChecked,1).length>0;
   if(!pending)return;
   availabilityAutoTimer=setTimeout(()=>{
     availabilityAutoTimer=null;
-    if(canAutoCheckAvailability())renderWatchlist(false,false,true).catch(()=>{availabilitySourceFailures++;});
+    if(!canAutoCheckAvailability()||availabilityAutoInFlight)return;
+    availabilityAutoInFlight=true;
+    Promise.resolve(renderWatchlist(false,false,true)).catch(()=>{
+      availabilitySourceFailures++;
+    }).finally(()=>{
+      availabilityAutoInFlight=false;
+      queueAutoAvailabilityCheck(16000);
+    });
   },delay);
 }
 let watchlistMatching=false,watchlistMatchProgress='';
@@ -1023,7 +1030,6 @@ async function renderWatchlist(force = false, reuse = false, background = false)
   window.dispatchEvent(new Event('rewind:watchlist-ready'));
   if(checked)scheduleSync();
   loading.textContent='';
-  if(watchlistScope==='release'&&canAutoCheckAvailability()&&availabilitySourceFailures<2)queueAutoAvailabilityCheck();
 }
 function paintWatchlist(results,append=false){
   renderChangeStrip();
@@ -1393,13 +1399,7 @@ async function init() {
   window.RewindStartup?.track('collection',localReady);
   localReady.finally(()=>{
     scheduleWatchlistMatching();
-    const initialRequest=watchlistRequest;
-    setTimeout(()=>{
-      if(initialRequest===watchlistRequest&&!document.hidden&&watchlistScope==='release'&&
-         !window.WatchlistBrowser?.options().section&&
-         document.getElementById('tab-watchlist').classList.contains('active'))
-        renderWatchlist(false,false,true).catch(()=>{});
-    },1500);
+    queueAutoAvailabilityCheck(1600);
   });
   const retrySave=document.getElementById('storage-retry');if(retrySave)retrySave.onclick=retryDeviceSaves;
   window.addEventListener('focus',()=>{if(failedStorageKeys.size)retryDeviceSaves();});
@@ -1529,7 +1529,7 @@ async function initEmailAlerts() {
   } catch (err) { document.getElementById('email-alert-status').textContent = err.message; }
 }
 renderServiceSettings();
-document.getElementById('refresh-card-btn').onclick=async()=>{const btn=document.getElementById('refresh-card-btn');btn.disabled=true;btn.textContent='Checking…';try{await renderWatchlist(true);}catch(err){showToast(err.message);}finally{btn.disabled=false;btn.textContent='Check next 12';}};
+document.getElementById('refresh-card-btn').onclick=async()=>{clearTimeout(availabilityAutoTimer);availabilityAutoTimer=null;const btn=document.getElementById('refresh-card-btn');btn.disabled=true;btn.textContent='Checking…';try{await renderWatchlist(true);}catch(err){showToast(err.message);}finally{btn.disabled=false;btn.textContent='Check next 12';queueAutoAvailabilityCheck(16000);}};
 init().then(()=>setTimeout(initEmailAlerts,10000));
 
 document.querySelectorAll('[data-discovery-stage]').forEach(button=>button.onclick=()=>{searchRequest++;document.getElementById('search-input').value='';document.getElementById('search-clear-btn').hidden=true;document.getElementById('search-grid').hidden=true;document.getElementById('discover-grid').hidden=false;discoveryStage=button.dataset.discoveryStage;discoverPage=1;updateDiscoveryGuide();renderDiscover().catch(e=>showToast(e.message));});
