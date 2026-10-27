@@ -103,6 +103,6 @@ assert.equal(W.savedIdentity({id:12,title:'The Thing',release_date:'1982-06-01'}
 assert.equal(W.savedIdentity({id:13,title:'The Thing',release_date:'2011-10-01'},[],imported).row.year,'2011','A different-year film is not the original');
 assert.equal(W.savedIdentity({id:14,title:'The Thing',release_date:'2000-10-01'},[],imported),null,'A same-title film with another year must remain new');
 assert.equal(W.savedIdentity({id:14,title:'Tremors',release_date:''},[],imported),null,'Do not guess identity when the catalog year is absent');
-assert.equal(W.savedIdentity({id:14,title:'Tremors',release_date:'1990-01-01'},[{id:22,title:'Tremors',release_date:'1990-01-01'}],imported).state,'saved','Stored title and year prevents duplicate records even if IDs disagree');
+assert.equal(W.savedIdentity({id:14,title:'Tremors',release_date:'1990-01-01'},[{id:22,title:'Tremors',release_date:'1990-01-01'}],[]),null,'Two verified but different film IDs must not be conflated even when title and year match');
 assert.equal(W.savedIdentity({id:14,title:'Amélie',release_date:'2001-01-01'},[],[{title:'Amelie',year:'2001'}]).state,'pending','Unicode title normalization keeps imported identity');
 console.log('Discover watchlist identity: pending Letterboxd exports, year-sensitive remakes and saved ID mismatches passed');
