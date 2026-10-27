@@ -5,19 +5,19 @@ const rent=price=>({kind:'rent',provider:'Prime Video',price,format:'4K'}),inclu
 const rows=[row(1,[rent(19.99)],{stale:true,checkedAt:now-2*86400000}),row(2,[included],{stale:true,checkedAt:now-2*86400000,digitalDate:future}),row(3,[rent(5.99)],{announcements:[{kind:'subscription',provider:'HBO Max',date:future}]}),row(4),row(5),row(6,[rent(2.99)]),row(7,[{kind:'buy',provider:'Apple TV',price:4.99}]),row(8,[],{digitalDate:future}),row(9,[{kind:'rent',provider:'Prime Video'}])];
 const options={model:R,today,budget:7.99,limit:100,localListing:m=>m.id===4||m.id===3?{date:today,stale:false}:null};
 const page=W.releaseWatchPage(rows,options),byId=new Map(page.rows.map(r=>[r.entry.id,r]));
-assert.equal(byId.get(1).stage.group,'premium','Old rental remains priced instead of falling back to a theatrical date');
-assert.equal(byId.get(1).stage.stale,true);assert.equal(byId.get(2).stage.group,'included','Included film must not move to Coming Home');
+assert.equal(byId.get(1).stage.group,'unchecked','Old premium rent is not advertised as a verified current offer');
+assert.equal(byId.get(1).stage.stale,true);assert.equal(byId.get(2).stage.group,'upcoming','Future dated home release outranks a stale included quote');
 assert.equal(byId.get(3).stage.group,'cheap');assert.equal(byId.get(3).stage.home.label,'HBO Max');assert.equal(byId.get(3).stage.local.date,today);
 assert.equal(byId.get(4).stage.group,'theater');assert.equal(byId.get(5).stage.group,'waiting','A US theatrical date is not a local booking');
 assert.equal(byId.get(9).stage.group,'premium');assert.equal(byId.get(9).cost.price,null,'Unpriced rental is never free');
 assert.deepEqual(page.rows.filter(r=>r.stage.group==='cheap').map(r=>r.entry.id),[6,3]);
-assert.deepEqual(page.rows.filter(r=>r.stage.group==='premium').map(r=>r.entry.id),[1,7,9],'Purchase-only stays clearly behind rentals');
+assert.deepEqual(page.rows.filter(r=>r.stage.group==='premium').map(r=>r.entry.id),[7,9],'Purchase-only and unpriced rental stay clearly separated from outdated prices');
 assert.equal(page.rows.filter(r=>r.entry.id===3).length,1,'Streaming and local screening must not duplicate a film');
-assert.equal(page.rows.at(-2).entry.id,8,'Dated future home arrival precedes an undated wait');
-const one=W.releaseWatchPage(rows,{...options,limit:1});assert.equal(one.total,9);assert.equal(one.rows.length,1);assert.deepEqual(one.counts,{included:1,cheap:2,premium:3,theater:1,upcoming:1,waiting:1});
-assert.equal(W.releaseWatchPage(rows,{...options,filter:'free'}).total,1);assert.equal(W.releaseWatchPage(rows,{...options,filter:'premium'}).total,3);
+assert.ok(page.rows.findIndex(r=>r.entry.id===8)<page.rows.findIndex(r=>r.entry.id===5),'Dated future home arrival precedes an undated wait');
+const one=W.releaseWatchPage(rows,{...options,limit:1});assert.equal(one.total,9);assert.equal(one.rows.length,1);assert.deepEqual(one.counts,{included:0,cheap:2,premium:2,theater:1,upcoming:2,waiting:1,unchecked:1});
+assert.equal(W.releaseWatchPage(rows,{...options,filter:'free'}).total,0);assert.equal(W.releaseWatchPage(rows,{...options,filter:'premium'}).total,2);assert.equal(W.releaseWatchPage(rows,{...options,filter:'waiting'}).rows.some(r=>r.entry.id===1),true,'Waiting includes stale offer checks');
 const big=Array.from({length:600},(_,i)=>row(1000+i,[rent(i===599?0.99:5.99)]));const first=W.releaseWatchPage(big,{...options,limit:24});assert.equal(first.rows[0].entry.id,1599);assert.equal(first.counts.cheap,600);assert.equal(first.rows.length,24);
-console.log('Release Watch: last-known offers, upcoming notes, actual local dates, price order, unknown quotes, one film per shelf and full counts before pagination passed');
+console.log('Release Watch: stale quotes excluded from current offers, dated releases, local dates, prices and section counts passed');
 
 const futureFilm=row(50);futureFilm.entry.detailsSnapshot.release_dates.results[0].release_dates[0].release_date=future+'T00:00:00Z';
 const unknownFilm={entry:{id:51,title:'Undated'},status:{offers:[],stale:true}};
