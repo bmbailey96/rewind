@@ -908,7 +908,7 @@ async function renderWatchlist(force = false, reuse = false, background = false)
     const notice=document.getElementById('watchlist-load-status');
     if(notice)notice.textContent='Updating the saved page files. All Watchlist remains available. Reload to restore Release Watch.';
   }
-  const request=++watchlistRequest,quiet=background&&watchlistResults.length>0;
+  const request=++watchlistRequest,quiet=background&&!reuse&&watchlistResults.length>0;
   const empty=document.getElementById('watchlist-empty');
   const loading=document.getElementById('watchlist-load-status');
   const statusEl=document.getElementById('card-check-status');
