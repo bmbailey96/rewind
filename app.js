@@ -1098,7 +1098,7 @@ function paintWatchlist(results,append=false){
       else if(stage.home&&!card.querySelector('.wait-advice'))note.textContent=stage.home.label+' on '+formatFilmDate(stage.home.date)+' · listed date; source in details';
       else if(stage.group==='waiting'&&row.entry.mediaType==='tv')note.textContent=''; // Season caveat remains in Details.
       else if(stage.group==='waiting'){const dated=(row.status?.announcements||[]).filter(a=>['digital','subscription'].includes(a.kind)&&a.date&&a.date<=discoveryWindow().today).map(a=>({date:a.date,label:a.provider||'Digital release'}));for(const d of ReleaseModel.datesFor(row.status?.details||row.entry.detailsSnapshot))if(d.type===4&&ReleaseModel.date(d.release_date)<=discoveryWindow().today)dated.push({date:ReleaseModel.date(d.release_date),label:'Digital release'});const past=dated.sort((a,b)=>b.date.localeCompare(a.date))[0];note.textContent=past?past.label+' listed '+formatFilmDate(past.date)+' · current home availability unverified.':(stage.opening?stage.opening.label+' · '+formatFilmDate(stage.opening?.date||stage.date)+'. ':'Release date unannounced. ')+'Home release date unannounced.';}
-      if(note.textContent)card.querySelector('.film-details-trigger')?.before(note);balanceCardUpdates(card);
+      if(note.textContent)card.querySelector('.film-card-footer,.film-details-trigger')?.before(note);balanceCardUpdates(card);
       document.getElementById(groups[stage.group]+'-grid').appendChild(card);
     }
     for(const [group,id] of Object.entries(groups)){
