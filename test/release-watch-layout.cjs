@@ -66,4 +66,31 @@ assert.equal(W.refreshCandidates(queue,new Set(queue.map(m=>m.id)),6,now).length
 assert.equal(W.refreshCandidates([fresh],new Set(),6,now+7*3600000)[0].id,13,'Expired snapshots become eligible on later visits');
 console.log('Availability scan: bounded batches advance through all saved titles, preserve fresh results, and retry expired evidence');
 
-const mixedShelf=[...crowded,{...row(6000,[rent(4.99)]),entry:{id:'tv:fixture',title:'Z Series',mediaType:'tv'}}];assert.ok(W.releaseWatchPage(mixedShelf,{...options,browse:{}}).rows.some(r=>r.entry.mediaType==='tv'),'Mixed previews keep a saved TV series visible');
+const mixedShelf=[...crowded,{...row(6000,[rent(4.99)]),entry:{id:'tv:fixture',title:'Z Series',mediaType:'tv'}}];assert.ok(W.releaseWatchPage(mixedShelf,{...options,browse:{section:'cheap',sort:'default'},limit:150}).rows.some(r=>r.entry.mediaType==='tv'),'A saved TV series stays accessible in the full section without displacing stronger homepage recommendations');
+
+
+const DVD={kind:'buy',provider:'Amazon DVD / Blu-ray',price:12.48,format:'Blu-ray',link:'https://example.org/physical'};
+const digitalBuy={kind:'buy',provider:'Apple TV',price:19.99,format:'HD',link:'https://example.org/digital'};
+assert.equal(R.physicalPurchase(DVD),true,'Physical Amazon disc product is not a digital purchase');
+assert.equal(R.physicalPurchase(digitalBuy),false,'Apple TV store licenses remain digital');
+assert.equal(R.physicalPurchase({kind:'rent',provider:'Amazon DVD / Blu-ray',price:2.99}),false,'Rent formats are not reclassified as buy offers');
+assert.equal(R.cost([DVD],7.99).band,'physicalbuy');
+assert.equal(R.cost([DVD],7.99).physicalPurchase,true);
+assert.equal(R.cost([DVD,digitalBuy],7.99).band,'buy','Digital purchase is preferred when digital and physical formats coexist');
+const discRow=row(7000,[DVD]),discRows=W.releaseWatchPage([discRow],options);
+assert.equal(discRows.rows[0].stage.group,'physicalpurchase','Physical-only price listings have their own category');
+assert.equal(W.releaseWatchPage([discRow],{...options,filter:'premium'}).total,1,'Higher-price filter still includes physical purchases');
+const favorites=[row(7101,[rent(3.99)]),row(7102,[rent(3.99)]),row(7103,[rent(3.99)])];
+favorites[0].entry.title='Along Came Polly';favorites[1].entry.title='Harakiri';favorites[2].entry.title='Repo Man';
+const tasteRanks={7101:0.2,7102:9.5,7103:7};
+const recommended=W.releaseWatchPage(favorites,{...options,browse:{},ranker:film=>tasteRanks[film.id]});
+assert.deepEqual(recommended.rows.map(r=>r.entry.id),[7102,7103,7101],'Recommended uses personal fit rather than alphabetical title for equal-price options');
+assert.deepEqual(W.releaseWatchPage(favorites,{...options,browse:{section:'cheap',sort:'default'},ranker:film=>tasteRanks[film.id]}).rows.map(r=>r.entry.id),[7102,7103,7101],'Recommended applies in expanded sections as well');
+assert.deepEqual(W.releaseWatchPage(favorites,{...options,browse:{section:'cheap',sort:'az'},ranker:film=>tasteRanks[film.id]}).rows.map(r=>r.entry.id),[7101,7102,7103],'Explicit A-Z still works');
+favorites[0].entry.pinned=true;
+assert.equal(W.releaseWatchPage(favorites,{...options,browse:{},ranker:film=>tasteRanks[film.id]}).rows[0].entry.id,7101,'Pinned choice beats personal fit');
+const genreTaste=[{id:8001,title:'Liked horror',rating:5,genre_ids:[27],director:'Alex Director'}];
+const relevant={id:8002,title:'Horror match',genre_ids:[27],director:'Alex Director'};
+const unrelated={id:8003,title:'Unrelated film',genre_ids:[35],director:'Someone Else'};
+assert.ok(W.recommendationScore(relevant,genreTaste,[])>W.recommendationScore(unrelated,genreTaste,[]),'Imported rating, genre and director evidence affect ranking');
+console.log('Recommendation ordering: personal fit, pins, explicit sort and physical-disc separation passed');
