@@ -448,6 +448,12 @@ assert.equal(w.document.querySelector('[data-discover-intent=surprise]').getAttr
  assert.equal(savedCard.querySelector('.track-action').textContent,'On watchlist','Title and year protect against duplicate catalog IDs');
  assert.equal(savedCard.querySelector('.track-action').disabled,true);
  w.testState.hub().watchlistUnmatched=pendingOriginal;
+ const importLink=w.document.getElementById('discover-import-watchlist');
+ assert.ok(importLink,'Discover supplies a route to refresh the stale imported watchlist');
+ importLink.click();
+ assert.equal(w.document.querySelector('[data-tab=import]').classList.contains('active'),true,'The import shortcut opens Settings');
+ assert.ok(w.document.getElementById('import-watchlist'),'Existing CSV importer is preserved');
+ w.document.querySelector('[data-tab=discover]').click();
  console.log('Discover membership: imported pending titles are recognized, exact matches are adopted, and duplicates are prevented');
  const dated=w.renderCard({id:65125,title:'Catalog lead',release_date:'2026-09-01'},{context:'discover'});assert.match(dated.querySelector('.cost-block').textContent,/CATALOG DATE/);assert.doesNotMatch(dated.textContent,/NOT CHECKED/);
  const premiumNote=w.renderTrackingNote({id:65125},{offers:[{kind:'rent',provider:'Apple TV',price:19.99}]});assert.match(premiumNote.textContent,/Available to rent now/);assert.doesNotMatch(premiumNote.textContent,/confirmed home release/);
