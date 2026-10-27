@@ -964,6 +964,7 @@ async function renderWatchlist(force = false, reuse = false, background = false)
     return;
   }
   loading.textContent=(force?'Checking saved films':'Updating a few saved films')+' · 0 of '+targets.length;
+  if(!force)statusEl.textContent='Checking availability · '+targets.length+' titles in this batch…';
   statusEl.textContent=force?'Checking '+targets.length+' saved titles. Existing cards stay visible.':'Checking a few saved titles in the background.';
   // Give iOS Safari a frame to draw the cards before beginning any API work.
   if(!force){
@@ -1018,18 +1019,40 @@ async function renderWatchlist(force = false, reuse = false, background = false)
   watchlistResults=[...progress.values()];
   if(!force&&window.RewindStartup?.defer('watchlist',()=>repaintWatchlist())){}else repaintWatchlist();
   const failed=results.filter(r=>r?.status?.stale).length;
+  const currentUnchecked=updateAvailabilityCountWithoutRepaint();
   if(!force&&!reuse&&failed>=Math.max(3,Math.ceil(targets.length/2)))availabilitySourceFailures++;
   else if(!force&&!reuse)availabilitySourceFailures=0;
   const left=WatchlistModel.refreshCandidates(batch,watchlistBackgroundChecked,batch.length).length;
+  const progressLabel=currentUnchecked===null?'':currentUnchecked+' still unverified. ';
   statusEl.textContent=availabilitySourceFailures>=2
-    ?'Availability source not responding. Automatic checks paused; existing data is safe.'
-    :checked+' titles checked'+(failed?' · '+failed+' unverified':'')+
-      (left?' · '+left+' still queued for this visit.':' · Current pass complete.');
+    ?progressLabel+'Source checks are failing; automatic scanning paused.'
+    :progressLabel+(left?'Automatic scan: '+left+' more to try this visit.':'All eligible titles attempted this visit.')+
+      (failed?' '+failed+' unavailable checks in the last batch.':'');
   if(receiptsDirty)persistHubState();
   saveWatchlist();
   window.dispatchEvent(new Event('rewind:watchlist-ready'));
   if(checked)scheduleSync();
   loading.textContent='';
+}
+// Update the count even when Safari preserves scrolled cards until the user
+// applies changes. This updates text only, never poster nodes or scroll position.
+function updateAvailabilityCountWithoutRepaint(){
+  if(watchlistScope!=='release'||costFilter!=='all'||window.WatchlistBrowser?.options().section)return null;
+  const countEl=document.getElementById('rw-unchecked-count'),section=document.getElementById('rw-unchecked-section');
+  if(!countEl||!section||section.hidden)return null;
+  const page=WatchlistModel.releaseWatchPage(watchlistResults,{
+    browse:{},today:discoveryWindow().today,budget:rentalBudget,
+    receipts:hubState.changeReceipts,limit:1,filter:'all',model:ReleaseModel,
+    localListing:m=>{
+      const local=typeof Hub==='undefined'||typeof Hub.localListing!=='function'?null:Hub.localListing(m);
+      return local&&!local.stale&&/Kalispell/i.test(local.location)?local:null;
+    }
+  });
+  const unchecked=page.counts.unchecked||0;
+  countEl.textContent='('+unchecked+')';
+  const browse=section.querySelector('.section-show-all');
+  if(browse)browse.textContent='Browse all '+unchecked;
+  return unchecked;
 }
 function paintWatchlist(results,append=false){
   renderChangeStrip();
