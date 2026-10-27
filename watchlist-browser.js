@@ -11,6 +11,17 @@ window.WatchlistBrowser=(()=>{
  const move=fn=>(window.requestAnimationFrame||window.setTimeout)(()=>{fn();});
  back.onclick=()=>{const focus=returnSection;section=null;watchlistLimit=WATCHLIST_PAGE_SIZE;repaintWatchlist();move(()=>{window.scrollTo?.(0,returnY);document.querySelector('#'+focus+'-section .section-show-all')?.focus({preventScroll:true});});};
  function decorate(page){
+  // Move the SAME sort field beside Back when browsing a focused section.
+  // No duplicate selectors, and its existing change handler stays attached.
+  const primary=document.querySelector('#tab-watchlist .watchlist-primary');
+  const sortField=document.querySelector('#tab-watchlist .sort-field');
+  if(primary&&sortField){
+   if(section&&sortField.parentElement!==toolbar)back.after(sortField);
+   else if(!section&&sortField.parentElement===toolbar){
+    const availability=primary.querySelector('.availability-field');
+    if(availability)availability.after(sortField);else primary.append(sortField);
+   }
+  }
   empty.hidden=!section||page.rows.length>0;
   toolbar.hidden=!section||document.getElementById('tab-watchlist').dataset.collection==='physical';
   for(const [group,id] of Object.entries(ids)){
