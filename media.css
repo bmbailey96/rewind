@@ -258,3 +258,9 @@ body>.counter .tabs .tab-btn{min-height:44px;padding:9px 2px;font-size:12px;line
  text-decoration:none;vertical-align:middle;color:#9acbb2
 }
 #tab-watchlist #rw-upcoming-grid .cost-warning{display:none!important}
+
+/* Automatic availability progress is separate from the Check next 12 button.
+   Only this text and the pending count update while long movie lists are scrolled. */
+#tab-watchlist #card-check-status:not([hidden]){display:block;margin:7px 0 11px;font-size:12px;line-height:1.5;color:#a8bdb0;max-width:80ch}
+#tab-watchlist #card-check-status:empty{display:none!important}
+#tab-watchlist[data-collection=physical] #card-check-status{display:none!important}
