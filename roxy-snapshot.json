@@ -1414,6 +1414,32 @@
       "dateLabel": "1 listed days"
     },
     {
+      "id": "roxy:/show/pom-poko/",
+      "title": "Pom Poko",
+      "venueId": "roxy",
+      "venue": "Roxy Theater",
+      "location": "Missoula",
+      "source": "Roxy Theater official calendar",
+      "url": "https://www.theroxytheater.org/show/pom-poko/",
+      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/pommy20po-1024x577.jpg",
+      "dates": [
+        "2026-11-18"
+      ],
+      "ranges": [],
+      "screenings": [
+        {
+          "date": "2026-11-18",
+          "time": "7:00pm",
+          "startsAt": "2026-11-19T02:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/pom-poko/",
+          "format": ""
+        }
+      ],
+      "start": "2026-11-18",
+      "end": "2026-11-18",
+      "dateLabel": "1 listed days"
+    },
+    {
       "id": "roxy:/show/missoulas-homegrown-comedy/",
       "title": "Missoula’s HomeGrown Comedy",
       "venueId": "roxy",
@@ -1437,6 +1463,32 @@
       ],
       "start": "2026-11-18",
       "end": "2026-11-18",
+      "dateLabel": "1 listed days"
+    },
+    {
+      "id": "roxy:/show/the-killer-2/",
+      "title": "The Killer",
+      "venueId": "roxy",
+      "venue": "Roxy Theater",
+      "location": "Missoula",
+      "source": "Roxy Theater official calendar",
+      "url": "https://www.theroxytheater.org/show/the-killer-2/",
+      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/thekiller3-1024x576.jpg",
+      "dates": [
+        "2026-11-19"
+      ],
+      "ranges": [],
+      "screenings": [
+        {
+          "date": "2026-11-19",
+          "time": "8:00pm",
+          "startsAt": "2026-11-20T03:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/the-killer-2/",
+          "format": ""
+        }
+      ],
+      "start": "2026-11-19",
+      "end": "2026-11-19",
       "dateLabel": "1 listed days"
     },
     {
@@ -2056,7 +2108,7 @@
       "dateLabel": "1 listed days"
     }
   ],
-  "checkedAt": 1793193280472,
+  "checkedAt": 1793219033453,
   "stale": false,
   "sourceURL": "https://www.theroxytheater.org/showtimes/"
 }
