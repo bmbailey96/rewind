@@ -16,7 +16,7 @@ function canonicalId(film, kind) {
   if ((typeof id === 'number' || typeof id === 'string') && /^\d+$/.test(String(id)) && Number(id) > 0)
     return type + ':' + String(Number(id));
   const label = titleKey(film?.title || film?.name);
-  if (!label) return null;
+  if (!label || !yearOf(film)) return null;
   return type + ':name:' + label + ':' + yearOf(film);
 }
 function validPoster(value) {
@@ -70,7 +70,17 @@ function normalizeBackup(input) {
       poster_path: row.poster_path
     }, 'rewind'));
   // Do not duplicate identical seasons as separate series in this first version.
-  const unique = new Map([...out, ...seasons.filter(Boolean)].map(row => [row.id, row]));
+  const unique = new Map();
+  for (const row of [...out, ...seasons.filter(Boolean)]) {
+    const earlier = unique.get(row.id);
+    unique.set(row.id, earlier ? {
+      ...earlier, ...row, pinned: Math.max(earlier.pinned, row.pinned),
+      watched: Math.max(earlier.watched, row.watched),
+      note: earlier.note || row.note,
+      availability_json: row.availability_json || earlier.availability_json,
+      letterboxd_url: row.letterboxd_url || earlier.letterboxd_url
+    } : row);
+  }
   return { films: [...unique.values()], settings: {
     services: Array.isArray(input.services) ? input.services.filter(s => typeof s === 'string').slice(0, 25) : [],
     rentalBudget: typeof input.rentalBudget === 'number' && input.rentalBudget >= 0 &&
