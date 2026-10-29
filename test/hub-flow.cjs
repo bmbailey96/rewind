@@ -35,6 +35,8 @@ const wait=()=>new Promise(r=>setTimeout(r,100));
  };
  w.eval(['startup.js','rewind-model.js','release-model.js','availability-ui.js','counter-model.js','discovery-model.js','taste-model.js','hub-model.js','artwork-model.js','occasion-model.js','oracle.js','storage-model.js','sync-model.js','static-model.js','watchlist-model.js','movie-news-model.js','app.js','hub.js','static-experience.js','movie-news.js','watchlist-browser.js','letterboxd-diary.js'].map(file=>fs.readFileSync(__dirname+'/../'+file,'utf8')).join('\n')+'\nwindow.testState={movies:()=>watchlist,replaceMovies:m=>watchlist=m,hub:()=>hubState,hubInterface:Hub,saveFailure:()=>{cloudSavePhase="synced";failedStorageKeys.add("test-failure");renderSaveState()},clearSaveFailure:()=>{failedStorageKeys.delete("test-failure");cloudSavePhase="idle";renderSaveState()},syncBase,seen:()=>seenSet,changed:()=>Hub.stateChanged()};');
  await wait();
+ // Saved films paint immediately; remote provider checks run in their own queue.
+ await w.eval('checkAutomaticAvailabilityBatch()');await wait();
  assert.equal(w.document.getElementById('tab-watchlist').dataset.scope,'release','Release Watch is the initial film view');
  assert.equal(w.document.getElementById('release-watch-empty').hidden,true,'All saved films appear in Release Watch without a second follow');
  assert.equal(w.document.getElementById('rw-recovery').hidden,false,'Old watchlist candidates can be followed individually');
