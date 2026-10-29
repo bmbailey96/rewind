@@ -1,0 +1,27 @@
+name: Native Rewind bundle
+on:
+  pull_request:
+    paths:
+      - 'mobile/**'
+      - '.github/workflows/rewind-native.yml'
+  workflow_dispatch:
+jobs:
+  native:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Test native data import and offline catalog logic
+        run: node mobile/test/core.test.cjs
+      - name: Install native project dependencies
+        working-directory: mobile
+        run: npm install --no-audit --no-fund
+      - name: Check Expo SDK dependency compatibility
+        working-directory: mobile
+        run: npx expo install --check
+      - name: Bundle JavaScript for iOS without Xcode or signing credentials
+        working-directory: mobile
+        run: npx expo export --platform ios --output-dir dist
