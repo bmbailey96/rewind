@@ -1,0 +1,4000 @@
+{
+  "sourceDate": "2026-05-27",
+  "provenance": "Published May 2026 Letterboxd archive matched by verified catalog IDs. Not a live watchlist.",
+  "films": [
+    {
+      "id": 9362,
+      "title": "Tremors",
+      "year": "1990",
+      "release_date": "1990-01-19",
+      "original_title": "Tremors",
+      "poster_path": "/cA4ggkZ3r1d5r9hOAUWC8x5ul2i.jpg",
+      "genre_ids": [
+        35,
+        27,
+        878
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1YSe",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 10283,
+      "title": "Friday the 13th Part VIII: Jason Takes Manhattan",
+      "year": "1989",
+      "release_date": "1989-07-28",
+      "original_title": "Friday the 13th Part VIII: Jason Takes Manhattan",
+      "poster_path": "/6ezOsZ9UzqGnbDokaatxdOWP6e9.jpg",
+      "genre_ids": [
+        27
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1WDm",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 11379,
+      "title": "The Adventures of Buckaroo Banzai Across the 8th Dimension",
+      "year": "1984",
+      "release_date": "1984-08-10",
+      "original_title": "The Adventures of Buckaroo Banzai Across the 8th Dimension",
+      "poster_path": "/jWZh2ChereoxKgTl3AmSAKNpnmO.jpg",
+      "genre_ids": [
+        878,
+        35,
+        12
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1TZk",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 4923,
+      "title": "Zardoz",
+      "year": "1974",
+      "release_date": "1974-02-06",
+      "original_title": "Zardoz",
+      "poster_path": "/6qvQhJhvM7wWPB2LjVpivSNraIv.jpg",
+      "genre_ids": [
+        14,
+        28,
+        53,
+        878
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/23Fa",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 22049,
+      "title": "Starcrash",
+      "year": "1978",
+      "release_date": "1978-12-21",
+      "original_title": "Starcrash",
+      "poster_path": "/npJt35Q36aGcTYpcg9epbwQIIkz.jpg",
+      "genre_ids": [
+        14,
+        878
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1B88",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 20980,
+      "title": "Liquid Sky",
+      "year": "1982",
+      "release_date": "1982-08-01",
+      "original_title": "Liquid Sky",
+      "poster_path": "/yMRvaqt0oUImW1Z91RXHTvkH6DE.jpg",
+      "genre_ids": [
+        878,
+        53,
+        18
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1CBA",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 19204,
+      "title": "The Beyond",
+      "year": "1981",
+      "release_date": "1981-04-22",
+      "original_title": "...E tu vivrai nel terrore! L'aldilà",
+      "poster_path": "/kMSZHq9VYQV1FCbM8nz2zrZShzx.jpg",
+      "genre_ids": [
+        27
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1FtY",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 81477,
+      "title": "Mad Doctor of Blood Island",
+      "year": "1969",
+      "release_date": "1969-09-18",
+      "original_title": "Mad Doctor of Blood Island",
+      "poster_path": "/1ihk3cUdumUlpsKNJGiRFu2HHGU.jpg",
+      "genre_ids": [
+        27,
+        878
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/2QHk",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 89921,
+      "title": "White Fire",
+      "year": "1984",
+      "release_date": "1984-07-05",
+      "original_title": "Vivre pour survivre",
+      "poster_path": "/3vhrYXlOv1YgTeTTZephfNBem1S.jpg",
+      "genre_ids": [
+        18,
+        28,
+        53
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/3aFe",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 91756,
+      "title": "Yokai Monsters: 100 Monsters",
+      "year": "1968",
+      "release_date": "1968-03-20",
+      "original_title": "妖怪百物語",
+      "poster_path": "/zNUlTFJ3OwwNbmejRdxF6Lq9jEZ.jpg",
+      "genre_ids": [
+        27
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/3dA2",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 443644,
+      "title": "The Cornshukker",
+      "year": "1997",
+      "release_date": "1997-06-04",
+      "original_title": "The Cornshukker",
+      "poster_path": "/PJTVNn6lHRRhcQ1SB6I3TOTcaF.jpg",
+      "genre_ids": [
+        27
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/fMt0",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 483200,
+      "title": "American Guinea Pig: The Song of Solomon",
+      "year": "2017",
+      "release_date": "2017-11-25",
+      "original_title": "American Guinea Pig: The Song of Solomon",
+      "poster_path": "/6bIlOEBczmV7FJKzmt8sOzlH3MH.jpg",
+      "genre_ids": [
+        27
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/hn4y",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 499537,
+      "title": "The Wolf House",
+      "year": "2018",
+      "release_date": "2018-11-01",
+      "original_title": "La casa lobo",
+      "poster_path": "/kvgch2e25cd6dWhRJ6G8BCJ1Wcq.jpg",
+      "genre_ids": [
+        16,
+        27,
+        18
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/i1vE",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 52826,
+      "title": "Nothing Lasts Forever",
+      "year": "1984",
+      "release_date": "1984-09-06",
+      "original_title": "Nothing Lasts Forever",
+      "poster_path": "/ffrdtojhaKR6qG4vCbYH9xTBDvL.jpg",
+      "genre_ids": [
+        10749,
+        878,
+        14,
+        35,
+        18
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/y2O",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 27327,
+      "title": "Phantom of the Paradise",
+      "year": "1974",
+      "release_date": "1974-10-31",
+      "original_title": "Phantom of the Paradise",
+      "poster_path": "/qDOtGWeSQNwB3dG7Amt1K0JW0az.jpg",
+      "genre_ids": [
+        18,
+        27,
+        10402
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1s34",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 27072,
+      "title": "On the Silver Globe",
+      "year": "1988",
+      "release_date": "1989-02-10",
+      "original_title": "Na Srebrnym Globie",
+      "poster_path": "/fOeMeTdGBlueTPtXgdamH8CkioX.jpg",
+      "genre_ids": [
+        878,
+        18
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1sAM",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 26677,
+      "title": "The Video Dead",
+      "year": "1987",
+      "release_date": "1987-11-06",
+      "original_title": "The Video Dead",
+      "poster_path": "/hsYfuS1kWb41aPf8ka7rgrYuMpP.jpg",
+      "genre_ids": [
+        27,
+        35,
+        14
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1toC",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 26198,
+      "title": "The Keep",
+      "year": "1983",
+      "release_date": "1983-12-16",
+      "original_title": "The Keep",
+      "poster_path": "/yd9wU3oajNxwaFHQ02rtTBuSFJD.jpg",
+      "genre_ids": [
+        27,
+        14
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1umW",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 24789,
+      "title": "Subspecies",
+      "year": "1991",
+      "release_date": "1991-08-08",
+      "original_title": "Subspecies",
+      "poster_path": "/jDN4ILUNcYpy4IxnBkSspKHeUUb.jpg",
+      "genre_ids": [
+        27
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1wZm",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 24038,
+      "title": "976-EVIL",
+      "year": "1988",
+      "release_date": "1988-12-09",
+      "original_title": "976-EVIL",
+      "poster_path": "/qQVLe0h2k06aamoAI5KjOle7mJR.jpg",
+      "genre_ids": [
+        27
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1yrw",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 16093,
+      "title": "Carnival of Souls",
+      "year": "1962",
+      "release_date": "1962-11-02",
+      "original_title": "Carnival of Souls",
+      "poster_path": "/AdbQsFB8pS090l0NO3uBtLZy2zw.jpg",
+      "genre_ids": [
+        27,
+        9648,
+        14
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1KQ4",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 9463,
+      "title": "Vampire Hunter D",
+      "year": "1985",
+      "release_date": "1985-12-21",
+      "original_title": "バンパイアハンターD",
+      "poster_path": "/yhKS0Wi6HNOHauWl0M3fr23hiB7.jpg",
+      "genre_ids": [
+        16,
+        14,
+        27
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1YCg",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 83414,
+      "title": "The Granny",
+      "year": "1995",
+      "release_date": "1995-05-23",
+      "original_title": "The Granny",
+      "poster_path": "/hYA06TITutaSJrlK4ODrKd0TjkX.jpg",
+      "genre_ids": [
+        27,
+        35
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/2VMu",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 423336,
+      "title": "The Scooby-Doo Project",
+      "year": "1999",
+      "release_date": "1999-10-31",
+      "original_title": "The Scooby-Doo Project",
+      "poster_path": "/nOEdNxSqrWMiYLFJEM6poBu3bSH.jpg",
+      "genre_ids": [
+        16,
+        9648,
+        27,
+        35,
+        10770
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/eYtO",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 655514,
+      "title": "Time of Moulting",
+      "year": "2020",
+      "release_date": "2020-01-21",
+      "original_title": "Fellwechselzeit",
+      "poster_path": "/sLnDxnstH1p6k8br0WuAUMZscVY.jpg",
+      "genre_ids": [
+        18,
+        27
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/ondE",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 750578,
+      "title": "Trump vs the Illuminati",
+      "year": "2020",
+      "release_date": "2020-10-06",
+      "original_title": "Trump vs the Illuminati",
+      "poster_path": "/13kBDk1dMe7lM1SuNDxuUFAKqM2.jpg",
+      "genre_ids": [
+        16,
+        878,
+        35
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/s8v2",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 1148948,
+      "title": "Bitches Kill Bitches",
+      "year": "2023",
+      "release_date": "2023-08-06",
+      "original_title": "Bitches Kill Bitches",
+      "poster_path": "/4RwSDuYAFGLEMZNqCWQUy96xx4Y.jpg",
+      "genre_ids": [
+        27,
+        35
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/HSIm",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 1313174,
+      "title": "Empires of the Deep",
+      "year": "",
+      "release_date": "-01-01",
+      "original_title": "Empires of the Deep",
+      "poster_path": "/x9cSk46yaIXSEi7kdFMPE6mSVnP.jpg",
+      "genre_ids": [
+        14,
+        12
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/O7mi",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 66664,
+      "title": "Shocking Dark",
+      "year": "1989",
+      "release_date": "1989-03-17",
+      "original_title": "Terminator 2",
+      "poster_path": "/tztmdSyvfvQBVyzqyh6sKQeJP5g.jpg",
+      "genre_ids": [
+        28,
+        878,
+        27
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/7DS",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 49239,
+      "title": "The Boxer's Omen",
+      "year": "1983",
+      "release_date": "1983-10-23",
+      "original_title": "魔",
+      "poster_path": "/tIOUIqHvjFyv80NoEIuIJxmr8VA.jpg",
+      "genre_ids": [
+        27,
+        14
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/Gx6",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 41153,
+      "title": "I Bought a Vampire Motorcycle",
+      "year": "1990",
+      "release_date": "1990-07-06",
+      "original_title": "I Bought a Vampire Motorcycle",
+      "poster_path": "/dCbFIzq64uUo5ZR4W3vLFhaJenk.jpg",
+      "genre_ids": [
+        35,
+        27
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1044",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 34086,
+      "title": "Spaced Invaders",
+      "year": "1990",
+      "release_date": "1990-04-27",
+      "original_title": "Spaced Invaders",
+      "poster_path": "/vchyoV7mnaUd46meVO81yolXH2D.jpg",
+      "genre_ids": [
+        35,
+        10751,
+        878
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1emG",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 33278,
+      "title": "Deadly Friend",
+      "year": "1986",
+      "release_date": "1986-10-10",
+      "original_title": "Deadly Friend",
+      "poster_path": "/24X1pdzeU9x2QCVDu957tpUA0kp.jpg",
+      "genre_ids": [
+        27,
+        878
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1fOw",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 29095,
+      "title": "Waxwork",
+      "year": "1988",
+      "release_date": "1988-06-17",
+      "original_title": "Waxwork",
+      "poster_path": "/48RXt1Zu8iNL0mgCojydmqBsjsC.jpg",
+      "genre_ids": [
+        27,
+        35
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1odO",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 26679,
+      "title": "Spookies",
+      "year": "1986",
+      "release_date": "1986-05-14",
+      "original_title": "Spookies",
+      "poster_path": "/tcRccnLpM2wsNjEv39O6UgkrNYI.jpg",
+      "genre_ids": [
+        27
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1toi",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 13561,
+      "title": "Murder Party",
+      "year": "2007",
+      "release_date": "2007-10-12",
+      "original_title": "Murder Party",
+      "poster_path": "/gzwNjaoamQ8WMuD62WTfu7NWoA1.jpg",
+      "genre_ids": [
+        35,
+        27
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1PTM",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 12521,
+      "title": "Shocker",
+      "year": "1989",
+      "release_date": "1989-10-27",
+      "original_title": "Shocker",
+      "poster_path": "/m5EKmXhFFq8wg6xE15eEoKaHfnO.jpg",
+      "genre_ids": [
+        27,
+        53
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1RNG",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 10450,
+      "title": "The Silence of the Hams",
+      "year": "1994",
+      "release_date": "1994-03-11",
+      "original_title": "Il silenzio dei prosciutti",
+      "poster_path": "/s4mxntM3FM7joVGz1LECSGfvYtm.jpg",
+      "genre_ids": [
+        53,
+        35
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1Wew",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 5753,
+      "title": "Deadly Prey",
+      "year": "1987",
+      "release_date": "1987-11-02",
+      "original_title": "Deadly Prey",
+      "poster_path": "/aG4hUQ0vw56B1zx0YJJKhaMR1DT.jpg",
+      "genre_ids": [
+        28
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/22CY",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 74386,
+      "title": "Mikadroid",
+      "year": "1991",
+      "release_date": "1991-07-10",
+      "original_title": "ミカドロイド",
+      "poster_path": "/hYt71ICyTecCk32weIkrQobUEBO.jpg",
+      "genre_ids": [
+        27,
+        878
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/2B6y",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 229078,
+      "title": "The Shadowed Mind",
+      "year": "1988",
+      "release_date": "1988-01-01",
+      "original_title": "The Shadowed Mind",
+      "poster_path": "/u50RM1CbT1lplHW6MSmsbJh472b.jpg",
+      "genre_ids": [
+        27,
+        53
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/6KYC",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 741592,
+      "title": "Cyst",
+      "year": "2020",
+      "release_date": "2020-09-24",
+      "original_title": "Cyst",
+      "poster_path": "/5nJwS765eHzCb5M8BTT2sl0lxxv.jpg",
+      "genre_ids": [
+        27,
+        878,
+        35
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/rPG6",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 945610,
+      "title": "Amityville in Space",
+      "year": "2022",
+      "release_date": "2022-07-19",
+      "original_title": "Amityville in Space",
+      "poster_path": "/mPe4LGNANQUTS4s36CSHqNCpm3v.jpg",
+      "genre_ids": [
+        27,
+        878
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/zFqy",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 46633,
+      "title": "Ghostwatch",
+      "year": "1992",
+      "release_date": "1992-10-31",
+      "original_title": "Ghostwatch",
+      "poster_path": "/h5nOIZbO3J7STIOZumW00BxU6DC.jpg",
+      "genre_ids": [
+        27,
+        9648,
+        10770
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/MIO",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 41428,
+      "title": "Tetsuo: The Iron Man",
+      "year": "1989",
+      "release_date": "1989-07-01",
+      "original_title": "鉄男",
+      "poster_path": "/lARc59hUAKW3ziWddftUnZ99R8c.jpg",
+      "genre_ids": [
+        27,
+        878
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/ZoM",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 40027,
+      "title": "Ninja Terminator",
+      "year": "1986",
+      "release_date": "1986-07-15",
+      "original_title": "Ninja Terminator",
+      "poster_path": "/5YkYpKxTQVq4gna3qTztwwwo8YF.jpg",
+      "genre_ids": [
+        28
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/12Ey",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 35608,
+      "title": "Intensity",
+      "year": "1997",
+      "release_date": "1997-08-05",
+      "original_title": "Intensity",
+      "poster_path": "/aMumOEvsvYXFJkCa6gu0TCaeHX9.jpg",
+      "genre_ids": [
+        27,
+        53,
+        10770
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1cg2",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 27769,
+      "title": "Sometimes They Come Back",
+      "year": "1991",
+      "release_date": "1991-05-07",
+      "original_title": "Sometimes They Come Back",
+      "poster_path": "/jOsCw4tKKyRcYU1Wygp2V6hhpNm.jpg",
+      "genre_ids": [
+        27,
+        10770,
+        53,
+        18
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1r0S",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 27350,
+      "title": "McBain",
+      "year": "1991",
+      "release_date": "1991-09-20",
+      "original_title": "McBain",
+      "poster_path": "/tOYtB42P1njhR5vN7gulIKf6TVu.jpg",
+      "genre_ids": [
+        28,
+        10752,
+        18
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1rZG",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 24924,
+      "title": "Night of the Demons",
+      "year": "1988",
+      "release_date": "1988-09-09",
+      "original_title": "Night of the Demons",
+      "poster_path": "/2VcJ4wpIx8TO14rXZnYPhzKL7Tp.jpg",
+      "genre_ids": [
+        27,
+        35
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1wLO",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 23506,
+      "title": "The Wizard of Gore",
+      "year": "1970",
+      "release_date": "1970-10-23",
+      "original_title": "The Wizard of Gore",
+      "poster_path": "/z8zaRJb0e19jrniGoZoWzwCWTQk.jpg",
+      "genre_ids": [
+        27
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1z94",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 12238,
+      "title": "The Night Flier",
+      "year": "1997",
+      "release_date": "1997-04-30",
+      "original_title": "The Night Flier",
+      "poster_path": "/3bMb6CzdKfpw0pZWVW2RbQRneIC.jpg",
+      "genre_ids": [
+        27,
+        9648
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1Sdk",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 11884,
+      "title": "The Last Starfighter",
+      "year": "1984",
+      "release_date": "1984-07-13",
+      "original_title": "The Last Starfighter",
+      "poster_path": "/A7oAHTjtYnIEQjJs62IONRufooq.jpg",
+      "genre_ids": [
+        12,
+        878,
+        28
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1SRk",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 378485,
+      "title": "We Are the Flesh",
+      "year": "2016",
+      "release_date": "2016-02-02",
+      "original_title": "Tenemos la carne",
+      "poster_path": "/y4vLIUysOqY16XPiaZ1W9oeXBc1.jpg",
+      "genre_ids": [
+        18,
+        27,
+        14
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/da30",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 466565,
+      "title": "Hagazussa",
+      "year": "2017",
+      "release_date": "2018-05-17",
+      "original_title": "Hagazussa",
+      "poster_path": "/qxUiwpRKagcNHFlly5IpcbX0QPI.jpg",
+      "genre_ids": [
+        27,
+        18,
+        14
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/gHYu",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 733049,
+      "title": "The Pizzagate Massacre",
+      "year": "2020",
+      "release_date": "2020-10-21",
+      "original_title": "The Pizzagate Massacre",
+      "poster_path": "/4MRYyz3CAzXsuUNDgt6L04GxP8H.jpg",
+      "genre_ids": [
+        35,
+        28,
+        80,
+        27
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/ruyq",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 839678,
+      "title": "Unhuman",
+      "year": "2022",
+      "release_date": "2022-06-03",
+      "original_title": "Unhuman",
+      "poster_path": "/a0YCxxFhZSczKrw3FHDV0nTyHb5.jpg",
+      "genre_ids": [
+        27,
+        35
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/vFOW",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 29161,
+      "title": "Phenomena",
+      "year": "1985",
+      "release_date": "1985-01-25",
+      "original_title": "Phenomena",
+      "poster_path": "/dhk14s8ogQkbf6re3HLKV2UBHjx.jpg",
+      "genre_ids": [
+        27,
+        53
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1o4s",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 26774,
+      "title": "Blood on Satan's Claw",
+      "year": "1971",
+      "release_date": "1971-01-28",
+      "original_title": "Blood on Satan's Claw",
+      "poster_path": "/hp3xBv3sXmswAubsouWJ1V9Dfpi.jpg",
+      "genre_ids": [
+        27
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1td0",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 22172,
+      "title": "Street Trash",
+      "year": "1987",
+      "release_date": "1987-02-22",
+      "original_title": "Street Trash",
+      "poster_path": "/vwy81HbDoSvccWvculRMUVY39dD.jpg",
+      "genre_ids": [
+        35,
+        27
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1AWw",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 11297,
+      "title": "Save the Green Planet!",
+      "year": "2003",
+      "release_date": "2003-04-04",
+      "original_title": "지구를 지켜라!",
+      "poster_path": "/kou9TDjveVwBhWnxCRUT88RUVCs.jpg",
+      "genre_ids": [
+        35,
+        878,
+        80
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1Uco",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 8216,
+      "title": "Meet the Feebles",
+      "year": "1989",
+      "release_date": "1989-08-12",
+      "original_title": "Meet the Feebles",
+      "poster_path": "/31DqGazwdE9N4Y9FHC6Q4NvstuW.jpg",
+      "genre_ids": [
+        35,
+        10402
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/20tK",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 72349,
+      "title": "Eyes of Fire",
+      "year": "1983",
+      "release_date": "1983-10-21",
+      "original_title": "Eyes of Fire",
+      "poster_path": "/mxT0psJTjT2yri8QOvHE4N7iANo.jpg",
+      "genre_ids": [
+        27,
+        18
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/2oDk",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 42188,
+      "title": "Never Let Me Go",
+      "year": "2010",
+      "release_date": "2010-03-18",
+      "original_title": "Never Let Me Go",
+      "poster_path": "/8F0r5ng9Fp60OhzQfR5v33fppq.jpg",
+      "genre_ids": [
+        18,
+        10749,
+        878
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/Xw0",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 21191,
+      "title": "Sin Nombre",
+      "year": "2009",
+      "release_date": "2009-03-20",
+      "original_title": "Sin nombre",
+      "poster_path": "/dubZwiGWp6TwYNGYtyGEUC7XAin.jpg",
+      "genre_ids": [
+        18,
+        28,
+        53,
+        80
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1ChU",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 15789,
+      "title": "A Goofy Movie",
+      "year": "1995",
+      "release_date": "1995-04-05",
+      "original_title": "A Goofy Movie",
+      "poster_path": "/bycmMhO3iIoEDzP768sUjq2RV4T.jpg",
+      "genre_ids": [
+        12,
+        35,
+        10749,
+        16,
+        10751
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1Lwu",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 11601,
+      "title": "Stir of Echoes",
+      "year": "1999",
+      "release_date": "1999-09-10",
+      "original_title": "Stir of Echoes",
+      "poster_path": "/9CyJ5aYF27cITX1WSUTENeP4wBE.jpg",
+      "genre_ids": [
+        27,
+        9648,
+        53
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1Ts6",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 9075,
+      "title": "Black Book",
+      "year": "2006",
+      "release_date": "2006-09-14",
+      "original_title": "Zwartboek",
+      "poster_path": "/vZaYDWa3IqTNKsHCsUr72J4zTJ6.jpg",
+      "genre_ids": [
+        18,
+        53,
+        10752
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1Zea",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 8069,
+      "title": "Barbarella",
+      "year": "1968",
+      "release_date": "1968-10-10",
+      "original_title": "Barbarella",
+      "poster_path": "/facTz5BZz4AkJal1FWgjYciekih.jpg",
+      "genre_ids": [
+        878,
+        12,
+        35
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/20Ba",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 293,
+      "title": "A River Runs Through It",
+      "year": "1992",
+      "release_date": "1992-10-09",
+      "original_title": "A River Runs Through It",
+      "poster_path": "/aVP45oS2cBL4WtZ1kB7r8uarruB.jpg",
+      "genre_ids": [
+        18
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/2aFm",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 243,
+      "title": "High Fidelity",
+      "year": "2000",
+      "release_date": "2000-03-17",
+      "original_title": "High Fidelity",
+      "poster_path": "/e2LZGB62GMhv3Fo8tDZjY87I81a.jpg",
+      "genre_ids": [
+        18,
+        35,
+        10749,
+        10402
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/2aMW",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 292067,
+      "title": "Tokyo Cowboy",
+      "year": "1994",
+      "release_date": "1994-09-01",
+      "original_title": "Tokyo Cowboy",
+      "poster_path": "/uQvqzgrR2lQLG2VeHeWiDNacdIq.jpg",
+      "genre_ids": [
+        18,
+        10749,
+        37,
+        35
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/9a8c",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 367147,
+      "title": "Buster's Mal Heart",
+      "year": "2016",
+      "release_date": "2017-05-28",
+      "original_title": "Buster's Mal Heart",
+      "poster_path": "/eoZO92Q1zvtxaHMFBuA9znXsw8n.jpg",
+      "genre_ids": [
+        9648,
+        18
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/cIAg",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 653601,
+      "title": "Horse Girl",
+      "year": "2020",
+      "release_date": "2020-01-27",
+      "original_title": "Horse Girl",
+      "poster_path": "/hNQ7st9dFXUXENMcsAuVxcrIBfA.jpg",
+      "genre_ids": [
+        18
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/oioi",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 51679,
+      "title": "The Source",
+      "year": "1999",
+      "release_date": "1999-01-23",
+      "original_title": "The Source",
+      "poster_path": "/cVWKNCnosCBfEmSDVNoxtrI8px0.jpg",
+      "genre_ids": [
+        99,
+        36
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/AOq",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 38568,
+      "title": "Howl",
+      "year": "2010",
+      "release_date": "2010-08-26",
+      "original_title": "Howl",
+      "poster_path": "/4gy0rUIaaao1nx6pr1Dj1WpslcO.jpg",
+      "genre_ids": [],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/15I4",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 30020,
+      "title": "Taste of Cherry",
+      "year": "1997",
+      "release_date": "1997-10-10",
+      "original_title": "طعم گيلاس",
+      "poster_path": "/vgPwjgbSdbYWrS1ty8TIZtmi6Tn.jpg",
+      "genre_ids": [
+        18
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1m8W",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 13778,
+      "title": "Dickie Roberts: Former Child Star",
+      "year": "2003",
+      "release_date": "2003-09-04",
+      "original_title": "Dickie Roberts: Former Child Star",
+      "poster_path": "/eyn1WbZmUUIXU8QoorKWJTQ1iLg.jpg",
+      "genre_ids": [
+        35
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1Pr4",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 5723,
+      "title": "Once",
+      "year": "2007",
+      "release_date": "2007-03-23",
+      "original_title": "Once",
+      "poster_path": "/7nW363kSYRCkr4VGOMvuSGwtzKs.jpg",
+      "genre_ids": [],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/22GG",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 634,
+      "title": "Bridget Jones's Diary",
+      "year": "2001",
+      "release_date": "2001-04-13",
+      "original_title": "Bridget Jones's Diary",
+      "poster_path": "/olMTi7uCaec9Yr3Ar07D2SIja1G.jpg",
+      "genre_ids": [
+        35,
+        10749,
+        18
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/29WQ",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 235,
+      "title": "Stand by Me",
+      "year": "1986",
+      "release_date": "1986-08-08",
+      "original_title": "Stand by Me",
+      "poster_path": "/vz0w9BSehcqjDcJOjRaCk7fgJe7.jpg",
+      "genre_ids": [
+        18,
+        12
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/2aOe",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 80,
+      "title": "Before Sunset",
+      "year": "2004",
+      "release_date": "2004-06-16",
+      "original_title": "Before Sunset",
+      "poster_path": "/gycdE1ARByGQcK4fYR2mgpU6OO.jpg",
+      "genre_ids": [
+        18,
+        10749
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/2bcg",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 76,
+      "title": "Before Sunrise",
+      "year": "1995",
+      "release_date": "1995-01-27",
+      "original_title": "Before Sunrise",
+      "poster_path": "/kf1Jb1c2JAOqjuzA3H4oDM263uB.jpg",
+      "genre_ids": [
+        18,
+        10749
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/2bcU",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 83770,
+      "title": "On the Road",
+      "year": "2012",
+      "release_date": "2012-05-22",
+      "original_title": "On the Road",
+      "poster_path": "/k7LQteD02p3VHixbS6NXHkFdFwT.jpg",
+      "genre_ids": [
+        12,
+        18
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/2WCK",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 132344,
+      "title": "Before Midnight",
+      "year": "2013",
+      "release_date": "2013-04-05",
+      "original_title": "Before Midnight",
+      "poster_path": "/qbGKJmNUroDz75kh5Oafoall89e.jpg",
+      "genre_ids": [
+        10749,
+        18
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/4ive",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 463257,
+      "title": "The Peanut Butter Falcon",
+      "year": "2019",
+      "release_date": "2019-08-09",
+      "original_title": "The Peanut Butter Falcon",
+      "poster_path": "/qyQcRGvdW3VtxHR4fSDgPOePEip.jpg",
+      "genre_ids": [
+        12,
+        35,
+        18
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/gzu2",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 522098,
+      "title": "Babyteeth",
+      "year": "2019",
+      "release_date": "2020-06-15",
+      "original_title": "Babyteeth",
+      "poster_path": "/aINpljdt3VVMrCLtJW4BektwYOp.jpg",
+      "genre_ids": [
+        18,
+        35,
+        10749
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/iWDU",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 976573,
+      "title": "Elemental",
+      "year": "2023",
+      "release_date": "2023-06-14",
+      "original_title": "Elemental",
+      "poster_path": "/4Y1WNkd88JXmGfhtWR7dmDAo1T2.jpg",
+      "genre_ids": [
+        16,
+        35,
+        10751,
+        10749
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/ASiE",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 1317877,
+      "title": "Dream Eater",
+      "year": "2024",
+      "release_date": "2025-10-24",
+      "original_title": "Dream Eater",
+      "poster_path": "/5PRT9vkRxSAogsce4v4svKNQkqb.jpg",
+      "genre_ids": [
+        27
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/OigA",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 66881,
+      "title": "Nightbeast",
+      "year": "1982",
+      "release_date": "1982-11-01",
+      "original_title": "Nightbeast",
+      "poster_path": "/wkcBUK3vAbCtidPArf6HLPgEEZy.jpg",
+      "genre_ids": [
+        27,
+        878
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/75c",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 60085,
+      "title": "Final Flesh",
+      "year": "2009",
+      "release_date": "2009-06-09",
+      "original_title": "Final Flesh",
+      "poster_path": "/6dsulCPvrNvP3yWsP45NB4gcjFZ.jpg",
+      "genre_ids": [
+        27,
+        35,
+        878
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/gRO",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 45649,
+      "title": "Rubber",
+      "year": "2010",
+      "release_date": "2010-11-09",
+      "poster_path": "/mWgCORI5IC5vOvB2cDVQe0YNtXZ.jpg",
+      "genre_ids": [],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/P2m",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 38565,
+      "title": "Unico in the Island of Magic",
+      "year": "1983",
+      "release_date": "1983-07-16",
+      "original_title": "ユニコ 魔法の島へ",
+      "poster_path": "/xG9cJlugwqj92ooeRrRsIJw0WER.jpg",
+      "genre_ids": [
+        16,
+        14,
+        18,
+        12,
+        10751
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/15Iy",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 30644,
+      "title": "Raw Force",
+      "year": "1982",
+      "release_date": "1982-07-01",
+      "original_title": "Raw Force",
+      "poster_path": "/tREHKq24p5vpMcOUy17Mbch70uv.jpg",
+      "genre_ids": [
+        28,
+        12,
+        27
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1kTG",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 26914,
+      "title": "Troll 2",
+      "year": "1990",
+      "release_date": "1990-10-12",
+      "original_title": "Troll 2",
+      "poster_path": "/eFth6zw4PEInzr2Y64mYVN1zbBi.jpg",
+      "genre_ids": [
+        27,
+        14
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1sTE",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 21136,
+      "title": "Funky Forest: The First Contact",
+      "year": "2005",
+      "release_date": "2005-10-25",
+      "original_title": "ナイスの森〜The First Contact〜",
+      "poster_path": "/XuQF2LZH3duTm156vdqGPjQ3PA.jpg",
+      "genre_ids": [
+        35,
+        878,
+        14
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1Cow",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 19425,
+      "title": "The Peanut Butter Solution",
+      "year": "1985",
+      "release_date": "1985-12-06",
+      "original_title": "The Peanut Butter Solution",
+      "poster_path": "/p2DgMuccpBd5VFQA87JSMeaXw7V.jpg",
+      "genre_ids": [
+        10751,
+        14,
+        12
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1F7o",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 8325,
+      "title": "Tiptoes",
+      "year": "2002",
+      "release_date": "2002-12-17",
+      "original_title": "Tiptoes",
+      "poster_path": "/m609NhpkIUzAyIWgQYaaPSIsWFO.jpg",
+      "genre_ids": [
+        18,
+        10749,
+        35
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/20mO",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 6917,
+      "title": "The Gate",
+      "year": "1987",
+      "release_date": "1987-04-21",
+      "original_title": "The Gate",
+      "poster_path": "/ik7AfGWpwKnjaQeth3LZqrqzvfB.jpg",
+      "genre_ids": [
+        27,
+        14
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/21ka",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 1483,
+      "title": "Begotten",
+      "year": "1989",
+      "release_date": "1991-06-05",
+      "original_title": "Begotten",
+      "poster_path": "/rvgYcVToOHe0gKWtF3mz6SvM4Aw.jpg",
+      "genre_ids": [
+        14,
+        27
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/28Ie",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 483,
+      "title": "Wild at Heart",
+      "year": "1990",
+      "release_date": "1990-08-17",
+      "original_title": "Wild at Heart",
+      "poster_path": "/uLUFI5sJIfWrBUWB2Y1dEuyvvVy.jpg",
+      "genre_ids": [
+        80,
+        53,
+        10749
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/2aii",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 164,
+      "title": "Breakfast at Tiffany's",
+      "year": "1961",
+      "release_date": "1961-10-06",
+      "original_title": "Breakfast at Tiffany's",
+      "poster_path": "/79xm4gXw4l7A5D0XukUOJRocFYQ.jpg",
+      "genre_ids": [
+        35,
+        10749,
+        18
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/2aYS",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 83292,
+      "title": "The Suckling",
+      "year": "1990",
+      "release_date": "1990-09-24",
+      "original_title": "The Suckling",
+      "poster_path": "/qAkU68rqKWZT5v6sFCxx85SrLr0.jpg",
+      "genre_ids": [
+        27
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/2Vsk",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 660715,
+      "title": "After Blue (Dirty Paradise)",
+      "year": "2021",
+      "release_date": "2022-02-16",
+      "original_title": "After Blue (Paradis sale)",
+      "poster_path": "/uzlk8JZbialeyduUjgtbsqwH3yX.jpg",
+      "genre_ids": [
+        878,
+        14,
+        37
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/ozsw",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 870219,
+      "title": "New York Ninja",
+      "year": "2021",
+      "release_date": "2021-10-02",
+      "original_title": "New York Ninja",
+      "poster_path": "/1oXECgPkTPx98EZWcaCpHH3Rdhv.jpg",
+      "genre_ids": [
+        28,
+        80,
+        53
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/wOYo",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 64847,
+      "title": "Belladonna of Sadness",
+      "year": "1973",
+      "release_date": "1973-06-30",
+      "original_title": "哀しみのベラドンナ",
+      "poster_path": "/2okYZVVw7RdMwlOKcAJsQ7Nsrpr.jpg",
+      "genre_ids": [
+        16,
+        18,
+        14
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/2q",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 65374,
+      "title": "Samurai Cop",
+      "year": "1991",
+      "release_date": "1991-11-30",
+      "original_title": "Samurai Cop",
+      "poster_path": "/4M2FSwfTvhmP4ubF47UKS86BKYO.jpg",
+      "genre_ids": [
+        28,
+        80,
+        35,
+        53
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/3Na",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 62132,
+      "title": "Blood Diner",
+      "year": "1987",
+      "release_date": "1987-07-24",
+      "original_title": "Blood Diner",
+      "poster_path": "/q8Y9BhkWj5Hi7hCQ5QPsDHC95jR.jpg",
+      "genre_ids": [
+        27,
+        35
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/c2C",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 59558,
+      "title": "Miami Connection",
+      "year": "1987",
+      "release_date": "1987-08-18",
+      "original_title": "Miami Connection",
+      "poster_path": "/pfysfJ8f1JcVVOeGQ5EZSxeSka8.jpg",
+      "genre_ids": [
+        28,
+        80,
+        10402
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/hMU",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 46315,
+      "title": "Valerie and Her Week of Wonders",
+      "year": "1970",
+      "release_date": "1970-10-16",
+      "original_title": "Valerie a týden divů",
+      "poster_path": "/lY0IkdouazLBpPYot8dsPAsJqHK.jpg",
+      "genre_ids": [
+        14,
+        12,
+        18
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/NsC",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 40723,
+      "title": "Trouble Every Day",
+      "year": "2001",
+      "release_date": "2001-07-11",
+      "original_title": "Trouble Every Day",
+      "poster_path": "/jn4799m6uB5P6ZUarlnxvZEZDFp.jpg",
+      "genre_ids": [
+        18,
+        27,
+        53
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/115M",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 40464,
+      "title": "Boardinghouse",
+      "year": "1982",
+      "release_date": "1982-12-31",
+      "original_title": "Boardinghouse",
+      "poster_path": "/k5sF7CvHXd1Y9fmVhHMUmmmKjhY.jpg",
+      "genre_ids": [
+        27
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/11Js",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 34023,
+      "title": "Blood Sucking Freaks",
+      "year": "1976",
+      "release_date": "1976-11-03",
+      "original_title": "Blood Sucking Freaks",
+      "poster_path": "/sRFWfces1Aa2yPRzDt4NVuYrysQ.jpg",
+      "genre_ids": [
+        27,
+        35
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1evy",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 28070,
+      "title": "Surf Nazis Must Die",
+      "year": "1987",
+      "release_date": "1987-07-03",
+      "original_title": "Surf Nazis Must Die",
+      "poster_path": "/gVECT5DHulQJyo9oqS1tdDSGowI.jpg",
+      "genre_ids": [
+        28,
+        35,
+        27
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1qjY",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 26302,
+      "title": "The Color of Pomegranates",
+      "year": "1969",
+      "release_date": "1969-10-01",
+      "original_title": "Նռան գույնը",
+      "poster_path": "/rMUbQf7RgsYgQ47AFf1wpoSt4dX.jpg",
+      "genre_ids": [
+        18,
+        36
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1u94",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 25078,
+      "title": "Cat Soup",
+      "year": "2001",
+      "release_date": "2001-02-21",
+      "original_title": "ねこぢる草",
+      "poster_path": "/85c6VTiUOtizQBoT9ekBBlUz3zc.jpg",
+      "genre_ids": [
+        14,
+        16,
+        878
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1wrk",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 21484,
+      "title": "Possession",
+      "year": "1981",
+      "release_date": "1981-05-27",
+      "original_title": "Possession",
+      "poster_path": "/A9bnRn05riOKWftvQlLKa2gl51n.jpg",
+      "genre_ids": [
+        27
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1BPm",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 21168,
+      "title": "The Reflecting Skin",
+      "year": "1990",
+      "release_date": "1990-08-28",
+      "original_title": "The Reflecting Skin",
+      "poster_path": "/ehUosbTVyCQtf6nAfpmQ8Q3XSd7.jpg",
+      "genre_ids": [
+        18,
+        53,
+        27
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1CkY",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 19236,
+      "title": "Santa Sangre",
+      "year": "1989",
+      "release_date": "1989-11-24",
+      "original_title": "Santa Sangre",
+      "poster_path": "/6VTra0NR4ygRnq3bD922I4rU0Mq.jpg",
+      "genre_ids": [
+        27,
+        18,
+        53
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1FrI",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 16306,
+      "title": "Fantastic Planet",
+      "year": "1973",
+      "release_date": "1973-12-01",
+      "original_title": "La Planète sauvage",
+      "poster_path": "/prq0j1S0K07UjwLZLF6oMGflRUI.jpg",
+      "genre_ids": [
+        16,
+        878
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1KnQ",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 15742,
+      "title": "Taxidermia",
+      "year": "2006",
+      "release_date": "2006-08-23",
+      "original_title": "Taxidermia",
+      "poster_path": "/uRqxKim0Vr1JZPLYcR1rjFtu74p.jpg",
+      "genre_ids": [
+        18,
+        27,
+        35
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1LBO",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 13553,
+      "title": "The Driller Killer",
+      "year": "1979",
+      "release_date": "1979-06-15",
+      "original_title": "The Driller Killer",
+      "poster_path": "/qeFh14wpyxtmEZrpnPX1L4q5AJG.jpg",
+      "genre_ids": [
+        27
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1PV4",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 11900,
+      "title": "Even Dwarfs Started Small",
+      "year": "1970",
+      "release_date": "1971-02-02",
+      "original_title": "Auch Zwerge haben klein angefangen",
+      "poster_path": "/b0jmVC1a4LghH9BtzTPn1DELvBP.jpg",
+      "genre_ids": [
+        35,
+        18
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1SOU",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 4241,
+      "title": "Visitor Q",
+      "year": "2001",
+      "release_date": "2001-03-17",
+      "original_title": "ビジターQ",
+      "poster_path": "/hkf41ujfmMwHdExD7q4j9DxgBDM.jpg",
+      "genre_ids": [
+        35,
+        18,
+        27,
+        53
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/24DE",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 1559,
+      "title": "Sweet Movie",
+      "year": "1974",
+      "release_date": "1974-06-12",
+      "original_title": "Sweet Movie",
+      "poster_path": "/64SaF3kOOaLPUVflDhXZLrB0xjt.jpg",
+      "genre_ids": [
+        35
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/28BM",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 82126,
+      "title": "Things",
+      "year": "1989",
+      "release_date": "1989-09-01",
+      "original_title": "Things",
+      "poster_path": "/vuJhTarmDIhYh2KxP0hWn6azo33.jpg",
+      "genre_ids": [
+        27
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/2SpC",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 240638,
+      "title": "Fantastic Animation Festival",
+      "year": "1977",
+      "release_date": "1977-05-27",
+      "original_title": "Fantastic Animation Festival",
+      "poster_path": "/6lKBiiTiL4KwRPZbs9mpCC7puIK.jpg",
+      "genre_ids": [
+        16
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/74W2",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 41426,
+      "title": "Jubilee",
+      "year": "1978",
+      "release_date": "1978-02-01",
+      "original_title": "Jubilee",
+      "poster_path": "/8HtAaaDZDCCx2F73n41xMDWDhwU.jpg",
+      "genre_ids": [
+        35,
+        18,
+        14,
+        10402
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/Zp6",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 41077,
+      "title": "Son of the White Mare",
+      "year": "1981",
+      "release_date": "1981-10-22",
+      "original_title": "Fehérlófia",
+      "poster_path": "/cYYYIfBFG5nszjDk5xea4MQHyDS.jpg",
+      "genre_ids": [
+        12,
+        16,
+        14
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/10f2",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 36751,
+      "title": "Twice Upon a Time",
+      "year": "1983",
+      "release_date": "1983-08-05",
+      "original_title": "Twice Upon a Time",
+      "poster_path": "/abx7BQF3O23LJGTDTmQQ0CTwc8c.jpg",
+      "genre_ids": [
+        16,
+        35,
+        12,
+        14
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/19U4",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 22561,
+      "title": "Allegro non troppo",
+      "year": "1976",
+      "release_date": "1976-03-12",
+      "original_title": "Allegro non troppo",
+      "poster_path": "/xRAnD7yd6Qx8NYXfoW5GN6K5jiC.jpg",
+      "genre_ids": [
+        14,
+        16,
+        35,
+        10402
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1Ao0",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 15916,
+      "title": "Angel's Egg",
+      "year": "1985",
+      "release_date": "1985-12-22",
+      "original_title": "天使のたまご",
+      "poster_path": "/dcEUGvckbePFzPKhGXnS9T3kZMG.jpg",
+      "genre_ids": [
+        16,
+        14,
+        9648,
+        878
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1LeA",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 8785,
+      "title": "The Saragossa Manuscript",
+      "year": "1965",
+      "release_date": "1966-02-27",
+      "original_title": "Rękopis znaleziony w Saragossie",
+      "poster_path": "/3P8g5U4gbifjM2lnqSpZogh7FrD.jpg",
+      "genre_ids": [
+        14,
+        9648,
+        18
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1ZPA",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 179111,
+      "title": "A Field in England",
+      "year": "2013",
+      "release_date": "2013-07-05",
+      "original_title": "A Field in England",
+      "poster_path": "/dKhMJr8yoHVyvxyUiAeIn2hKVdL.jpg",
+      "genre_ids": [
+        27,
+        53,
+        14
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/5tmk",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 1046758,
+      "title": "Sew Torn",
+      "year": "2024",
+      "release_date": "2025-09-11",
+      "original_title": "Sew Torn",
+      "poster_path": "/6N3bJq0VInPhifYml7cZ0TjRrXb.jpg",
+      "genre_ids": [
+        53,
+        35,
+        80
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/DC8E",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 1231010,
+      "title": "The Severed Sun",
+      "year": "2024",
+      "release_date": "2025-05-16",
+      "original_title": "The Severed Sun",
+      "poster_path": "/j1ly4WT3a7BTV5QRLT1YB6xVJFB.jpg",
+      "genre_ids": [
+        27
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/KKFK",
+      "addedDate": "2025-09-02"
+    },
+    {
+      "id": 38985,
+      "title": "Sorcerer",
+      "year": "1977",
+      "release_date": "1977-06-24",
+      "original_title": "Sorcerer",
+      "poster_path": "/2b7oexm173SF1FSEq0DdgxZZNRH.jpg",
+      "genre_ids": [
+        53,
+        12,
+        28
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/14J6",
+      "addedDate": "2025-09-03"
+    },
+    {
+      "id": 31166,
+      "title": "I Come with the Rain",
+      "year": "2009",
+      "release_date": "2009-05-14",
+      "original_title": "I Come with the Rain",
+      "poster_path": "/wOJZ3XvHjcGfLBh0GLJU3HhsJKE.jpg",
+      "genre_ids": [
+        53,
+        9648
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1jHE",
+      "addedDate": "2025-09-03"
+    },
+    {
+      "id": 25237,
+      "title": "Come and See",
+      "year": "1985",
+      "release_date": "1985-10-17",
+      "original_title": "Иди и смотри",
+      "poster_path": "/qNbMsKVzigERgJUbwf8pKyZogpb.jpg",
+      "genre_ids": [
+        18,
+        10752,
+        27,
+        36
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1w9q",
+      "addedDate": "2025-09-03"
+    },
+    {
+      "id": 1159831,
+      "title": "The Bride!",
+      "year": "2026",
+      "release_date": "2026-03-04",
+      "original_title": "The Bride!",
+      "poster_path": "/lV8YHwGkYZsm6EfIqnhaSz2avKt.jpg",
+      "genre_ids": [
+        878,
+        27,
+        14
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/HSw6",
+      "addedDate": "2025-09-03"
+    },
+    {
+      "id": 1242434,
+      "title": "Highest 2 Lowest",
+      "year": "2025",
+      "release_date": "2025-08-14",
+      "original_title": "Highest 2 Lowest",
+      "poster_path": "/RFQtinuiHhOnbmJaCn3uzegCYF.jpg",
+      "genre_ids": [
+        80,
+        18
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/LcIC",
+      "addedDate": "2025-09-03"
+    },
+    {
+      "id": 1265063,
+      "title": "After the Hunt",
+      "year": "2025",
+      "release_date": "2025-10-09",
+      "original_title": "After the Hunt",
+      "poster_path": "/ryF8QPGUGlo8gRB4OYKb4J0r3aJ.jpg",
+      "genre_ids": [
+        18
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/Mdra",
+      "addedDate": "2025-09-03"
+    },
+    {
+      "id": 1272166,
+      "title": "Ballad of a Small Player",
+      "year": "2025",
+      "release_date": "2025-10-15",
+      "original_title": "Ballad of a Small Player",
+      "poster_path": "/yiXpXNiBWENaSJmdKfoT5DU0bL4.jpg",
+      "genre_ids": [
+        80,
+        18
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/MuZ4",
+      "addedDate": "2025-09-03"
+    },
+    {
+      "id": 1069905,
+      "title": "Jay Kelly",
+      "year": "2025",
+      "release_date": "2025-11-14",
+      "original_title": "Jay Kelly",
+      "poster_path": "/lEXYpY9X17pGC7xYYy17Guv0L3J.jpg",
+      "genre_ids": [
+        18,
+        35
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/EsWw",
+      "addedDate": "2025-09-03"
+    },
+    {
+      "id": 760329,
+      "title": "The Smashing Machine",
+      "year": "2025",
+      "release_date": "2025-10-01",
+      "original_title": "The Smashing Machine",
+      "poster_path": "/cwwvrdYeIrARXdiv09GIO6XWK5l.jpg",
+      "genre_ids": [
+        18,
+        36,
+        28
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/syUC",
+      "addedDate": "2025-09-03"
+    },
+    {
+      "id": 27324,
+      "title": "Pulse",
+      "year": "2001",
+      "release_date": "2001-02-03",
+      "original_title": "回路",
+      "poster_path": "/c3zEimDraIyMSasPMGDaNOrhnzn.jpg",
+      "genre_ids": [
+        27,
+        53,
+        9648
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1s3y",
+      "addedDate": "2025-09-04"
+    },
+    {
+      "id": 46738,
+      "title": "Incendies",
+      "year": "2010",
+      "release_date": "2010-09-17",
+      "original_title": "Incendies",
+      "poster_path": "/yH6DAQVgbyj72S66gN4WWVoTjuf.jpg",
+      "genre_ids": [
+        18,
+        10752,
+        9648
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/Msm",
+      "addedDate": "2025-09-04"
+    },
+    {
+      "id": 320007,
+      "title": "Victoria",
+      "year": "2015",
+      "release_date": "2015-06-11",
+      "original_title": "Victoria",
+      "poster_path": "/9P8QgfoMcFX7vp2Gj2cYFecHVRZ.jpg",
+      "genre_ids": [],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/amSe",
+      "addedDate": "2025-09-07"
+    },
+    {
+      "id": 45044,
+      "title": "Friday Night",
+      "year": "2002",
+      "release_date": "2002-09-11",
+      "original_title": "Vendredi soir",
+      "poster_path": "/oBLkiNfPaXGKQHwSd8I9Ta36UTZ.jpg",
+      "genre_ids": [
+        18,
+        10749
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/QtS",
+      "addedDate": "2025-09-26"
+    },
+    {
+      "id": 468735,
+      "title": "Madeline's Madeline",
+      "year": "2018",
+      "release_date": "2018-08-10",
+      "original_title": "Madeline's Madeline",
+      "poster_path": "/8PcvYO5SHmPUFzdXpI2kzj3JtXN.jpg",
+      "genre_ids": [
+        18
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/gNmw",
+      "addedDate": "2025-09-26"
+    },
+    {
+      "id": 284135,
+      "title": "Hill of Freedom",
+      "year": "2014",
+      "release_date": "2014-09-04",
+      "original_title": "자유의 언덕",
+      "poster_path": "/6YjwoDVShfw1TcqOH2z83EWnmv8.jpg",
+      "genre_ids": [
+        18
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/8MSU",
+      "addedDate": "2025-09-26"
+    },
+    {
+      "id": 597093,
+      "title": "Ghost Tropic",
+      "year": "2019",
+      "release_date": "2020-01-01",
+      "original_title": "Ghost Tropic",
+      "poster_path": "/gZFuhwJWHPzsPGMtfJGppgBopxO.jpg",
+      "genre_ids": [
+        18
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/m0eg",
+      "addedDate": "2025-09-26"
+    },
+    {
+      "id": 487850,
+      "title": "Asako I & II",
+      "year": "2018",
+      "release_date": "2018-09-01",
+      "original_title": "寝ても覚めても",
+      "poster_path": "/nqwfB2GMMjrjAJnQj1hxD97sQXF.jpg",
+      "genre_ids": [
+        18,
+        10749
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/hyNk",
+      "addedDate": "2025-09-26"
+    },
+    {
+      "id": 490785,
+      "title": "Hale County This Morning, This Evening",
+      "year": "2018",
+      "release_date": "2018-09-14",
+      "original_title": "Hale County This Morning, This Evening",
+      "poster_path": "/yzso3kOTsilpu25bnDhAkxPWoTT.jpg",
+      "genre_ids": [
+        99
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/hG2G",
+      "addedDate": "2025-09-26"
+    },
+    {
+      "id": 575773,
+      "title": "Rocks",
+      "year": "2019",
+      "release_date": "2020-09-09",
+      "original_title": "Rocks",
+      "poster_path": "/8Mg4ew6drIax6ZmeY22dxM8ujBk.jpg",
+      "genre_ids": [
+        18
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/l8Qg",
+      "addedDate": "2025-09-26"
+    },
+    {
+      "id": 32511,
+      "title": "Police, Adjective",
+      "year": "2009",
+      "release_date": "2009-07-03",
+      "original_title": "Polițist, adjectiv",
+      "poster_path": "/yiimBQLll8l6SXyNjder7ToilDi.jpg",
+      "genre_ids": [
+        18,
+        35,
+        80
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1h38",
+      "addedDate": "2025-09-26"
+    },
+    {
+      "id": 467263,
+      "title": "Wajib",
+      "year": "2017",
+      "release_date": "2017-08-20",
+      "original_title": "واجب",
+      "poster_path": "/7yzu2DQmBkYpqYTm303WcSCySVJ.jpg",
+      "genre_ids": [
+        18
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/gJDe",
+      "addedDate": "2025-09-26"
+    },
+    {
+      "id": 11534,
+      "title": "Tropical Malady",
+      "year": "2004",
+      "release_date": "2004-06-24",
+      "original_title": "สัตว์ประหลาด",
+      "poster_path": "/9WJ8ZSZp2NC7jSvweFLskldpzzg.jpg",
+      "genre_ids": [
+        18,
+        10749,
+        14
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1TCA",
+      "addedDate": "2025-09-26"
+    },
+    {
+      "id": 444288,
+      "title": "Anchor and Hope",
+      "year": "2017",
+      "release_date": "2017-11-24",
+      "original_title": "Tierra firme",
+      "poster_path": "/iR7Zb6jyuflNaUnLOEh7UX0fE6f.jpg",
+      "genre_ids": [
+        35,
+        18,
+        10749
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/fOe2",
+      "addedDate": "2025-09-26"
+    },
+    {
+      "id": 97638,
+      "title": "Doggiewoggiez! Poochiewoochiez!",
+      "year": "2012",
+      "release_date": "2012-01-27",
+      "original_title": "Doggiewoggiez! Poochiewoochiez!",
+      "poster_path": "/waDrAhFwv3boKUuzck2ICtnRBrc.jpg",
+      "genre_ids": [
+        35
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/3n0y",
+      "addedDate": "2025-09-26"
+    },
+    {
+      "id": 419546,
+      "title": "HyperNormalisation",
+      "year": "2016",
+      "release_date": "2016-10-25",
+      "original_title": "HyperNormalisation",
+      "poster_path": "/tTqI2xoB7cGO7HASB22Sss6x44J.jpg",
+      "genre_ids": [
+        99
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/eOGy",
+      "addedDate": "2025-09-26"
+    },
+    {
+      "id": 1378,
+      "title": "Shortbus",
+      "year": "2006",
+      "release_date": "2006-10-04",
+      "original_title": "Shortbus",
+      "poster_path": "/s8QBrWgpZpYrySSyTQ0xbFLPKrS.jpg",
+      "genre_ids": [
+        10749,
+        35,
+        18
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/28So",
+      "addedDate": "2025-09-26"
+    },
+    {
+      "id": 272787,
+      "title": "How to Build a Time Machine",
+      "year": "2016",
+      "release_date": "2016-05-02",
+      "original_title": "How to Build a Time Machine",
+      "poster_path": "/al2SbZodKKJWtqllCFuGFZchaDm.jpg",
+      "genre_ids": [
+        99
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/8eN2",
+      "addedDate": "2025-09-26"
+    },
+    {
+      "id": 14202,
+      "title": "The Painted Veil",
+      "year": "2006",
+      "release_date": "2006-12-09",
+      "original_title": "The Painted Veil",
+      "poster_path": "/k41IvHDLgZO2ae7RuU77wQjScIj.jpg",
+      "genre_ids": [
+        10749,
+        18
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1OyS",
+      "addedDate": "2025-09-26"
+    },
+    {
+      "id": 53413,
+      "title": "The Strange Case of Angelica",
+      "year": "2010",
+      "release_date": "2010-12-29",
+      "original_title": "O Estranho Caso de Angélica",
+      "poster_path": "/rFFtcZX8cu99RcOSB1IBTXQYjAF.jpg",
+      "genre_ids": [
+        18,
+        14,
+        10749
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/wCU",
+      "addedDate": "2025-09-26"
+    },
+    {
+      "id": 9300,
+      "title": "Orlando",
+      "year": "1992",
+      "release_date": "1992-12-11",
+      "original_title": "Orlando",
+      "poster_path": "/seRawEs8eQ8rWfkBm6QC39EQEAU.jpg",
+      "genre_ids": [
+        18,
+        14
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1Z1K",
+      "addedDate": "2025-10-02"
+    },
+    {
+      "id": 24739,
+      "title": "Miracle Mile",
+      "year": "1988",
+      "release_date": "1989-05-19",
+      "original_title": "Miracle Mile",
+      "poster_path": "/9qRCVO9L3s3CsPnoUO9c3iZm6aB.jpg",
+      "genre_ids": [
+        878,
+        53,
+        35,
+        10749
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1x68",
+      "addedDate": "2025-10-02"
+    },
+    {
+      "id": 123778,
+      "title": "The Company of Strangers",
+      "year": "1990",
+      "release_date": "1990-10-01",
+      "original_title": "The Company of Strangers",
+      "poster_path": "/hlXFhekstIC0hsVjbhLjjC5EWBy.jpg",
+      "genre_ids": [
+        18,
+        12
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/44PO",
+      "addedDate": "2025-10-02"
+    },
+    {
+      "id": 1422008,
+      "title": "Fucktoys",
+      "year": "2025",
+      "release_date": "2025-03-08",
+      "original_title": "Fucktoys",
+      "poster_path": "/hYDSzen6p8wkhkskWzwgr5dz5EN.jpg",
+      "genre_ids": [
+        35,
+        18,
+        14
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/SBU8",
+      "addedDate": "2025-10-02"
+    },
+    {
+      "id": 45974,
+      "title": "The Halloween Tree",
+      "year": "1993",
+      "release_date": "1993-10-02",
+      "original_title": "The Halloween Tree",
+      "poster_path": "/phcM1B7neu6g7ysw9CmIo35Qida.jpg",
+      "genre_ids": [
+        16,
+        10751,
+        10770,
+        12
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/Og8",
+      "addedDate": "2025-10-02"
+    },
+    {
+      "id": 421944,
+      "title": "Elvira's Halloween Special",
+      "year": "1986",
+      "release_date": "1986-10-31",
+      "original_title": "Elvira's Halloween Special",
+      "poster_path": "/b6iYoGBkcHtRONLDg4rlDQdiGNK.jpg",
+      "genre_ids": [
+        10402,
+        35,
+        27
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/eV6i",
+      "addedDate": "2025-10-02"
+    },
+    {
+      "id": 24808,
+      "title": "Something Wicked This Way Comes",
+      "year": "1983",
+      "release_date": "1983-04-29",
+      "original_title": "Something Wicked This Way Comes",
+      "poster_path": "/94dMO6kAawyFUk0sCDGIjAnchED.jpg",
+      "genre_ids": [
+        14,
+        9648,
+        27
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1wWC",
+      "addedDate": "2025-10-02"
+    },
+    {
+      "id": 55328,
+      "title": "When Good Ghouls Go Bad",
+      "year": "2001",
+      "release_date": "2001-10-20",
+      "original_title": "When Good Ghouls Go Bad",
+      "poster_path": "/2SKXCsd4a44CO9ZQU6hNt1Kk18c.jpg",
+      "genre_ids": [
+        10751,
+        10770,
+        27,
+        35
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/s5W",
+      "addedDate": "2025-10-02"
+    },
+    {
+      "id": 35564,
+      "title": "The Midnight Hour",
+      "year": "1985",
+      "release_date": "1985-11-01",
+      "original_title": "The Midnight Hour",
+      "poster_path": "/ge4JJ1T8dD36IdEAo0U8lz3CBas.jpg",
+      "genre_ids": [
+        35,
+        27,
+        10770,
+        10749
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1ciW",
+      "addedDate": "2025-10-02"
+    },
+    {
+      "id": 65465,
+      "title": "The Canterville Ghost",
+      "year": "1986",
+      "release_date": "1986-12-31",
+      "original_title": "The Canterville Ghost",
+      "poster_path": "/bX2o4hqC9PiKjIBBeRYSqcs6Dr5.jpg",
+      "genre_ids": [
+        10751,
+        12,
+        10770
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/3yu",
+      "addedDate": "2025-10-02"
+    },
+    {
+      "id": 21151,
+      "title": "My Best Friend Is a Vampire",
+      "year": "1987",
+      "release_date": "1987-10-01",
+      "original_title": "My Best Friend Is a Vampire",
+      "poster_path": "/nWvPMQ7b767G6zOrKCBU3MNbEyf.jpg",
+      "genre_ids": [
+        27,
+        35
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1CmK",
+      "addedDate": "2025-10-02"
+    },
+    {
+      "id": 49365,
+      "title": "Lady in White",
+      "year": "1988",
+      "release_date": "1988-04-22",
+      "original_title": "Lady in White",
+      "poster_path": "/AevfLQ5c0ZGtO3clHawg9L2XAQ2.jpg",
+      "genre_ids": [
+        9648,
+        27,
+        53
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/Gey",
+      "addedDate": "2025-10-02"
+    },
+    {
+      "id": 162934,
+      "title": "The Witching of Ben Wagner",
+      "year": "1987",
+      "release_date": "1987-12-31",
+      "original_title": "The Witching of Ben Wagner",
+      "poster_path": "/tCHqpKVXc7LExDWfVKUFJqyWzQh.jpg",
+      "genre_ids": [
+        12,
+        10751,
+        18,
+        10749,
+        10770
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/54O4",
+      "addedDate": "2025-10-02"
+    },
+    {
+      "id": 24054,
+      "title": "The Worst Witch",
+      "year": "1986",
+      "release_date": "1986-10-22",
+      "original_title": "The Worst Witch",
+      "poster_path": "/e1i5qV3z3538hO16OQWJlHgpZNI.jpg",
+      "genre_ids": [
+        10770,
+        10751,
+        35,
+        14,
+        10402
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1ypg",
+      "addedDate": "2025-10-02"
+    },
+    {
+      "id": 206370,
+      "title": "The Mystery in Dracula's Castle",
+      "year": "1973",
+      "release_date": "1973-01-07",
+      "original_title": "The Mystery in Dracula's Castle",
+      "poster_path": "/nNQuPPhjhdQ8li38rj6FT7jOpoo.jpg",
+      "genre_ids": [
+        10751,
+        27,
+        10770
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/6bvA",
+      "addedDate": "2025-10-02"
+    },
+    {
+      "id": 192367,
+      "title": "The Halloween That Almost Wasn't",
+      "year": "1979",
+      "release_date": "1979-10-28",
+      "original_title": "The Halloween That Almost Wasn't",
+      "poster_path": "/g6rxrYxxB3yx0Yhh86jghZ2rh6c.jpg",
+      "genre_ids": [
+        27,
+        35,
+        10751,
+        10770
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/5O26",
+      "addedDate": "2025-10-02"
+    },
+    {
+      "id": 180886,
+      "title": "Phantom Town",
+      "year": "1999",
+      "release_date": "1999-02-16",
+      "original_title": "Phantom Town",
+      "poster_path": "/uIw6oziIiipGqoWVM2CTtG5J3Nu.jpg",
+      "genre_ids": [
+        27,
+        37,
+        10751
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/5w2W",
+      "addedDate": "2025-10-02"
+    },
+    {
+      "id": 64313,
+      "title": "Little Ghost",
+      "year": "1997",
+      "release_date": "1997-12-30",
+      "original_title": "Little Ghost",
+      "poster_path": "/vAYEBiLx8UilGEBUcqanMyERfll.jpg",
+      "genre_ids": [
+        10751,
+        14,
+        12
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1Bw",
+      "addedDate": "2025-10-02"
+    },
+    {
+      "id": 109240,
+      "title": "My Grandpa Is a Vampire",
+      "year": "1992",
+      "release_date": "1992-06-01",
+      "original_title": "My Grandpa Is a Vampire",
+      "poster_path": "/qDD6InlutGGCW6D3q9BXAnbjIbD.jpg",
+      "genre_ids": [
+        10751,
+        35,
+        27
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/3GmI",
+      "addedDate": "2025-10-02"
+    },
+    {
+      "id": 30062,
+      "title": "Eaten Alive",
+      "year": "1976",
+      "release_date": "1976-12-25",
+      "original_title": "Eaten Alive",
+      "poster_path": "/9pQk8hRRCNfvFEjlOuyUWFsXryS.jpg",
+      "genre_ids": [
+        27
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1m2O",
+      "addedDate": "2025-10-02"
+    },
+    {
+      "id": 23730,
+      "title": "C.H.U.D.",
+      "year": "1984",
+      "release_date": "1984-08-31",
+      "original_title": "C.H.U.D.",
+      "poster_path": "/8BVw5RIDBTZwdMAR1VKpAkwrMjj.jpg",
+      "genre_ids": [
+        27,
+        878
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1yRk",
+      "addedDate": "2025-10-02"
+    },
+    {
+      "id": 10722,
+      "title": "The Day of the Beast",
+      "year": "1995",
+      "release_date": "1995-10-20",
+      "original_title": "El día de la bestia",
+      "poster_path": "/yEXhgACPIV4PmTgHT2HS3Ko2oS3.jpg",
+      "genre_ids": [
+        27,
+        35,
+        28
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1Vyg",
+      "addedDate": "2025-10-02"
+    },
+    {
+      "id": 40218,
+      "title": "The Beast Must Die",
+      "year": "1974",
+      "release_date": "1974-04-01",
+      "original_title": "The Beast Must Die",
+      "poster_path": "/fNJLiSDHjQdoZzB1EfjSORZE1ra.jpg",
+      "genre_ids": [
+        27,
+        9648
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/12cO",
+      "addedDate": "2025-10-02"
+    },
+    {
+      "id": 10838,
+      "title": "Dracula 3000",
+      "year": "2004",
+      "release_date": "2004-08-09",
+      "original_title": "Dracula 3000",
+      "poster_path": "/3BbTrjIXlQb0DC0v7z6Ct0azB9Q.jpg",
+      "genre_ids": [
+        27,
+        878
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1VgG",
+      "addedDate": "2025-10-02"
+    },
+    {
+      "id": 363089,
+      "title": "Love Bites",
+      "year": "1988",
+      "release_date": "1988-06-04",
+      "original_title": "Love Bites",
+      "poster_path": "/63H9qNeHv0YHTglasyQUkM7N9KJ.jpg",
+      "genre_ids": [
+        35,
+        27
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/cqV6",
+      "addedDate": "2025-10-02"
+    },
+    {
+      "id": 11503,
+      "title": "The Serpent and the Rainbow",
+      "year": "1988",
+      "release_date": "1988-02-05",
+      "original_title": "The Serpent and the Rainbow",
+      "poster_path": "/b7yjF5FUM2LpgjXRwDfukeFdjq4.jpg",
+      "genre_ids": [
+        27,
+        53
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1THA",
+      "addedDate": "2025-10-02"
+    },
+    {
+      "id": 33516,
+      "title": "Gothic",
+      "year": "1986",
+      "release_date": "1987-02-27",
+      "original_title": "Gothic",
+      "poster_path": "/xGXj6wpJimmWkQMahZryM7xB9EX.jpg",
+      "genre_ids": [
+        27
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1fkG",
+      "addedDate": "2025-10-02"
+    },
+    {
+      "id": 81009,
+      "title": "Invitation to Hell",
+      "year": "1984",
+      "release_date": "1984-05-24",
+      "original_title": "Invitation to Hell",
+      "poster_path": "/fTYftDbvVv9U2tQibt2cmSGTXCE.jpg",
+      "genre_ids": [
+        10770,
+        27,
+        878
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/2PvM",
+      "addedDate": "2025-10-02"
+    },
+    {
+      "id": 67298,
+      "title": "Lisztomania",
+      "year": "1975",
+      "release_date": "1975-10-01",
+      "original_title": "Lisztomania",
+      "poster_path": "/slkgkRL8hu0Sj4sOkcb8NSkwdGd.jpg",
+      "genre_ids": [
+        10402,
+        35,
+        36
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/2gbs",
+      "addedDate": "2025-10-02"
+    },
+    {
+      "id": 38939,
+      "title": "Tales from the Crypt",
+      "year": "1972",
+      "release_date": "1972-03-09",
+      "original_title": "Tales from the Crypt",
+      "poster_path": "/vA3wsl2lfurU6UFVs0Hg0cZJDah.jpg",
+      "genre_ids": [
+        27
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/14Qc",
+      "addedDate": "2025-10-02"
+    },
+    {
+      "id": 28801,
+      "title": "Twins of Evil",
+      "year": "1971",
+      "release_date": "1971-10-17",
+      "original_title": "Twins of Evil",
+      "poster_path": "/muBFwxCOV3duOMAMIYREOgsyABq.jpg",
+      "genre_ids": [
+        27
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1oMa",
+      "addedDate": "2025-10-02"
+    },
+    {
+      "id": 27632,
+      "title": "Black Sunday",
+      "year": "1960",
+      "release_date": "1960-08-11",
+      "original_title": "La maschera del demonio",
+      "poster_path": "/x41Zx8GeZhducquhOq9nE7z1GBG.jpg",
+      "genre_ids": [
+        27
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1rlG",
+      "addedDate": "2025-10-02"
+    },
+    {
+      "id": 13511,
+      "title": "Rawhead Rex",
+      "year": "1986",
+      "release_date": "1986-10-01",
+      "original_title": "Rawhead Rex",
+      "poster_path": "/vIEaIVlV5XRIUVoaptsymIexaL2.jpg",
+      "genre_ids": [
+        27
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1Q1c",
+      "addedDate": "2025-10-02"
+    },
+    {
+      "id": 105907,
+      "title": "Ogroff",
+      "year": "1983",
+      "release_date": "1983-01-01",
+      "original_title": "Ogroff",
+      "poster_path": "/iFc5G5yNKj7DO8ZkzDPrYpp30GF.jpg",
+      "genre_ids": [
+        27
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/3Ayy",
+      "addedDate": "2025-10-02"
+    },
+    {
+      "id": 11905,
+      "title": "The Company of Wolves",
+      "year": "1984",
+      "release_date": "1984-09-21",
+      "original_title": "The Company of Wolves",
+      "poster_path": "/2g2YPws1MiEWTodUE8u3qOf78XS.jpg",
+      "genre_ids": [
+        27,
+        14
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1SO6",
+      "addedDate": "2025-10-02"
+    },
+    {
+      "id": 108545,
+      "title": "Evil of Dracula",
+      "year": "1974",
+      "release_date": "1974-07-20",
+      "original_title": "血を吸う薔薇",
+      "poster_path": "/eZRslwVszyWzwV4UiapJdkqzBFv.jpg",
+      "genre_ids": [
+        27,
+        9648
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/3F86",
+      "addedDate": "2025-10-02"
+    },
+    {
+      "id": 58428,
+      "title": "The Innkeepers",
+      "year": "2011",
+      "release_date": "2012-02-03",
+      "original_title": "The Innkeepers",
+      "poster_path": "/aC9XHtf0Opw2IJDVjSkL8eO71An.jpg",
+      "genre_ids": [
+        27,
+        53
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/kpu",
+      "addedDate": "2025-10-05"
+    },
+    {
+      "id": 1088157,
+      "title": "Godless: The Eastfield Exorcism",
+      "year": "2023",
+      "release_date": "2023-03-08",
+      "original_title": "Godless: The Eastfield Exorcism",
+      "poster_path": "/nfSrMW6ooScsf3PRa0ZSjbch8ed.jpg",
+      "genre_ids": [
+        27
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/F9Ae",
+      "addedDate": "2025-10-05"
+    },
+    {
+      "id": 524251,
+      "title": "I See You",
+      "year": "2019",
+      "release_date": "2019-09-11",
+      "original_title": "I See You",
+      "poster_path": "/2LwamrHAmxqEHsT9JViFJxT08Ek.jpg",
+      "genre_ids": [],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/j2CS",
+      "addedDate": "2025-10-05"
+    },
+    {
+      "id": 326446,
+      "title": "Savageland",
+      "year": "2015",
+      "release_date": "2015-11-01",
+      "original_title": "Savageland",
+      "poster_path": "/zen8kRKOjLpmZWNdGekzY58ZHOD.jpg",
+      "genre_ids": [
+        27,
+        80,
+        53
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/aEdS",
+      "addedDate": "2025-10-05"
+    },
+    {
+      "id": 1330443,
+      "title": "Strange Harvest",
+      "year": "2024",
+      "release_date": "2025-08-08",
+      "original_title": "Strange Harvest",
+      "poster_path": "/fYe0FNJNy0EIb8q4JUMLbbSmCth.jpg",
+      "genre_ids": [
+        27,
+        80,
+        9648
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/OLZk",
+      "addedDate": "2025-10-06"
+    },
+    {
+      "id": 20465,
+      "title": "Stage Fright",
+      "year": "1987",
+      "release_date": "1987-02-08",
+      "original_title": "Deliria",
+      "poster_path": "/m9oNxIzu4OLBolUCjEvZSY003Xc.jpg",
+      "genre_ids": [
+        27
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1Drm",
+      "addedDate": "2025-10-07"
+    },
+    {
+      "id": 20874,
+      "title": "Kin-dza-dza!",
+      "year": "1986",
+      "release_date": "1986-12-01",
+      "original_title": "Кин-дза-дза!",
+      "poster_path": "/xmCxrS5bxXl3wadSNqxoFlM2Cqa.jpg",
+      "genre_ids": [
+        35,
+        878,
+        12
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1CMS",
+      "addedDate": "2025-10-09"
+    },
+    {
+      "id": 53186,
+      "title": "Morgiana",
+      "year": "1972",
+      "release_date": "1972-09-15",
+      "original_title": "Morgiana",
+      "poster_path": "/bX8ZGlqREc3qwsO7blOPWX52HyG.jpg",
+      "genre_ids": [
+        9648,
+        27,
+        18
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/x9Y",
+      "addedDate": "2025-10-14"
+    },
+    {
+      "id": 10212,
+      "title": "Ravenous",
+      "year": "1999",
+      "release_date": "1999-03-16",
+      "original_title": "Ravenous",
+      "poster_path": "/5f7pY4Uzyt4ZNWhHyd1dJhIF4Gc.jpg",
+      "genre_ids": [
+        12,
+        37,
+        27,
+        35,
+        18
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1WOa",
+      "addedDate": "2025-10-14"
+    },
+    {
+      "id": 385737,
+      "title": "Always Shine",
+      "year": "2016",
+      "release_date": "2016-11-25",
+      "original_title": "Always Shine",
+      "poster_path": "/gTDt04LtD1IUn8FWamBbKUBOQXq.jpg",
+      "genre_ids": [
+        53,
+        18,
+        27,
+        9648
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/drQ4",
+      "addedDate": "2025-10-14"
+    },
+    {
+      "id": 6537,
+      "title": "The Orphanage",
+      "year": "2007",
+      "release_date": "2007-05-20",
+      "original_title": "El orfanato",
+      "poster_path": "/vIpi1KtHLXUOfSVC2m6MqpjSPgL.jpg",
+      "genre_ids": [
+        27,
+        18,
+        53
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/2bfE",
+      "addedDate": "2025-10-14"
+    },
+    {
+      "id": 82094,
+      "title": "The Pied Piper",
+      "year": "1986",
+      "release_date": "1986-07-29",
+      "original_title": "Krysař",
+      "poster_path": "/tYDRQvqgTUorU37ZzEFULNMvMHf.jpg",
+      "genre_ids": [
+        16,
+        14,
+        18
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/2Sek",
+      "addedDate": "2025-10-14"
+    },
+    {
+      "id": 8740,
+      "title": "The Vanishing",
+      "year": "1988",
+      "release_date": "1988-10-27",
+      "original_title": "Spoorloos",
+      "poster_path": "/eE5bbuRJluooG2MjEAsLEYyuJoa.jpg",
+      "genre_ids": [
+        53,
+        9648
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1ZTW",
+      "addedDate": "2025-10-14"
+    },
+    {
+      "id": 10774,
+      "title": "Network",
+      "year": "1976",
+      "release_date": "1976-11-27",
+      "original_title": "Network",
+      "poster_path": "/qZomlHsaALUtkFeMDwdYmwS2Pbo.jpg",
+      "genre_ids": [
+        18
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1VqG",
+      "addedDate": "2025-10-16"
+    },
+    {
+      "id": 11000,
+      "title": "The Birdcage",
+      "year": "1996",
+      "release_date": "1996-03-03",
+      "original_title": "The Birdcage",
+      "poster_path": "/4IpC35BoA5aRO0Q1DpFGJ8iKKYq.jpg",
+      "genre_ids": [
+        35,
+        10749
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1UTi",
+      "addedDate": "2025-10-17"
+    },
+    {
+      "id": 840326,
+      "title": "Sisu",
+      "year": "2022",
+      "release_date": "2022-09-09",
+      "original_title": "Sisu",
+      "poster_path": "/xgb30M1wL4nibyFvlHh3w4XlDYq.jpg",
+      "genre_ids": [
+        28,
+        10752,
+        53
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/vHpu",
+      "addedDate": "2025-10-18"
+    },
+    {
+      "id": 1223601,
+      "title": "Sisu: Road to Revenge",
+      "year": "2025",
+      "release_date": "2025-10-21",
+      "original_title": "Sisu 2",
+      "poster_path": "/roCMOuMQ55Z2TxVx1vZZTevlo0n.jpg",
+      "genre_ids": [
+        28,
+        10752,
+        53
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/Ksny",
+      "addedDate": "2025-10-18"
+    },
+    {
+      "id": 1297467,
+      "title": "The Exorcist: Martyrs",
+      "year": "2027",
+      "release_date": "2027-03-10",
+      "original_title": "The Exorcist: Martyrs",
+      "poster_path": "/i3kvS445sWWIhuxgXywPuUcsoP0.jpg",
+      "genre_ids": [
+        27
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/Nv0S",
+      "addedDate": "2025-10-18"
+    },
+    {
+      "id": 350,
+      "title": "The Devil Wears Prada",
+      "year": "2006",
+      "release_date": "2006-06-29",
+      "original_title": "The Devil Wears Prada",
+      "poster_path": "/8912AsVuS7Sj915apArUFbv6F9L.jpg",
+      "genre_ids": [
+        18,
+        35
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/2awE",
+      "addedDate": "2025-10-18"
+    },
+    {
+      "id": 640,
+      "title": "Catch Me If You Can",
+      "year": "2002",
+      "release_date": "2002-12-16",
+      "original_title": "Catch Me If You Can",
+      "poster_path": "/ctjEj2xM32OvBXCq8zAdK3ZrsAj.jpg",
+      "genre_ids": [
+        18,
+        80
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/29VS",
+      "addedDate": "2025-10-18"
+    },
+    {
+      "id": 598,
+      "title": "City of God",
+      "year": "2002",
+      "release_date": "2002-08-30",
+      "original_title": "Cidade de Deus",
+      "poster_path": "/k7eYdWvhYQyRQoU2TB2A2Xu2TfD.jpg",
+      "genre_ids": [
+        18,
+        80
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/2a2a",
+      "addedDate": "2025-10-18"
+    },
+    {
+      "id": 50183,
+      "title": "The Ascent",
+      "year": "1977",
+      "release_date": "1977-04-02",
+      "original_title": "Восхождение",
+      "poster_path": "/nbGyTnH1TREKgZXLxEJNnDVohYC.jpg",
+      "genre_ids": [
+        18,
+        10752
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/Eew",
+      "addedDate": "2025-10-18"
+    },
+    {
+      "id": 965150,
+      "title": "Aftersun",
+      "year": "2022",
+      "release_date": "2022-10-21",
+      "original_title": "Aftersun",
+      "poster_path": "/evKz85EKouVbIr51zy5fOtpNRPg.jpg",
+      "genre_ids": [],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/Arw0",
+      "addedDate": "2025-10-18"
+    },
+    {
+      "id": 1140535,
+      "title": "Presence",
+      "year": "2024",
+      "release_date": "2025-01-17",
+      "original_title": "Presence",
+      "poster_path": "/xZIGHoHj0DF0zdibwa66cRWHdHO.jpg",
+      "genre_ids": [],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/H88i",
+      "addedDate": "2025-10-18"
+    },
+    {
+      "id": 807339,
+      "title": "Apartment 7A",
+      "year": "2024",
+      "release_date": "2024-09-20",
+      "original_title": "Apartment 7A",
+      "poster_path": "/uipHKJHY1nNEQyprXjfNzH0GIOF.jpg",
+      "genre_ids": [
+        27,
+        53
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/uock",
+      "addedDate": "2025-10-18"
+    },
+    {
+      "id": 1184918,
+      "title": "The Wild Robot",
+      "year": "2024",
+      "release_date": "2024-09-12",
+      "original_title": "The Wild Robot",
+      "poster_path": "/wTnV3PCVW5O92JMrFvvrRcV39RU.jpg",
+      "genre_ids": [
+        10751,
+        16,
+        878,
+        12
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/IWFy",
+      "addedDate": "2025-10-18"
+    },
+    {
+      "id": 2322,
+      "title": "Sneakers",
+      "year": "1992",
+      "release_date": "1992-09-09",
+      "original_title": "Sneakers",
+      "poster_path": "/l2pIGwCvpZEpBuMb55YBl6A04Jv.jpg",
+      "genre_ids": [
+        35,
+        80,
+        18
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/26VU",
+      "addedDate": "2025-10-18"
+    },
+    {
+      "id": 1253000,
+      "title": "Deathstalker",
+      "year": "2025",
+      "release_date": "2025-10-10",
+      "original_title": "Deathstalker",
+      "poster_path": "/nEI3DnzQC1afAjJOAizx6UX27pL.jpg",
+      "genre_ids": [
+        14,
+        28,
+        12
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/LIkC",
+      "addedDate": "2025-10-20"
+    },
+    {
+      "id": 1357584,
+      "title": "It's All Gonna Break",
+      "year": "2024",
+      "release_date": "2024-10-16",
+      "original_title": "It's All Gonna Break",
+      "poster_path": "/EiILMRR2SGmHm4tRI7CryZlpLM.jpg",
+      "genre_ids": [
+        99,
+        10402
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/QiEw",
+      "addedDate": "2025-10-20"
+    },
+    {
+      "id": 508642,
+      "title": "Gonjiam: Haunted Asylum",
+      "year": "2018",
+      "release_date": "2018-03-28",
+      "original_title": "곤지암",
+      "poster_path": "/fNqlsmu2tiI1bXcpU31yjHPkiJz.jpg",
+      "genre_ids": [
+        27,
+        9648
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/ioyw",
+      "addedDate": "2025-10-21"
+    },
+    {
+      "id": 3112,
+      "title": "The Night of the Hunter",
+      "year": "1955",
+      "release_date": "1955-07-26",
+      "original_title": "The Night of the Hunter",
+      "poster_path": "/rBka0nFWiHxabHRLr0KfIA8Yiaq.jpg",
+      "genre_ids": [
+        80,
+        18,
+        53
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/25HW",
+      "addedDate": "2025-10-26"
+    },
+    {
+      "id": 970947,
+      "title": "The Shrouds",
+      "year": "2024",
+      "release_date": "2025-04-03",
+      "original_title": "The Shrouds",
+      "poster_path": "/xXoueIHdllGo5m0ChKvSATJYWBw.jpg",
+      "genre_ids": [
+        878,
+        18,
+        9648
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/AEZa",
+      "addedDate": "2025-10-28"
+    },
+    {
+      "id": 34070,
+      "title": "Songs from the Second Floor",
+      "year": "2000",
+      "release_date": "2000-10-06",
+      "original_title": "Sånger från andra våningen",
+      "poster_path": "/xMZieoxiQ1hb5zraZlhzcvU7MGN.jpg",
+      "genre_ids": [
+        18,
+        35
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1eoM",
+      "addedDate": "2025-11-01"
+    },
+    {
+      "id": 241,
+      "title": "Natural Born Killers",
+      "year": "1994",
+      "release_date": "1994-08-26",
+      "original_title": "Natural Born Killers",
+      "poster_path": "/fEKZwT91gxvkAoyPgpNXo8W5fu0.jpg",
+      "genre_ids": [
+        80,
+        53,
+        18
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/2aNg",
+      "addedDate": "2025-11-03"
+    },
+    {
+      "id": 22826,
+      "title": "The Monster",
+      "year": "1994",
+      "release_date": "1994-10-22",
+      "original_title": "Il mostro",
+      "poster_path": "/6h6ahipPd84QcyFbnsEikLt7w3Z.jpg",
+      "genre_ids": [
+        35
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1zZE",
+      "addedDate": "2025-11-05"
+    },
+    {
+      "id": 11020,
+      "title": "Picnic at Hanging Rock",
+      "year": "1975",
+      "release_date": "1975-09-02",
+      "original_title": "Picnic at Hanging Rock",
+      "poster_path": "/7BAXwmFN4pZDNb9N6kzmAAwdssi.jpg",
+      "genre_ids": [
+        18,
+        9648
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1UQe",
+      "addedDate": "2025-11-05"
+    },
+    {
+      "id": 12921,
+      "title": "Strange Brew",
+      "year": "1983",
+      "release_date": "1983-08-26",
+      "original_title": "Strange Brew",
+      "poster_path": "/rScplcvRHX7o7XK88SFb5mddo8y.jpg",
+      "genre_ids": [
+        35,
+        80,
+        878
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1R3S",
+      "addedDate": "2025-11-14"
+    },
+    {
+      "id": 864370,
+      "title": "Incantation",
+      "year": "2022",
+      "release_date": "2022-03-18",
+      "original_title": "咒",
+      "poster_path": "/cWz28oGV3cSajWdziVQbqrYCmnX.jpg",
+      "genre_ids": [
+        27
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/wFiI",
+      "addedDate": "2025-11-17"
+    },
+    {
+      "id": 18254,
+      "title": "Reds",
+      "year": "1981",
+      "release_date": "1981-12-25",
+      "original_title": "Reds",
+      "poster_path": "/AeiKdVVM93fwfQG1m3N0cgVZgHl.jpg",
+      "genre_ids": [
+        18,
+        36,
+        10749
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1Hhq",
+      "addedDate": "2025-11-29"
+    },
+    {
+      "id": 9342,
+      "title": "The Mask of Zorro",
+      "year": "1998",
+      "release_date": "1998-07-16",
+      "original_title": "The Mask of Zorro",
+      "poster_path": "/bdMufwGDDzqu4kTSQwrKc5WR4bu.jpg",
+      "genre_ids": [
+        28,
+        12
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1YVi",
+      "addedDate": "2025-11-30"
+    },
+    {
+      "id": 1229915,
+      "title": "Dead Mail",
+      "year": "2024",
+      "release_date": "2024-03-09",
+      "original_title": "Dead Mail",
+      "poster_path": "/mZultpdnzuCDAouwDs5ZYdkGGgT.jpg",
+      "genre_ids": [
+        27,
+        53
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/KHaa",
+      "addedDate": "2025-12-01"
+    },
+    {
+      "id": 505192,
+      "title": "Shoplifters",
+      "year": "2018",
+      "release_date": "2018-06-02",
+      "original_title": "万引き家族",
+      "poster_path": "/4nfRUOv3LX5zLn98WS1WqVBk9E9.jpg",
+      "genre_ids": [
+        18,
+        80,
+        53
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/ifY6",
+      "addedDate": "2025-12-12"
+    },
+    {
+      "id": 16804,
+      "title": "Departures",
+      "year": "2008",
+      "release_date": "2008-09-13",
+      "original_title": "おくりびと",
+      "poster_path": "/2RkoGK7RcDoWdXm2pCJ1B9dXcTg.jpg",
+      "genre_ids": [
+        18
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1JFa",
+      "addedDate": "2025-12-12"
+    },
+    {
+      "id": 40688,
+      "title": "Meet the Deedles",
+      "year": "1998",
+      "release_date": "1998-03-27",
+      "original_title": "Meet the Deedles",
+      "poster_path": "/7hSCyqtYZ2ICMiV2rI5ZtZQTUnF.jpg",
+      "genre_ids": [
+        35,
+        10751
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/11aC",
+      "addedDate": "2025-12-19"
+    },
+    {
+      "id": 1336097,
+      "title": "ReEntry",
+      "year": "2024",
+      "release_date": "2024-10-11",
+      "original_title": "ReEntry",
+      "poster_path": "/pnTyO4NxH0mvcEBcwJa21DCGiIe.jpg",
+      "genre_ids": [],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/PEam",
+      "addedDate": "2025-12-19"
+    },
+    {
+      "id": 5966,
+      "title": "Along Came Polly",
+      "year": "2004",
+      "release_date": "2004-01-16",
+      "original_title": "Along Came Polly",
+      "poster_path": "/7Tp16THdpHkMrqgoiDresDz9CWL.jpg",
+      "genre_ids": [
+        35,
+        10749
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/22fU",
+      "addedDate": "2025-12-19"
+    },
+    {
+      "id": 50162,
+      "title": "964 Pinocchio",
+      "year": "1991",
+      "release_date": "1991-09-14",
+      "original_title": "ピノキオ√964",
+      "poster_path": "/99iOoaDyFElUA5ihgBYKmGRhPJs.jpg",
+      "genre_ids": [
+        27,
+        878,
+        53
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/EhA",
+      "addedDate": "2025-12-19"
+    },
+    {
+      "id": 24804,
+      "title": "Black Dynamite",
+      "year": "2009",
+      "release_date": "2009-10-16",
+      "original_title": "Black Dynamite",
+      "poster_path": "/u3oWQDz0JggzzsVlsuHY7XVxp5Y.jpg",
+      "genre_ids": [
+        35,
+        28
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1wX6",
+      "addedDate": "2025-12-21"
+    },
+    {
+      "id": 11005,
+      "title": "Awakenings",
+      "year": "1990",
+      "release_date": "1990-12-04",
+      "original_title": "Awakenings",
+      "poster_path": "/9gztZXuHLG6AJ0fgqGd7Q43cWRI.jpg",
+      "genre_ids": [
+        18
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1USu",
+      "addedDate": "2025-12-29"
+    },
+    {
+      "id": 13820,
+      "title": "Repo Man",
+      "year": "1984",
+      "release_date": "1984-03-02",
+      "original_title": "Repo Man",
+      "poster_path": "/bjuu5UceuVUNUjnOC2fBzL3hZKC.jpg",
+      "genre_ids": [
+        35,
+        878
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1Plg",
+      "addedDate": "2026-01-06"
+    },
+    {
+      "id": 31217,
+      "title": "The Human Condition I: No Greater Love",
+      "year": "1959",
+      "release_date": "1959-01-15",
+      "original_title": "人間の條件　第１部純愛篇／第２部激怒篇",
+      "poster_path": "/q7godavx5XEbeVxEeqi4pmiOKdI.jpg",
+      "genre_ids": [
+        10752,
+        18,
+        36
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1jAy",
+      "addedDate": "2026-02-17"
+    },
+    {
+      "id": 34528,
+      "title": "The Human Condition II: Road to Eternity",
+      "year": "1959",
+      "release_date": "1959-11-20",
+      "original_title": "人間の條件　第３部望郷篇／第４部戦雲篇",
+      "poster_path": "/7jfv1C4t06VGenQxf3HbmLVmUHZ.jpg",
+      "genre_ids": [
+        10752,
+        18,
+        36
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1dJa",
+      "addedDate": "2026-02-17"
+    },
+    {
+      "id": 34530,
+      "title": "The Human Condition III: A Soldier's Prayer",
+      "year": "1961",
+      "release_date": "1961-01-28",
+      "original_title": "人間の條件　完結篇",
+      "poster_path": "/pag7gyxSFe7vTl6riHfZ5Xci6q7.jpg",
+      "genre_ids": [
+        10752,
+        18,
+        36
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1dIQ",
+      "addedDate": "2026-02-17"
+    },
+    {
+      "id": 18148,
+      "title": "Tokyo Story",
+      "year": "1953",
+      "release_date": "1953-11-03",
+      "original_title": "東京物語",
+      "poster_path": "/g2YbTYKpY7N2yDSk7BfXZ18I5QV.jpg",
+      "genre_ids": [
+        18
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1HuY",
+      "addedDate": "2026-02-17"
+    },
+    {
+      "id": 14537,
+      "title": "Harakiri",
+      "year": "1962",
+      "release_date": "1962-09-15",
+      "original_title": "切腹",
+      "poster_path": "/5konZnIbcAxZjP616Cz5o9bKEfW.jpg",
+      "genre_ids": [
+        28,
+        18,
+        36
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/1NTU",
+      "addedDate": "2026-02-17"
+    },
+    {
+      "id": 346,
+      "title": "Seven Samurai",
+      "year": "1954",
+      "release_date": "1954-04-26",
+      "original_title": "七人の侍",
+      "poster_path": "/lOMGc8bnSwQhS4XyE1S99uH8NXf.jpg",
+      "genre_ids": [
+        28,
+        18
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/2axi",
+      "addedDate": "2026-02-17"
+    },
+    {
+      "id": 1368314,
+      "title": "Passenger",
+      "year": "2026",
+      "release_date": "2026-05-20",
+      "original_title": "Passenger",
+      "poster_path": "/2sOEJzhPzjTkZSlPbGxOJ7xgIyS.jpg",
+      "genre_ids": [],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/QGFo",
+      "addedDate": "2026-05-27"
+    },
+    {
+      "id": 1228710,
+      "title": "The Mandalorian and Grogu",
+      "year": "2026",
+      "release_date": "2026-05-20",
+      "original_title": "The Mandalorian and Grogu",
+      "poster_path": "/uwMKWjcNID0D9jjplsjkQS2OrB4.jpg",
+      "genre_ids": [
+        28,
+        12,
+        878
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/KCpk",
+      "addedDate": "2026-05-27"
+    },
+    {
+      "id": 1227877,
+      "title": "I Love Boosters",
+      "year": "2026",
+      "release_date": "2026-05-21",
+      "original_title": "I Love Boosters",
+      "poster_path": "/4pNKIUFy7tkZiBx0rnSmG9ysRy.jpg",
+      "genre_ids": [
+        35,
+        878,
+        80
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/KBIU",
+      "addedDate": "2026-05-27"
+    },
+    {
+      "id": 1301421,
+      "title": "The Sheep Detectives",
+      "year": "2026",
+      "release_date": "2026-04-30",
+      "original_title": "The Sheep Detectives",
+      "poster_path": "/iKy5460GdsoknM8ppmGlJbKxAKa.jpg",
+      "genre_ids": [
+        35,
+        10751,
+        9648
+      ],
+      "source": "Letterboxd starter snapshot",
+      "letterboxdURL": "https://boxd.it/NDSe",
+      "addedDate": "2026-05-27"
+    }
+  ]
+}
