@@ -40,6 +40,8 @@ const wait=()=>new Promise(r=>setTimeout(r,100));
  Object.defineProperty(w.document,'hidden',{configurable:true,value:false});
  // Saved films paint immediately; remote provider checks run in their own queue.
  await w.eval('checkAutomaticAvailabilityBatch()');await wait();
+ assert.ok(w.document.getElementById('export-native-backup'),'A visible Settings export exists for native app migration');
+ assert.equal(typeof w.document.getElementById('export-native-backup').onclick,'function','Native export uses the same existing full-library JSON backup');
  assert.equal(w.document.getElementById('tab-watchlist').dataset.scope,'release','Release Watch is the initial film view');
  assert.equal(w.document.getElementById('release-watch-empty').hidden,true,'All saved films appear in Release Watch without a second follow');
  assert.equal(w.document.getElementById('rw-recovery').hidden,false,'Old watchlist candidates can be followed individually');
