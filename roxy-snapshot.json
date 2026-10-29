@@ -10,7 +10,6 @@
       "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
       "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/holmes-1024x575.jpg",
       "dates": [
-        "2026-10-28",
         "2026-10-29",
         "2026-10-30",
         "2026-10-31",
@@ -22,13 +21,6 @@
       ],
       "ranges": [],
       "screenings": [
-        {
-          "date": "2026-10-28",
-          "time": "4:00pm",
-          "startsAt": "2026-10-28T22:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
-          "format": ""
-        },
         {
           "date": "2026-10-29",
           "time": "4:30pm",
@@ -156,9 +148,9 @@
           "format": ""
         }
       ],
-      "start": "2026-10-28",
+      "start": "2026-10-29",
       "end": "2026-11-05",
-      "dateLabel": "9 listed days"
+      "dateLabel": "8 listed days"
     },
     {
       "id": "roxy:/show/casper/",
@@ -170,18 +162,10 @@
       "url": "https://www.theroxytheater.org/show/casper/",
       "poster": "https://www.theroxytheater.org/wp-content/uploads/2024/04/casper20the20gggggghost-1024x576.jpg",
       "dates": [
-        "2026-10-28",
         "2026-10-29"
       ],
       "ranges": [],
       "screenings": [
-        {
-          "date": "2026-10-28",
-          "time": "4:45pm",
-          "startsAt": "2026-10-28T22:45:00.000Z",
-          "url": "https://www.theroxytheater.org/show/casper/",
-          "format": "Digital"
-        },
         {
           "date": "2026-10-29",
           "time": "5:00pm",
@@ -190,9 +174,9 @@
           "format": "Digital"
         }
       ],
-      "start": "2026-10-28",
+      "start": "2026-10-29",
       "end": "2026-10-29",
-      "dateLabel": "2 listed days"
+      "dateLabel": "1 listed days"
     },
     {
       "id": "roxy:/show/the-shining/",
@@ -204,18 +188,10 @@
       "url": "https://www.theroxytheater.org/show/the-shining/",
       "poster": "https://www.theroxytheater.org/wp-content/uploads/2022/06/the-shining_1280x720.jpg",
       "dates": [
-        "2026-10-28",
         "2026-10-29"
       ],
       "ranges": [],
       "screenings": [
-        {
-          "date": "2026-10-28",
-          "time": "5:00pm",
-          "startsAt": "2026-10-28T23:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/the-shining/",
-          "format": "35 MM"
-        },
         {
           "date": "2026-10-29",
           "time": "5:15pm",
@@ -231,60 +207,8 @@
           "format": "35 MM"
         }
       ],
-      "start": "2026-10-28",
+      "start": "2026-10-29",
       "end": "2026-10-29",
-      "dateLabel": "2 listed days"
-    },
-    {
-      "id": "roxy:/show/flowing-forward-stories-of-river-conservation-restoration-in-montana/",
-      "title": "Flowing Forward: Stories of River Conservation & Restoration in Montana",
-      "venueId": "roxy",
-      "venue": "Roxy Theater",
-      "location": "Missoula",
-      "source": "Roxy Theater official calendar",
-      "url": "https://www.theroxytheater.org/show/flowing-forward-stories-of-river-conservation-restoration-in-montana/",
-      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/flowingforward_filmscreeningimage_1200x675px-1024x576.jpg",
-      "dates": [
-        "2026-10-28"
-      ],
-      "ranges": [],
-      "screenings": [
-        {
-          "date": "2026-10-28",
-          "time": "7:00pm",
-          "startsAt": "2026-10-29T01:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/flowing-forward-stories-of-river-conservation-restoration-in-montana/",
-          "format": ""
-        }
-      ],
-      "start": "2026-10-28",
-      "end": "2026-10-28",
-      "dateLabel": "1 listed days"
-    },
-    {
-      "id": "roxy:/show/existenz/",
-      "title": "Existenz",
-      "venueId": "roxy",
-      "venue": "Roxy Theater",
-      "location": "Missoula",
-      "source": "Roxy Theater official calendar",
-      "url": "https://www.theroxytheater.org/show/existenz/",
-      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/09/get20goopy20wit20me-1024x576.jpg",
-      "dates": [
-        "2026-10-28"
-      ],
-      "ranges": [],
-      "screenings": [
-        {
-          "date": "2026-10-28",
-          "time": "8:00pm",
-          "startsAt": "2026-10-29T02:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/existenz/",
-          "format": ""
-        }
-      ],
-      "start": "2026-10-28",
-      "end": "2026-10-28",
       "dateLabel": "1 listed days"
     },
     {
@@ -2108,7 +2032,7 @@
       "dateLabel": "1 listed days"
     }
   ],
-  "checkedAt": 1793235860425,
+  "checkedAt": 1793268773948,
   "stale": false,
   "sourceURL": "https://www.theroxytheater.org/showtimes/"
 }
