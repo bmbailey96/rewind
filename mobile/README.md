@@ -14,31 +14,39 @@ A real React Native / Expo app inside the existing Rewind repository, separate f
 ## Not yet implemented
 This is the first native foundation, not the finished Rewind replacement. Live Discover recommendations for new films, real provider polling and daily prices, automatic full Letterboxd Watchlist updates, server-side scheduled checks, real native notifications, full TV seasons, Oracle context, and release calendars remain separate integration work. No fabricated availability.
 
-## Developing without a Mac
-Node 22.13+:
+## Run on an iPhone using a Windows laptop (free Expo Go)
+This testing setup is intentionally pinned to Expo SDK 54 because Apple's App Store currently offers Expo Go for SDK 54. We will upgrade to a modern SDK again when the install route supports it. You do not need to own a Mac or join Apple's paid developer program just to test this Expo Go prototype.
 
-    cd mobile
-    npm install
-    npm run check
-    npx expo install --check
-    npx expo start
+1. Install Node.js LTS on Windows from nodejs.org and restart your terminal.
+2. Open this repository in GitHub; select Code, then Download ZIP. Extract the ZIP, open the mobile folder in File Explorer and choose Open in Terminal (PowerShell). Alternatively, clone with Git and open mobile in PowerShell.
+3. In that mobile directory run:
+   
+       npm install
+       npm run check
+       npx expo login
+       npm run start:lan
 
-GitHub Actions also runs the test suite and exports the JavaScript iOS bundle without Xcode or a paid Apple account.
+4. On the iPhone, install the official Expo Go app from the App Store, sign into the same free Expo account, connect the iPhone and Windows laptop to the same Wi-Fi and scan the terminal QR code with the iPhone Camera.
+5. Keep the PowerShell window open while using Rewind. The native SQLite database lives on the iPhone. If Windows Firewall requests permission for a private network, allow Node. If Wi-Fi routing blocks LAN, stop the Expo server with Ctrl+C and run:
 
-## Physical iPhone testing
-On October 29, 2026, Expo SDK 58 is the latest release, but Expo Go for SDK 58 was not yet generally available from the App Store, and current Expo documentation requires Apple Developer enrollment for its physical iPhone signing workflows. A GitHub repo does not install or run on an iPhone by itself. A compatible Expo client, development server, and signing when applicable are needed.
+       npm run start:tunnel
 
-A signed standalone iPhone or TestFlight build requires the owner's Apple Developer Program account and explicit credential authorization. No paid enrollment, Apple signing, Expo cloud build, or iPhone installation has been performed here.
+Expo may prompt to install its tunnel helper. Only install the official Expo helper. Do not upload passwords or your personal Rewind backup to third-party sites.
 
-Cloud iOS simulator compilation (not a physical-phone install) can be requested after connecting an Expo account:
+This is a local development session running inside Expo Go. It is not a signed standalone iPhone app. The development server must remain on the Windows machine while testing. An app binary signed and installed independently will require a separate Apple distribution step.
+
+## Mac-free cloud builds
+GitHub Actions runs the regression tests and exports the iOS JavaScript bundle using Metro without Xcode or Apple credentials. Standalone iOS distribution remains separate.
+
+After authorizing Expo and Apple developer account access, a cloud simulator build (not a physical-iPhone install) can be requested with:
 
     npx eas-cli@latest login
     npx eas-cli@latest build --platform ios --profile simulator
 
-The app's development and production profiles are configured but do not include secrets.
+No paid enrollment, Apple signing, Expo cloud build, or physical iPhone install has been performed in this PR.
 
 ## Migrating the real collection
-1. In the CURRENT Rewind website, open Settings / Storage recovery / Download backup JSON. Do this on the device holding the most up-to-date unsynced data, without clearing browser storage.
+1. In the CURRENT Rewind website, open Settings / Export collection for iPhone app / Download Rewind Backup. Do this on the device holding the most up-to-date unsynced data, without clearing browser storage.
 2. In the native app, open Settings / Import Rewind JSON. Choose that file from Files and confirm.
 3. The native app merges known catalog IDs, replaces untouched May 2026 starter data, and preserves pins, notes and watched changes edited locally. The database transaction rolls back on import failures.
 4. Export Native Backup creates a separate local file that can be saved to Files or iCloud Drive.
