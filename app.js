@@ -854,8 +854,8 @@ function showAvailabilityProgress(message){
  if(el)el.textContent=message;
 }
 function queueAutoAvailabilityCheck(delay=16000){
- clearTimeout(availabilityAutoTimer);availabilityAutoTimer=null;
- if(!canAutoCheckAvailability()||availabilityAutoInFlight)return;
+ // Navigating the site must not repeatedly postpone the next scan.
+ if(availabilityAutoTimer||availabilityAutoInFlight||!canAutoCheckAvailability())return;
  if(!availabilityQueue().length){
   showAvailabilityProgress('Saved-film checks are up to date for this visit. Some titles may still have no verified viewing offer.');
   return;
