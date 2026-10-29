@@ -1,0 +1,27 @@
+{
+  "expo": {
+    "name": "Rewind",
+    "slug": "rewind-native",
+    "scheme": "rewindnative",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "newArchEnabled": true,
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.bmbailey.rewind"
+    },
+    "android": {
+      "package": "com.bmbailey.rewind",
+      "edgeToEdgeEnabled": true
+    },
+    "experiments": {},
+    "plugins": [
+      "expo-sqlite",
+      "expo-document-picker"
+    ],
+    "extra": {
+      "privacy": "Local-first. No automatic user-data uploads."
+    }
+  }
+}
