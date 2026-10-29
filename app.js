@@ -219,6 +219,7 @@ async function ghFetch(path, opts = {}) {
 }
 
 document.getElementById('storage-backup').onclick=()=>{const blob=new Blob([JSON.stringify(collectSyncData(),null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='Rewind-film-backup-'+new Date().toISOString().slice(0,10)+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);};
+document.getElementById('export-native-backup').onclick=()=>{document.getElementById('storage-backup').click();document.getElementById('native-export-status').textContent='Backup downloaded. Save the JSON file in Files to import into the iPhone app.';};
 
 function collectSyncData() {
   return {
