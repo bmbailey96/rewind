@@ -947,6 +947,7 @@ async function checkAutomaticAvailabilityBatch(){
  showAvailabilityProgress((number===null?'':number+' titles not yet verified · ')+
    (failed?'Some provider checks failed · ':'')+
    (left?left+' still queued this visit.':'This visit\'s checks are complete.'));
+ window.dispatchEvent(new Event('rewind:watchlist-ready'));
  if(document.querySelector('#tab-watchlist.active')){
   const draw=()=>renderWatchlist(false,true,true).catch(()=>{});
   if(!window.RewindStartup?.defer('watchlist',draw))draw();
