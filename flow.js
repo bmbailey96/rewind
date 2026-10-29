@@ -57,7 +57,7 @@
  if(priceNotes){const help=document.createElement('details');help.className='watchlist-price-help';const title=document.createElement('summary');title.textContent='How prices and availability work';help.append(title,priceNotes);primary.after(help);}
  document.querySelector('#card-options .cost-filters').hidden=true;
  filters.hidden=true;filterToggle.hidden=true;
- const checkTools=document.querySelector('#card-options .card-toolbar');checkTools.classList.add('watchlist-check');primary.append(checkTools);const scanProgress=by('card-check-status');primary.after(scanProgress);by('refresh-card-btn').textContent='Check next 12';
+ const checkTools=document.querySelector('#card-options .card-toolbar');const scanProgress=by('card-check-status');primary.after(scanProgress);checkTools.remove(); // Automatic availability requires no manual batch button.
 
  const suggestions=document.createElement('details');suggestions.id='watchlist-suggestions';const summary=document.createElement('summary');summary.textContent='Three picks for tonight';suggestions.append(summary,by('tonight-shelf'));by('watchlist-more').before(suggestions);document.querySelector('.counter-welcome').hidden=true;
  // Price filters, sorting and rental limit now live together above the Watchlist.

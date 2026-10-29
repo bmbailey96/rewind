@@ -217,7 +217,24 @@ const RewindMedia=(()=>{
  document.querySelectorAll('[data-tab]').forEach(b=>b.addEventListener('click',()=>{if(!['watchlist','discover','upcoming'].includes(b.dataset.tab))return;const value=pageFilters['tab-'+b.dataset.tab]||'all';setFilter(value);}));
  const originalWatchlist=renderWatchlist;renderWatchlist=async(...args)=>{const result=await originalWatchlist(...args);const all=collection(),scope=scopedWatchlist(),pending=(hubState.newsFollows||[]).filter(r=>!r.movieId&&(filter==='all'||(r.mediaType||'movie')===filter)).length;$('watchlist-count').textContent=(all.length+pending)+' saved titles · '+all.filter(isTV).length+' TV series'+(pending?' · '+pending+(pending===1?' unmatched project':' unmatched projects'):'');$('watchlist-empty').hidden=all.length+pending>0;$('watchlist-scope-note').textContent='Your Rewind saves first, then your Letterboxd backlog.';labelControls();return result;};
  async function refreshTV(limit=12,force=false){await TV.ready;const selected=groups().filter(g=>(g.intent||(hubState.seriesFollows||[]).includes(g.id)||MediaModel.positiveRecords(g).length)&&(force||!TV.cached(g.id)?.checkedAt||Date.now()-TV.cached(g.id).checkedAt>6*3600000)).sort((a,b)=>Number(!!TV.cached(a.id)?.checkedAt)-Number(!!TV.cached(b.id)?.checkedAt)||Number(!!b.intent)-Number(!!a.intent)||Number(b.seasons.some(r=>r.partial))-Number(a.seasons.some(r=>r.partial))).slice(0,limit);await mapLimited(selected,2,async g=>{try{await TV.check(g);}catch{}});changed();}
- $('refresh-card-btn').addEventListener('click',()=>{if(filter!=='movie')refreshTV(12,true).catch(()=>{});});
+ // Series checks use their own bounded automatic queue. The old shared
+ // Check next 12 button is gone and is no longer required for TV either.
+ let tvAutoTimer=null,tvAutoBusy=false;
+ function queueAutomaticTVScan(delay=20000){
+  if(document.hidden||navigator.onLine===false||tvAutoTimer||tvAutoBusy)return;
+  tvAutoTimer=setTimeout(async()=>{
+   tvAutoTimer=null;
+   if(document.hidden||navigator.onLine===false)return;
+   tvAutoBusy=true;
+   try{await refreshTV(6,false);}catch{}
+   finally{tvAutoBusy=false;queueAutomaticTVScan(60000);}
+  },delay);
+ }
+ TV.ready.then(()=>queueAutomaticTVScan()).catch(()=>{});
+ document.addEventListener('visibilitychange',()=>{
+  if(document.hidden){clearTimeout(tvAutoTimer);tvAutoTimer=null;}
+  else queueAutomaticTVScan(20000);
+ });
  document.querySelectorAll('[data-calendar-source=digital]').forEach(b=>b.addEventListener('click',()=>refreshTV().catch(()=>{})));
  $('cinema-refresh').addEventListener('click',()=>{if(document.querySelector('[data-calendar-source=digital][aria-pressed=true]'))refreshTV(12,true).catch(()=>{});});
 

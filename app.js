@@ -840,34 +840,118 @@ let watchlistSort = 'cost';
 const WATCHLIST_PAGE_SIZE=24, WATCHLIST_BACKGROUND_CHECKS=6;
 let watchlistScope='release',watchlistLimit=WATCHLIST_PAGE_SIZE,watchlistResults=[];
 const watchlistBackgroundChecked=new Set();
-let availabilityAutoTimer=null,availabilityAutoInFlight=false,availabilitySourceFailures=0;
-// The scan runs only in an open, visible Watchlist tab. Browser timers stop
-// naturally when Safari is closed; saved results persist across visits.
+let availabilityAutoTimer=null,availabilityAutoInFlight=false,availabilitySourceFailures=0,availabilityRetryAt=0;
+// Availability scans are independent of view rendering and do not get canceled
+// when someone searches, sorts, switches tabs or scrolls the Watchlist.
 function canAutoCheckAvailability(){
-  return !document.hidden&&navigator.onLine!==false&&
-    !navigator.connection?.saveData&&
-    watchlistScope==='release'&&
-    document.getElementById('tab-watchlist')?.classList.contains('active')&&
-    document.getElementById('tab-watchlist')?.dataset.collection!=='physical'&&
-    !document.getElementById('watchlist-search')?.value.trim()&&
-    !window.WatchlistBrowser?.options().section;
+ return !document.hidden&&navigator.onLine!==false&&!navigator.connection?.saveData&&watchlist.length>0;
+}
+function availabilityQueue(){
+ return WatchlistModel.refreshCandidates(watchlist,watchlistBackgroundChecked,6);
+}
+function showAvailabilityProgress(message){
+ const el=document.getElementById('card-check-status');
+ if(el)el.textContent=message;
 }
 function queueAutoAvailabilityCheck(delay=16000){
-  clearTimeout(availabilityAutoTimer);availabilityAutoTimer=null;
-  if(!canAutoCheckAvailability()||availabilitySourceFailures>=2||availabilityAutoInFlight)return;
-  const pending=WatchlistModel.refreshCandidates(scopedWatchlist(),watchlistBackgroundChecked,1).length>0;
-  if(!pending)return;
-  availabilityAutoTimer=setTimeout(()=>{
-    availabilityAutoTimer=null;
-    if(!canAutoCheckAvailability()||availabilityAutoInFlight)return;
-    availabilityAutoInFlight=true;
-    Promise.resolve(renderWatchlist(false,false,true)).catch(()=>{
-      availabilitySourceFailures++;
-    }).finally(()=>{
-      availabilityAutoInFlight=false;
-      queueAutoAvailabilityCheck(16000);
-    });
-  },delay);
+ // Navigating the site must not repeatedly postpone the next scan.
+ if(availabilityAutoTimer||availabilityAutoInFlight||!canAutoCheckAvailability())return;
+ if(!availabilityQueue().length){
+  showAvailabilityProgress('Saved-film checks are up to date for this visit. Some titles may still have no verified viewing offer.');
+  return;
+ }
+ const wait=Math.max(delay,availabilityRetryAt-Date.now());
+ availabilityAutoTimer=setTimeout(async()=>{
+  availabilityAutoTimer=null;
+  if(!canAutoCheckAvailability()||availabilityAutoInFlight)return;
+  availabilityAutoInFlight=true;
+  try{await checkAutomaticAvailabilityBatch();}
+  catch{availabilitySourceFailures++;showAvailabilityProgress('Automatic availability checking encountered an error. Rewind will retry.');}
+  finally{
+   availabilityAutoInFlight=false;
+   if(availabilitySourceFailures>=2){
+    availabilityRetryAt=Date.now()+5*60000;
+    availabilitySourceFailures=0;
+   }
+   queueAutoAvailabilityCheck(16000);
+  }
+ },Math.max(0,wait));
+}
+async function checkAutomaticAvailabilityBatch(){
+ const targets=availabilityQueue();
+ if(!targets.length)return;
+ let checked=0,failed=0,receiptsDirty=false;
+ const attempted=new Set();
+ showAvailabilityProgress('Checking saved-film availability automatically · 0 of '+targets.length+' this batch.');
+ await mapLimited(targets,2,async original=>{
+  // Only mark the title attempted once its request actually starts.
+  if(!canAutoCheckAvailability())return;
+  const entry=watchlist.find(m=>String(m.id)===String(original.id));
+  if(!entry)return;
+  watchlistBackgroundChecked.add(entry.id);attempted.add(entry.id);
+  const lookupMovie={...entry};
+  const before=entry.availabilityBaseline||(!entry.availabilitySnapshot?.stale?entry.availabilitySnapshot:null);
+  let status;
+  try{status=await deriveStatus(lookupMovie);}
+  catch{
+   status=entry.availabilitySnapshot?{...entry.availabilitySnapshot,stale:true}:{code:'nodata',kind:'unknown',label:'Availability could not be checked',offers:[],stale:true};
+   lookupMovie.availabilitySnapshot=status;
+  }
+  // The film may have been removed or cloud-synced while the lookup was running.
+  const current=watchlist.find(m=>String(m.id)===String(entry.id));
+  if(!current)return;
+  if(!status.stale){
+   for(const receipt of CounterModel.changes(before,status,Date.now())){
+    const record={...receipt,movieId:current.id,title:current.title,id:[current.id,receipt.type,receipt.key,status.quoteCheckedAt||status.checkedAt].join(':')};
+    if(!hubState.changeReceipts.some(r=>r.id===record.id)){hubState.changeReceipts.push(record);receiptsDirty=true;}
+   }
+   current.availabilityBaseline={...status};
+  }else failed++;
+  const previouslyIncluded=typeof current.lastFreshIncluded==='boolean'?current.lastFreshIncluded:current.availabilitySnapshot&&!current.availabilitySnapshot.stale?HubModel.isIncluded(current.availabilitySnapshot):null;
+  Object.assign(current,{
+   availabilitySnapshot:lookupMovie.availabilitySnapshot||status,
+   watchmodeCache:lookupMovie.watchmodeCache??current.watchmodeCache,
+   storePriceCache:lookupMovie.storePriceCache??current.storePriceCache,
+   detailsSnapshot:lookupMovie.detailsSnapshot??current.detailsSnapshot,
+   priceHistory:lookupMovie.priceHistory??current.priceHistory,
+   poster_path:lookupMovie.poster_path||current.poster_path,
+   runtime:lookupMovie.runtime??current.runtime,
+   director:lookupMovie.director||current.director,
+   overview:lookupMovie.overview||current.overview
+  });
+  if(!status.stale){
+   const fingerprint=status.offers?.map(o=>[o.kind,o.provider,o.format||'',o.price??''].join(':')).sort().join('|')||status.label;
+   const changed=current.lastAvailabilityKey!=null&&current.lastAvailabilityKey!==fingerprint;
+   if(previouslyIncluded===false&&HubModel.isIncluded(status))current.includedSince=Date.now();
+   current.lastFreshIncluded=HubModel.isIncluded(status);
+   if(changed||!current.lastStatusLabel)current.statusChangedAt=Date.now();
+   if(changed)current.lastChange={at:Date.now(),from:current.lastStatusLabel,to:status.label};
+   current.lastStatusCode=status.code;current.lastStatusLabel=status.label;current.lastAvailabilityKey=fingerprint;
+  }
+  checked++;
+  showAvailabilityProgress('Checking saved-film availability automatically · '+checked+' of '+targets.length+' this batch.');
+ });
+ if(!attempted.size)return;
+ if(failed>=Math.max(3,Math.ceil(attempted.size/2)))availabilitySourceFailures++;
+ else availabilitySourceFailures=0;
+ if(receiptsDirty)persistHubState();
+ saveWatchlist(false);scheduleSync();
+ // Update counts and queue text without rebuilding cards during scrolling.
+ const lookup=new Map(watchlist.map(m=>[String(m.id),m]));
+ watchlistResults=watchlistResults.map(row=>{
+  const entry=lookup.get(String(row.entry.id));if(!entry||!attempted.has(entry.id))return row;
+  return {...row,entry,status:{...entry.availabilitySnapshot,stale:!WatchlistModel.freshSnapshot(entry)},changed:false};
+ });
+ const number=updateAvailabilityCountWithoutRepaint();
+ const left=WatchlistModel.refreshCandidates(watchlist,watchlistBackgroundChecked,watchlist.length).length;
+ showAvailabilityProgress((number===null?'':number+' titles not yet verified · ')+
+   (failed?'Some provider checks failed · ':'')+
+   (left?left+' still queued this visit.':'This visit\'s checks are complete.'));
+ window.dispatchEvent(new Event('rewind:watchlist-ready'));
+ if(document.querySelector('#tab-watchlist.active')){
+  const draw=()=>renderWatchlist(false,true,true).catch(()=>{});
+  if(!window.RewindStartup?.defer('watchlist',draw))draw();
+ }
 }
 let watchlistMatching=false,watchlistMatchProgress='';
 let watchlistChangeFilter=null;
@@ -1004,13 +1088,13 @@ async function renderWatchlist(force = false, reuse = false, background = false)
   const candidates=watchlistScope==='release'&&batch.length>WATCHLIST_PAGE_SIZE
     ?WatchlistModel.refreshCandidates(batch,watchlistBackgroundChecked,batch.length)
     :displayed;
-  const targets=force
-    ?candidates.slice(0,batch.length>WATCHLIST_PAGE_SIZE?12:displayed.length)
-    :reuse?[]:WatchlistModel.refreshCandidates(candidates,watchlistBackgroundChecked,WATCHLIST_BACKGROUND_CHECKS);
+  // Routine checks are handled by the independent automatic queue above.
+  // Rendering the interface never starts or cancels provider lookups.
+  const targets=force?candidates.slice(0,12):[];
   if(force&&batch.length>WATCHLIST_PAGE_SIZE)targets.forEach(entry=>watchlistBackgroundChecked.add(entry.id));
   if(!targets.length){
     loading.textContent='';
-    statusEl.textContent=force?'No more unchecked titles in this view.':'';
+    if(force)statusEl.textContent='All available titles have been checked in this view.';
     window.dispatchEvent(new Event('rewind:watchlist-ready'));
     return;
   }
@@ -1020,7 +1104,7 @@ async function renderWatchlist(force = false, reuse = false, background = false)
   if(!force){
     await new Promise(resolve=>setTimeout(resolve,700));
     if(request!==watchlistRequest)return;
-    targets.forEach(entry=>watchlistBackgroundChecked.add(entry.id));
+    // Automatic requests are not performed by this rendering path.
   }
   let checked=0,receiptsDirty=false;
   const results=await mapLimited(targets,force?3:2,async entry=>{
@@ -1120,7 +1204,7 @@ function paintWatchlist(results,append=false){
     const page=WatchlistModel.releaseWatchPage([...results,...(window.SavedProjects?.rows()||[])],{browse:window.WatchlistBrowser?.options()||{},today:discoveryWindow().today,budget:rentalBudget,receipts:hubState.changeReceipts,limit:watchlistLimit,filter:costFilter,model:ReleaseModel,localListing:m=>{const local=typeof Hub==='undefined'||typeof Hub.localListing!=='function'?null:Hub.localListing(m);return local&&!local.stale&&/Kalispell/i.test(local.location)?local:null;}});
     const groups={included:'rw-arrived',cheap:'rw-available',premium:'rw-coming',physicalpurchase:'rw-physicalbuy',theater:'rw-theater',upcoming:'rw-upcoming',development:'rw-development',waiting:'rw-waiting',unchecked:'rw-unchecked'};
     const labels={included:'Included & free',cheap:'At your price',premium:'Higher prices',physicalpurchase:'Physical editions for sale',theater:'In Kalispell theaters',upcoming:'Upcoming releases',development:'Announced · no date',waiting:'Waiting for home release',unchecked:'Needs availability check'};
-    const descriptions={included:'On your services or your own shelf.',cheap:'Rentals up to $'+rentalBudget.toFixed(2)+'.',premium:'Higher rentals and digital purchases.',physicalpurchase:'DVD, Blu-ray and other discs. Not digital downloads.',theater:'Confirmed local screenings.',upcoming:'Published dates, earliest first.',development:'Date not verified.',waiting:'Current home viewing not confirmed.',unchecked:'Unverified or outdated offers. Check the next batch, or browse the backlog.'};
+    const descriptions={included:'On your services or your own shelf.',cheap:'Rentals up to $'+rentalBudget.toFixed(2)+'.',premium:'Higher rentals and digital purchases.',physicalpurchase:'DVD, Blu-ray and other discs. Not digital downloads.',theater:'Confirmed local screenings.',upcoming:'Published dates, earliest first.',development:'Date not verified.',waiting:'Current home viewing not confirmed.',unchecked:'Not currently verified. Rewind checks these films automatically as you use the site.'};
     // The overview retains short section previews; a focused section grows in small scroll batches.
     const focusedSection=!!window.WatchlistBrowser?.options().section;
     document.getElementById('watchlist-more').hidden=!focusedSection||page.rows.length>=page.total;
@@ -1494,7 +1578,7 @@ async function init() {
   const saveStatus=document.getElementById('save-state');if(saveStatus)saveStatus.onkeydown=event=>{if(failedStorageKeys.size&&['Enter',' '].includes(event.key)){event.preventDefault();saveStatus.click();}};if(saveStatus)saveStatus.onclick=()=>{if(failedStorageKeys.size){document.querySelector('[data-tab=import]').click();const backup=document.getElementById('storage-backup');backup.closest('details')?.setAttribute('open','');backup.scrollIntoView({block:'center'});}};
   window.addEventListener('online',()=>{scheduleWatchlistMatching();availabilitySourceFailures=0;queueAutoAvailabilityCheck(1500);});
   document.addEventListener('visibilitychange',()=>{if(document.hidden){clearTimeout(availabilityAutoTimer);availabilityAutoTimer=null;}else queueAutoAvailabilityCheck(2000);});
-  document.querySelectorAll('[data-tab]').forEach(b=>b.addEventListener('click',()=>{if(b.dataset.tab==='watchlist')queueAutoAvailabilityCheck(2000);else{clearTimeout(availabilityAutoTimer);availabilityAutoTimer=null;}}));
+  document.querySelectorAll('[data-tab]').forEach(b=>b.addEventListener('click',()=>queueAutoAvailabilityCheck(16000)));
   window.addEventListener('rewind:state',()=>{if(!watchlistMatching&&(hubState.watchlistUnmatched||[]).length){reconcileWatchlistMatches();renderImportReview();scheduleWatchlistMatching();}});
   document.addEventListener('visibilitychange',()=>{if(document.visibilityState!=='hidden')scheduleWatchlistMatching();});
   // Background sync can update the local watchlist when finished, but never
@@ -1617,7 +1701,7 @@ async function initEmailAlerts() {
   } catch (err) { document.getElementById('email-alert-status').textContent = err.message; }
 }
 renderServiceSettings();
-document.getElementById('refresh-card-btn').onclick=async()=>{clearTimeout(availabilityAutoTimer);availabilityAutoTimer=null;const btn=document.getElementById('refresh-card-btn');btn.disabled=true;btn.textContent='Checking…';try{await renderWatchlist(true);}catch(err){showToast(err.message);}finally{btn.disabled=false;btn.textContent='Check next 12';queueAutoAvailabilityCheck(16000);}};
+// Checking is automatic; no manual per-dozen button is necessary.
 init().then(()=>setTimeout(initEmailAlerts,10000));
 
 document.querySelectorAll('[data-discovery-stage]').forEach(button=>button.onclick=()=>{searchRequest++;document.getElementById('search-input').value='';document.getElementById('search-clear-btn').hidden=true;document.getElementById('search-grid').hidden=true;document.getElementById('discover-grid').hidden=false;discoveryStage=button.dataset.discoveryStage;discoverPage=1;updateDiscoveryGuide();renderDiscover().catch(e=>showToast(e.message));});
