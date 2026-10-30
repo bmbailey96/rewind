@@ -1707,6 +1707,32 @@
       "dateLabel": "2 listed days"
     },
     {
+      "id": "roxy:/show/from-the-ground-up/",
+      "title": "From the Ground Up",
+      "venueId": "roxy",
+      "venue": "Roxy Theater",
+      "location": "Missoula",
+      "source": "Roxy Theater official calendar",
+      "url": "https://www.theroxytheater.org/show/from-the-ground-up/",
+      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/northside-1024x576.jpg",
+      "dates": [
+        "2026-12-03"
+      ],
+      "ranges": [],
+      "screenings": [
+        {
+          "date": "2026-12-03",
+          "time": "6:00pm",
+          "startsAt": "2026-12-04T01:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/from-the-ground-up/",
+          "format": ""
+        }
+      ],
+      "start": "2026-12-03",
+      "end": "2026-12-03",
+      "dateLabel": "1 listed days"
+    },
+    {
       "id": "roxy:/show/the-met-opera-live-samson-et-dalila/",
       "title": "The Met Opera Live: Samson et Dalila",
       "venueId": "roxy",
@@ -2032,7 +2058,7 @@
       "dateLabel": "1 listed days"
     }
   ],
-  "checkedAt": 1793298835754,
+  "checkedAt": 1793322613211,
   "stale": false,
   "sourceURL": "https://www.theroxytheater.org/showtimes/"
 }
