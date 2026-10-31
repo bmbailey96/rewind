@@ -1,250 +1,30 @@
 {
   "items": [
     {
-      "id": "roxy:/show/you-can-see-everything/",
-      "title": "You Can See Everything",
+      "id": "roxy:/show/critters/",
+      "title": "Critters",
       "venueId": "roxy",
       "venue": "Roxy Theater",
       "location": "Missoula",
       "source": "Roxy Theater official calendar",
-      "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
-      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/holmes-1024x575.jpg",
+      "url": "https://www.theroxytheater.org/show/critters/",
+      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/09/crittaz-1024x576.jpg",
       "dates": [
-        "2026-10-30",
-        "2026-10-31",
-        "2026-11-01",
-        "2026-11-02",
-        "2026-11-03",
-        "2026-11-04",
-        "2026-11-05"
+        "2026-10-31"
       ],
       "ranges": [],
       "screenings": [
         {
-          "date": "2026-10-30",
-          "time": "1:30pm",
-          "startsAt": "2026-10-30T19:30:00.000Z",
-          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
-          "format": "Open captions"
-        },
-        {
-          "date": "2026-10-30",
-          "time": "5:00pm",
-          "startsAt": "2026-10-30T23:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
-          "format": ""
-        },
-        {
           "date": "2026-10-31",
-          "time": "3:30pm",
-          "startsAt": "2026-10-31T21:30:00.000Z",
-          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
-          "format": "Open captions"
-        },
-        {
-          "date": "2026-10-31",
-          "time": "7:00pm",
-          "startsAt": "2026-11-01T01:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-01",
-          "time": "4:00pm",
-          "startsAt": "2026-11-01T23:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-01",
-          "time": "7:30pm",
-          "startsAt": "2026-11-02T02:30:00.000Z",
-          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-02",
-          "time": "1:00pm",
-          "startsAt": "2026-11-02T20:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
-          "format": "Open captions"
-        },
-        {
-          "date": "2026-11-02",
-          "time": "4:30pm",
-          "startsAt": "2026-11-02T23:30:00.000Z",
-          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-02",
-          "time": "8:00pm",
-          "startsAt": "2026-11-03T03:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
-          "format": "Open captions"
-        },
-        {
-          "date": "2026-11-03",
-          "time": "4:30pm",
-          "startsAt": "2026-11-03T23:30:00.000Z",
-          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
-          "format": "Open captions"
-        },
-        {
-          "date": "2026-11-03",
-          "time": "8:00pm",
-          "startsAt": "2026-11-04T03:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-04",
-          "time": "5:00pm",
-          "startsAt": "2026-11-05T00:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-04",
-          "time": "8:30pm",
-          "startsAt": "2026-11-05T03:30:00.000Z",
-          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-05",
-          "time": "4:30pm",
-          "startsAt": "2026-11-05T23:30:00.000Z",
-          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-05",
-          "time": "8:00pm",
-          "startsAt": "2026-11-06T03:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
+          "time": "12:00pm",
+          "startsAt": "2026-10-31T18:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/critters/",
           "format": ""
         }
       ],
-      "start": "2026-10-30",
-      "end": "2026-11-05",
-      "dateLabel": "7 listed days"
-    },
-    {
-      "id": "roxy:/show/wildwood/",
-      "title": "Wildwood",
-      "venueId": "roxy",
-      "venue": "Roxy Theater",
-      "location": "Missoula",
-      "source": "Roxy Theater official calendar",
-      "url": "https://www.theroxytheater.org/show/wildwood/",
-      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/wild20wild20wood-1024x576.jpg",
-      "dates": [
-        "2026-10-30",
-        "2026-10-31",
-        "2026-11-01",
-        "2026-11-02",
-        "2026-11-03",
-        "2026-11-04",
-        "2026-11-05"
-      ],
-      "ranges": [],
-      "screenings": [
-        {
-          "date": "2026-10-30",
-          "time": "2:30pm",
-          "startsAt": "2026-10-30T20:30:00.000Z",
-          "url": "https://www.theroxytheater.org/show/wildwood/",
-          "format": "Open captions"
-        },
-        {
-          "date": "2026-10-30",
-          "time": "5:15pm",
-          "startsAt": "2026-10-30T23:15:00.000Z",
-          "url": "https://www.theroxytheater.org/show/wildwood/",
-          "format": ""
-        },
-        {
-          "date": "2026-10-31",
-          "time": "2:15pm",
-          "startsAt": "2026-10-31T20:15:00.000Z",
-          "url": "https://www.theroxytheater.org/show/wildwood/",
-          "format": "Open captions"
-        },
-        {
-          "date": "2026-10-31",
-          "time": "5:00pm",
-          "startsAt": "2026-10-31T23:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/wildwood/",
-          "format": ""
-        },
-        {
-          "date": "2026-10-31",
-          "time": "7:45pm",
-          "startsAt": "2026-11-01T01:45:00.000Z",
-          "url": "https://www.theroxytheater.org/show/wildwood/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-01",
-          "time": "5:00pm",
-          "startsAt": "2026-11-02T00:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/wildwood/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-01",
-          "time": "7:45pm",
-          "startsAt": "2026-11-02T02:45:00.000Z",
-          "url": "https://www.theroxytheater.org/show/wildwood/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-02",
-          "time": "2:15pm",
-          "startsAt": "2026-11-02T21:15:00.000Z",
-          "url": "https://www.theroxytheater.org/show/wildwood/",
-          "format": "Open captions"
-        },
-        {
-          "date": "2026-11-02",
-          "time": "5:00pm",
-          "startsAt": "2026-11-03T00:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/wildwood/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-02",
-          "time": "7:45pm",
-          "startsAt": "2026-11-03T02:45:00.000Z",
-          "url": "https://www.theroxytheater.org/show/wildwood/",
-          "format": "Open captions"
-        },
-        {
-          "date": "2026-11-03",
-          "time": "4:15pm",
-          "startsAt": "2026-11-03T23:15:00.000Z",
-          "url": "https://www.theroxytheater.org/show/wildwood/",
-          "format": "Open captions"
-        },
-        {
-          "date": "2026-11-04",
-          "time": "4:00pm",
-          "startsAt": "2026-11-04T23:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/wildwood/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-05",
-          "time": "4:00pm",
-          "startsAt": "2026-11-05T23:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/wildwood/",
-          "format": ""
-        }
-      ],
-      "start": "2026-10-30",
-      "end": "2026-11-05",
-      "dateLabel": "7 listed days"
+      "start": "2026-10-31",
+      "end": "2026-10-31",
+      "dateLabel": "1 listed days"
     },
     {
       "id": "roxy:/show/wicker/",
@@ -256,7 +36,6 @@
       "url": "https://www.theroxytheater.org/show/wicker/",
       "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/wicker-film-olivia-colman-1024x576.jpg",
       "dates": [
-        "2026-10-30",
         "2026-10-31",
         "2026-11-01",
         "2026-11-02",
@@ -266,20 +45,6 @@
       ],
       "ranges": [],
       "screenings": [
-        {
-          "date": "2026-10-30",
-          "time": "3:45pm",
-          "startsAt": "2026-10-30T21:45:00.000Z",
-          "url": "https://www.theroxytheater.org/show/wicker/",
-          "format": "Open captions"
-        },
-        {
-          "date": "2026-10-30",
-          "time": "6:00pm",
-          "startsAt": "2026-10-31T00:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/wicker/",
-          "format": ""
-        },
         {
           "date": "2026-10-31",
           "time": "1:15pm",
@@ -372,9 +137,277 @@
           "format": ""
         }
       ],
-      "start": "2026-10-30",
+      "start": "2026-10-31",
       "end": "2026-11-05",
-      "dateLabel": "7 listed days"
+      "dateLabel": "6 listed days"
+    },
+    {
+      "id": "roxy:/show/pumpkinhead/",
+      "title": "Pumpkinhead",
+      "venueId": "roxy",
+      "venue": "Roxy Theater",
+      "location": "Missoula",
+      "source": "Roxy Theater official calendar",
+      "url": "https://www.theroxytheater.org/show/pumpkinhead/",
+      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/09/punkinhead20punkinhead-1024x576.jpg",
+      "dates": [
+        "2026-10-31"
+      ],
+      "ranges": [],
+      "screenings": [
+        {
+          "date": "2026-10-31",
+          "time": "2:00pm",
+          "startsAt": "2026-10-31T20:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/pumpkinhead/",
+          "format": ""
+        }
+      ],
+      "start": "2026-10-31",
+      "end": "2026-10-31",
+      "dateLabel": "1 listed days"
+    },
+    {
+      "id": "roxy:/show/wildwood/",
+      "title": "Wildwood",
+      "venueId": "roxy",
+      "venue": "Roxy Theater",
+      "location": "Missoula",
+      "source": "Roxy Theater official calendar",
+      "url": "https://www.theroxytheater.org/show/wildwood/",
+      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/wild20wild20wood-1024x576.jpg",
+      "dates": [
+        "2026-10-31",
+        "2026-11-01",
+        "2026-11-02",
+        "2026-11-03",
+        "2026-11-04",
+        "2026-11-05"
+      ],
+      "ranges": [],
+      "screenings": [
+        {
+          "date": "2026-10-31",
+          "time": "2:15pm",
+          "startsAt": "2026-10-31T20:15:00.000Z",
+          "url": "https://www.theroxytheater.org/show/wildwood/",
+          "format": "Open captions"
+        },
+        {
+          "date": "2026-10-31",
+          "time": "5:00pm",
+          "startsAt": "2026-10-31T23:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/wildwood/",
+          "format": ""
+        },
+        {
+          "date": "2026-10-31",
+          "time": "7:45pm",
+          "startsAt": "2026-11-01T01:45:00.000Z",
+          "url": "https://www.theroxytheater.org/show/wildwood/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-01",
+          "time": "5:00pm",
+          "startsAt": "2026-11-02T00:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/wildwood/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-01",
+          "time": "7:45pm",
+          "startsAt": "2026-11-02T02:45:00.000Z",
+          "url": "https://www.theroxytheater.org/show/wildwood/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-02",
+          "time": "2:15pm",
+          "startsAt": "2026-11-02T21:15:00.000Z",
+          "url": "https://www.theroxytheater.org/show/wildwood/",
+          "format": "Open captions"
+        },
+        {
+          "date": "2026-11-02",
+          "time": "5:00pm",
+          "startsAt": "2026-11-03T00:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/wildwood/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-02",
+          "time": "7:45pm",
+          "startsAt": "2026-11-03T02:45:00.000Z",
+          "url": "https://www.theroxytheater.org/show/wildwood/",
+          "format": "Open captions"
+        },
+        {
+          "date": "2026-11-03",
+          "time": "4:15pm",
+          "startsAt": "2026-11-03T23:15:00.000Z",
+          "url": "https://www.theroxytheater.org/show/wildwood/",
+          "format": "Open captions"
+        },
+        {
+          "date": "2026-11-04",
+          "time": "4:00pm",
+          "startsAt": "2026-11-04T23:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/wildwood/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-05",
+          "time": "4:00pm",
+          "startsAt": "2026-11-05T23:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/wildwood/",
+          "format": ""
+        }
+      ],
+      "start": "2026-10-31",
+      "end": "2026-11-05",
+      "dateLabel": "6 listed days"
+    },
+    {
+      "id": "roxy:/show/you-can-see-everything/",
+      "title": "You Can See Everything",
+      "venueId": "roxy",
+      "venue": "Roxy Theater",
+      "location": "Missoula",
+      "source": "Roxy Theater official calendar",
+      "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
+      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/holmes-1024x575.jpg",
+      "dates": [
+        "2026-10-31",
+        "2026-11-01",
+        "2026-11-02",
+        "2026-11-03",
+        "2026-11-04",
+        "2026-11-05"
+      ],
+      "ranges": [],
+      "screenings": [
+        {
+          "date": "2026-10-31",
+          "time": "3:30pm",
+          "startsAt": "2026-10-31T21:30:00.000Z",
+          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
+          "format": "Open captions"
+        },
+        {
+          "date": "2026-10-31",
+          "time": "7:00pm",
+          "startsAt": "2026-11-01T01:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-01",
+          "time": "4:00pm",
+          "startsAt": "2026-11-01T23:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-01",
+          "time": "7:30pm",
+          "startsAt": "2026-11-02T02:30:00.000Z",
+          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-02",
+          "time": "1:00pm",
+          "startsAt": "2026-11-02T20:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
+          "format": "Open captions"
+        },
+        {
+          "date": "2026-11-02",
+          "time": "4:30pm",
+          "startsAt": "2026-11-02T23:30:00.000Z",
+          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-02",
+          "time": "8:00pm",
+          "startsAt": "2026-11-03T03:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
+          "format": "Open captions"
+        },
+        {
+          "date": "2026-11-03",
+          "time": "4:30pm",
+          "startsAt": "2026-11-03T23:30:00.000Z",
+          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
+          "format": "Open captions"
+        },
+        {
+          "date": "2026-11-03",
+          "time": "8:00pm",
+          "startsAt": "2026-11-04T03:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-04",
+          "time": "5:00pm",
+          "startsAt": "2026-11-05T00:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-04",
+          "time": "8:30pm",
+          "startsAt": "2026-11-05T03:30:00.000Z",
+          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-05",
+          "time": "4:30pm",
+          "startsAt": "2026-11-05T23:30:00.000Z",
+          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-05",
+          "time": "8:00pm",
+          "startsAt": "2026-11-06T03:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
+          "format": ""
+        }
+      ],
+      "start": "2026-10-31",
+      "end": "2026-11-05",
+      "dateLabel": "6 listed days"
+    },
+    {
+      "id": "roxy:/show/a-nightmare-on-elm-street-3-dream-warriors/",
+      "title": "A Nightmare on Elm Street 3: Dream Warriors",
+      "venueId": "roxy",
+      "venue": "Roxy Theater",
+      "location": "Missoula",
+      "source": "Roxy Theater official calendar",
+      "url": "https://www.theroxytheater.org/show/a-nightmare-on-elm-street-3-dream-warriors/",
+      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/09/drugs20man-1024x576.jpg",
+      "dates": [
+        "2026-10-31"
+      ],
+      "ranges": [],
+      "screenings": [
+        {
+          "date": "2026-10-31",
+          "time": "4:00pm",
+          "startsAt": "2026-10-31T22:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/a-nightmare-on-elm-street-3-dream-warriors/",
+          "format": ""
+        }
+      ],
+      "start": "2026-10-31",
+      "end": "2026-10-31",
+      "dateLabel": "1 listed days"
     },
     {
       "id": "roxy:/show/twin-peaks-episodes-19-20-21/",
@@ -386,19 +419,11 @@
       "url": "https://www.theroxytheater.org/show/twin-peaks-episodes-19-20-21/",
       "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/09/owl-1024x576.jpg",
       "dates": [
-        "2026-10-30",
         "2026-10-31",
         "2026-11-01"
       ],
       "ranges": [],
       "screenings": [
-        {
-          "date": "2026-10-30",
-          "time": "5:15pm",
-          "startsAt": "2026-10-30T23:15:00.000Z",
-          "url": "https://www.theroxytheater.org/show/twin-peaks-episodes-19-20-21/",
-          "format": "Annex"
-        },
         {
           "date": "2026-10-31",
           "time": "5:15pm",
@@ -428,87 +453,9 @@
           "format": "Annex"
         }
       ],
-      "start": "2026-10-30",
+      "start": "2026-10-31",
       "end": "2026-11-01",
-      "dateLabel": "3 listed days"
-    },
-    {
-      "id": "roxy:/show/critters/",
-      "title": "Critters",
-      "venueId": "roxy",
-      "venue": "Roxy Theater",
-      "location": "Missoula",
-      "source": "Roxy Theater official calendar",
-      "url": "https://www.theroxytheater.org/show/critters/",
-      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/09/crittaz-1024x576.jpg",
-      "dates": [
-        "2026-10-31"
-      ],
-      "ranges": [],
-      "screenings": [
-        {
-          "date": "2026-10-31",
-          "time": "12:00pm",
-          "startsAt": "2026-10-31T18:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/critters/",
-          "format": ""
-        }
-      ],
-      "start": "2026-10-31",
-      "end": "2026-10-31",
-      "dateLabel": "1 listed days"
-    },
-    {
-      "id": "roxy:/show/pumpkinhead/",
-      "title": "Pumpkinhead",
-      "venueId": "roxy",
-      "venue": "Roxy Theater",
-      "location": "Missoula",
-      "source": "Roxy Theater official calendar",
-      "url": "https://www.theroxytheater.org/show/pumpkinhead/",
-      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/09/punkinhead20punkinhead-1024x576.jpg",
-      "dates": [
-        "2026-10-31"
-      ],
-      "ranges": [],
-      "screenings": [
-        {
-          "date": "2026-10-31",
-          "time": "2:00pm",
-          "startsAt": "2026-10-31T20:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/pumpkinhead/",
-          "format": ""
-        }
-      ],
-      "start": "2026-10-31",
-      "end": "2026-10-31",
-      "dateLabel": "1 listed days"
-    },
-    {
-      "id": "roxy:/show/a-nightmare-on-elm-street-3-dream-warriors/",
-      "title": "A Nightmare on Elm Street 3: Dream Warriors",
-      "venueId": "roxy",
-      "venue": "Roxy Theater",
-      "location": "Missoula",
-      "source": "Roxy Theater official calendar",
-      "url": "https://www.theroxytheater.org/show/a-nightmare-on-elm-street-3-dream-warriors/",
-      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/09/drugs20man-1024x576.jpg",
-      "dates": [
-        "2026-10-31"
-      ],
-      "ranges": [],
-      "screenings": [
-        {
-          "date": "2026-10-31",
-          "time": "4:00pm",
-          "startsAt": "2026-10-31T22:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/a-nightmare-on-elm-street-3-dream-warriors/",
-          "format": ""
-        }
-      ],
-      "start": "2026-10-31",
-      "end": "2026-10-31",
-      "dateLabel": "1 listed days"
+      "dateLabel": "2 listed days"
     },
     {
       "id": "roxy:/show/halloween/",
@@ -2309,7 +2256,7 @@
       "dateLabel": "1 listed days"
     }
   ],
-  "checkedAt": 1793426310300,
+  "checkedAt": 1793451017183,
   "stale": false,
   "sourceURL": "https://www.theroxytheater.org/showtimes/"
 }
