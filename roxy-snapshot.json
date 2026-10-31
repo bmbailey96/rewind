@@ -35,13 +35,6 @@
           "format": ""
         },
         {
-          "date": "2026-10-30",
-          "time": "8:30pm",
-          "startsAt": "2026-10-31T02:30:00.000Z",
-          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
-          "format": ""
-        },
-        {
           "date": "2026-10-31",
           "time": "3:30pm",
           "startsAt": "2026-10-31T21:30:00.000Z",
@@ -288,13 +281,6 @@
           "format": ""
         },
         {
-          "date": "2026-10-30",
-          "time": "8:15pm",
-          "startsAt": "2026-10-31T02:15:00.000Z",
-          "url": "https://www.theroxytheater.org/show/wicker/",
-          "format": ""
-        },
-        {
           "date": "2026-10-31",
           "time": "1:15pm",
           "startsAt": "2026-10-31T19:15:00.000Z",
@@ -414,13 +400,6 @@
           "format": "Annex"
         },
         {
-          "date": "2026-10-30",
-          "time": "8:00pm",
-          "startsAt": "2026-10-31T02:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/twin-peaks-episodes-19-20-21/",
-          "format": "Annex"
-        },
-        {
           "date": "2026-10-31",
           "time": "5:15pm",
           "startsAt": "2026-10-31T23:15:00.000Z",
@@ -452,58 +431,6 @@
       "start": "2026-10-30",
       "end": "2026-11-01",
       "dateLabel": "3 listed days"
-    },
-    {
-      "id": "roxy:/show/moti-halloween-party/",
-      "title": "MOTI Halloween Party",
-      "venueId": "roxy",
-      "venue": "Roxy Theater",
-      "location": "Missoula",
-      "source": "Roxy Theater official calendar",
-      "url": "https://www.theroxytheater.org/show/moti-halloween-party/",
-      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/09/halloween16x9-1024x576.jpeg",
-      "dates": [
-        "2026-10-30"
-      ],
-      "ranges": [],
-      "screenings": [
-        {
-          "date": "2026-10-30",
-          "time": "7:00pm",
-          "startsAt": "2026-10-31T01:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/moti-halloween-party/",
-          "format": ""
-        }
-      ],
-      "start": "2026-10-30",
-      "end": "2026-10-30",
-      "dateLabel": "1 listed days"
-    },
-    {
-      "id": "roxy:/show/mystery-spooktacular-4/",
-      "title": "Mystery Spooktacular",
-      "venueId": "roxy",
-      "venue": "Roxy Theater",
-      "location": "Missoula",
-      "source": "Roxy Theater official calendar",
-      "url": "https://www.theroxytheater.org/show/mystery-spooktacular-4/",
-      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/09/mystery-spooktacular-website-banner-1024x576.jpeg",
-      "dates": [
-        "2026-10-30"
-      ],
-      "ranges": [],
-      "screenings": [
-        {
-          "date": "2026-10-30",
-          "time": "8:00pm",
-          "startsAt": "2026-10-31T02:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/mystery-spooktacular-4/",
-          "format": ""
-        }
-      ],
-      "start": "2026-10-30",
-      "end": "2026-10-30",
-      "dateLabel": "1 listed days"
     },
     {
       "id": "roxy:/show/critters/",
@@ -2382,7 +2309,7 @@
       "dateLabel": "1 listed days"
     }
   ],
-  "checkedAt": 1793399392553,
+  "checkedAt": 1793426310300,
   "stale": false,
   "sourceURL": "https://www.theroxytheater.org/showtimes/"
 }
