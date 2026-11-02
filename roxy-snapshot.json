@@ -1,125 +1,6 @@
 {
   "items": [
     {
-      "id": "roxy:/show/wicker/",
-      "title": "Wicker",
-      "venueId": "roxy",
-      "venue": "Roxy Theater",
-      "location": "Missoula",
-      "source": "Roxy Theater official calendar",
-      "url": "https://www.theroxytheater.org/show/wicker/",
-      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/wicker-film-olivia-colman-1024x576.jpg",
-      "dates": [
-        "2026-11-01",
-        "2026-11-02",
-        "2026-11-03",
-        "2026-11-04",
-        "2026-11-05"
-      ],
-      "ranges": [],
-      "screenings": [
-        {
-          "date": "2026-11-01",
-          "time": "1:45pm",
-          "startsAt": "2026-11-01T20:45:00.000Z",
-          "url": "https://www.theroxytheater.org/show/wicker/",
-          "format": "Open captions"
-        },
-        {
-          "date": "2026-11-01",
-          "time": "5:45pm",
-          "startsAt": "2026-11-02T00:45:00.000Z",
-          "url": "https://www.theroxytheater.org/show/wicker/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-02",
-          "time": "1:15pm",
-          "startsAt": "2026-11-02T20:15:00.000Z",
-          "url": "https://www.theroxytheater.org/show/wicker/",
-          "format": "Open captions"
-        },
-        {
-          "date": "2026-11-02",
-          "time": "3:30pm",
-          "startsAt": "2026-11-02T22:30:00.000Z",
-          "url": "https://www.theroxytheater.org/show/wicker/",
-          "format": "Open captions"
-        },
-        {
-          "date": "2026-11-02",
-          "time": "6:00pm",
-          "startsAt": "2026-11-03T01:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/wicker/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-02",
-          "time": "8:15pm",
-          "startsAt": "2026-11-03T03:15:00.000Z",
-          "url": "https://www.theroxytheater.org/show/wicker/",
-          "format": "Open captions"
-        },
-        {
-          "date": "2026-11-03",
-          "time": "6:00pm",
-          "startsAt": "2026-11-04T01:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/wicker/",
-          "format": "Open captions"
-        },
-        {
-          "date": "2026-11-03",
-          "time": "8:15pm",
-          "startsAt": "2026-11-04T03:15:00.000Z",
-          "url": "https://www.theroxytheater.org/show/wicker/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-04",
-          "time": "4:45pm",
-          "startsAt": "2026-11-04T23:45:00.000Z",
-          "url": "https://www.theroxytheater.org/show/wicker/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-05",
-          "time": "7:45pm",
-          "startsAt": "2026-11-06T02:45:00.000Z",
-          "url": "https://www.theroxytheater.org/show/wicker/",
-          "format": ""
-        }
-      ],
-      "start": "2026-11-01",
-      "end": "2026-11-05",
-      "dateLabel": "5 listed days"
-    },
-    {
-      "id": "roxy:/show/a-super-secret-free-screening/",
-      "title": "A Super Secret Screening",
-      "venueId": "roxy",
-      "venue": "Roxy Theater",
-      "location": "Missoula",
-      "source": "Roxy Theater official calendar",
-      "url": "https://www.theroxytheater.org/show/a-super-secret-free-screening/",
-      "poster": "https://www.theroxytheater.org/wp-content/uploads/2023/09/sss20no20pov-1024x576.png",
-      "dates": [
-        "2026-11-01"
-      ],
-      "ranges": [],
-      "screenings": [
-        {
-          "date": "2026-11-01",
-          "time": "3:00pm",
-          "startsAt": "2026-11-01T22:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/a-super-secret-free-screening/",
-          "format": ""
-        }
-      ],
-      "start": "2026-11-01",
-      "end": "2026-11-01",
-      "dateLabel": "1 listed days"
-    },
-    {
       "id": "roxy:/show/you-can-see-everything/",
       "title": "You Can See Everything",
       "venueId": "roxy",
@@ -129,7 +10,6 @@
       "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
       "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/holmes-1024x575.jpg",
       "dates": [
-        "2026-11-01",
         "2026-11-02",
         "2026-11-03",
         "2026-11-04",
@@ -137,13 +17,6 @@
       ],
       "ranges": [],
       "screenings": [
-        {
-          "date": "2026-11-01",
-          "time": "4:00pm",
-          "startsAt": "2026-11-01T23:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
-          "format": ""
-        },
         {
           "date": "2026-11-02",
           "time": "1:00pm",
@@ -208,9 +81,87 @@
           "format": ""
         }
       ],
-      "start": "2026-11-01",
+      "start": "2026-11-02",
       "end": "2026-11-05",
-      "dateLabel": "5 listed days"
+      "dateLabel": "4 listed days"
+    },
+    {
+      "id": "roxy:/show/wicker/",
+      "title": "Wicker",
+      "venueId": "roxy",
+      "venue": "Roxy Theater",
+      "location": "Missoula",
+      "source": "Roxy Theater official calendar",
+      "url": "https://www.theroxytheater.org/show/wicker/",
+      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/wicker-film-olivia-colman-1024x576.jpg",
+      "dates": [
+        "2026-11-02",
+        "2026-11-03",
+        "2026-11-04",
+        "2026-11-05"
+      ],
+      "ranges": [],
+      "screenings": [
+        {
+          "date": "2026-11-02",
+          "time": "1:15pm",
+          "startsAt": "2026-11-02T20:15:00.000Z",
+          "url": "https://www.theroxytheater.org/show/wicker/",
+          "format": "Open captions"
+        },
+        {
+          "date": "2026-11-02",
+          "time": "3:30pm",
+          "startsAt": "2026-11-02T22:30:00.000Z",
+          "url": "https://www.theroxytheater.org/show/wicker/",
+          "format": "Open captions"
+        },
+        {
+          "date": "2026-11-02",
+          "time": "6:00pm",
+          "startsAt": "2026-11-03T01:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/wicker/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-02",
+          "time": "8:15pm",
+          "startsAt": "2026-11-03T03:15:00.000Z",
+          "url": "https://www.theroxytheater.org/show/wicker/",
+          "format": "Open captions"
+        },
+        {
+          "date": "2026-11-03",
+          "time": "6:00pm",
+          "startsAt": "2026-11-04T01:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/wicker/",
+          "format": "Open captions"
+        },
+        {
+          "date": "2026-11-03",
+          "time": "8:15pm",
+          "startsAt": "2026-11-04T03:15:00.000Z",
+          "url": "https://www.theroxytheater.org/show/wicker/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-04",
+          "time": "4:45pm",
+          "startsAt": "2026-11-04T23:45:00.000Z",
+          "url": "https://www.theroxytheater.org/show/wicker/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-05",
+          "time": "7:45pm",
+          "startsAt": "2026-11-06T02:45:00.000Z",
+          "url": "https://www.theroxytheater.org/show/wicker/",
+          "format": ""
+        }
+      ],
+      "start": "2026-11-02",
+      "end": "2026-11-05",
+      "dateLabel": "4 listed days"
     },
     {
       "id": "roxy:/show/wildwood/",
@@ -222,7 +173,6 @@
       "url": "https://www.theroxytheater.org/show/wildwood/",
       "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/wild20wild20wood-1024x576.jpg",
       "dates": [
-        "2026-11-01",
         "2026-11-02",
         "2026-11-03",
         "2026-11-04",
@@ -230,13 +180,6 @@
       ],
       "ranges": [],
       "screenings": [
-        {
-          "date": "2026-11-01",
-          "time": "5:00pm",
-          "startsAt": "2026-11-02T00:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/wildwood/",
-          "format": ""
-        },
         {
           "date": "2026-11-02",
           "time": "2:15pm",
@@ -280,35 +223,9 @@
           "format": ""
         }
       ],
-      "start": "2026-11-01",
+      "start": "2026-11-02",
       "end": "2026-11-05",
-      "dateLabel": "5 listed days"
-    },
-    {
-      "id": "roxy:/show/twin-peaks-episodes-19-20-21/",
-      "title": "Twin Peaks – Episodes 19, 20, & 21",
-      "venueId": "roxy",
-      "venue": "Roxy Theater",
-      "location": "Missoula",
-      "source": "Roxy Theater official calendar",
-      "url": "https://www.theroxytheater.org/show/twin-peaks-episodes-19-20-21/",
-      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/09/owl-1024x576.jpg",
-      "dates": [
-        "2026-11-01"
-      ],
-      "ranges": [],
-      "screenings": [
-        {
-          "date": "2026-11-01",
-          "time": "5:15pm",
-          "startsAt": "2026-11-02T00:15:00.000Z",
-          "url": "https://www.theroxytheater.org/show/twin-peaks-episodes-19-20-21/",
-          "format": "Annex"
-        }
-      ],
-      "start": "2026-11-01",
-      "end": "2026-11-01",
-      "dateLabel": "1 listed days"
+      "dateLabel": "4 listed days"
     },
     {
       "id": "roxy:/show/roxy-film-academy-film-noir/",
@@ -355,7 +272,7 @@
           "time": "5:30pm",
           "startsAt": "2026-11-04T00:30:00.000Z",
           "url": "https://www.theroxytheater.org/show/revival-comedy-workshop/",
-          "format": "Annex"
+          "format": ""
         }
       ],
       "start": "2026-11-03",
@@ -2057,7 +1974,7 @@
       "dateLabel": "1 listed days"
     }
   ],
-  "checkedAt": 1793600924711,
+  "checkedAt": 1793648244039,
   "stale": false,
   "sourceURL": "https://www.theroxytheater.org/showtimes/"
 }
