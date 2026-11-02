@@ -33,13 +33,6 @@
           "format": ""
         },
         {
-          "date": "2026-11-01",
-          "time": "8:00pm",
-          "startsAt": "2026-11-02T03:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/wicker/",
-          "format": ""
-        },
-        {
           "date": "2026-11-02",
           "time": "1:15pm",
           "startsAt": "2026-11-02T20:15:00.000Z",
@@ -152,13 +145,6 @@
           "format": ""
         },
         {
-          "date": "2026-11-01",
-          "time": "7:30pm",
-          "startsAt": "2026-11-02T02:30:00.000Z",
-          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
-          "format": ""
-        },
-        {
           "date": "2026-11-02",
           "time": "1:00pm",
           "startsAt": "2026-11-02T20:00:00.000Z",
@@ -252,13 +238,6 @@
           "format": ""
         },
         {
-          "date": "2026-11-01",
-          "time": "7:45pm",
-          "startsAt": "2026-11-02T02:45:00.000Z",
-          "url": "https://www.theroxytheater.org/show/wildwood/",
-          "format": ""
-        },
-        {
           "date": "2026-11-02",
           "time": "2:15pm",
           "startsAt": "2026-11-02T21:15:00.000Z",
@@ -323,13 +302,6 @@
           "date": "2026-11-01",
           "time": "5:15pm",
           "startsAt": "2026-11-02T00:15:00.000Z",
-          "url": "https://www.theroxytheater.org/show/twin-peaks-episodes-19-20-21/",
-          "format": "Annex"
-        },
-        {
-          "date": "2026-11-01",
-          "time": "8:00pm",
-          "startsAt": "2026-11-02T03:00:00.000Z",
           "url": "https://www.theroxytheater.org/show/twin-peaks-episodes-19-20-21/",
           "format": "Annex"
         }
@@ -2085,7 +2057,7 @@
       "dateLabel": "1 listed days"
     }
   ],
-  "checkedAt": 1793571161848,
+  "checkedAt": 1793600924711,
   "stale": false,
   "sourceURL": "https://www.theroxytheater.org/showtimes/"
 }
