@@ -10,19 +10,11 @@
       "url": "https://www.theroxytheater.org/show/wildwood/",
       "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/wild20wild20wood-1024x576.jpg",
       "dates": [
-        "2026-11-03",
         "2026-11-04",
         "2026-11-05"
       ],
       "ranges": [],
       "screenings": [
-        {
-          "date": "2026-11-03",
-          "time": "4:15pm",
-          "startsAt": "2026-11-03T23:15:00.000Z",
-          "url": "https://www.theroxytheater.org/show/wildwood/",
-          "format": "Open captions"
-        },
         {
           "date": "2026-11-04",
           "time": "4:00pm",
@@ -38,9 +30,43 @@
           "format": ""
         }
       ],
-      "start": "2026-11-03",
+      "start": "2026-11-04",
       "end": "2026-11-05",
-      "dateLabel": "3 listed days"
+      "dateLabel": "2 listed days"
+    },
+    {
+      "id": "roxy:/show/wicker/",
+      "title": "Wicker",
+      "venueId": "roxy",
+      "venue": "Roxy Theater",
+      "location": "Missoula",
+      "source": "Roxy Theater official calendar",
+      "url": "https://www.theroxytheater.org/show/wicker/",
+      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/wicker-film-olivia-colman-1024x576.jpg",
+      "dates": [
+        "2026-11-04",
+        "2026-11-05"
+      ],
+      "ranges": [],
+      "screenings": [
+        {
+          "date": "2026-11-04",
+          "time": "4:45pm",
+          "startsAt": "2026-11-04T23:45:00.000Z",
+          "url": "https://www.theroxytheater.org/show/wicker/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-05",
+          "time": "7:45pm",
+          "startsAt": "2026-11-06T02:45:00.000Z",
+          "url": "https://www.theroxytheater.org/show/wicker/",
+          "format": ""
+        }
+      ],
+      "start": "2026-11-04",
+      "end": "2026-11-05",
+      "dateLabel": "2 listed days"
     },
     {
       "id": "roxy:/show/you-can-see-everything/",
@@ -52,7 +78,6 @@
       "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
       "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/holmes-1024x575.jpg",
       "dates": [
-        "2026-11-03",
         "2026-11-04",
         "2026-11-05",
         "2026-11-06",
@@ -65,20 +90,6 @@
       ],
       "ranges": [],
       "screenings": [
-        {
-          "date": "2026-11-03",
-          "time": "4:30pm",
-          "startsAt": "2026-11-03T23:30:00.000Z",
-          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
-          "format": "Open captions"
-        },
-        {
-          "date": "2026-11-03",
-          "time": "8:00pm",
-          "startsAt": "2026-11-04T03:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
-          "format": ""
-        },
         {
           "date": "2026-11-04",
           "time": "5:00pm",
@@ -213,110 +224,9 @@
           "format": ""
         }
       ],
-      "start": "2026-11-03",
+      "start": "2026-11-04",
       "end": "2026-11-12",
-      "dateLabel": "10 listed days"
-    },
-    {
-      "id": "roxy:/show/revival-comedy-workshop/",
-      "title": "Revival Comedy Workshop",
-      "venueId": "roxy",
-      "venue": "Roxy Theater",
-      "location": "Missoula",
-      "source": "Roxy Theater official calendar",
-      "url": "https://www.theroxytheater.org/show/revival-comedy-workshop/",
-      "poster": "https://www.theroxytheater.org/wp-content/uploads/2022/01/revival20comedy20workshop.jpg",
-      "dates": [
-        "2026-11-03"
-      ],
-      "ranges": [],
-      "screenings": [
-        {
-          "date": "2026-11-03",
-          "time": "5:30pm",
-          "startsAt": "2026-11-04T00:30:00.000Z",
-          "url": "https://www.theroxytheater.org/show/revival-comedy-workshop/",
-          "format": ""
-        }
-      ],
-      "start": "2026-11-03",
-      "end": "2026-11-03",
-      "dateLabel": "1 listed days"
-    },
-    {
-      "id": "roxy:/show/wicker/",
-      "title": "Wicker",
-      "venueId": "roxy",
-      "venue": "Roxy Theater",
-      "location": "Missoula",
-      "source": "Roxy Theater official calendar",
-      "url": "https://www.theroxytheater.org/show/wicker/",
-      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/wicker-film-olivia-colman-1024x576.jpg",
-      "dates": [
-        "2026-11-03",
-        "2026-11-04",
-        "2026-11-05"
-      ],
-      "ranges": [],
-      "screenings": [
-        {
-          "date": "2026-11-03",
-          "time": "6:00pm",
-          "startsAt": "2026-11-04T01:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/wicker/",
-          "format": "Open captions"
-        },
-        {
-          "date": "2026-11-03",
-          "time": "8:15pm",
-          "startsAt": "2026-11-04T03:15:00.000Z",
-          "url": "https://www.theroxytheater.org/show/wicker/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-04",
-          "time": "4:45pm",
-          "startsAt": "2026-11-04T23:45:00.000Z",
-          "url": "https://www.theroxytheater.org/show/wicker/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-05",
-          "time": "7:45pm",
-          "startsAt": "2026-11-06T02:45:00.000Z",
-          "url": "https://www.theroxytheater.org/show/wicker/",
-          "format": ""
-        }
-      ],
-      "start": "2026-11-03",
-      "end": "2026-11-05",
-      "dateLabel": "3 listed days"
-    },
-    {
-      "id": "roxy:/show/revival-comedy-open-mic/",
-      "title": "Revival Comedy Open Mic",
-      "venueId": "roxy",
-      "venue": "Roxy Theater",
-      "location": "Missoula",
-      "source": "Roxy Theater official calendar",
-      "url": "https://www.theroxytheater.org/show/revival-comedy-open-mic/",
-      "poster": "https://www.theroxytheater.org/wp-content/uploads/2022/01/revival20comedy20open20mic.png",
-      "dates": [
-        "2026-11-03"
-      ],
-      "ranges": [],
-      "screenings": [
-        {
-          "date": "2026-11-03",
-          "time": "7:00pm",
-          "startsAt": "2026-11-04T02:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/revival-comedy-open-mic/",
-          "format": "Annex"
-        }
-      ],
-      "start": "2026-11-03",
-      "end": "2026-11-03",
-      "dateLabel": "1 listed days"
+      "dateLabel": "9 listed days"
     },
     {
       "id": "roxy:/show/fantastic-mr-fox/",
@@ -2176,7 +2086,8 @@
       "url": "https://www.theroxytheater.org/show/the-met-opera-live-la-fanciulla-del-west/",
       "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/07/fanciulla-1024x576.jpg",
       "dates": [
-        "2027-01-23"
+        "2027-01-23",
+        "2027-02-01"
       ],
       "ranges": [],
       "screenings": [
@@ -2186,11 +2097,18 @@
           "startsAt": "2027-01-23T18:00:00.000Z",
           "url": "https://www.theroxytheater.org/show/the-met-opera-live-la-fanciulla-del-west/",
           "format": ""
+        },
+        {
+          "date": "2027-02-01",
+          "time": "5:15pm",
+          "startsAt": "2027-02-02T00:15:00.000Z",
+          "url": "https://www.theroxytheater.org/show/the-met-opera-live-la-fanciulla-del-west/",
+          "format": "Annex"
         }
       ],
       "start": "2027-01-23",
-      "end": "2027-01-23",
-      "dateLabel": "1 listed days"
+      "end": "2027-02-01",
+      "dateLabel": "2 listed days"
     },
     {
       "id": "roxy:/show/arsenic-and-old-lace/",
@@ -2252,7 +2170,7 @@
       "dateLabel": "1 listed days"
     }
   ],
-  "checkedAt": 1793755791007,
+  "checkedAt": 1793790855519,
   "stale": false,
   "sourceURL": "https://www.theroxytheater.org/showtimes/"
 }
