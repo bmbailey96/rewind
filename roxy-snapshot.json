@@ -658,7 +658,7 @@
       "location": "Missoula",
       "source": "Roxy Theater official calendar",
       "url": "https://www.theroxytheater.org/show/burst-the-silence/",
-      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/08/bts20final20hi20res20300dpi20copy-1024x574.jpg",
+      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/08/burst-the-silence-1024x576.jpg",
       "dates": [
         "2026-11-08"
       ],
@@ -2170,7 +2170,7 @@
       "dateLabel": "1 listed days"
     }
   ],
-  "checkedAt": 1793790855519,
+  "checkedAt": 1793822072414,
   "stale": false,
   "sourceURL": "https://www.theroxytheater.org/showtimes/"
 }
