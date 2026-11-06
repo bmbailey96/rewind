@@ -1,32 +1,6 @@
 {
   "items": [
     {
-      "id": "roxy:/show/wildwood/",
-      "title": "Wildwood",
-      "venueId": "roxy",
-      "venue": "Roxy Theater",
-      "location": "Missoula",
-      "source": "Roxy Theater official calendar",
-      "url": "https://www.theroxytheater.org/show/wildwood/",
-      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/wild20wild20wood-1024x576.jpg",
-      "dates": [
-        "2026-11-05"
-      ],
-      "ranges": [],
-      "screenings": [
-        {
-          "date": "2026-11-05",
-          "time": "4:00pm",
-          "startsAt": "2026-11-05T23:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/wildwood/",
-          "format": ""
-        }
-      ],
-      "start": "2026-11-05",
-      "end": "2026-11-05",
-      "dateLabel": "1 listed days"
-    },
-    {
       "id": "roxy:/show/you-can-see-everything/",
       "title": "You Can See Everything",
       "venueId": "roxy",
@@ -36,7 +10,6 @@
       "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
       "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/holmes-1024x575.jpg",
       "dates": [
-        "2026-11-05",
         "2026-11-06",
         "2026-11-07",
         "2026-11-08",
@@ -47,20 +20,6 @@
       ],
       "ranges": [],
       "screenings": [
-        {
-          "date": "2026-11-05",
-          "time": "4:30pm",
-          "startsAt": "2026-11-05T23:30:00.000Z",
-          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-05",
-          "time": "8:00pm",
-          "startsAt": "2026-11-06T03:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
-          "format": ""
-        },
         {
           "date": "2026-11-06",
           "time": "1:00pm",
@@ -167,87 +126,9 @@
           "format": ""
         }
       ],
-      "start": "2026-11-05",
+      "start": "2026-11-06",
       "end": "2026-11-12",
-      "dateLabel": "8 listed days"
-    },
-    {
-      "id": "roxy:/show/the-airwaves-belonged-to-the-people-wbcn-and-the-american-revolution/",
-      "title": "The Airwaves Belonged to the People: WBCN and the American Revolution",
-      "venueId": "roxy",
-      "venue": "Roxy Theater",
-      "location": "Missoula",
-      "source": "Roxy Theater official calendar",
-      "url": "https://www.theroxytheater.org/show/the-airwaves-belonged-to-the-people-wbcn-and-the-american-revolution/",
-      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/wbcn-1024x576.jpg",
-      "dates": [
-        "2026-11-05"
-      ],
-      "ranges": [],
-      "screenings": [
-        {
-          "date": "2026-11-05",
-          "time": "5:15pm",
-          "startsAt": "2026-11-06T00:15:00.000Z",
-          "url": "https://www.theroxytheater.org/show/the-airwaves-belonged-to-the-people-wbcn-and-the-american-revolution/",
-          "format": ""
-        }
-      ],
-      "start": "2026-11-05",
-      "end": "2026-11-05",
-      "dateLabel": "1 listed days"
-    },
-    {
-      "id": "roxy:/show/girl-winter-film-tour-2/",
-      "title": "Girl Winter Film Tour",
-      "venueId": "roxy",
-      "venue": "Roxy Theater",
-      "location": "Missoula",
-      "source": "Roxy Theater official calendar",
-      "url": "https://www.theroxytheater.org/show/girl-winter-film-tour-2/",
-      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/08/gwft20banner2016x920horizontal-1024x575.jpg",
-      "dates": [
-        "2026-11-05"
-      ],
-      "ranges": [],
-      "screenings": [
-        {
-          "date": "2026-11-05",
-          "time": "7:30pm",
-          "startsAt": "2026-11-06T02:30:00.000Z",
-          "url": "https://www.theroxytheater.org/show/girl-winter-film-tour-2/",
-          "format": ""
-        }
-      ],
-      "start": "2026-11-05",
-      "end": "2026-11-05",
-      "dateLabel": "1 listed days"
-    },
-    {
-      "id": "roxy:/show/wicker/",
-      "title": "Wicker",
-      "venueId": "roxy",
-      "venue": "Roxy Theater",
-      "location": "Missoula",
-      "source": "Roxy Theater official calendar",
-      "url": "https://www.theroxytheater.org/show/wicker/",
-      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/wicker-film-olivia-colman-1024x576.jpg",
-      "dates": [
-        "2026-11-05"
-      ],
-      "ranges": [],
-      "screenings": [
-        {
-          "date": "2026-11-05",
-          "time": "7:45pm",
-          "startsAt": "2026-11-06T02:45:00.000Z",
-          "url": "https://www.theroxytheater.org/show/wicker/",
-          "format": ""
-        }
-      ],
-      "start": "2026-11-05",
-      "end": "2026-11-05",
-      "dateLabel": "1 listed days"
+      "dateLabel": "7 listed days"
     },
     {
       "id": "roxy:/show/la-bola-negra/",
@@ -2105,7 +1986,7 @@
       "dateLabel": "1 listed days"
     }
   ],
-  "checkedAt": 1793929192971,
+  "checkedAt": 1793963518530,
   "stale": false,
   "sourceURL": "https://www.theroxytheater.org/showtimes/"
 }
