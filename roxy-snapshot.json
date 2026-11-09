@@ -63,7 +63,11 @@
         "2026-11-09",
         "2026-11-10",
         "2026-11-11",
-        "2026-11-12"
+        "2026-11-12",
+        "2026-11-13",
+        "2026-11-14",
+        "2026-11-15",
+        "2026-11-16"
       ],
       "ranges": [],
       "screenings": [
@@ -115,11 +119,53 @@
           "startsAt": "2026-11-13T02:45:00.000Z",
           "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
           "format": ""
+        },
+        {
+          "date": "2026-11-13",
+          "time": "1:00pm",
+          "startsAt": "2026-11-13T20:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-13",
+          "time": "4:30pm",
+          "startsAt": "2026-11-13T23:30:00.000Z",
+          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-14",
+          "time": "4:30pm",
+          "startsAt": "2026-11-14T23:30:00.000Z",
+          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-14",
+          "time": "8:00pm",
+          "startsAt": "2026-11-15T03:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-15",
+          "time": "7:00pm",
+          "startsAt": "2026-11-16T02:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-16",
+          "time": "4:00pm",
+          "startsAt": "2026-11-16T23:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
+          "format": ""
         }
       ],
       "start": "2026-11-09",
-      "end": "2026-11-12",
-      "dateLabel": "4 listed days"
+      "end": "2026-11-16",
+      "dateLabel": "8 listed days"
     },
     {
       "id": "roxy:/show/wild-horse-nine/",
@@ -134,7 +180,10 @@
         "2026-11-09",
         "2026-11-10",
         "2026-11-11",
-        "2026-11-12"
+        "2026-11-12",
+        "2026-11-13",
+        "2026-11-14",
+        "2026-11-15"
       ],
       "ranges": [],
       "screenings": [
@@ -193,11 +242,74 @@
           "startsAt": "2026-11-13T03:15:00.000Z",
           "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
           "format": ""
+        },
+        {
+          "date": "2026-11-13",
+          "time": "3:00pm",
+          "startsAt": "2026-11-13T22:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-13",
+          "time": "5:30pm",
+          "startsAt": "2026-11-14T00:30:00.000Z",
+          "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-13",
+          "time": "8:15pm",
+          "startsAt": "2026-11-14T03:15:00.000Z",
+          "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-14",
+          "time": "3:00pm",
+          "startsAt": "2026-11-14T22:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-14",
+          "time": "5:30pm",
+          "startsAt": "2026-11-15T00:30:00.000Z",
+          "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-14",
+          "time": "8:15pm",
+          "startsAt": "2026-11-15T03:15:00.000Z",
+          "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-15",
+          "time": "2:45pm",
+          "startsAt": "2026-11-15T21:45:00.000Z",
+          "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-15",
+          "time": "5:30pm",
+          "startsAt": "2026-11-16T00:30:00.000Z",
+          "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-15",
+          "time": "8:15pm",
+          "startsAt": "2026-11-16T03:15:00.000Z",
+          "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
+          "format": ""
         }
       ],
       "start": "2026-11-09",
-      "end": "2026-11-12",
-      "dateLabel": "4 listed days"
+      "end": "2026-11-15",
+      "dateLabel": "7 listed days"
     },
     {
       "id": "roxy:/show/naza/",
@@ -316,6 +428,90 @@
       "start": "2026-11-12",
       "end": "2026-11-12",
       "dateLabel": "1 listed days"
+    },
+    {
+      "id": "roxy:/show/godzilla-minus-zero/",
+      "title": "Godzilla Minus Zero",
+      "venueId": "roxy",
+      "venue": "Roxy Theater",
+      "location": "Missoula",
+      "source": "Roxy Theater official calendar",
+      "url": "https://www.theroxytheater.org/show/godzilla-minus-zero/",
+      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/11/gmz-1024x576.jpeg",
+      "dates": [
+        "2026-11-13",
+        "2026-11-14",
+        "2026-11-15"
+      ],
+      "ranges": [],
+      "screenings": [
+        {
+          "date": "2026-11-13",
+          "time": "2:15pm",
+          "startsAt": "2026-11-13T21:15:00.000Z",
+          "url": "https://www.theroxytheater.org/show/godzilla-minus-zero/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-13",
+          "time": "5:00pm",
+          "startsAt": "2026-11-14T00:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/godzilla-minus-zero/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-13",
+          "time": "7:45pm",
+          "startsAt": "2026-11-14T02:45:00.000Z",
+          "url": "https://www.theroxytheater.org/show/godzilla-minus-zero/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-14",
+          "time": "1:30pm",
+          "startsAt": "2026-11-14T20:30:00.000Z",
+          "url": "https://www.theroxytheater.org/show/godzilla-minus-zero/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-14",
+          "time": "4:15pm",
+          "startsAt": "2026-11-14T23:15:00.000Z",
+          "url": "https://www.theroxytheater.org/show/godzilla-minus-zero/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-14",
+          "time": "9:00pm",
+          "startsAt": "2026-11-15T04:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/godzilla-minus-zero/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-15",
+          "time": "2:30pm",
+          "startsAt": "2026-11-15T21:30:00.000Z",
+          "url": "https://www.theroxytheater.org/show/godzilla-minus-zero/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-15",
+          "time": "5:15pm",
+          "startsAt": "2026-11-16T00:15:00.000Z",
+          "url": "https://www.theroxytheater.org/show/godzilla-minus-zero/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-15",
+          "time": "8:00pm",
+          "startsAt": "2026-11-16T03:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/godzilla-minus-zero/",
+          "format": ""
+        }
+      ],
+      "start": "2026-11-13",
+      "end": "2026-11-15",
+      "dateLabel": "3 listed days"
     },
     {
       "id": "roxy:/show/twin-peaks-episodes-25-26-27/",
@@ -575,7 +771,7 @@
     },
     {
       "id": "roxy:/show/missoulas-homegrown-comedy/",
-      "title": "Missoula’s HomeGrown Comedy",
+      "title": "Missoula’s HomeGrown Comedy – Food Bank Fundraiser!",
       "venueId": "roxy",
       "venue": "Roxy Theater",
       "location": "Missoula",
@@ -1686,7 +1882,7 @@
       "dateLabel": "1 listed days"
     }
   ],
-  "checkedAt": 1794225072958,
+  "checkedAt": 1794263507638,
   "stale": false,
   "sourceURL": "https://www.theroxytheater.org/showtimes/"
 }
