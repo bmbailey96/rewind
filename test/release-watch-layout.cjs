@@ -63,7 +63,7 @@ queue[12]=fresh;
 assert.deepEqual(W.refreshCandidates(queue,attempted,12,now).map(m=>m.id),[14,15,16,17,18,19,20,21,22,23,24,25],'Successfully checked titles are skipped until their check expires');
 assert.equal(W.refreshCandidates(queue,new Set(queue.map(m=>m.id)),6,now).length,0,'A session must stop once every title has been attempted');
 
-assert.equal(W.refreshCandidates([fresh],new Set(),6,now+7*3600000)[0].id,13,'Expired snapshots become eligible on later visits');
+assert.equal(W.refreshCandidates([fresh],new Set(),6,now+8*86400000)[0].id,13,'Expired backlog snapshots become eligible on later visits');
 console.log('Availability scan: bounded batches advance through all saved titles, preserve fresh results, and retry expired evidence');
 
 const mixedShelf=[...crowded,{...row(6000,[rent(4.99)]),entry:{id:'tv:fixture',title:'Z Series',mediaType:'tv'}}];assert.ok(W.releaseWatchPage(mixedShelf,{...options,browse:{section:'cheap',sort:'default'},limit:150}).rows.some(r=>r.entry.mediaType==='tv'),'A saved TV series stays accessible in the full section without displacing stronger homepage recommendations');
@@ -111,3 +111,5 @@ assert.equal(R.physicalPurchase({kind:'buy',provider:'Barnes & Noble',link:'http
 assert.equal(R.cost([{kind:'rent',provider:'Google Play',price:null}, {kind:'buy',provider:'Apple TV',price:4.99,format:'HD'}]).price,4.99);
 assert.equal(W.releaseWatchPage(crowded,{...options,browse:{section:'all'},limit:24}).total,110);
 assert.equal(W.releaseWatchPage(crowded,{...options,browse:{section:'all'},limit:24}).rows.length,24);
+
+assert.equal(W.refreshCandidates([{...fresh,followRelease:true}],new Set(),6,now+25*3600000)[0].id,13,'Followed films refresh after one day');
