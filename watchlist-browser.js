@@ -4,12 +4,13 @@ window.WatchlistBrowser=(()=>{
  const ids={included:'rw-arrived',cheap:'rw-available',premium:'rw-coming',theater:'rw-theater',upcoming:'rw-upcoming',waiting:'rw-waiting',unchecked:'rw-unchecked',development:'rw-development'};
  const sortForGlobal=value=>({cost:'default',price:'price',added:'added',release:'release',az:'az',changed:'changed'})[value]||'default';
  const setSort=value=>{sort=sortForGlobal(value);};
+ const all=document.createElement('button');all.type='button';all.className='secondary';all.textContent='Browse all saved titles';document.querySelector('#tab-watchlist .watchlist-navigation').append(all);all.onclick=()=>{returnY=window.scrollY;returnSection=null;section='all';watchlistLimit=WATCHLIST_PAGE_SIZE;repaintWatchlist();};
  const toolbar=document.createElement('div');toolbar.className='watchlist-section-tools';toolbar.hidden=true;
  const back=document.createElement('button');back.textContent='← Back to Watchlist';back.className='secondary';
  const empty=document.createElement('p');empty.className='offer-note';empty.textContent='No matching titles in this section. Try changing the filter or search.';empty.hidden=true;toolbar.append(back,empty);
  document.getElementById('rw-arrived-section').before(toolbar);
  const move=fn=>(window.requestAnimationFrame||window.setTimeout)(()=>{fn();});
- back.onclick=()=>{const focus=returnSection;section=null;watchlistLimit=WATCHLIST_PAGE_SIZE;repaintWatchlist();move(()=>{window.scrollTo?.(0,returnY);document.querySelector('#'+focus+'-section .section-show-all')?.focus({preventScroll:true});});};
+ back.onclick=()=>{const focus=returnSection;section=null;watchlistLimit=WATCHLIST_PAGE_SIZE;repaintWatchlist();move(()=>{window.scrollTo?.(0,returnY);if(focus)document.querySelector('#'+focus+'-section .section-show-all')?.focus({preventScroll:true});else all.focus({preventScroll:true});});};
  function decorate(page){
   // Move the SAME sort field beside Back when browsing a focused section.
   // No duplicate selectors, and its existing change handler stays attached.
@@ -22,6 +23,7 @@ window.WatchlistBrowser=(()=>{
     if(availability)availability.after(sortField);else primary.append(sortField);
    }
   }
+  all.hidden=!!section||document.getElementById('tab-watchlist').dataset.collection==='physical';
   empty.hidden=!section||page.rows.length>0;
   toolbar.hidden=!section||document.getElementById('tab-watchlist').dataset.collection==='physical';
   for(const [group,id] of Object.entries(ids)){
