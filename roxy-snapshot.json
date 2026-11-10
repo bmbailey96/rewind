@@ -1903,6 +1903,13 @@
       "screenings": [
         {
           "date": "2027-01-24",
+          "time": "3:30pm",
+          "startsAt": "2027-01-24T22:30:00.000Z",
+          "url": "https://www.theroxytheater.org/show/arsenic-and-old-lace/",
+          "format": ""
+        },
+        {
+          "date": "2027-01-24",
           "time": "5:30pm",
           "startsAt": "2027-01-25T00:30:00.000Z",
           "url": "https://www.theroxytheater.org/show/arsenic-and-old-lace/",
@@ -1940,7 +1947,7 @@
       "dateLabel": "1 listed days"
     }
   ],
-  "checkedAt": 1794295846513,
+  "checkedAt": 1794330605933,
   "stale": false,
   "sourceURL": "https://www.theroxytheater.org/showtimes/"
 }
