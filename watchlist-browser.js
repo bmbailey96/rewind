@@ -1,7 +1,7 @@
 /* Section browsing changes the view, never the saved collection. */
 window.WatchlistBrowser=(()=>{
  let section=null,sort='default',returnY=0,returnSection=null;
- const ids={included:'rw-arrived',cheap:'rw-available',premium:'rw-coming',theater:'rw-theater',upcoming:'rw-upcoming',waiting:'rw-waiting',unchecked:'rw-unchecked',development:'rw-development'};
+ const ids={included:'rw-arrived',cheap:'rw-available',premium:'rw-coming',physicalpurchase:'rw-physicalbuy',theater:'rw-theater',upcoming:'rw-upcoming',waiting:'rw-waiting',unchecked:'rw-unchecked',development:'rw-development'};
  const sortForGlobal=value=>({cost:'default',price:'price',added:'added',release:'release',az:'az',changed:'changed'})[value]||'default';
  const setSort=value=>{sort=sortForGlobal(value);};
  const all=document.createElement('button');all.type='button';all.className='secondary';all.textContent='Browse all saved titles';document.querySelector('#tab-watchlist .watchlist-navigation').append(all);all.onclick=()=>{returnY=window.scrollY;returnSection=null;section='all';watchlistLimit=WATCHLIST_PAGE_SIZE;repaintWatchlist();};
