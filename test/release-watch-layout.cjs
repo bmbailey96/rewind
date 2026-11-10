@@ -106,3 +106,8 @@ assert.equal(W.savedIdentity({id:14,title:'Tremors',release_date:''},[],imported
 assert.equal(W.savedIdentity({id:14,title:'Tremors',release_date:'1990-01-01'},[{id:22,title:'Tremors',release_date:'1990-01-01'}],[]),null,'Two verified but different film IDs must not be conflated even when title and year match');
 assert.equal(W.savedIdentity({id:14,title:'Amélie',release_date:'2001-01-01'},[],[{title:'Amelie',year:'2001'}]).state,'pending','Unicode title normalization keeps imported identity');
 console.log('Discover watchlist identity: pending Letterboxd exports, year-sensitive remakes and saved ID mismatches passed');
+
+assert.equal(R.physicalPurchase({kind:'buy',provider:'Barnes & Noble',link:'https://www.barnesandnoble.com/w/dvd-naked-lunch/123'}),true);
+assert.equal(R.cost([{kind:'rent',provider:'Google Play',price:null}, {kind:'buy',provider:'Apple TV',price:4.99,format:'HD'}]).price,4.99);
+assert.equal(W.releaseWatchPage(crowded,{...options,browse:{section:'all'},limit:24}).total,110);
+assert.equal(W.releaseWatchPage(crowded,{...options,browse:{section:'all'},limit:24}).rows.length,24);
