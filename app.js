@@ -967,7 +967,7 @@ function watchedForRecent(movie){
 }
 function searchSavedTitles(){watchlistLimit=WATCHLIST_PAGE_SIZE;return renderWatchlist(false,true);}
 function savedSearchMatches(m){const q=document.getElementById('watchlist-search')?.value.trim().toLocaleLowerCase()||'';return !q||[m.title,m.original_title,m.sourceTitle].filter(Boolean).some(t=>t.toLocaleLowerCase().includes(q));}
-function scopedWatchlist(){return (watchlistScope==='all'?watchlist:watchlist.filter(m=>!watchedForRecent(m))).filter(savedSearchMatches);}
+function scopedWatchlist(){return ((watchlistScope==='all'||window.WatchlistBrowser?.options().section==='all')?watchlist:watchlist.filter(m=>!watchedForRecent(m))).filter(savedSearchMatches);}
 window.addEventListener('rewind:seen-updated',()=>{if(watchlistScope==='release')renderWatchlist(false,true);});
 function renderReleaseRecovery(){
  const box=document.getElementById('rw-recovery'),list=document.getElementById('rw-recovery-list');
@@ -994,13 +994,14 @@ function renderReleaseRecovery(){
 document.getElementById('rw-recovery-all').onclick=()=>{document.getElementById('film-drawer')?.close();watchlistLimit+=WATCHLIST_PAGE_SIZE;renderWatchlist();};
 function renderImportReview(){
  const box=document.getElementById('watchlist-import-review');if(!box)return;
- const wasOpen=!!box.querySelector('details[open]'),rows=hubState.watchlistUnmatched||[],counts=WatchlistModel.matchSummary(rows);box.replaceChildren();if(!rows.length)return;
+ const wasOpen=!!box.querySelector('details.import-review[open]'),pendingOpen=!!box.querySelector('details.import-pending[open]'),rows=hubState.watchlistUnmatched||[],counts=WatchlistModel.matchSummary(rows);box.replaceChildren();if(!rows.length)return;
  const status=document.createElement('p');status.className='offer-note import-progress';status.setAttribute('role','status');
  const parts=[];if(counts.pending)parts.push(counts.pending+' waiting to be identified');if(counts.retry)parts.push(counts.retry+' will retry');if(counts.review)parts.push(counts.review+' need review');if(counts.unsupported)parts.push(counts.unsupported+' series retained (film-only checker)');
- status.textContent=(watchlistMatching?'Importing in background: ':'Film import: ')+parts.join(' · ')+'. Streaming availability is checked after identification.';box.append(status);
+ status.textContent=(watchlistMatching?'Identifying saved titles: ':'Saved import: ')+parts.join(' · ')+'. '+(catalogLoadError?'Verified catalog unavailable; retries will continue. ':'')+'All imported titles are retained; streaming checks are separate.';box.append(status);
+ const pending=rows.filter(r=>!['review','unsupported'].includes(r.catalogMatch?.state)&&savedSearchMatches(r));if(pending.length){const disclosure=document.createElement('details');disclosure.className='import-pending';const summary=document.createElement('summary');summary.textContent='Browse '+pending.length+' saved titles awaiting identification';disclosure.append(summary);const list=document.createElement('div');disclosure.append(list);const draw=()=>{if(!disclosure.open||list.childElementCount)return;for(const row of pending){const p=document.createElement('p');const url=HubModel.safeLink(row.letterboxdURL);if(url){const link=document.createElement('a');link.href=url;link.target='_blank';link.rel='noopener';link.textContent=row.title+' ('+row.year+')';p.append(link);}else p.textContent=row.title+' ('+row.year+')';list.append(p);}};disclosure.open=pendingOpen;disclosure.ontoggle=draw;draw();box.append(disclosure);}
  if(counts.retry&&!watchlistMatching){const retry=document.createElement('button');retry.type='button';retry.className='text-action';retry.textContent='Retry failed lookups';retry.onclick=()=>{for(const row of rows)if(row.catalogMatch?.state==='retry')row.catalogMatch.nextAttemptAt=0;hubState.watchlistMatchRetryAt=0;persistHubState();scheduleWatchlistMatching(0);};box.append(retry);}
  if(!counts.review&&!counts.unsupported)return;
- const details=document.createElement('details'),summary=document.createElement('summary');details.open=wasOpen;summary.textContent=counts.review?'Review '+counts.review+(counts.review===1?' uncertain film':' uncertain films')+(counts.unsupported?' · '+counts.unsupported+' imported series':''):counts.unsupported+' imported series';details.append(summary);
+ const details=document.createElement('details'),summary=document.createElement('summary');details.className='import-review';details.open=wasOpen;summary.textContent=counts.review?'Review '+counts.review+(counts.review===1?' uncertain film':' uncertain films')+(counts.unsupported?' · '+counts.unsupported+' imported series':''):counts.unsupported+' imported series';details.append(summary);
  for(const row of rows.filter(r=>['review','unsupported'].includes(r.catalogMatch?.state))){
   const group=document.createElement('section');group.className='import-review-film';const title=document.createElement('p');title.textContent=row.title+' ('+row.year+')';const reason=document.createElement('p');reason.className='offer-note';reason.textContent=row.catalogMatch.reason;group.append(title,reason);
   if(row.catalogMatch.series?.id){const source=document.createElement('a');source.href='https://www.themoviedb.org/tv/'+row.catalogMatch.series.id;source.target='_blank';source.rel='noopener';source.textContent='View series record ↗';source.className='text-action';group.append(source);}
@@ -1446,9 +1447,9 @@ document.getElementById('prune-btn').addEventListener('click', () => {
   renderWatchlist();
 });
 
-let catalogMatchesPromise=null,verifiedCatalogMatches=[],verifiedCatalogReviews=[],watchlistMatchTimer=null;
+let catalogMatchesPromise=null,verifiedCatalogMatches=[],verifiedCatalogReviews=[],watchlistMatchTimer=null,catalogLoadError=false;
 async function loadCatalogMatches(){
- if(!catalogMatchesPromise)catalogMatchesPromise=fetch('catalog-matches.json',{cache:'no-cache'}).then(r=>r.ok?r.json():null).then(data=>{verifiedCatalogReviews=Array.isArray(data?.reviews)?data.reviews.map(r=>({...r,checkedAt:data.checkedAt})):[];verifiedCatalogMatches=Array.isArray(data?.matches)?data.matches.filter(m=>m.key&&m.film?.id):[];return verifiedCatalogMatches;}).catch(()=>[]);
+ if(!catalogMatchesPromise)catalogMatchesPromise=fetch('catalog-matches.json',{cache:'no-cache'}).then(r=>{if(!r.ok)throw Error('Catalog unavailable');return r.json();}).then(data=>{if(!Array.isArray(data?.matches))throw Error('Invalid catalog');catalogLoadError=false;verifiedCatalogReviews=Array.isArray(data?.reviews)?data.reviews.map(r=>({...r,checkedAt:data.checkedAt})):[];verifiedCatalogMatches=Array.isArray(data?.matches)?data.matches.filter(m=>m.key&&m.film?.id):[];return verifiedCatalogMatches;}).catch(()=>{catalogLoadError=true;catalogMatchesPromise=null;return [];});
  return catalogMatchesPromise;
 }
 function importVerifiedSeries(row){
@@ -1512,7 +1513,7 @@ function scheduleWatchlistMatching(delay=2500){
 }
 async function resolveWatchlistMatches({automatic=false}={}){
  if(watchlistMatching||!(hubState.watchlistUnmatched||[]).length)return;
- clearTimeout(watchlistMatchTimer);reconcileWatchlistMatches();
+ clearTimeout(watchlistMatchTimer);await loadCatalogMatches();reconcileWatchlistMatches();
  const pending=WatchlistModel.matchQueue(hubState.watchlistUnmatched).slice(0,8);if(!pending.length){renderImportReview();if(automatic)scheduleWatchlistMatching();return;}
  watchlistMatching=true;let checked=0,matched=0,failures=0;
  watchlistMatchProgress='Identifying films in the background';renderImportReview();
