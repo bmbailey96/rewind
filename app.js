@@ -1,5 +1,5 @@
 // ---------- letterboxd import ----------
-StorageModel.migrate(localStorage);
+try{if(localStorage.getItem('rewind-compact-v2')!=='1'){StorageModel.migrate(localStorage,false,true);localStorage.setItem('rewind-compact-v2','1');}}catch{}
 const failedStorageKeys=new Set();
 let cloudSavePhase='idle';
 function renderSaveState(){const el=document.getElementById('save-state');if(!el)return;let connected=false,dirty=false;try{connected=!!localStorage.getItem('rewind-gh-token');dirty=!!localStorage.getItem('rewind-sync-dirty-v1');}catch{}const failed=failedStorageKeys.size>0;el.dataset.tone=failed||cloudSavePhase==='error'?'error':'info';el.textContent=failed?(cloudSavePhase==='synced'?'Cloud saved · device save failed':'Device save failed'):!connected?'Saved on this device':cloudSavePhase==='error'?'Saved here · sync delayed':cloudSavePhase==='saving'||dirty?'Saved here · sync pending':cloudSavePhase==='synced'?'Synced across devices':'Saved here · sync not checked';if(failed){el.tabIndex=0;el.setAttribute('role','button');}else{el.removeAttribute('tabindex');el.removeAttribute('role');}el.title=failed?'Open Settings to download a backup.':connected?'Devices using the same GitHub connection share your films.':'Connect GitHub in Settings to share films with your phone.';}
@@ -848,7 +848,7 @@ function canAutoCheckAvailability(){
  return !document.hidden&&navigator.onLine!==false&&!navigator.connection?.saveData&&watchlist.length>0;
 }
 function availabilityQueue(){
- return WatchlistModel.refreshCandidates(watchlist,watchlistBackgroundChecked,6);
+ return WatchlistModel.refreshCandidates([...watchlist].sort((a,b)=>Number(!!b.followRelease||!!b.pinned)-Number(!!a.followRelease||!!a.pinned)||(b.addedAt||0)-(a.addedAt||0)),watchlistBackgroundChecked,6);
 }
 function showAvailabilityProgress(message){
  const el=document.getElementById('card-check-status');
@@ -874,7 +874,7 @@ function queueAutoAvailabilityCheck(delay=16000){
     availabilityRetryAt=Date.now()+5*60000;
     availabilitySourceFailures=0;
    }
-   queueAutoAvailabilityCheck(16000);
+   queueAutoAvailabilityCheck(60000);
   }
  },Math.max(0,wait));
 }
@@ -951,7 +951,7 @@ async function checkAutomaticAvailabilityBatch(){
  window.dispatchEvent(new Event('rewind:watchlist-ready'));
  if(document.querySelector('#tab-watchlist.active')){
   const draw=()=>renderWatchlist(false,true,true).catch(()=>{});
-  if(!window.RewindStartup?.defer('watchlist',draw))draw();
+  if(!window.RewindStartup?.defer('watchlist',draw,true))draw();
  }
 }
 let watchlistMatching=false,watchlistMatchProgress='';
@@ -1056,12 +1056,13 @@ async function renderWatchlist(force = false, reuse = false, background = false)
   const loading=document.getElementById('watchlist-load-status');
   const statusEl=document.getElementById('card-check-status');
   const batch=scopedWatchlist().sort((a,b)=>Number(!!b.pinned)-Number(!!a.pinned)||(b.addedAt||0)-(a.addedAt||0));
-  document.getElementById('watchlist-count').textContent=(watchlistScope==='release'?batch.length+' saved releases · '+watchlist.length+' total':watchlist.length+' total')+((hubState.watchlistUnmatched||[]).length?' · '+hubState.watchlistUnmatched.length+' films importing':'');
+  document.getElementById('watchlist-count').textContent=(watchlistScope==='release'?batch.length+' saved releases · '+watchlist.length+' total':watchlist.length+' total')+((hubState.watchlistUnmatched||[]).length?' · '+hubState.watchlistUnmatched.length+' awaiting identification':'');
   empty.hidden=watchlist.length>0;
   // Sorting and filters still consider the entire collection. Fetching does not.
+  const ownedById=new Map(hubState.taste.filter(m=>m.owned).map(m=>[m.id,m]));
   const progress=new Map(batch.map(entry=>{
     const saved=entry.availabilitySnapshot;
-    const owned=hubState.taste.find(m=>m.id===entry.id&&m.owned);
+    const owned=ownedById.get(entry.id);
     const shelf=owned?HubModel.shelfStatus(owned):null;
     const remote=(saved?.offers||[]).filter(o=>o.kind!=='physical').map(o=>o.kind==='subscription'?{...o,included:RewindModel.included(o.provider,myServices)}:o);
     const offers=[...(shelf?.offers||[]),...remote];
@@ -1189,11 +1190,14 @@ function updateAvailabilityCountWithoutRepaint(){
   if(browse){browse.textContent='Browse all '+unchecked;browse.setAttribute('aria-label','Show all '+unchecked+' Needs availability check titles');}
   return unchecked;
 }
+let watchlistRankCache=null;
 function watchlistTasteRanker(){
  const seeds=HubModel.evidence(hubState.taste||[]),feedback=hubState.feedback||[];
+ const signature=JSON.stringify([seeds.map(m=>[m.id,m.rating,m.owned,m.favorite,m.rewatches,m.director,m.genre_ids]),feedback]);
+ if(watchlistRankCache?.signature===signature)return watchlistRankCache.rank;
  const seedFeatures=new Map(seeds.map(seed=>[seed,HubModel.features(seed)]));
  const ranked=new Map();
- return film=>{const key=String(film.id||film.title);if(!ranked.has(key))ranked.set(key,WatchlistModel.recommendationScore(film,seeds,feedback,HubModel,TasteModel,seedFeatures));return ranked.get(key);};
+ const rank=film=>{const key=JSON.stringify([film.id||film.title,film.director,film.genre_ids,film.detailsSnapshot?.genres,film.meta?.keywords]);if(!ranked.has(key))ranked.set(key,WatchlistModel.recommendationScore(film,seeds,feedback,HubModel,TasteModel,seedFeatures));return ranked.get(key);};watchlistRankCache={signature,rank};return rank;
 }
 function paintWatchlist(results,append=false){
   renderChangeStrip();
@@ -1202,10 +1206,10 @@ function paintWatchlist(results,append=false){
   for(const id of ['watch-now','paid','waiting','rw-arrived','rw-available','rw-coming','rw-physicalbuy','rw-theater','rw-upcoming','rw-development','rw-waiting','rw-unchecked']){if(!append){document.getElementById(id+'-grid')?.replaceChildren();const section=document.getElementById(id+'-section');if(section)section.hidden=true;}}
   if(document.getElementById('tab-watchlist').dataset.collection==='physical'){window.dispatchEvent(new Event('rewind:card-rendered'));return;}
   if(watchlistScope==='release'){
-    const page=WatchlistModel.releaseWatchPage([...results,...(window.SavedProjects?.rows()||[])],{browse:window.WatchlistBrowser?.options()||{},today:discoveryWindow().today,budget:rentalBudget,receipts:hubState.changeReceipts,limit:watchlistLimit,filter:costFilter,model:ReleaseModel,localListing:m=>{const local=typeof Hub==='undefined'||typeof Hub.localListing!=='function'?null:Hub.localListing(m);return local&&!local.stale&&/Kalispell/i.test(local.location)?local:null;}});
+    const page=WatchlistModel.releaseWatchPage([...results,...(window.SavedProjects?.rows()||[])],{browse:window.WatchlistBrowser?.options()||{},ranker:(!window.WatchlistBrowser||window.WatchlistBrowser.options().sort==='default')?watchlistTasteRanker():null,today:discoveryWindow().today,budget:rentalBudget,receipts:hubState.changeReceipts,limit:watchlistLimit,filter:costFilter,model:ReleaseModel,localListing:m=>{const local=typeof Hub==='undefined'||typeof Hub.localListing!=='function'?null:Hub.localListing(m);return local&&!local.stale&&/Kalispell/i.test(local.location)?local:null;}});
     const groups={included:'rw-arrived',cheap:'rw-available',premium:'rw-coming',physicalpurchase:'rw-physicalbuy',theater:'rw-theater',upcoming:'rw-upcoming',development:'rw-development',waiting:'rw-waiting',unchecked:'rw-unchecked'};
     const labels={included:'Included & free',cheap:'At your price',premium:'Higher prices',physicalpurchase:'Physical editions for sale',theater:'In Kalispell theaters',upcoming:'Upcoming releases',development:'Announced · no date',waiting:'Waiting for home release',unchecked:'Needs availability check'};
-    const descriptions={included:'On your services or your own shelf.',cheap:'Rentals up to $'+rentalBudget.toFixed(2)+'.',premium:'Higher rentals and digital purchases.',physicalpurchase:'DVD, Blu-ray and other discs. Not digital downloads.',theater:'Confirmed local screenings.',upcoming:'Published dates, earliest first.',development:'Date not verified.',waiting:'Current home viewing not confirmed.',unchecked:'Not currently verified. Rewind checks these films automatically as you use the site.'};
+    const descriptions={included:'On your services or your own shelf.',cheap:'Rentals up to $'+rentalBudget.toFixed(2)+'.',premium:'Higher rentals and digital purchases.',physicalpurchase:'DVD, Blu-ray and other discs. Not digital downloads.',theater:'Confirmed local screenings.',upcoming:'Published dates, earliest first.',development:'Date not verified.',waiting:'Current home viewing not confirmed.',unchecked:'No recent verified offer. Older checks are retained; open Details to refresh a title.'};
     // The overview retains short section previews; a focused section grows in small scroll batches.
     const focusedSection=!!window.WatchlistBrowser?.options().section;
     document.getElementById('watchlist-more').hidden=!focusedSection||page.rows.length>=page.total;
@@ -1228,7 +1232,7 @@ function paintWatchlist(results,append=false){
     for(const [group,id] of Object.entries(groups)){
       const section=document.getElementById(id+'-section'),shown=page.rows.filter(r=>r.stage.group===group).length;
       section.dataset.focused=String(focusedSection&&window.WatchlistBrowser?.options().section===group);
-      section.hidden=!page.counts[group]||!!window.WatchlistBrowser?.options().section&&window.WatchlistBrowser.options().section!==group;
+      section.hidden=!page.counts[group]||!!window.WatchlistBrowser?.options().section&&window.WatchlistBrowser.options().section!=='all'&&window.WatchlistBrowser.options().section!==group;
       section.querySelector('h3').firstChild.textContent=labels[group]+' ';
       document.getElementById(id+'-count').textContent='('+(page.counts[group]||0)+')';
       section.querySelector('.group-note').textContent=descriptions[group]+(shown<page.counts[group]&&group!=='unchecked'?' Showing '+shown+' of '+page.counts[group]+'.':'');
