@@ -73,7 +73,7 @@
  function releaseStage(movie,status,today,budget=7.99,receipts=[],model=null,local=null){
   // Previous quotes stay under their viewing option, with the check age shown.
   const offers=status?.offers||[],cost=model?.cost(offers,budget,false),home=upcomingHome(movie,status,today),opening=releaseOpening(movie,status);
-  const fresh=!!status&&!status.stale&&Number.isFinite(status.checkedAt)&&Date.now()-status.checkedAt>=0&&Date.now()-status.checkedAt<24*3600000;
+  const fresh=!!status&&!status.stale&&Number.isFinite(status.checkedAt)&&Date.now()-status.checkedAt>=0&&Date.now()-status.checkedAt<(movie.followRelease||movie.pinned?24:168)*3600000;
   let group='waiting';
   if(movie.project)group='development';
   // Ownership is known without a network check, but home offers must be fresh.
@@ -120,7 +120,7 @@
    const stage=releaseStage(r.entry,r.status,today,budget,receipts,model,localListing(r.entry));if(browse&&stage.group==='waiting'&&(!r.status?.checkedAt||stage.stale))stage.group='unchecked';return {...r,cost,stage,rank:typeof ranker==='function'&&r.entry&&!r.entry.project?Number(ranker(r.entry))||0:0};
   }).filter(r=>filter==='all'||filter==='free'&&r.stage.group==='included'||filter==='cheap'&&r.stage.group==='cheap'||filter==='premium'&&['premium','physicalpurchase'].includes(r.stage.group)||filter==='waiting'&&['waiting','unchecked','upcoming','development','theater'].includes(r.stage.group));
   const chosen=m=>m.rewindSaved===true||/^Rewind (discover|calendar|watchlist)$/.test(m.source||'');
-  rows.sort((a,b)=>Number(!!b.entry.pinned)-Number(!!a.entry.pinned)||(ranker?(order[a.stage.group]-order[b.stage.group]||b.rank-a.rank):0)||Number(chosen(b.entry))-Number(chosen(a.entry))||(browse&&chosen(a.entry)&&chosen(b.entry)?(b.entry.addedAt||0)-(a.entry.addedAt||0):0)||order[a.stage.group]-order[b.stage.group]||
+  rows.sort((a,b)=>(browse&&a.stage.group==='upcoming'&&b.stage.group==='upcoming'?String(a.stage.date||'9999').localeCompare(String(b.stage.date||'9999')):0)||Number(!!b.entry.pinned)-Number(!!a.entry.pinned)||(ranker?(order[a.stage.group]-order[b.stage.group]||b.rank-a.rank):0)||Number(chosen(b.entry))-Number(chosen(a.entry))||(browse&&chosen(a.entry)&&chosen(b.entry)?(b.entry.addedAt||0)-(a.entry.addedAt||0):0)||order[a.stage.group]-order[b.stage.group]||
    (a.stage.group==='premium'?({premium:0,buy:1,unknown:2}[a.cost.band]??2)-({premium:0,buy:1,unknown:2}[b.cost.band]??2):0)||
    (['cheap','premium'].includes(a.stage.group)?(a.cost.price??Infinity)-(b.cost.price??Infinity):0)||
    (['waiting','upcoming','development','theater'].includes(a.stage.group)?String(a.stage.date||'9999').localeCompare(String(b.stage.date||'9999')):0)||
@@ -150,11 +150,12 @@
    if(browse.sort==='release')rows.sort((a,b)=>String(b.stage.date||b.entry.release_date||'').localeCompare(String(a.stage.date||a.entry.release_date||''))||a.entry.title.localeCompare(b.entry.title));
    if(browse.sort==='changed')rows.sort((a,b)=>(b.entry.statusChangedAt||b.entry.lastChange?.at||0)-(a.entry.statusChangedAt||a.entry.lastChange?.at||0)||a.entry.title.localeCompare(b.entry.title));
    if(browse.sort==='price')rows.sort((a,b)=>(a.cost.price??Infinity)-(b.cost.price??Infinity)||a.entry.title.localeCompare(b.entry.title));
-   if(browse.section)preview=rows.filter(r=>r.stage.group===browse.section).slice(0,limit);
+   if(browse.section==='all')preview=rows.slice(0,limit);
+   else if(browse.section)preview=rows.filter(r=>r.stage.group===browse.section).slice(0,limit);
    else{const selected=new Set();for(const group of Object.keys(counts))for(const row of rows.filter(r=>r.stage.group===group).slice(0,6))selected.add(row);preview=rows.filter(r=>selected.has(r));}
 
   }
-  return {rows:preview,total:browse?.section?(counts[browse.section]||0):rows.length,counts};
+  return {rows:preview,total:browse?.section&&browse.section!=='all'?(counts[browse.section]||0):rows.length,counts};
  }
 
  function merge(existing,films){const byId=new Map(existing.map(f=>[f.id,f]));for(const f of films)if(f.id&&!byId.has(f.id))byId.set(f.id,{...f,addedAt:addedAt(f),importedAt:Date.now(),pinned:false,manualNote:'',lastStatusCode:null,lastStatusLabel:null,statusChangedAt:null});return [...byId.values()];}
@@ -207,7 +208,7 @@
   if(!status||status.stale||!status.checkedAt||at-status.checkedAt<0||at-status.checkedAt>86400000)return null;
   const offers=status.offers||[];return [...(receipts||[])].filter(r=>r.movieId===movie.id&&r.at<=at&&at-r.at<=14*86400000).sort((a,b)=>b.at-a.at).find(r=>r.type==='price'&&typeof r.from==='number'&&typeof r.to==='number'&&r.to<r.from&&offers.some(o=>o.kind==='rent'&&o.provider===r.provider&&o.format===r.format&&o.price===r.to)&&status.quoteCheckedAt&&at-status.quoteCheckedAt>=0&&at-status.quoteCheckedAt<=86400000||r.type==='included'&&offers.some(o=>o.provider===r.provider&&(o.kind==='free'||o.kind==='subscription'&&o.included)))||null;
  }
- function freshSnapshot(movie,at=Date.now()){const s=movie.availabilitySnapshot,age=at-(s?.checkedAt||0);if(!s||s.stale||!s.checkedAt||age<0||age>=6*3600000)return false;return !(s.offers||[]).some(o=>['rent','buy'].includes(o.kind)&&typeof o.price==='number')||!!s.quoteCheckedAt&&at-s.quoteCheckedAt>=0&&at-s.quoteCheckedAt<6*3600000;}
+ function freshSnapshot(movie,at=Date.now()){const s=movie.availabilitySnapshot,age=at-(s?.checkedAt||0),ttl=(movie.followRelease||movie.pinned?24:168)*3600000;if(!s||s.stale||!s.checkedAt||age<0||age>=ttl)return false;return !(s.offers||[]).some(o=>['rent','buy'].includes(o.kind)&&typeof o.price==='number')||!!s.quoteCheckedAt&&at-s.quoteCheckedAt>=0&&at-s.quoteCheckedAt<ttl;}
  function genreIds(movie){return movie.genre_ids?.length?movie.genre_ids:(movie.meta?.genres||movie.detailsSnapshot?.genres||movie.genres||[]).map(g=>typeof g==='number'?g:g.id).filter(Number.isFinite);}
  function refreshCandidates(movies,attempted=new Set(),limit=6,at=Date.now()){
   return (movies||[]).filter(m=>m&&m.id!=null&&!attempted.has(m.id)&&!freshSnapshot(m,at)).slice(0,Math.max(0,limit));

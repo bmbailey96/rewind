@@ -1,11 +1,13 @@
 (function(root,factory){const api=factory();if(typeof module==='object'&&module.exports)module.exports=api;else root.StorageModel=api;})(typeof globalThis!=='undefined'?globalThis:this,function(){
  const refreshable=new Set(['cast','images','videos','translations','production_countries','spoken_languages','watchmodeCache','storePriceCache','oracle','discoveryFit','profileFit']);
+ function compactDates(value){const countries=new Map();for(const country of value.results||[]){const code=country.iso_3166_1;if(!countries.has(code))countries.set(code,new Map());const dates=countries.get(code);for(const r of country.release_dates||[]){const key=JSON.stringify([r.type,r.release_date]);if(!dates.has(key))dates.set(key,{type:r.type,release_date:r.release_date});}}return {results:[...countries].map(([iso_3166_1,dates])=>({iso_3166_1,release_dates:[...dates.values()]}))};}
  function compact(value,key=''){
+  if(key==='availabilityBaseline'&&value&&typeof value==='object'){const out={};for(const field of ['checkedAt','quoteCheckedAt','stale','offers','announcements','link','priceSources'])if(value[field]!=null)out[field]=compact(value[field],field);return out;}
   if(key==='production_companies')return (Array.isArray(value)?value:[]).filter(c=>Number.isFinite(c.id)).map(c=>({id:c.id,name:c.name}));
-  if(key==='release_dates'&&value?.results)return {results:value.results.map(country=>({iso_3166_1:country.iso_3166_1,release_dates:(country.release_dates||[]).map(r=>({type:r.type,release_date:r.release_date}))}))};
+  if(key==='release_dates'&&value?.results)return compactDates(value);
   if(Array.isArray(value)){if(key==='crew')return value.filter(c=>['Director','Writer','Screenplay','Story'].includes(c.job)).map(c=>({id:c.id,name:c.name,job:c.job}));return value.map(v=>compact(v));}
   if(!value||typeof value!=='object')return value;
-  const out={};for(const [k,v] of Object.entries(value)){if(refreshable.has(k))continue;if(k==='release_dates'&&v?.results){out[k]={results:v.results.map(country=>({iso_3166_1:country.iso_3166_1,release_dates:(country.release_dates||[]).map(r=>({type:r.type,release_date:r.release_date}))}))};}else if(k==='meta'||k==='detailsSnapshot'){ out[k]={};for(const field of ['id','title','status','release_date','runtime','overview','genres','genre_ids','keywords','credits','poster_path','backdrop_path','release_dates','production_companies'])if(v?.[field]!=null)out[k][field]=compact(v[field],field);}else out[k]=compact(v,k);}return out;
+  const out={};for(const [k,v] of Object.entries(value)){if(refreshable.has(k))continue;if(k==='release_dates'&&v?.results){out[k]=compactDates(v);}else if(k==='meta'||k==='detailsSnapshot'){ out[k]={};for(const field of ['id','title','status','release_date','runtime','overview','genres','genre_ids','keywords','credits','poster_path','backdrop_path','release_dates','production_companies'])if(v?.[field]!=null)out[k][field]=compact(v[field],field);}else out[k]=compact(v,k);}return out;
  }
  const failures=new Map();
  const failure=key=>failures.get(key)||null;
@@ -23,7 +25,7 @@
   for(let i=1;i<codes.length;i++){const code=codes.charCodeAt(i),entry=dictionary[code]??(code===next?previous+previous[0]:undefined);if(entry===undefined)throw Error('Invalid saved record');parts.push(entry);if(next<65535)dictionary[next++]=previous+entry[0];previous=entry;}return decodeURIComponent(escape(parts.join('')));
  }
  function read(storage,key,fallback=null){const text=storage.getItem(key);return text?JSON.parse(decode(text)):fallback;}
- function migrate(storage,compress=false){for(const key of keys){try{const text=storage.getItem(key);if(!text||!compress&&text.startsWith(prefix))continue;const small=JSON.stringify(compact(JSON.parse(decode(text)))),value=compress||text.startsWith(prefix)||small.length>=100000?encode(small):small;if(value.length<text.length)storage.setItem(key,value);}catch{ /* Keep the existing record if storage is blocked or a write fails. */ }}}
+ function migrate(storage,compress=false,upgrade=false){for(const key of keys){try{const text=storage.getItem(key);if(!text||!compress&&!upgrade&&text.startsWith(prefix))continue;const small=JSON.stringify(compact(JSON.parse(decode(text)))),value=compress||text.startsWith(prefix)||small.length>=100000?encode(small):small;if(value.length<text.length)storage.setItem(key,value);}catch{ /* Keep the existing record if storage is blocked or a write fails. */ }}}
  function save(storage,key,value){
   try{const small=JSON.stringify(compact(value));
    try{const previous=storage.getItem(key)||'';storage.setItem(key,previous.startsWith(prefix)||small.length>=100000?encode(small):small);failures.delete(key);return true;}

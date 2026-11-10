@@ -16,7 +16,7 @@
  function finish(id,state='done'){const task=tasks.get(id);if(task)task.state=state;paint();}
  function track(id,promise,label){begin(id,label||tasks.get(id)?.label||id);Promise.resolve(promise).then(()=>finish(id),()=>finish(id,'delayed'));}
  function reading(){return !!document.querySelector('#tab-watchlist.active')&&(window.scrollY>160||!!document.querySelector('dialog[open]'));}
- function defer(key,draw){if(applying||!reading())return false;pending.set(key,draw);updates.hidden=false;return true;}
+ function defer(key,draw,manual=false){if(applying||!manual&&!reading())return false;pending.set(key,draw);updates.hidden=false;return true;}
  async function apply(){applying=true;const card=[...document.querySelectorAll('#tab-watchlist .rental-card')].find(el=>{const r=el.getBoundingClientRect();return r.bottom>80&&r.top<innerHeight;});const id=card?.dataset.movieId,offset=card?.getBoundingClientRect().top;
   const jobs=[...pending.values()];pending.clear();updates.hidden=true;
   for(const draw of jobs){try{await draw();}catch{}}

@@ -40,3 +40,5 @@ assert.ok(after<before,'Seen and passed-over lists free room under quota without
 assert.deepEqual(S.read(listStore,'rewind-seen-v1'),seen);
 assert.deepEqual(S.read(listStore,'rewind-skipped-v1'),skipped);
 console.log('Device-save diagnostics distinguish quota failures and clear only after a successful retry');
+
+const repeated={availabilityBaseline:{checkedAt:123,offers:[{kind:'rent',price:4.99}],details:{runtime:99}},detailsSnapshot:{release_dates:{results:[{iso_3166_1:'US',release_dates:[{type:3,release_date:'2025-01-01'}]},{iso_3166_1:'US',release_dates:[{type:3,release_date:'2025-01-01'},{type:4,release_date:'2025-02-01'}]}]}}};const reduced=S.compact(repeated);assert.equal(reduced.availabilityBaseline.details,undefined);assert.equal(reduced.availabilityBaseline.offers[0].price,4.99);assert.equal(reduced.detailsSnapshot.release_dates.results.length,1);assert.equal(reduced.detailsSnapshot.release_dates.results[0].release_dates.length,2);
