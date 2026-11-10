@@ -116,7 +116,7 @@
   function physicalPurchase(o){
     // Vendor formats and storefront names identify mail-order discs, not
     // a digital license. Treat missing format as unknown, never guess a disc.
-    return o?.kind==='buy'&&/\b(?:dvd|blu[ -]?ray|uhd[ -]?disc|4k[ -]?disc|vhs|laserdisc|physical[ -]?(?:copy|media)|disc[ -]?(?:set|edition))\b/i.test([o.provider,o.format,o.mediaType,o.fulfillment].filter(Boolean).join(' '));
+    return o?.kind==='buy'&&/\b(?:dvd|blu[ -]?ray|uhd[ -]?disc|4k[ -]?disc|vhs|laserdisc|physical[ -]?(?:copy|media)|disc[ -]?(?:set|edition))\b/i.test([o.provider,o.format,o.mediaType,o.fulfillment].filter(Boolean).join(' ')) || o?.kind==='buy'&&(/\bGRUV\b/i.test(o.provider||'')||/barnesandnoble\.com\/w\/(?:dvd|blu-ray)-/i.test(o.link||'')||/gruv\.com\/products\//i.test(o.link||''));
   }
   function cost(offers,budget=7.99,stale=false){
     const all=offers||[];
@@ -132,7 +132,7 @@
     const sort=(a,b)=>a.price-b.price||qualityRank(a.format)-qualityRank(b.format)||Number(storeKey(b.provider)==='apple')-Number(storeKey(a.provider)==='apple')||String(a.provider).localeCompare(String(b.provider));
     const chosen=[...(preferred.length?preferred:usable)].sort(sort)[0];
     if(chosen){const cheaper=[...usable].sort(sort).find(o=>o.price<chosen.price);const same=usable.filter(o=>o.price===chosen.price&&qualityRank(o.format)===qualityRank(chosen.format)&&['apple','amazon'].includes(storeKey(o.provider)));const names=[...new Set(same.map(o=>storeLabel(o.provider)))];return {band:stale?'waiting':chosen.price<=budget?'cheap':'premium',badge:'$'+chosen.price.toFixed(2),caption:'Rent · '+(names.length?names.join(' / '):storeLabel(chosen.provider))+(chosen.format?' · '+chosen.format:''),price:chosen.price,offer:chosen,cheaper,stale};}
-    if(rent.length)return {band:stale?'waiting':'unknown',badge:'RENT',caption:'Price not checked',price:null,offer:rent.find(o=>['apple','amazon'].includes(storeKey(o.provider)))||rent[0],stale};
+    if(rent.length&&!digitalBuys.some(o=>Number.isFinite(o.price)&&o.price>=0))return {band:stale?'waiting':'unknown',badge:'RENT',caption:'Price not checked',price:null,offer:rent.find(o=>['apple','amazon'].includes(storeKey(o.provider)))||rent[0],stale};
     if(buy.length){const physicalOnly=!digitalBuys.length&&discBuys.length>0,choices=physicalOnly?discBuys:digitalBuys;const quotes=choices.filter(o=>typeof o.price==='number'&&Number.isFinite(o.price)&&o.price>=0).sort(sort);const selected=quotes[0]||choices[0];return {band:stale?'waiting':physicalOnly?'physicalbuy':'buy',badge:quotes.length?'$'+quotes[0].price.toFixed(2):'BUY',caption:(physicalOnly?'Physical copy · ':'Digital purchase · ')+(selected?.provider||'store')+(selected?.format?' · '+selected.format:''),price:quotes[0]?.price??null,offer:selected,stale,physicalPurchase:physicalOnly};}
     return {band:'waiting',badge:'WAITING',caption:all.some(o=>o.kind==='subscription')?'Separate subscription needed':'No current offer',price:null,offer:null,stale};
   }
