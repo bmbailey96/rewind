@@ -861,7 +861,7 @@
       "location": "Missoula",
       "source": "Roxy Theater official calendar",
       "url": "https://www.theroxytheater.org/show/the-killer-2/",
-      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/thekiller3-1024x576.jpg",
+      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/john20woo20killa-1024x575.jpg",
       "dates": [
         "2026-11-19"
       ],
@@ -1947,7 +1947,7 @@
       "dateLabel": "1 listed days"
     }
   ],
-  "checkedAt": 1794330605933,
+  "checkedAt": 1794353662204,
   "stale": false,
   "sourceURL": "https://www.theroxytheater.org/showtimes/"
 }
