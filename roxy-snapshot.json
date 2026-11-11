@@ -73,13 +73,6 @@
           "format": "Open captions"
         },
         {
-          "date": "2026-11-10",
-          "time": "7:45pm",
-          "startsAt": "2026-11-11T02:45:00.000Z",
-          "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
-          "format": ""
-        },
-        {
           "date": "2026-11-11",
           "time": "4:30pm",
           "startsAt": "2026-11-11T23:30:00.000Z",
@@ -258,13 +251,6 @@
           "startsAt": "2026-11-11T00:30:00.000Z",
           "url": "https://www.theroxytheater.org/show/nuisance-bear-2/",
           "format": ""
-        },
-        {
-          "date": "2026-11-10",
-          "time": "7:30pm",
-          "startsAt": "2026-11-11T02:30:00.000Z",
-          "url": "https://www.theroxytheater.org/show/nuisance-bear-2/",
-          "format": ""
         }
       ],
       "start": "2026-11-10",
@@ -281,7 +267,6 @@
       "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
       "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/holmes-1024x575.jpg",
       "dates": [
-        "2026-11-10",
         "2026-11-11",
         "2026-11-12",
         "2026-11-13",
@@ -293,13 +278,6 @@
       ],
       "ranges": [],
       "screenings": [
-        {
-          "date": "2026-11-10",
-          "time": "8:15pm",
-          "startsAt": "2026-11-11T03:15:00.000Z",
-          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
-          "format": "Open captions"
-        },
         {
           "date": "2026-11-11",
           "time": "4:15pm",
@@ -392,9 +370,9 @@
           "format": ""
         }
       ],
-      "start": "2026-11-10",
+      "start": "2026-11-11",
       "end": "2026-11-19",
-      "dateLabel": "9 listed days"
+      "dateLabel": "8 listed days"
     },
     {
       "id": "roxy:/show/the-iron-giant/",
@@ -1947,7 +1925,7 @@
       "dateLabel": "1 listed days"
     }
   ],
-  "checkedAt": 1794353662204,
+  "checkedAt": 1794379708020,
   "stale": false,
   "sourceURL": "https://www.theroxytheater.org/showtimes/"
 }
