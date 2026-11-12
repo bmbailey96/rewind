@@ -10,7 +10,6 @@
       "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
       "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/holmes-1024x575.jpg",
       "dates": [
-        "2026-11-11",
         "2026-11-12",
         "2026-11-13",
         "2026-11-14",
@@ -21,20 +20,6 @@
       ],
       "ranges": [],
       "screenings": [
-        {
-          "date": "2026-11-11",
-          "time": "4:15pm",
-          "startsAt": "2026-11-11T23:15:00.000Z",
-          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-11",
-          "time": "8:00pm",
-          "startsAt": "2026-11-12T03:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
-          "format": ""
-        },
         {
           "date": "2026-11-12",
           "time": "4:15pm",
@@ -113,9 +98,35 @@
           "format": ""
         }
       ],
-      "start": "2026-11-11",
+      "start": "2026-11-12",
       "end": "2026-11-19",
-      "dateLabel": "8 listed days"
+      "dateLabel": "7 listed days"
+    },
+    {
+      "id": "roxy:/show/la-bola-negra/",
+      "title": "La Bola Negra",
+      "venueId": "roxy",
+      "venue": "Roxy Theater",
+      "location": "Missoula",
+      "source": "Roxy Theater official calendar",
+      "url": "https://www.theroxytheater.org/show/la-bola-negra/",
+      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/11/lbn-1024x576.jpg",
+      "dates": [
+        "2026-11-12"
+      ],
+      "ranges": [],
+      "screenings": [
+        {
+          "date": "2026-11-12",
+          "time": "5:00pm",
+          "startsAt": "2026-11-13T00:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/la-bola-negra/",
+          "format": ""
+        }
+      ],
+      "start": "2026-11-12",
+      "end": "2026-11-12",
+      "dateLabel": "1 listed days"
     },
     {
       "id": "roxy:/show/wild-horse-nine/",
@@ -127,7 +138,6 @@
       "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
       "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/11/wh9-1024x578.jpg",
       "dates": [
-        "2026-11-11",
         "2026-11-12",
         "2026-11-13",
         "2026-11-14",
@@ -139,20 +149,6 @@
       ],
       "ranges": [],
       "screenings": [
-        {
-          "date": "2026-11-11",
-          "time": "4:30pm",
-          "startsAt": "2026-11-11T23:30:00.000Z",
-          "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-11",
-          "time": "7:45pm",
-          "startsAt": "2026-11-12T02:45:00.000Z",
-          "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
-          "format": ""
-        },
         {
           "date": "2026-11-12",
           "time": "5:15pm",
@@ -294,69 +290,9 @@
           "format": ""
         }
       ],
-      "start": "2026-11-11",
+      "start": "2026-11-12",
       "end": "2026-11-19",
-      "dateLabel": "9 listed days"
-    },
-    {
-      "id": "roxy:/show/la-bola-negra/",
-      "title": "La Bola Negra",
-      "venueId": "roxy",
-      "venue": "Roxy Theater",
-      "location": "Missoula",
-      "source": "Roxy Theater official calendar",
-      "url": "https://www.theroxytheater.org/show/la-bola-negra/",
-      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/11/lbn-1024x576.jpg",
-      "dates": [
-        "2026-11-11",
-        "2026-11-12"
-      ],
-      "ranges": [],
-      "screenings": [
-        {
-          "date": "2026-11-11",
-          "time": "4:45pm",
-          "startsAt": "2026-11-11T23:45:00.000Z",
-          "url": "https://www.theroxytheater.org/show/la-bola-negra/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-12",
-          "time": "5:00pm",
-          "startsAt": "2026-11-13T00:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/la-bola-negra/",
-          "format": ""
-        }
-      ],
-      "start": "2026-11-11",
-      "end": "2026-11-12",
-      "dateLabel": "2 listed days"
-    },
-    {
-      "id": "roxy:/show/the-iron-giant/",
-      "title": "The Iron Giant",
-      "venueId": "roxy",
-      "venue": "Roxy Theater",
-      "location": "Missoula",
-      "source": "Roxy Theater official calendar",
-      "url": "https://www.theroxytheater.org/show/the-iron-giant/",
-      "poster": "https://www.theroxytheater.org/wp-content/uploads/2023/04/tig-1024x576.jpg",
-      "dates": [
-        "2026-11-11"
-      ],
-      "ranges": [],
-      "screenings": [
-        {
-          "date": "2026-11-11",
-          "time": "7:00pm",
-          "startsAt": "2026-11-12T02:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/the-iron-giant/",
-          "format": ""
-        }
-      ],
-      "start": "2026-11-11",
-      "end": "2026-11-11",
-      "dateLabel": "1 listed days"
+      "dateLabel": "8 listed days"
     },
     {
       "id": "roxy:/show/an-evening-of-stand-up-comedy-with-comedian-myq-kaplan/",
@@ -1883,7 +1819,7 @@
       "dateLabel": "1 listed days"
     }
   ],
-  "checkedAt": 1794444721683,
+  "checkedAt": 1794483080043,
   "stale": false,
   "sourceURL": "https://www.theroxytheater.org/showtimes/"
 }
