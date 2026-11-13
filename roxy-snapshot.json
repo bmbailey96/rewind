@@ -10,7 +10,6 @@
       "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
       "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/holmes-1024x575.jpg",
       "dates": [
-        "2026-11-12",
         "2026-11-13",
         "2026-11-14",
         "2026-11-15",
@@ -20,20 +19,6 @@
       ],
       "ranges": [],
       "screenings": [
-        {
-          "date": "2026-11-12",
-          "time": "4:15pm",
-          "startsAt": "2026-11-12T23:15:00.000Z",
-          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-12",
-          "time": "7:45pm",
-          "startsAt": "2026-11-13T02:45:00.000Z",
-          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
-          "format": ""
-        },
         {
           "date": "2026-11-13",
           "time": "1:00pm",
@@ -98,47 +83,20 @@
           "format": ""
         }
       ],
-      "start": "2026-11-12",
+      "start": "2026-11-13",
       "end": "2026-11-19",
-      "dateLabel": "7 listed days"
+      "dateLabel": "6 listed days"
     },
     {
-      "id": "roxy:/show/la-bola-negra/",
-      "title": "La Bola Negra",
+      "id": "roxy:/show/godzilla-minus-zero/",
+      "title": "Godzilla Minus Zero",
       "venueId": "roxy",
       "venue": "Roxy Theater",
       "location": "Missoula",
       "source": "Roxy Theater official calendar",
-      "url": "https://www.theroxytheater.org/show/la-bola-negra/",
-      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/11/lbn-1024x576.jpg",
+      "url": "https://www.theroxytheater.org/show/godzilla-minus-zero/",
+      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/11/gmz-1024x576.jpeg",
       "dates": [
-        "2026-11-12"
-      ],
-      "ranges": [],
-      "screenings": [
-        {
-          "date": "2026-11-12",
-          "time": "5:00pm",
-          "startsAt": "2026-11-13T00:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/la-bola-negra/",
-          "format": ""
-        }
-      ],
-      "start": "2026-11-12",
-      "end": "2026-11-12",
-      "dateLabel": "1 listed days"
-    },
-    {
-      "id": "roxy:/show/wild-horse-nine/",
-      "title": "Wild Horse Nine",
-      "venueId": "roxy",
-      "venue": "Roxy Theater",
-      "location": "Missoula",
-      "source": "Roxy Theater official calendar",
-      "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
-      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/11/wh9-1024x578.jpg",
-      "dates": [
-        "2026-11-12",
         "2026-11-13",
         "2026-11-14",
         "2026-11-15",
@@ -150,19 +108,128 @@
       "ranges": [],
       "screenings": [
         {
-          "date": "2026-11-12",
-          "time": "5:15pm",
-          "startsAt": "2026-11-13T00:15:00.000Z",
-          "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
+          "date": "2026-11-13",
+          "time": "2:15pm",
+          "startsAt": "2026-11-13T21:15:00.000Z",
+          "url": "https://www.theroxytheater.org/show/godzilla-minus-zero/",
           "format": ""
         },
         {
-          "date": "2026-11-12",
-          "time": "8:15pm",
-          "startsAt": "2026-11-13T03:15:00.000Z",
-          "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
+          "date": "2026-11-13",
+          "time": "5:00pm",
+          "startsAt": "2026-11-14T00:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/godzilla-minus-zero/",
           "format": ""
         },
+        {
+          "date": "2026-11-13",
+          "time": "7:45pm",
+          "startsAt": "2026-11-14T02:45:00.000Z",
+          "url": "https://www.theroxytheater.org/show/godzilla-minus-zero/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-14",
+          "time": "1:30pm",
+          "startsAt": "2026-11-14T20:30:00.000Z",
+          "url": "https://www.theroxytheater.org/show/godzilla-minus-zero/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-14",
+          "time": "4:15pm",
+          "startsAt": "2026-11-14T23:15:00.000Z",
+          "url": "https://www.theroxytheater.org/show/godzilla-minus-zero/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-14",
+          "time": "9:00pm",
+          "startsAt": "2026-11-15T04:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/godzilla-minus-zero/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-15",
+          "time": "2:30pm",
+          "startsAt": "2026-11-15T21:30:00.000Z",
+          "url": "https://www.theroxytheater.org/show/godzilla-minus-zero/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-15",
+          "time": "5:15pm",
+          "startsAt": "2026-11-16T00:15:00.000Z",
+          "url": "https://www.theroxytheater.org/show/godzilla-minus-zero/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-15",
+          "time": "8:00pm",
+          "startsAt": "2026-11-16T03:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/godzilla-minus-zero/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-16",
+          "time": "1:15pm",
+          "startsAt": "2026-11-16T20:15:00.000Z",
+          "url": "https://www.theroxytheater.org/show/godzilla-minus-zero/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-16",
+          "time": "4:15pm",
+          "startsAt": "2026-11-16T23:15:00.000Z",
+          "url": "https://www.theroxytheater.org/show/godzilla-minus-zero/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-17",
+          "time": "4:15pm",
+          "startsAt": "2026-11-17T23:15:00.000Z",
+          "url": "https://www.theroxytheater.org/show/godzilla-minus-zero/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-18",
+          "time": "5:00pm",
+          "startsAt": "2026-11-19T00:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/godzilla-minus-zero/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-19",
+          "time": "5:15pm",
+          "startsAt": "2026-11-20T00:15:00.000Z",
+          "url": "https://www.theroxytheater.org/show/godzilla-minus-zero/",
+          "format": ""
+        }
+      ],
+      "start": "2026-11-13",
+      "end": "2026-11-19",
+      "dateLabel": "7 listed days"
+    },
+    {
+      "id": "roxy:/show/wild-horse-nine/",
+      "title": "Wild Horse Nine",
+      "venueId": "roxy",
+      "venue": "Roxy Theater",
+      "location": "Missoula",
+      "source": "Roxy Theater official calendar",
+      "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
+      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/11/wh9-1024x578.jpg",
+      "dates": [
+        "2026-11-13",
+        "2026-11-14",
+        "2026-11-15",
+        "2026-11-16",
+        "2026-11-17",
+        "2026-11-18",
+        "2026-11-19"
+      ],
+      "ranges": [],
+      "screenings": [
         {
           "date": "2026-11-13",
           "time": "3:00pm",
@@ -287,155 +354,6 @@
           "time": "8:30pm",
           "startsAt": "2026-11-20T03:30:00.000Z",
           "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
-          "format": ""
-        }
-      ],
-      "start": "2026-11-12",
-      "end": "2026-11-19",
-      "dateLabel": "8 listed days"
-    },
-    {
-      "id": "roxy:/show/an-evening-of-stand-up-comedy-with-comedian-myq-kaplan/",
-      "title": "An Evening of Stand-Up Comedy with Comedian Myq Kaplan",
-      "venueId": "roxy",
-      "venue": "Roxy Theater",
-      "location": "Missoula",
-      "source": "Roxy Theater official calendar",
-      "url": "https://www.theroxytheater.org/show/an-evening-of-stand-up-comedy-with-comedian-myq-kaplan/",
-      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/07/myq20kaplan208pm20start20time20image20delightful-1024x576.jpg",
-      "dates": [
-        "2026-11-12"
-      ],
-      "ranges": [],
-      "screenings": [
-        {
-          "date": "2026-11-12",
-          "time": "8:00pm",
-          "startsAt": "2026-11-13T03:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/an-evening-of-stand-up-comedy-with-comedian-myq-kaplan/",
-          "format": ""
-        }
-      ],
-      "start": "2026-11-12",
-      "end": "2026-11-12",
-      "dateLabel": "1 listed days"
-    },
-    {
-      "id": "roxy:/show/godzilla-minus-zero/",
-      "title": "Godzilla Minus Zero",
-      "venueId": "roxy",
-      "venue": "Roxy Theater",
-      "location": "Missoula",
-      "source": "Roxy Theater official calendar",
-      "url": "https://www.theroxytheater.org/show/godzilla-minus-zero/",
-      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/11/gmz-1024x576.jpeg",
-      "dates": [
-        "2026-11-13",
-        "2026-11-14",
-        "2026-11-15",
-        "2026-11-16",
-        "2026-11-17",
-        "2026-11-18",
-        "2026-11-19"
-      ],
-      "ranges": [],
-      "screenings": [
-        {
-          "date": "2026-11-13",
-          "time": "2:15pm",
-          "startsAt": "2026-11-13T21:15:00.000Z",
-          "url": "https://www.theroxytheater.org/show/godzilla-minus-zero/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-13",
-          "time": "5:00pm",
-          "startsAt": "2026-11-14T00:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/godzilla-minus-zero/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-13",
-          "time": "7:45pm",
-          "startsAt": "2026-11-14T02:45:00.000Z",
-          "url": "https://www.theroxytheater.org/show/godzilla-minus-zero/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-14",
-          "time": "1:30pm",
-          "startsAt": "2026-11-14T20:30:00.000Z",
-          "url": "https://www.theroxytheater.org/show/godzilla-minus-zero/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-14",
-          "time": "4:15pm",
-          "startsAt": "2026-11-14T23:15:00.000Z",
-          "url": "https://www.theroxytheater.org/show/godzilla-minus-zero/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-14",
-          "time": "9:00pm",
-          "startsAt": "2026-11-15T04:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/godzilla-minus-zero/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-15",
-          "time": "2:30pm",
-          "startsAt": "2026-11-15T21:30:00.000Z",
-          "url": "https://www.theroxytheater.org/show/godzilla-minus-zero/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-15",
-          "time": "5:15pm",
-          "startsAt": "2026-11-16T00:15:00.000Z",
-          "url": "https://www.theroxytheater.org/show/godzilla-minus-zero/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-15",
-          "time": "8:00pm",
-          "startsAt": "2026-11-16T03:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/godzilla-minus-zero/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-16",
-          "time": "1:15pm",
-          "startsAt": "2026-11-16T20:15:00.000Z",
-          "url": "https://www.theroxytheater.org/show/godzilla-minus-zero/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-16",
-          "time": "4:15pm",
-          "startsAt": "2026-11-16T23:15:00.000Z",
-          "url": "https://www.theroxytheater.org/show/godzilla-minus-zero/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-17",
-          "time": "4:15pm",
-          "startsAt": "2026-11-17T23:15:00.000Z",
-          "url": "https://www.theroxytheater.org/show/godzilla-minus-zero/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-18",
-          "time": "5:00pm",
-          "startsAt": "2026-11-19T00:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/godzilla-minus-zero/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-19",
-          "time": "5:15pm",
-          "startsAt": "2026-11-20T00:15:00.000Z",
-          "url": "https://www.theroxytheater.org/show/godzilla-minus-zero/",
           "format": ""
         }
       ],
@@ -1819,7 +1737,7 @@
       "dateLabel": "1 listed days"
     }
   ],
-  "checkedAt": 1794535083054,
+  "checkedAt": 1794568592029,
   "stale": false,
   "sourceURL": "https://www.theroxytheater.org/showtimes/"
 }
