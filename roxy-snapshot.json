@@ -1,32 +1,6 @@
 {
   "items": [
     {
-      "id": "roxy:/show/if-wishes-were-horses/",
-      "title": "If Wishes Were Horses",
-      "venueId": "roxy",
-      "venue": "Roxy Theater",
-      "location": "Missoula",
-      "source": "Roxy Theater official calendar",
-      "url": "https://www.theroxytheater.org/show/if-wishes-were-horses/",
-      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/09/if-wishes-were-horses-horizontal-1024x576.jpeg",
-      "dates": [
-        "2026-11-15"
-      ],
-      "ranges": [],
-      "screenings": [
-        {
-          "date": "2026-11-15",
-          "time": "1:00pm",
-          "startsAt": "2026-11-15T20:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/if-wishes-were-horses/",
-          "format": ""
-        }
-      ],
-      "start": "2026-11-15",
-      "end": "2026-11-15",
-      "dateLabel": "1 listed days"
-    },
-    {
       "id": "roxy:/show/godzilla-minus-zero/",
       "title": "Godzilla Minus Zero",
       "venueId": "roxy",
@@ -36,7 +10,6 @@
       "url": "https://www.theroxytheater.org/show/godzilla-minus-zero/",
       "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/11/gmz-1024x576.jpeg",
       "dates": [
-        "2026-11-15",
         "2026-11-16",
         "2026-11-17",
         "2026-11-18",
@@ -44,20 +17,6 @@
       ],
       "ranges": [],
       "screenings": [
-        {
-          "date": "2026-11-15",
-          "time": "2:30pm",
-          "startsAt": "2026-11-15T21:30:00.000Z",
-          "url": "https://www.theroxytheater.org/show/godzilla-minus-zero/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-15",
-          "time": "5:15pm",
-          "startsAt": "2026-11-16T00:15:00.000Z",
-          "url": "https://www.theroxytheater.org/show/godzilla-minus-zero/",
-          "format": ""
-        },
         {
           "date": "2026-11-16",
           "time": "1:15pm",
@@ -94,9 +53,58 @@
           "format": ""
         }
       ],
-      "start": "2026-11-15",
+      "start": "2026-11-16",
       "end": "2026-11-19",
-      "dateLabel": "5 listed days"
+      "dateLabel": "4 listed days"
+    },
+    {
+      "id": "roxy:/show/you-can-see-everything/",
+      "title": "You Can See Everything",
+      "venueId": "roxy",
+      "venue": "Roxy Theater",
+      "location": "Missoula",
+      "source": "Roxy Theater official calendar",
+      "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
+      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/holmes-1024x575.jpg",
+      "dates": [
+        "2026-11-16",
+        "2026-11-18",
+        "2026-11-19"
+      ],
+      "ranges": [],
+      "screenings": [
+        {
+          "date": "2026-11-16",
+          "time": "1:30pm",
+          "startsAt": "2026-11-16T20:30:00.000Z",
+          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
+          "format": "Open captions"
+        },
+        {
+          "date": "2026-11-16",
+          "time": "4:30pm",
+          "startsAt": "2026-11-16T23:30:00.000Z",
+          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
+          "format": "Open captions"
+        },
+        {
+          "date": "2026-11-18",
+          "time": "4:30pm",
+          "startsAt": "2026-11-18T23:30:00.000Z",
+          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-19",
+          "time": "5:00pm",
+          "startsAt": "2026-11-20T00:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
+          "format": ""
+        }
+      ],
+      "start": "2026-11-16",
+      "end": "2026-11-19",
+      "dateLabel": "3 listed days"
     },
     {
       "id": "roxy:/show/wild-horse-nine/",
@@ -108,7 +116,6 @@
       "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
       "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/11/wh9-1024x578.jpg",
       "dates": [
-        "2026-11-15",
         "2026-11-16",
         "2026-11-17",
         "2026-11-18",
@@ -116,20 +123,6 @@
       ],
       "ranges": [],
       "screenings": [
-        {
-          "date": "2026-11-15",
-          "time": "2:45pm",
-          "startsAt": "2026-11-15T21:45:00.000Z",
-          "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
-          "format": "Open captions"
-        },
-        {
-          "date": "2026-11-15",
-          "time": "5:30pm",
-          "startsAt": "2026-11-16T00:30:00.000Z",
-          "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
-          "format": ""
-        },
         {
           "date": "2026-11-16",
           "time": "2:00pm",
@@ -194,117 +187,9 @@
           "format": ""
         }
       ],
-      "start": "2026-11-15",
-      "end": "2026-11-19",
-      "dateLabel": "5 listed days"
-    },
-    {
-      "id": "roxy:/show/all-that-heaven-allows/",
-      "title": "All That Heaven Allows",
-      "venueId": "roxy",
-      "venue": "Roxy Theater",
-      "location": "Missoula",
-      "source": "Roxy Theater official calendar",
-      "url": "https://www.theroxytheater.org/show/all-that-heaven-allows/",
-      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/allthat-1200-1200-675-675-crop-000000-1024x576.jpg",
-      "dates": [
-        "2026-11-15"
-      ],
-      "ranges": [],
-      "screenings": [
-        {
-          "date": "2026-11-15",
-          "time": "3:00pm",
-          "startsAt": "2026-11-15T22:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/all-that-heaven-allows/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-15",
-          "time": "5:00pm",
-          "startsAt": "2026-11-16T00:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/all-that-heaven-allows/",
-          "format": ""
-        }
-      ],
-      "start": "2026-11-15",
-      "end": "2026-11-15",
-      "dateLabel": "1 listed days"
-    },
-    {
-      "id": "roxy:/show/twin-peaks-episodes-25-26-27/",
-      "title": "Twin Peaks – Episodes 25, 26, & 27",
-      "venueId": "roxy",
-      "venue": "Roxy Theater",
-      "location": "Missoula",
-      "source": "Roxy Theater official calendar",
-      "url": "https://www.theroxytheater.org/show/twin-peaks-episodes-25-26-27/",
-      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/09/david20and20madchen-1024x577.jpg",
-      "dates": [
-        "2026-11-15"
-      ],
-      "ranges": [],
-      "screenings": [
-        {
-          "date": "2026-11-15",
-          "time": "5:15pm",
-          "startsAt": "2026-11-16T00:15:00.000Z",
-          "url": "https://www.theroxytheater.org/show/twin-peaks-episodes-25-26-27/",
-          "format": "Annex"
-        }
-      ],
-      "start": "2026-11-15",
-      "end": "2026-11-15",
-      "dateLabel": "1 listed days"
-    },
-    {
-      "id": "roxy:/show/you-can-see-everything/",
-      "title": "You Can See Everything",
-      "venueId": "roxy",
-      "venue": "Roxy Theater",
-      "location": "Missoula",
-      "source": "Roxy Theater official calendar",
-      "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
-      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/holmes-1024x575.jpg",
-      "dates": [
-        "2026-11-16",
-        "2026-11-18",
-        "2026-11-19"
-      ],
-      "ranges": [],
-      "screenings": [
-        {
-          "date": "2026-11-16",
-          "time": "1:30pm",
-          "startsAt": "2026-11-16T20:30:00.000Z",
-          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
-          "format": "Open captions"
-        },
-        {
-          "date": "2026-11-16",
-          "time": "4:30pm",
-          "startsAt": "2026-11-16T23:30:00.000Z",
-          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
-          "format": "Open captions"
-        },
-        {
-          "date": "2026-11-18",
-          "time": "4:30pm",
-          "startsAt": "2026-11-18T23:30:00.000Z",
-          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-19",
-          "time": "5:00pm",
-          "startsAt": "2026-11-20T00:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
-          "format": ""
-        }
-      ],
       "start": "2026-11-16",
       "end": "2026-11-19",
-      "dateLabel": "3 listed days"
+      "dateLabel": "4 listed days"
     },
     {
       "id": "roxy:/show/microcosmos/",
@@ -1483,7 +1368,7 @@
       "dateLabel": "1 listed days"
     }
   ],
-  "checkedAt": 1794811838746,
+  "checkedAt": 1794858197967,
   "stale": false,
   "sourceURL": "https://www.theroxytheater.org/showtimes/"
 }
