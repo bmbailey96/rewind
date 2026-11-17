@@ -10,27 +10,12 @@
       "url": "https://www.theroxytheater.org/show/godzilla-minus-zero/",
       "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/11/gmz-1024x576.jpeg",
       "dates": [
-        "2026-11-16",
         "2026-11-17",
         "2026-11-18",
         "2026-11-19"
       ],
       "ranges": [],
       "screenings": [
-        {
-          "date": "2026-11-16",
-          "time": "1:15pm",
-          "startsAt": "2026-11-16T20:15:00.000Z",
-          "url": "https://www.theroxytheater.org/show/godzilla-minus-zero/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-16",
-          "time": "4:15pm",
-          "startsAt": "2026-11-16T23:15:00.000Z",
-          "url": "https://www.theroxytheater.org/show/godzilla-minus-zero/",
-          "format": ""
-        },
         {
           "date": "2026-11-17",
           "time": "4:15pm",
@@ -53,126 +38,9 @@
           "format": ""
         }
       ],
-      "start": "2026-11-16",
+      "start": "2026-11-17",
       "end": "2026-11-19",
-      "dateLabel": "4 listed days"
-    },
-    {
-      "id": "roxy:/show/you-can-see-everything/",
-      "title": "You Can See Everything",
-      "venueId": "roxy",
-      "venue": "Roxy Theater",
-      "location": "Missoula",
-      "source": "Roxy Theater official calendar",
-      "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
-      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/holmes-1024x575.jpg",
-      "dates": [
-        "2026-11-16",
-        "2026-11-18",
-        "2026-11-19",
-        "2026-11-20",
-        "2026-11-21",
-        "2026-11-22",
-        "2026-11-23",
-        "2026-11-24"
-      ],
-      "ranges": [],
-      "screenings": [
-        {
-          "date": "2026-11-16",
-          "time": "1:30pm",
-          "startsAt": "2026-11-16T20:30:00.000Z",
-          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
-          "format": "Open captions"
-        },
-        {
-          "date": "2026-11-16",
-          "time": "4:30pm",
-          "startsAt": "2026-11-16T23:30:00.000Z",
-          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
-          "format": "Open captions"
-        },
-        {
-          "date": "2026-11-18",
-          "time": "4:30pm",
-          "startsAt": "2026-11-18T23:30:00.000Z",
-          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-19",
-          "time": "5:00pm",
-          "startsAt": "2026-11-20T00:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-20",
-          "time": "4:15pm",
-          "startsAt": "2026-11-20T23:15:00.000Z",
-          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-20",
-          "time": "7:45pm",
-          "startsAt": "2026-11-21T02:45:00.000Z",
-          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-21",
-          "time": "4:15pm",
-          "startsAt": "2026-11-21T23:15:00.000Z",
-          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-21",
-          "time": "7:45pm",
-          "startsAt": "2026-11-22T02:45:00.000Z",
-          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-22",
-          "time": "4:30pm",
-          "startsAt": "2026-11-22T23:30:00.000Z",
-          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-22",
-          "time": "8:00pm",
-          "startsAt": "2026-11-23T03:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-23",
-          "time": "4:45pm",
-          "startsAt": "2026-11-23T23:45:00.000Z",
-          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-23",
-          "time": "8:15pm",
-          "startsAt": "2026-11-24T03:15:00.000Z",
-          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
-          "format": "Open captions"
-        },
-        {
-          "date": "2026-11-24",
-          "time": "8:15pm",
-          "startsAt": "2026-11-25T03:15:00.000Z",
-          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
-          "format": "Open captions"
-        }
-      ],
-      "start": "2026-11-16",
-      "end": "2026-11-24",
-      "dateLabel": "8 listed days"
+      "dateLabel": "3 listed days"
     },
     {
       "id": "roxy:/show/wild-horse-nine/",
@@ -184,7 +52,6 @@
       "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
       "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/11/wh9-1024x578.jpg",
       "dates": [
-        "2026-11-16",
         "2026-11-17",
         "2026-11-18",
         "2026-11-19",
@@ -197,27 +64,6 @@
       ],
       "ranges": [],
       "screenings": [
-        {
-          "date": "2026-11-16",
-          "time": "2:00pm",
-          "startsAt": "2026-11-16T21:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
-          "format": "Open captions"
-        },
-        {
-          "date": "2026-11-16",
-          "time": "5:00pm",
-          "startsAt": "2026-11-17T00:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-16",
-          "time": "8:00pm",
-          "startsAt": "2026-11-17T03:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
-          "format": "Open captions"
-        },
         {
           "date": "2026-11-17",
           "time": "5:15pm",
@@ -353,8 +199,8 @@
         },
         {
           "date": "2026-11-24",
-          "time": "8:00pm",
-          "startsAt": "2026-11-25T03:00:00.000Z",
+          "time": "8:15pm",
+          "startsAt": "2026-11-25T03:15:00.000Z",
           "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
           "format": ""
         },
@@ -373,35 +219,9 @@
           "format": ""
         }
       ],
-      "start": "2026-11-16",
+      "start": "2026-11-17",
       "end": "2026-11-25",
-      "dateLabel": "10 listed days"
-    },
-    {
-      "id": "roxy:/show/microcosmos/",
-      "title": "Microcosmos",
-      "venueId": "roxy",
-      "venue": "Roxy Theater",
-      "location": "Missoula",
-      "source": "Roxy Theater official calendar",
-      "url": "https://www.theroxytheater.org/show/microcosmos/",
-      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/09/snaily-1024x576.jpg",
-      "dates": [
-        "2026-11-16"
-      ],
-      "ranges": [],
-      "screenings": [
-        {
-          "date": "2026-11-16",
-          "time": "7:30pm",
-          "startsAt": "2026-11-17T02:30:00.000Z",
-          "url": "https://www.theroxytheater.org/show/microcosmos/",
-          "format": ""
-        }
-      ],
-      "start": "2026-11-16",
-      "end": "2026-11-16",
-      "dateLabel": "1 listed days"
+      "dateLabel": "9 listed days"
     },
     {
       "id": "roxy:/show/pickpocket-in-35mm/",
@@ -435,6 +255,108 @@
       "start": "2026-11-17",
       "end": "2026-11-17",
       "dateLabel": "1 listed days"
+    },
+    {
+      "id": "roxy:/show/you-can-see-everything/",
+      "title": "You Can See Everything",
+      "venueId": "roxy",
+      "venue": "Roxy Theater",
+      "location": "Missoula",
+      "source": "Roxy Theater official calendar",
+      "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
+      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/holmes-1024x575.jpg",
+      "dates": [
+        "2026-11-18",
+        "2026-11-19",
+        "2026-11-20",
+        "2026-11-21",
+        "2026-11-22",
+        "2026-11-23",
+        "2026-11-24"
+      ],
+      "ranges": [],
+      "screenings": [
+        {
+          "date": "2026-11-18",
+          "time": "4:30pm",
+          "startsAt": "2026-11-18T23:30:00.000Z",
+          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-19",
+          "time": "5:00pm",
+          "startsAt": "2026-11-20T00:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-20",
+          "time": "4:15pm",
+          "startsAt": "2026-11-20T23:15:00.000Z",
+          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-20",
+          "time": "7:45pm",
+          "startsAt": "2026-11-21T02:45:00.000Z",
+          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-21",
+          "time": "4:15pm",
+          "startsAt": "2026-11-21T23:15:00.000Z",
+          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-21",
+          "time": "7:45pm",
+          "startsAt": "2026-11-22T02:45:00.000Z",
+          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-22",
+          "time": "4:30pm",
+          "startsAt": "2026-11-22T23:30:00.000Z",
+          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-22",
+          "time": "8:00pm",
+          "startsAt": "2026-11-23T03:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-23",
+          "time": "4:45pm",
+          "startsAt": "2026-11-23T23:45:00.000Z",
+          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-23",
+          "time": "8:15pm",
+          "startsAt": "2026-11-24T03:15:00.000Z",
+          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
+          "format": "Open captions"
+        },
+        {
+          "date": "2026-11-24",
+          "time": "8:00pm",
+          "startsAt": "2026-11-25T03:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
+          "format": "Open captions"
+        }
+      ],
+      "start": "2026-11-18",
+      "end": "2026-11-24",
+      "dateLabel": "7 listed days"
     },
     {
       "id": "roxy:/show/pom-poko/",
@@ -1031,6 +953,32 @@
       "start": "2026-11-27",
       "end": "2026-11-29",
       "dateLabel": "3 listed days"
+    },
+    {
+      "id": "roxy:/show/the-water-keepers-with-casey-ryan-and-robert-macdonald/",
+      "title": "The Water Keepers with Casey Ryan and Robert MacDonald",
+      "venueId": "roxy",
+      "venue": "Roxy Theater",
+      "location": "Missoula",
+      "source": "Roxy Theater official calendar",
+      "url": "https://www.theroxytheater.org/show/the-water-keepers-with-casey-ryan-and-robert-macdonald/",
+      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/11/img_5043-1024x576.jpg",
+      "dates": [
+        "2026-12-01"
+      ],
+      "ranges": [],
+      "screenings": [
+        {
+          "date": "2026-12-01",
+          "time": "7:00pm",
+          "startsAt": "2026-12-02T02:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/the-water-keepers-with-casey-ryan-and-robert-macdonald/",
+          "format": ""
+        }
+      ],
+      "start": "2026-12-01",
+      "end": "2026-12-01",
+      "dateLabel": "1 listed days"
     },
     {
       "id": "roxy:/show/gremlins/",
@@ -1779,7 +1727,7 @@
       "dateLabel": "1 listed days"
     }
   ],
-  "checkedAt": 1794887996009,
+  "checkedAt": 1794932147716,
   "stale": false,
   "sourceURL": "https://www.theroxytheater.org/showtimes/"
 }
