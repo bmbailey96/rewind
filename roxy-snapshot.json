@@ -1,48 +1,6 @@
 {
   "items": [
     {
-      "id": "roxy:/show/godzilla-minus-zero/",
-      "title": "Godzilla Minus Zero",
-      "venueId": "roxy",
-      "venue": "Roxy Theater",
-      "location": "Missoula",
-      "source": "Roxy Theater official calendar",
-      "url": "https://www.theroxytheater.org/show/godzilla-minus-zero/",
-      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/11/gmz-1024x576.jpeg",
-      "dates": [
-        "2026-11-17",
-        "2026-11-18",
-        "2026-11-19"
-      ],
-      "ranges": [],
-      "screenings": [
-        {
-          "date": "2026-11-17",
-          "time": "4:15pm",
-          "startsAt": "2026-11-17T23:15:00.000Z",
-          "url": "https://www.theroxytheater.org/show/godzilla-minus-zero/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-18",
-          "time": "5:00pm",
-          "startsAt": "2026-11-19T00:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/godzilla-minus-zero/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-19",
-          "time": "5:15pm",
-          "startsAt": "2026-11-20T00:15:00.000Z",
-          "url": "https://www.theroxytheater.org/show/godzilla-minus-zero/",
-          "format": ""
-        }
-      ],
-      "start": "2026-11-17",
-      "end": "2026-11-19",
-      "dateLabel": "3 listed days"
-    },
-    {
       "id": "roxy:/show/wild-horse-nine/",
       "title": "Wild Horse Nine",
       "venueId": "roxy",
@@ -52,7 +10,6 @@
       "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
       "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/11/wh9-1024x578.jpg",
       "dates": [
-        "2026-11-17",
         "2026-11-18",
         "2026-11-19",
         "2026-11-20",
@@ -64,20 +21,6 @@
       ],
       "ranges": [],
       "screenings": [
-        {
-          "date": "2026-11-17",
-          "time": "5:15pm",
-          "startsAt": "2026-11-18T00:15:00.000Z",
-          "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
-          "format": "Open captions"
-        },
-        {
-          "date": "2026-11-17",
-          "time": "8:00pm",
-          "startsAt": "2026-11-18T03:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
-          "format": ""
-        },
         {
           "date": "2026-11-18",
           "time": "4:15pm",
@@ -219,42 +162,9 @@
           "format": ""
         }
       ],
-      "start": "2026-11-17",
+      "start": "2026-11-18",
       "end": "2026-11-25",
-      "dateLabel": "9 listed days"
-    },
-    {
-      "id": "roxy:/show/pickpocket-in-35mm/",
-      "title": "Pickpocket in 35mm",
-      "venueId": "roxy",
-      "venue": "Roxy Theater",
-      "location": "Missoula",
-      "source": "Roxy Theater official calendar",
-      "url": "https://www.theroxytheater.org/show/pickpocket-in-35mm/",
-      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/pickypocky-1024x577.jpeg",
-      "dates": [
-        "2026-11-17"
-      ],
-      "ranges": [],
-      "screenings": [
-        {
-          "date": "2026-11-17",
-          "time": "5:30pm",
-          "startsAt": "2026-11-18T00:30:00.000Z",
-          "url": "https://www.theroxytheater.org/show/pickpocket-in-35mm/",
-          "format": "35 MM · Subtitled"
-        },
-        {
-          "date": "2026-11-17",
-          "time": "7:30pm",
-          "startsAt": "2026-11-18T02:30:00.000Z",
-          "url": "https://www.theroxytheater.org/show/pickpocket-in-35mm/",
-          "format": "35 MM · Subtitled"
-        }
-      ],
-      "start": "2026-11-17",
-      "end": "2026-11-17",
-      "dateLabel": "1 listed days"
+      "dateLabel": "8 listed days"
     },
     {
       "id": "roxy:/show/you-can-see-everything/",
@@ -357,6 +267,40 @@
       "start": "2026-11-18",
       "end": "2026-11-24",
       "dateLabel": "7 listed days"
+    },
+    {
+      "id": "roxy:/show/godzilla-minus-zero/",
+      "title": "Godzilla Minus Zero",
+      "venueId": "roxy",
+      "venue": "Roxy Theater",
+      "location": "Missoula",
+      "source": "Roxy Theater official calendar",
+      "url": "https://www.theroxytheater.org/show/godzilla-minus-zero/",
+      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/11/gmz-1024x576.jpeg",
+      "dates": [
+        "2026-11-18",
+        "2026-11-19"
+      ],
+      "ranges": [],
+      "screenings": [
+        {
+          "date": "2026-11-18",
+          "time": "5:00pm",
+          "startsAt": "2026-11-19T00:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/godzilla-minus-zero/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-19",
+          "time": "5:15pm",
+          "startsAt": "2026-11-20T00:15:00.000Z",
+          "url": "https://www.theroxytheater.org/show/godzilla-minus-zero/",
+          "format": ""
+        }
+      ],
+      "start": "2026-11-18",
+      "end": "2026-11-19",
+      "dateLabel": "2 listed days"
     },
     {
       "id": "roxy:/show/pom-poko/",
@@ -2005,7 +1949,7 @@
       "dateLabel": "1 listed days"
     }
   ],
-  "checkedAt": 1794963757440,
+  "checkedAt": 1795003038102,
   "stale": false,
   "sourceURL": "https://www.theroxytheater.org/showtimes/"
 }
