@@ -1152,6 +1152,32 @@
       "dateLabel": "2 listed days"
     },
     {
+      "id": "roxy:/show/an-american-tail-2/",
+      "title": "An American Tail",
+      "venueId": "roxy",
+      "venue": "Roxy Theater",
+      "location": "Missoula",
+      "source": "Roxy Theater official calendar",
+      "url": "https://www.theroxytheater.org/show/an-american-tail-2/",
+      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/11/an20american20tail-1200-1200-675-675-crop-000000-1024x576.jpg",
+      "dates": [
+        "2026-12-06"
+      ],
+      "ranges": [],
+      "screenings": [
+        {
+          "date": "2026-12-06",
+          "time": "1:00pm",
+          "startsAt": "2026-12-06T20:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/an-american-tail-2/",
+          "format": ""
+        }
+      ],
+      "start": "2026-12-06",
+      "end": "2026-12-06",
+      "dateLabel": "1 listed days"
+    },
+    {
       "id": "roxy:/show/the-muppet-christmas-carol/",
       "title": "The Muppet Christmas Carol",
       "venueId": "roxy",
@@ -1206,6 +1232,40 @@
       "start": "2026-12-06",
       "end": "2026-12-08",
       "dateLabel": "3 listed days"
+    },
+    {
+      "id": "roxy:/show/little-women-2/",
+      "title": "Little Women",
+      "venueId": "roxy",
+      "venue": "Roxy Theater",
+      "location": "Missoula",
+      "source": "Roxy Theater official calendar",
+      "url": "https://www.theroxytheater.org/show/little-women-2/",
+      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/11/lw20xmas-1024x576.jpg",
+      "dates": [
+        "2026-12-09",
+        "2026-12-10"
+      ],
+      "ranges": [],
+      "screenings": [
+        {
+          "date": "2026-12-09",
+          "time": "7:30pm",
+          "startsAt": "2026-12-10T02:30:00.000Z",
+          "url": "https://www.theroxytheater.org/show/little-women-2/",
+          "format": "Digital"
+        },
+        {
+          "date": "2026-12-10",
+          "time": "7:30pm",
+          "startsAt": "2026-12-11T02:30:00.000Z",
+          "url": "https://www.theroxytheater.org/show/little-women-2/",
+          "format": "Digital"
+        }
+      ],
+      "start": "2026-12-09",
+      "end": "2026-12-10",
+      "dateLabel": "2 listed days"
     },
     {
       "id": "roxy:/show/pronghorn-passage/",
@@ -1530,6 +1590,231 @@
       "dateLabel": "4 listed days"
     },
     {
+      "id": "roxy:/show/a-bad-moms-christmas/",
+      "title": "A Bad Moms Christmas",
+      "venueId": "roxy",
+      "venue": "Roxy Theater",
+      "location": "Missoula",
+      "source": "Roxy Theater official calendar",
+      "url": "https://www.theroxytheater.org/show/a-bad-moms-christmas/",
+      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/11/a-bad-moms-christmas-1200-1200-675-675-crop-000000-1024x576.jpg",
+      "dates": [
+        "2026-12-18",
+        "2026-12-19",
+        "2026-12-20"
+      ],
+      "ranges": [],
+      "screenings": [
+        {
+          "date": "2026-12-18",
+          "time": "5:45pm",
+          "startsAt": "2026-12-19T00:45:00.000Z",
+          "url": "https://www.theroxytheater.org/show/a-bad-moms-christmas/",
+          "format": "Annex"
+        },
+        {
+          "date": "2026-12-18",
+          "time": "8:00pm",
+          "startsAt": "2026-12-19T03:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/a-bad-moms-christmas/",
+          "format": "Annex"
+        },
+        {
+          "date": "2026-12-19",
+          "time": "5:45pm",
+          "startsAt": "2026-12-20T00:45:00.000Z",
+          "url": "https://www.theroxytheater.org/show/a-bad-moms-christmas/",
+          "format": "Annex"
+        },
+        {
+          "date": "2026-12-19",
+          "time": "8:00pm",
+          "startsAt": "2026-12-20T03:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/a-bad-moms-christmas/",
+          "format": "Annex"
+        },
+        {
+          "date": "2026-12-20",
+          "time": "5:45pm",
+          "startsAt": "2026-12-21T00:45:00.000Z",
+          "url": "https://www.theroxytheater.org/show/a-bad-moms-christmas/",
+          "format": "Annex"
+        },
+        {
+          "date": "2026-12-20",
+          "time": "8:00pm",
+          "startsAt": "2026-12-21T03:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/a-bad-moms-christmas/",
+          "format": "Annex"
+        }
+      ],
+      "start": "2026-12-18",
+      "end": "2026-12-20",
+      "dateLabel": "3 listed days"
+    },
+    {
+      "id": "roxy:/show/batman-returns/",
+      "title": "Batman Returns",
+      "venueId": "roxy",
+      "venue": "Roxy Theater",
+      "location": "Missoula",
+      "source": "Roxy Theater official calendar",
+      "url": "https://www.theroxytheater.org/show/batman-returns/",
+      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/11/batman-le-defi-michael-keaton-48f96d-0@1x.jpeg",
+      "dates": [
+        "2026-12-19",
+        "2026-12-20"
+      ],
+      "ranges": [],
+      "screenings": [
+        {
+          "date": "2026-12-19",
+          "time": "8:00pm",
+          "startsAt": "2026-12-20T03:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/batman-returns/",
+          "format": "Digital"
+        },
+        {
+          "date": "2026-12-20",
+          "time": "3:00pm",
+          "startsAt": "2026-12-20T22:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/batman-returns/",
+          "format": "Digital"
+        }
+      ],
+      "start": "2026-12-19",
+      "end": "2026-12-20",
+      "dateLabel": "2 listed days"
+    },
+    {
+      "id": "roxy:/show/national-lampoons-christmas-vacation/",
+      "title": "National Lampoon’s Christmas Vacation",
+      "venueId": "roxy",
+      "venue": "Roxy Theater",
+      "location": "Missoula",
+      "source": "Roxy Theater official calendar",
+      "url": "https://www.theroxytheater.org/show/national-lampoons-christmas-vacation/",
+      "poster": "https://www.theroxytheater.org/wp-content/uploads/2022/11/NLCV.jpg",
+      "dates": [
+        "2026-12-19",
+        "2026-12-20"
+      ],
+      "ranges": [],
+      "screenings": [
+        {
+          "date": "2026-12-19",
+          "time": "8:00pm",
+          "startsAt": "2026-12-20T03:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/national-lampoons-christmas-vacation/",
+          "format": "Digital"
+        },
+        {
+          "date": "2026-12-20",
+          "time": "3:00pm",
+          "startsAt": "2026-12-20T22:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/national-lampoons-christmas-vacation/",
+          "format": "Digital"
+        }
+      ],
+      "start": "2026-12-19",
+      "end": "2026-12-20",
+      "dateLabel": "2 listed days"
+    },
+    {
+      "id": "roxy:/show/the-green-knight/",
+      "title": "The Green Knight",
+      "venueId": "roxy",
+      "venue": "Roxy Theater",
+      "location": "Missoula",
+      "source": "Roxy Theater official calendar",
+      "url": "https://www.theroxytheater.org/show/the-green-knight/",
+      "poster": "https://www.theroxytheater.org/wp-content/uploads/2023/10/thy20axe-1024x576.jpg",
+      "dates": [
+        "2026-12-21"
+      ],
+      "ranges": [],
+      "screenings": [
+        {
+          "date": "2026-12-21",
+          "time": "7:30pm",
+          "startsAt": "2026-12-22T02:30:00.000Z",
+          "url": "https://www.theroxytheater.org/show/the-green-knight/",
+          "format": ""
+        }
+      ],
+      "start": "2026-12-21",
+      "end": "2026-12-21",
+      "dateLabel": "1 listed days"
+    },
+    {
+      "id": "roxy:/show/home-alone/",
+      "title": "Home Alone",
+      "venueId": "roxy",
+      "venue": "Roxy Theater",
+      "location": "Missoula",
+      "source": "Roxy Theater official calendar",
+      "url": "https://www.theroxytheater.org/show/home-alone/",
+      "poster": "https://www.theroxytheater.org/wp-content/uploads/2022/11/ughthislilfucker-1024x576.jpg",
+      "dates": [
+        "2026-12-22",
+        "2026-12-23"
+      ],
+      "ranges": [],
+      "screenings": [
+        {
+          "date": "2026-12-22",
+          "time": "5:30pm",
+          "startsAt": "2026-12-23T00:30:00.000Z",
+          "url": "https://www.theroxytheater.org/show/home-alone/",
+          "format": "Digital"
+        },
+        {
+          "date": "2026-12-23",
+          "time": "5:30pm",
+          "startsAt": "2026-12-24T00:30:00.000Z",
+          "url": "https://www.theroxytheater.org/show/home-alone/",
+          "format": "Digital"
+        }
+      ],
+      "start": "2026-12-22",
+      "end": "2026-12-23",
+      "dateLabel": "2 listed days"
+    },
+    {
+      "id": "roxy:/show/love-actually/",
+      "title": "Love Actually",
+      "venueId": "roxy",
+      "venue": "Roxy Theater",
+      "location": "Missoula",
+      "source": "Roxy Theater official calendar",
+      "url": "https://www.theroxytheater.org/show/love-actually/",
+      "poster": "https://www.theroxytheater.org/wp-content/uploads/2022/11/derp-1024x576.jpg",
+      "dates": [
+        "2026-12-22",
+        "2026-12-23"
+      ],
+      "ranges": [],
+      "screenings": [
+        {
+          "date": "2026-12-22",
+          "time": "7:30pm",
+          "startsAt": "2026-12-23T02:30:00.000Z",
+          "url": "https://www.theroxytheater.org/show/love-actually/",
+          "format": "Digital"
+        },
+        {
+          "date": "2026-12-23",
+          "time": "7:30pm",
+          "startsAt": "2026-12-24T02:30:00.000Z",
+          "url": "https://www.theroxytheater.org/show/love-actually/",
+          "format": "Digital"
+        }
+      ],
+      "start": "2026-12-22",
+      "end": "2026-12-23",
+      "dateLabel": "2 listed days"
+    },
+    {
       "id": "roxy:/show/my-night-at-mauds/",
       "title": "My Night at Maud’s",
       "venueId": "roxy",
@@ -1687,13 +1972,6 @@
           "startsAt": "2027-01-24T22:30:00.000Z",
           "url": "https://www.theroxytheater.org/show/arsenic-and-old-lace/",
           "format": ""
-        },
-        {
-          "date": "2027-01-24",
-          "time": "5:30pm",
-          "startsAt": "2027-01-25T00:30:00.000Z",
-          "url": "https://www.theroxytheater.org/show/arsenic-and-old-lace/",
-          "format": ""
         }
       ],
       "start": "2027-01-24",
@@ -1727,7 +2005,7 @@
       "dateLabel": "1 listed days"
     }
   ],
-  "checkedAt": 1794932147716,
+  "checkedAt": 1794963757440,
   "stale": false,
   "sourceURL": "https://www.theroxytheater.org/showtimes/"
 }
