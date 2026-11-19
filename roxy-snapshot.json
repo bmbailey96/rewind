@@ -10,7 +10,6 @@
       "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
       "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/11/wh9-1024x578.jpg",
       "dates": [
-        "2026-11-18",
         "2026-11-19",
         "2026-11-20",
         "2026-11-21",
@@ -21,20 +20,6 @@
       ],
       "ranges": [],
       "screenings": [
-        {
-          "date": "2026-11-18",
-          "time": "4:15pm",
-          "startsAt": "2026-11-18T23:15:00.000Z",
-          "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-18",
-          "time": "7:45pm",
-          "startsAt": "2026-11-19T02:45:00.000Z",
-          "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
-          "format": ""
-        },
         {
           "date": "2026-11-19",
           "time": "4:30pm",
@@ -162,9 +147,9 @@
           "format": ""
         }
       ],
-      "start": "2026-11-18",
+      "start": "2026-11-19",
       "end": "2026-11-25",
-      "dateLabel": "8 listed days"
+      "dateLabel": "7 listed days"
     },
     {
       "id": "roxy:/show/you-can-see-everything/",
@@ -176,7 +161,6 @@
       "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
       "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/holmes-1024x575.jpg",
       "dates": [
-        "2026-11-18",
         "2026-11-19",
         "2026-11-20",
         "2026-11-21",
@@ -186,13 +170,6 @@
       ],
       "ranges": [],
       "screenings": [
-        {
-          "date": "2026-11-18",
-          "time": "4:30pm",
-          "startsAt": "2026-11-18T23:30:00.000Z",
-          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
-          "format": ""
-        },
         {
           "date": "2026-11-19",
           "time": "5:00pm",
@@ -264,9 +241,9 @@
           "format": "Open captions"
         }
       ],
-      "start": "2026-11-18",
+      "start": "2026-11-19",
       "end": "2026-11-24",
-      "dateLabel": "7 listed days"
+      "dateLabel": "6 listed days"
     },
     {
       "id": "roxy:/show/godzilla-minus-zero/",
@@ -278,18 +255,10 @@
       "url": "https://www.theroxytheater.org/show/godzilla-minus-zero/",
       "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/11/gmz-1024x576.jpeg",
       "dates": [
-        "2026-11-18",
         "2026-11-19"
       ],
       "ranges": [],
       "screenings": [
-        {
-          "date": "2026-11-18",
-          "time": "5:00pm",
-          "startsAt": "2026-11-19T00:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/godzilla-minus-zero/",
-          "format": ""
-        },
         {
           "date": "2026-11-19",
           "time": "5:15pm",
@@ -298,60 +267,8 @@
           "format": ""
         }
       ],
-      "start": "2026-11-18",
+      "start": "2026-11-19",
       "end": "2026-11-19",
-      "dateLabel": "2 listed days"
-    },
-    {
-      "id": "roxy:/show/pom-poko/",
-      "title": "Pom Poko",
-      "venueId": "roxy",
-      "venue": "Roxy Theater",
-      "location": "Missoula",
-      "source": "Roxy Theater official calendar",
-      "url": "https://www.theroxytheater.org/show/pom-poko/",
-      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/pommy20po-1024x577.jpg",
-      "dates": [
-        "2026-11-18"
-      ],
-      "ranges": [],
-      "screenings": [
-        {
-          "date": "2026-11-18",
-          "time": "7:00pm",
-          "startsAt": "2026-11-19T02:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/pom-poko/",
-          "format": "Subtitled"
-        }
-      ],
-      "start": "2026-11-18",
-      "end": "2026-11-18",
-      "dateLabel": "1 listed days"
-    },
-    {
-      "id": "roxy:/show/missoulas-homegrown-comedy/",
-      "title": "Missoula’s HomeGrown Comedy – Food Bank Fundraiser!",
-      "venueId": "roxy",
-      "venue": "Roxy Theater",
-      "location": "Missoula",
-      "source": "Roxy Theater official calendar",
-      "url": "https://www.theroxytheater.org/show/missoulas-homegrown-comedy/",
-      "poster": "https://www.theroxytheater.org/wp-content/uploads/2022/02/howardcool-1024x576.jpg",
-      "dates": [
-        "2026-11-18"
-      ],
-      "ranges": [],
-      "screenings": [
-        {
-          "date": "2026-11-18",
-          "time": "8:00pm",
-          "startsAt": "2026-11-19T03:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/missoulas-homegrown-comedy/",
-          "format": ""
-        }
-      ],
-      "start": "2026-11-18",
-      "end": "2026-11-18",
       "dateLabel": "1 listed days"
     },
     {
@@ -1094,6 +1011,32 @@
       "start": "2026-12-05",
       "end": "2026-12-14",
       "dateLabel": "2 listed days"
+    },
+    {
+      "id": "roxy:/show/parade-of-lights/",
+      "title": "Holiday on Higgins",
+      "venueId": "roxy",
+      "venue": "Roxy Theater",
+      "location": "Missoula",
+      "source": "Roxy Theater official calendar",
+      "url": "https://www.theroxytheater.org/show/parade-of-lights/",
+      "poster": "https://www.theroxytheater.org/wp-content/uploads/2022/11/rudolph-1200-1200-675-675-crop-000000-1024x576.jpg",
+      "dates": [
+        "2026-12-05"
+      ],
+      "ranges": [],
+      "screenings": [
+        {
+          "date": "2026-12-05",
+          "time": "12:00pm",
+          "startsAt": "2026-12-05T19:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/parade-of-lights/",
+          "format": ""
+        }
+      ],
+      "start": "2026-12-05",
+      "end": "2026-12-05",
+      "dateLabel": "1 listed days"
     },
     {
       "id": "roxy:/show/an-american-tail-2/",
@@ -1949,7 +1892,7 @@
       "dateLabel": "1 listed days"
     }
   ],
-  "checkedAt": 1795056018091,
+  "checkedAt": 1795089271338,
   "stale": false,
   "sourceURL": "https://www.theroxytheater.org/showtimes/"
 }
