@@ -1121,6 +1121,39 @@
       "dateLabel": "3 listed days"
     },
     {
+      "id": "roxy:/show/big-sky-shorts-block/",
+      "title": "Big Sky Shorts Block",
+      "venueId": "roxy",
+      "venue": "Roxy Theater",
+      "location": "Missoula",
+      "source": "Roxy Theater official calendar",
+      "url": "https://www.theroxytheater.org/show/big-sky-shorts-block/",
+      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/11/boys20of20summer-1024x576.jpeg",
+      "dates": [
+        "2026-12-08"
+      ],
+      "ranges": [],
+      "screenings": [
+        {
+          "date": "2026-12-08",
+          "time": "5:15pm",
+          "startsAt": "2026-12-09T00:15:00.000Z",
+          "url": "https://www.theroxytheater.org/show/big-sky-shorts-block/",
+          "format": ""
+        },
+        {
+          "date": "2026-12-08",
+          "time": "7:45pm",
+          "startsAt": "2026-12-09T02:45:00.000Z",
+          "url": "https://www.theroxytheater.org/show/big-sky-shorts-block/",
+          "format": ""
+        }
+      ],
+      "start": "2026-12-08",
+      "end": "2026-12-08",
+      "dateLabel": "1 listed days"
+    },
+    {
       "id": "roxy:/show/little-women-2/",
       "title": "Little Women",
       "venueId": "roxy",
@@ -1419,7 +1452,7 @@
           "time": "8:00pm",
           "startsAt": "2026-12-18T03:00:00.000Z",
           "url": "https://www.theroxytheater.org/show/get-crazy-in-35mm/",
-          "format": ""
+          "format": "35 MM"
         }
       ],
       "start": "2026-12-17",
@@ -1892,7 +1925,7 @@
       "dateLabel": "1 listed days"
     }
   ],
-  "checkedAt": 1795089271338,
+  "checkedAt": 1795121362539,
   "stale": false,
   "sourceURL": "https://www.theroxytheater.org/showtimes/"
 }
