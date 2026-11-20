@@ -1,303 +1,6 @@
 {
   "items": [
     {
-      "id": "roxy:/show/wild-horse-nine/",
-      "title": "Wild Horse Nine",
-      "venueId": "roxy",
-      "venue": "Roxy Theater",
-      "location": "Missoula",
-      "source": "Roxy Theater official calendar",
-      "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
-      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/11/wh9-1024x578.jpg",
-      "dates": [
-        "2026-11-19",
-        "2026-11-20",
-        "2026-11-21",
-        "2026-11-22",
-        "2026-11-23",
-        "2026-11-24",
-        "2026-11-25"
-      ],
-      "ranges": [],
-      "screenings": [
-        {
-          "date": "2026-11-19",
-          "time": "4:30pm",
-          "startsAt": "2026-11-19T23:30:00.000Z",
-          "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-19",
-          "time": "8:30pm",
-          "startsAt": "2026-11-20T03:30:00.000Z",
-          "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-20",
-          "time": "3:00pm",
-          "startsAt": "2026-11-20T22:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
-          "format": "Open captions"
-        },
-        {
-          "date": "2026-11-20",
-          "time": "5:30pm",
-          "startsAt": "2026-11-21T00:30:00.000Z",
-          "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-20",
-          "time": "8:15pm",
-          "startsAt": "2026-11-21T03:15:00.000Z",
-          "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-21",
-          "time": "3:00pm",
-          "startsAt": "2026-11-21T22:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
-          "format": "Open captions"
-        },
-        {
-          "date": "2026-11-21",
-          "time": "5:30pm",
-          "startsAt": "2026-11-22T00:30:00.000Z",
-          "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-21",
-          "time": "8:15pm",
-          "startsAt": "2026-11-22T03:15:00.000Z",
-          "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-22",
-          "time": "2:30pm",
-          "startsAt": "2026-11-22T21:30:00.000Z",
-          "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
-          "format": "Open captions"
-        },
-        {
-          "date": "2026-11-22",
-          "time": "5:00pm",
-          "startsAt": "2026-11-23T00:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-22",
-          "time": "7:30pm",
-          "startsAt": "2026-11-23T02:30:00.000Z",
-          "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-23",
-          "time": "3:00pm",
-          "startsAt": "2026-11-23T22:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
-          "format": "Open captions"
-        },
-        {
-          "date": "2026-11-23",
-          "time": "5:30pm",
-          "startsAt": "2026-11-24T00:30:00.000Z",
-          "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-23",
-          "time": "8:00pm",
-          "startsAt": "2026-11-24T03:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
-          "format": "Open captions"
-        },
-        {
-          "date": "2026-11-24",
-          "time": "5:30pm",
-          "startsAt": "2026-11-25T00:30:00.000Z",
-          "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
-          "format": "Open captions"
-        },
-        {
-          "date": "2026-11-24",
-          "time": "8:15pm",
-          "startsAt": "2026-11-25T03:15:00.000Z",
-          "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-25",
-          "time": "2:00pm",
-          "startsAt": "2026-11-25T21:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-25",
-          "time": "4:30pm",
-          "startsAt": "2026-11-25T23:30:00.000Z",
-          "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
-          "format": ""
-        }
-      ],
-      "start": "2026-11-19",
-      "end": "2026-11-25",
-      "dateLabel": "7 listed days"
-    },
-    {
-      "id": "roxy:/show/you-can-see-everything/",
-      "title": "You Can See Everything",
-      "venueId": "roxy",
-      "venue": "Roxy Theater",
-      "location": "Missoula",
-      "source": "Roxy Theater official calendar",
-      "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
-      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/holmes-1024x575.jpg",
-      "dates": [
-        "2026-11-19",
-        "2026-11-20",
-        "2026-11-21",
-        "2026-11-22",
-        "2026-11-23",
-        "2026-11-24"
-      ],
-      "ranges": [],
-      "screenings": [
-        {
-          "date": "2026-11-19",
-          "time": "5:00pm",
-          "startsAt": "2026-11-20T00:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-20",
-          "time": "4:15pm",
-          "startsAt": "2026-11-20T23:15:00.000Z",
-          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-20",
-          "time": "7:45pm",
-          "startsAt": "2026-11-21T02:45:00.000Z",
-          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-21",
-          "time": "4:15pm",
-          "startsAt": "2026-11-21T23:15:00.000Z",
-          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-21",
-          "time": "7:45pm",
-          "startsAt": "2026-11-22T02:45:00.000Z",
-          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-22",
-          "time": "4:30pm",
-          "startsAt": "2026-11-22T23:30:00.000Z",
-          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-22",
-          "time": "8:00pm",
-          "startsAt": "2026-11-23T03:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-23",
-          "time": "4:45pm",
-          "startsAt": "2026-11-23T23:45:00.000Z",
-          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-23",
-          "time": "8:15pm",
-          "startsAt": "2026-11-24T03:15:00.000Z",
-          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
-          "format": "Open captions"
-        },
-        {
-          "date": "2026-11-24",
-          "time": "8:00pm",
-          "startsAt": "2026-11-25T03:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
-          "format": "Open captions"
-        }
-      ],
-      "start": "2026-11-19",
-      "end": "2026-11-24",
-      "dateLabel": "6 listed days"
-    },
-    {
-      "id": "roxy:/show/godzilla-minus-zero/",
-      "title": "Godzilla Minus Zero",
-      "venueId": "roxy",
-      "venue": "Roxy Theater",
-      "location": "Missoula",
-      "source": "Roxy Theater official calendar",
-      "url": "https://www.theroxytheater.org/show/godzilla-minus-zero/",
-      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/11/gmz-1024x576.jpeg",
-      "dates": [
-        "2026-11-19"
-      ],
-      "ranges": [],
-      "screenings": [
-        {
-          "date": "2026-11-19",
-          "time": "5:15pm",
-          "startsAt": "2026-11-20T00:15:00.000Z",
-          "url": "https://www.theroxytheater.org/show/godzilla-minus-zero/",
-          "format": ""
-        }
-      ],
-      "start": "2026-11-19",
-      "end": "2026-11-19",
-      "dateLabel": "1 listed days"
-    },
-    {
-      "id": "roxy:/show/the-killer-2/",
-      "title": "The Killer",
-      "venueId": "roxy",
-      "venue": "Roxy Theater",
-      "location": "Missoula",
-      "source": "Roxy Theater official calendar",
-      "url": "https://www.theroxytheater.org/show/the-killer-2/",
-      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/john20woo20killa-1024x575.jpg",
-      "dates": [
-        "2026-11-19"
-      ],
-      "ranges": [],
-      "screenings": [
-        {
-          "date": "2026-11-19",
-          "time": "8:00pm",
-          "startsAt": "2026-11-20T03:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/the-killer-2/",
-          "format": "Subtitled"
-        }
-      ],
-      "start": "2026-11-19",
-      "end": "2026-11-19",
-      "dateLabel": "1 listed days"
-    },
-    {
       "id": "roxy:/show/diary-of-a-wimpy-kid/",
       "title": "Diary of a Wimpy Kid",
       "venueId": "roxy",
@@ -482,6 +185,228 @@
       "start": "2026-11-20",
       "end": "2026-11-25",
       "dateLabel": "6 listed days"
+    },
+    {
+      "id": "roxy:/show/wild-horse-nine/",
+      "title": "Wild Horse Nine",
+      "venueId": "roxy",
+      "venue": "Roxy Theater",
+      "location": "Missoula",
+      "source": "Roxy Theater official calendar",
+      "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
+      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/11/wh9-1024x578.jpg",
+      "dates": [
+        "2026-11-20",
+        "2026-11-21",
+        "2026-11-22",
+        "2026-11-23",
+        "2026-11-24",
+        "2026-11-25"
+      ],
+      "ranges": [],
+      "screenings": [
+        {
+          "date": "2026-11-20",
+          "time": "3:00pm",
+          "startsAt": "2026-11-20T22:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
+          "format": "Open captions"
+        },
+        {
+          "date": "2026-11-20",
+          "time": "5:30pm",
+          "startsAt": "2026-11-21T00:30:00.000Z",
+          "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-20",
+          "time": "8:15pm",
+          "startsAt": "2026-11-21T03:15:00.000Z",
+          "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-21",
+          "time": "3:00pm",
+          "startsAt": "2026-11-21T22:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
+          "format": "Open captions"
+        },
+        {
+          "date": "2026-11-21",
+          "time": "5:30pm",
+          "startsAt": "2026-11-22T00:30:00.000Z",
+          "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-21",
+          "time": "8:15pm",
+          "startsAt": "2026-11-22T03:15:00.000Z",
+          "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-22",
+          "time": "2:30pm",
+          "startsAt": "2026-11-22T21:30:00.000Z",
+          "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
+          "format": "Open captions"
+        },
+        {
+          "date": "2026-11-22",
+          "time": "5:00pm",
+          "startsAt": "2026-11-23T00:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-22",
+          "time": "7:30pm",
+          "startsAt": "2026-11-23T02:30:00.000Z",
+          "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-23",
+          "time": "3:00pm",
+          "startsAt": "2026-11-23T22:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
+          "format": "Open captions"
+        },
+        {
+          "date": "2026-11-23",
+          "time": "5:30pm",
+          "startsAt": "2026-11-24T00:30:00.000Z",
+          "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-23",
+          "time": "8:00pm",
+          "startsAt": "2026-11-24T03:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
+          "format": "Open captions"
+        },
+        {
+          "date": "2026-11-24",
+          "time": "5:30pm",
+          "startsAt": "2026-11-25T00:30:00.000Z",
+          "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
+          "format": "Open captions"
+        },
+        {
+          "date": "2026-11-24",
+          "time": "8:15pm",
+          "startsAt": "2026-11-25T03:15:00.000Z",
+          "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-25",
+          "time": "2:00pm",
+          "startsAt": "2026-11-25T21:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-25",
+          "time": "4:30pm",
+          "startsAt": "2026-11-25T23:30:00.000Z",
+          "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
+          "format": ""
+        }
+      ],
+      "start": "2026-11-20",
+      "end": "2026-11-25",
+      "dateLabel": "6 listed days"
+    },
+    {
+      "id": "roxy:/show/you-can-see-everything/",
+      "title": "You Can See Everything",
+      "venueId": "roxy",
+      "venue": "Roxy Theater",
+      "location": "Missoula",
+      "source": "Roxy Theater official calendar",
+      "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
+      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/holmes-1024x575.jpg",
+      "dates": [
+        "2026-11-20",
+        "2026-11-21",
+        "2026-11-22",
+        "2026-11-23",
+        "2026-11-24"
+      ],
+      "ranges": [],
+      "screenings": [
+        {
+          "date": "2026-11-20",
+          "time": "4:15pm",
+          "startsAt": "2026-11-20T23:15:00.000Z",
+          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-20",
+          "time": "7:45pm",
+          "startsAt": "2026-11-21T02:45:00.000Z",
+          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-21",
+          "time": "4:15pm",
+          "startsAt": "2026-11-21T23:15:00.000Z",
+          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-21",
+          "time": "7:45pm",
+          "startsAt": "2026-11-22T02:45:00.000Z",
+          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-22",
+          "time": "4:30pm",
+          "startsAt": "2026-11-22T23:30:00.000Z",
+          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-22",
+          "time": "8:00pm",
+          "startsAt": "2026-11-23T03:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-23",
+          "time": "4:45pm",
+          "startsAt": "2026-11-23T23:45:00.000Z",
+          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-23",
+          "time": "8:15pm",
+          "startsAt": "2026-11-24T03:15:00.000Z",
+          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
+          "format": "Open captions"
+        },
+        {
+          "date": "2026-11-24",
+          "time": "8:00pm",
+          "startsAt": "2026-11-25T03:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
+          "format": "Open captions"
+        }
+      ],
+      "start": "2026-11-20",
+      "end": "2026-11-24",
+      "dateLabel": "5 listed days"
     },
     {
       "id": "roxy:/show/twin-peaks-episodes-28-29-30/",
@@ -1951,7 +1876,7 @@
       "dateLabel": "1 listed days"
     }
   ],
-  "checkedAt": 1795141537188,
+  "checkedAt": 1795175745136,
   "stale": false,
   "sourceURL": "https://www.theroxytheater.org/showtimes/"
 }
