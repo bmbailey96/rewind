@@ -10,18 +10,10 @@
       "url": "https://www.theroxytheater.org/show/diary-of-a-wimpy-kid/",
       "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/09/weempee-1024x576.jpg",
       "dates": [
-        "2026-11-20",
         "2026-11-21"
       ],
       "ranges": [],
       "screenings": [
-        {
-          "date": "2026-11-20",
-          "time": "1:00pm",
-          "startsAt": "2026-11-20T20:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/diary-of-a-wimpy-kid/",
-          "format": ""
-        },
         {
           "date": "2026-11-21",
           "time": "1:00pm",
@@ -30,9 +22,9 @@
           "format": ""
         }
       ],
-      "start": "2026-11-20",
+      "start": "2026-11-21",
       "end": "2026-11-21",
-      "dateLabel": "2 listed days"
+      "dateLabel": "1 listed days"
     },
     {
       "id": "roxy:/show/once-upon-a-time-in-harlem/",
@@ -44,7 +36,6 @@
       "url": "https://www.theroxytheater.org/show/once-upon-a-time-in-harlem/",
       "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/11/once20upon20a20time20in20harlem-1024x576.jpg",
       "dates": [
-        "2026-11-20",
         "2026-11-21",
         "2026-11-22",
         "2026-11-23",
@@ -52,13 +43,6 @@
       ],
       "ranges": [],
       "screenings": [
-        {
-          "date": "2026-11-20",
-          "time": "1:45pm",
-          "startsAt": "2026-11-20T20:45:00.000Z",
-          "url": "https://www.theroxytheater.org/show/once-upon-a-time-in-harlem/",
-          "format": "Open captions"
-        },
         {
           "date": "2026-11-21",
           "time": "2:00pm",
@@ -95,9 +79,9 @@
           "format": ""
         }
       ],
-      "start": "2026-11-20",
+      "start": "2026-11-21",
       "end": "2026-11-25",
-      "dateLabel": "5 listed days"
+      "dateLabel": "4 listed days"
     },
     {
       "id": "roxy:/show/fjord/",
@@ -109,7 +93,6 @@
       "url": "https://www.theroxytheater.org/show/fjord/",
       "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/11/fjord-1024x576.jpg",
       "dates": [
-        "2026-11-20",
         "2026-11-21",
         "2026-11-22",
         "2026-11-23",
@@ -118,20 +101,6 @@
       ],
       "ranges": [],
       "screenings": [
-        {
-          "date": "2026-11-20",
-          "time": "2:00pm",
-          "startsAt": "2026-11-20T21:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/fjord/",
-          "format": "Open captions"
-        },
-        {
-          "date": "2026-11-20",
-          "time": "5:00pm",
-          "startsAt": "2026-11-21T00:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/fjord/",
-          "format": ""
-        },
         {
           "date": "2026-11-21",
           "time": "2:45pm",
@@ -182,9 +151,9 @@
           "format": ""
         }
       ],
-      "start": "2026-11-20",
+      "start": "2026-11-21",
       "end": "2026-11-25",
-      "dateLabel": "6 listed days"
+      "dateLabel": "5 listed days"
     },
     {
       "id": "roxy:/show/wild-horse-nine/",
@@ -196,7 +165,6 @@
       "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
       "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/11/wh9-1024x578.jpg",
       "dates": [
-        "2026-11-20",
         "2026-11-21",
         "2026-11-22",
         "2026-11-23",
@@ -205,27 +173,6 @@
       ],
       "ranges": [],
       "screenings": [
-        {
-          "date": "2026-11-20",
-          "time": "3:00pm",
-          "startsAt": "2026-11-20T22:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
-          "format": "Open captions"
-        },
-        {
-          "date": "2026-11-20",
-          "time": "5:30pm",
-          "startsAt": "2026-11-21T00:30:00.000Z",
-          "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-20",
-          "time": "8:15pm",
-          "startsAt": "2026-11-21T03:15:00.000Z",
-          "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
-          "format": ""
-        },
         {
           "date": "2026-11-21",
           "time": "3:00pm",
@@ -318,9 +265,9 @@
           "format": ""
         }
       ],
-      "start": "2026-11-20",
+      "start": "2026-11-21",
       "end": "2026-11-25",
-      "dateLabel": "6 listed days"
+      "dateLabel": "5 listed days"
     },
     {
       "id": "roxy:/show/you-can-see-everything/",
@@ -332,7 +279,6 @@
       "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
       "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/holmes-1024x575.jpg",
       "dates": [
-        "2026-11-20",
         "2026-11-21",
         "2026-11-22",
         "2026-11-23",
@@ -340,20 +286,6 @@
       ],
       "ranges": [],
       "screenings": [
-        {
-          "date": "2026-11-20",
-          "time": "4:15pm",
-          "startsAt": "2026-11-20T23:15:00.000Z",
-          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-20",
-          "time": "7:45pm",
-          "startsAt": "2026-11-21T02:45:00.000Z",
-          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
-          "format": ""
-        },
         {
           "date": "2026-11-21",
           "time": "4:15pm",
@@ -404,9 +336,9 @@
           "format": "Open captions"
         }
       ],
-      "start": "2026-11-20",
+      "start": "2026-11-21",
       "end": "2026-11-24",
-      "dateLabel": "5 listed days"
+      "dateLabel": "4 listed days"
     },
     {
       "id": "roxy:/show/twin-peaks-episodes-28-29-30/",
@@ -418,26 +350,11 @@
       "url": "https://www.theroxytheater.org/show/twin-peaks-episodes-28-29-30/",
       "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/09/bob20n20dale-1024x577.jpg",
       "dates": [
-        "2026-11-20",
         "2026-11-21",
         "2026-11-22"
       ],
       "ranges": [],
       "screenings": [
-        {
-          "date": "2026-11-20",
-          "time": "5:15pm",
-          "startsAt": "2026-11-21T00:15:00.000Z",
-          "url": "https://www.theroxytheater.org/show/twin-peaks-episodes-28-29-30/",
-          "format": "Annex"
-        },
-        {
-          "date": "2026-11-20",
-          "time": "8:00pm",
-          "startsAt": "2026-11-21T03:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/twin-peaks-episodes-28-29-30/",
-          "format": "Annex"
-        },
         {
           "date": "2026-11-21",
           "time": "5:15pm",
@@ -467,35 +384,9 @@
           "format": "Annex"
         }
       ],
-      "start": "2026-11-20",
+      "start": "2026-11-21",
       "end": "2026-11-22",
-      "dateLabel": "3 listed days"
-    },
-    {
-      "id": "roxy:/show/society/",
-      "title": "Society",
-      "venueId": "roxy",
-      "venue": "Roxy Theater",
-      "location": "Missoula",
-      "source": "Roxy Theater official calendar",
-      "url": "https://www.theroxytheater.org/show/society/",
-      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/society-1_1434613071-1024x576.jpg",
-      "dates": [
-        "2026-11-20"
-      ],
-      "ranges": [],
-      "screenings": [
-        {
-          "date": "2026-11-20",
-          "time": "8:00pm",
-          "startsAt": "2026-11-21T03:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/society/",
-          "format": ""
-        }
-      ],
-      "start": "2026-11-20",
-      "end": "2026-11-20",
-      "dateLabel": "1 listed days"
+      "dateLabel": "2 listed days"
     },
     {
       "id": "roxy:/show/the-phantom-of-the-opera/",
@@ -1876,7 +1767,7 @@
       "dateLabel": "1 listed days"
     }
   ],
-  "checkedAt": 1795228424974,
+  "checkedAt": 1795260436722,
   "stale": false,
   "sourceURL": "https://www.theroxytheater.org/showtimes/"
 }
