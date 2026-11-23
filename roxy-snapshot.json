@@ -10,27 +10,12 @@
       "url": "https://www.theroxytheater.org/show/fjord/",
       "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/11/fjord-1024x576.jpg",
       "dates": [
-        "2026-11-22",
         "2026-11-23",
         "2026-11-24",
         "2026-11-25"
       ],
       "ranges": [],
       "screenings": [
-        {
-          "date": "2026-11-22",
-          "time": "1:15pm",
-          "startsAt": "2026-11-22T20:15:00.000Z",
-          "url": "https://www.theroxytheater.org/show/fjord/",
-          "format": "Open captions"
-        },
-        {
-          "date": "2026-11-22",
-          "time": "6:30pm",
-          "startsAt": "2026-11-23T01:30:00.000Z",
-          "url": "https://www.theroxytheater.org/show/fjord/",
-          "format": ""
-        },
         {
           "date": "2026-11-23",
           "time": "1:45pm",
@@ -60,9 +45,43 @@
           "format": ""
         }
       ],
-      "start": "2026-11-22",
+      "start": "2026-11-23",
       "end": "2026-11-25",
-      "dateLabel": "4 listed days"
+      "dateLabel": "3 listed days"
+    },
+    {
+      "id": "roxy:/show/once-upon-a-time-in-harlem/",
+      "title": "Once Upon a Time in Harlem",
+      "venueId": "roxy",
+      "venue": "Roxy Theater",
+      "location": "Missoula",
+      "source": "Roxy Theater official calendar",
+      "url": "https://www.theroxytheater.org/show/once-upon-a-time-in-harlem/",
+      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/11/once20upon20a20time20in20harlem-1024x576.jpg",
+      "dates": [
+        "2026-11-23",
+        "2026-11-25"
+      ],
+      "ranges": [],
+      "screenings": [
+        {
+          "date": "2026-11-23",
+          "time": "2:15pm",
+          "startsAt": "2026-11-23T21:15:00.000Z",
+          "url": "https://www.theroxytheater.org/show/once-upon-a-time-in-harlem/",
+          "format": "Open captions"
+        },
+        {
+          "date": "2026-11-25",
+          "time": "3:15pm",
+          "startsAt": "2026-11-25T22:15:00.000Z",
+          "url": "https://www.theroxytheater.org/show/once-upon-a-time-in-harlem/",
+          "format": ""
+        }
+      ],
+      "start": "2026-11-23",
+      "end": "2026-11-25",
+      "dateLabel": "2 listed days"
     },
     {
       "id": "roxy:/show/wild-horse-nine/",
@@ -74,34 +93,12 @@
       "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
       "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/11/wh9-1024x578.jpg",
       "dates": [
-        "2026-11-22",
         "2026-11-23",
         "2026-11-24",
         "2026-11-25"
       ],
       "ranges": [],
       "screenings": [
-        {
-          "date": "2026-11-22",
-          "time": "2:30pm",
-          "startsAt": "2026-11-22T21:30:00.000Z",
-          "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
-          "format": "Open captions"
-        },
-        {
-          "date": "2026-11-22",
-          "time": "5:00pm",
-          "startsAt": "2026-11-23T00:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-22",
-          "time": "7:30pm",
-          "startsAt": "2026-11-23T02:30:00.000Z",
-          "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
-          "format": ""
-        },
         {
           "date": "2026-11-23",
           "time": "3:00pm",
@@ -152,49 +149,7 @@
           "format": ""
         }
       ],
-      "start": "2026-11-22",
-      "end": "2026-11-25",
-      "dateLabel": "4 listed days"
-    },
-    {
-      "id": "roxy:/show/once-upon-a-time-in-harlem/",
-      "title": "Once Upon a Time in Harlem",
-      "venueId": "roxy",
-      "venue": "Roxy Theater",
-      "location": "Missoula",
-      "source": "Roxy Theater official calendar",
-      "url": "https://www.theroxytheater.org/show/once-upon-a-time-in-harlem/",
-      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/11/once20upon20a20time20in20harlem-1024x576.jpg",
-      "dates": [
-        "2026-11-22",
-        "2026-11-23",
-        "2026-11-25"
-      ],
-      "ranges": [],
-      "screenings": [
-        {
-          "date": "2026-11-22",
-          "time": "4:15pm",
-          "startsAt": "2026-11-22T23:15:00.000Z",
-          "url": "https://www.theroxytheater.org/show/once-upon-a-time-in-harlem/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-23",
-          "time": "2:15pm",
-          "startsAt": "2026-11-23T21:15:00.000Z",
-          "url": "https://www.theroxytheater.org/show/once-upon-a-time-in-harlem/",
-          "format": "Open captions"
-        },
-        {
-          "date": "2026-11-25",
-          "time": "3:15pm",
-          "startsAt": "2026-11-25T22:15:00.000Z",
-          "url": "https://www.theroxytheater.org/show/once-upon-a-time-in-harlem/",
-          "format": ""
-        }
-      ],
-      "start": "2026-11-22",
+      "start": "2026-11-23",
       "end": "2026-11-25",
       "dateLabel": "3 listed days"
     },
@@ -208,26 +163,11 @@
       "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
       "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/holmes-1024x575.jpg",
       "dates": [
-        "2026-11-22",
         "2026-11-23",
         "2026-11-24"
       ],
       "ranges": [],
       "screenings": [
-        {
-          "date": "2026-11-22",
-          "time": "4:30pm",
-          "startsAt": "2026-11-22T23:30:00.000Z",
-          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-22",
-          "time": "8:00pm",
-          "startsAt": "2026-11-23T03:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
-          "format": ""
-        },
         {
           "date": "2026-11-23",
           "time": "4:45pm",
@@ -250,42 +190,9 @@
           "format": "Open captions"
         }
       ],
-      "start": "2026-11-22",
+      "start": "2026-11-23",
       "end": "2026-11-24",
-      "dateLabel": "3 listed days"
-    },
-    {
-      "id": "roxy:/show/twin-peaks-episodes-28-29-30/",
-      "title": "Twin Peaks – Episodes 28, 29, & 30",
-      "venueId": "roxy",
-      "venue": "Roxy Theater",
-      "location": "Missoula",
-      "source": "Roxy Theater official calendar",
-      "url": "https://www.theroxytheater.org/show/twin-peaks-episodes-28-29-30/",
-      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/09/bob20n20dale-1024x577.jpg",
-      "dates": [
-        "2026-11-22"
-      ],
-      "ranges": [],
-      "screenings": [
-        {
-          "date": "2026-11-22",
-          "time": "5:15pm",
-          "startsAt": "2026-11-23T00:15:00.000Z",
-          "url": "https://www.theroxytheater.org/show/twin-peaks-episodes-28-29-30/",
-          "format": "Annex"
-        },
-        {
-          "date": "2026-11-22",
-          "time": "8:00pm",
-          "startsAt": "2026-11-23T03:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/twin-peaks-episodes-28-29-30/",
-          "format": "Annex"
-        }
-      ],
-      "start": "2026-11-22",
-      "end": "2026-11-22",
-      "dateLabel": "1 listed days"
+      "dateLabel": "2 listed days"
     },
     {
       "id": "roxy:/show/certain-women/",
@@ -1640,7 +1547,7 @@
       "dateLabel": "1 listed days"
     }
   ],
-  "checkedAt": 1795398671133,
+  "checkedAt": 1795439807315,
   "stale": false,
   "sourceURL": "https://www.theroxytheater.org/showtimes/"
 }
