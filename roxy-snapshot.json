@@ -95,7 +95,14 @@
       "dates": [
         "2026-11-23",
         "2026-11-24",
-        "2026-11-25"
+        "2026-11-25",
+        "2026-11-27",
+        "2026-11-28",
+        "2026-11-29",
+        "2026-11-30",
+        "2026-12-01",
+        "2026-12-02",
+        "2026-12-03"
       ],
       "ranges": [],
       "screenings": [
@@ -147,11 +154,81 @@
           "startsAt": "2026-11-25T23:30:00.000Z",
           "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
           "format": ""
+        },
+        {
+          "date": "2026-11-27",
+          "time": "5:00pm",
+          "startsAt": "2026-11-28T00:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-28",
+          "time": "2:45pm",
+          "startsAt": "2026-11-28T21:45:00.000Z",
+          "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
+          "format": "Open captions"
+        },
+        {
+          "date": "2026-11-28",
+          "time": "5:00pm",
+          "startsAt": "2026-11-29T00:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-29",
+          "time": "8:00pm",
+          "startsAt": "2026-11-30T03:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-30",
+          "time": "2:15pm",
+          "startsAt": "2026-11-30T21:15:00.000Z",
+          "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
+          "format": "Open captions"
+        },
+        {
+          "date": "2026-11-30",
+          "time": "8:15pm",
+          "startsAt": "2026-12-01T03:15:00.000Z",
+          "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
+          "format": "Open captions"
+        },
+        {
+          "date": "2026-12-01",
+          "time": "4:30pm",
+          "startsAt": "2026-12-01T23:30:00.000Z",
+          "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
+          "format": "Open captions"
+        },
+        {
+          "date": "2026-12-02",
+          "time": "2:45pm",
+          "startsAt": "2026-12-02T21:45:00.000Z",
+          "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
+          "format": ""
+        },
+        {
+          "date": "2026-12-03",
+          "time": "2:45pm",
+          "startsAt": "2026-12-03T21:45:00.000Z",
+          "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
+          "format": ""
+        },
+        {
+          "date": "2026-12-03",
+          "time": "7:30pm",
+          "startsAt": "2026-12-04T02:30:00.000Z",
+          "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
+          "format": ""
         }
       ],
       "start": "2026-11-23",
-      "end": "2026-11-25",
-      "dateLabel": "3 listed days"
+      "end": "2026-12-03",
+      "dateLabel": "10 listed days"
     },
     {
       "id": "roxy:/show/you-can-see-everything/",
@@ -164,7 +241,13 @@
       "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/holmes-1024x575.jpg",
       "dates": [
         "2026-11-23",
-        "2026-11-24"
+        "2026-11-24",
+        "2026-11-27",
+        "2026-11-28",
+        "2026-11-29",
+        "2026-11-30",
+        "2026-12-02",
+        "2026-12-03"
       ],
       "ranges": [],
       "screenings": [
@@ -188,11 +271,53 @@
           "startsAt": "2026-11-25T03:00:00.000Z",
           "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
           "format": "Open captions"
+        },
+        {
+          "date": "2026-11-27",
+          "time": "1:30pm",
+          "startsAt": "2026-11-27T20:30:00.000Z",
+          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
+          "format": "Open captions"
+        },
+        {
+          "date": "2026-11-28",
+          "time": "1:30pm",
+          "startsAt": "2026-11-28T20:30:00.000Z",
+          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
+          "format": "Open captions"
+        },
+        {
+          "date": "2026-11-29",
+          "time": "2:00pm",
+          "startsAt": "2026-11-29T21:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
+          "format": "Open captions"
+        },
+        {
+          "date": "2026-11-30",
+          "time": "4:45pm",
+          "startsAt": "2026-11-30T23:45:00.000Z",
+          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
+          "format": "Open captions"
+        },
+        {
+          "date": "2026-12-02",
+          "time": "2:00pm",
+          "startsAt": "2026-12-02T21:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
+          "format": ""
+        },
+        {
+          "date": "2026-12-03",
+          "time": "2:00pm",
+          "startsAt": "2026-12-03T21:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
+          "format": ""
         }
       ],
       "start": "2026-11-23",
-      "end": "2026-11-24",
-      "dateLabel": "2 listed days"
+      "end": "2026-12-03",
+      "dateLabel": "8 listed days"
     },
     {
       "id": "roxy:/show/certain-women/",
@@ -263,7 +388,14 @@
       "url": "https://www.theroxytheater.org/show/paper-tiger/",
       "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/11/paper-tiger-web-1024x576.jpg",
       "dates": [
-        "2026-11-25"
+        "2026-11-25",
+        "2026-11-27",
+        "2026-11-28",
+        "2026-11-29",
+        "2026-11-30",
+        "2026-12-01",
+        "2026-12-02",
+        "2026-12-03"
       ],
       "ranges": [],
       "screenings": [
@@ -280,11 +412,116 @@
           "startsAt": "2026-11-26T03:00:00.000Z",
           "url": "https://www.theroxytheater.org/show/paper-tiger/",
           "format": ""
+        },
+        {
+          "date": "2026-11-27",
+          "time": "5:15pm",
+          "startsAt": "2026-11-28T00:15:00.000Z",
+          "url": "https://www.theroxytheater.org/show/paper-tiger/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-27",
+          "time": "7:45pm",
+          "startsAt": "2026-11-28T02:45:00.000Z",
+          "url": "https://www.theroxytheater.org/show/paper-tiger/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-28",
+          "time": "5:15pm",
+          "startsAt": "2026-11-29T00:15:00.000Z",
+          "url": "https://www.theroxytheater.org/show/paper-tiger/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-28",
+          "time": "7:45pm",
+          "startsAt": "2026-11-29T02:45:00.000Z",
+          "url": "https://www.theroxytheater.org/show/paper-tiger/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-29",
+          "time": "5:00pm",
+          "startsAt": "2026-11-30T00:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/paper-tiger/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-29",
+          "time": "7:30pm",
+          "startsAt": "2026-11-30T02:30:00.000Z",
+          "url": "https://www.theroxytheater.org/show/paper-tiger/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-30",
+          "time": "2:45pm",
+          "startsAt": "2026-11-30T21:45:00.000Z",
+          "url": "https://www.theroxytheater.org/show/paper-tiger/",
+          "format": "Open captions"
+        },
+        {
+          "date": "2026-11-30",
+          "time": "5:15pm",
+          "startsAt": "2026-12-01T00:15:00.000Z",
+          "url": "https://www.theroxytheater.org/show/paper-tiger/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-30",
+          "time": "7:45pm",
+          "startsAt": "2026-12-01T02:45:00.000Z",
+          "url": "https://www.theroxytheater.org/show/paper-tiger/",
+          "format": "Open captions"
+        },
+        {
+          "date": "2026-12-01",
+          "time": "5:15pm",
+          "startsAt": "2026-12-02T00:15:00.000Z",
+          "url": "https://www.theroxytheater.org/show/paper-tiger/",
+          "format": "Open captions"
+        },
+        {
+          "date": "2026-12-01",
+          "time": "7:45pm",
+          "startsAt": "2026-12-02T02:45:00.000Z",
+          "url": "https://www.theroxytheater.org/show/paper-tiger/",
+          "format": ""
+        },
+        {
+          "date": "2026-12-02",
+          "time": "5:30pm",
+          "startsAt": "2026-12-03T00:30:00.000Z",
+          "url": "https://www.theroxytheater.org/show/paper-tiger/",
+          "format": ""
+        },
+        {
+          "date": "2026-12-02",
+          "time": "8:00pm",
+          "startsAt": "2026-12-03T03:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/paper-tiger/",
+          "format": ""
+        },
+        {
+          "date": "2026-12-03",
+          "time": "1:45pm",
+          "startsAt": "2026-12-03T20:45:00.000Z",
+          "url": "https://www.theroxytheater.org/show/paper-tiger/",
+          "format": ""
+        },
+        {
+          "date": "2026-12-03",
+          "time": "7:45pm",
+          "startsAt": "2026-12-04T02:45:00.000Z",
+          "url": "https://www.theroxytheater.org/show/paper-tiger/",
+          "format": ""
         }
       ],
       "start": "2026-11-25",
-      "end": "2026-11-25",
-      "dateLabel": "1 listed days"
+      "end": "2026-12-03",
+      "dateLabel": "8 listed days"
     },
     {
       "id": "roxy:/show/club-kid/",
@@ -296,7 +533,14 @@
       "url": "https://www.theroxytheater.org/show/club-kid/",
       "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/11/so20go20back20to20the20cluuuuuuuuuuurb-1024x576.jpg",
       "dates": [
-        "2026-11-25"
+        "2026-11-25",
+        "2026-11-27",
+        "2026-11-28",
+        "2026-11-29",
+        "2026-11-30",
+        "2026-12-01",
+        "2026-12-02",
+        "2026-12-03"
       ],
       "ranges": [],
       "screenings": [
@@ -313,11 +557,116 @@
           "startsAt": "2026-11-26T03:15:00.000Z",
           "url": "https://www.theroxytheater.org/show/club-kid/",
           "format": ""
+        },
+        {
+          "date": "2026-11-27",
+          "time": "5:30pm",
+          "startsAt": "2026-11-28T00:30:00.000Z",
+          "url": "https://www.theroxytheater.org/show/club-kid/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-27",
+          "time": "8:00pm",
+          "startsAt": "2026-11-28T03:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/club-kid/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-28",
+          "time": "5:30pm",
+          "startsAt": "2026-11-29T00:30:00.000Z",
+          "url": "https://www.theroxytheater.org/show/club-kid/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-28",
+          "time": "8:00pm",
+          "startsAt": "2026-11-29T03:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/club-kid/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-29",
+          "time": "5:15pm",
+          "startsAt": "2026-11-30T00:15:00.000Z",
+          "url": "https://www.theroxytheater.org/show/club-kid/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-29",
+          "time": "7:45pm",
+          "startsAt": "2026-11-30T02:45:00.000Z",
+          "url": "https://www.theroxytheater.org/show/club-kid/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-30",
+          "time": "3:00pm",
+          "startsAt": "2026-11-30T22:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/club-kid/",
+          "format": "Open captions"
+        },
+        {
+          "date": "2026-11-30",
+          "time": "5:30pm",
+          "startsAt": "2026-12-01T00:30:00.000Z",
+          "url": "https://www.theroxytheater.org/show/club-kid/",
+          "format": ""
+        },
+        {
+          "date": "2026-11-30",
+          "time": "8:00pm",
+          "startsAt": "2026-12-01T03:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/club-kid/",
+          "format": "Open captions"
+        },
+        {
+          "date": "2026-12-01",
+          "time": "5:30pm",
+          "startsAt": "2026-12-02T00:30:00.000Z",
+          "url": "https://www.theroxytheater.org/show/club-kid/",
+          "format": "Open captions"
+        },
+        {
+          "date": "2026-12-01",
+          "time": "8:00pm",
+          "startsAt": "2026-12-02T03:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/club-kid/",
+          "format": ""
+        },
+        {
+          "date": "2026-12-02",
+          "time": "5:00pm",
+          "startsAt": "2026-12-03T00:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/club-kid/",
+          "format": ""
+        },
+        {
+          "date": "2026-12-02",
+          "time": "7:30pm",
+          "startsAt": "2026-12-03T02:30:00.000Z",
+          "url": "https://www.theroxytheater.org/show/club-kid/",
+          "format": ""
+        },
+        {
+          "date": "2026-12-03",
+          "time": "5:30pm",
+          "startsAt": "2026-12-04T00:30:00.000Z",
+          "url": "https://www.theroxytheater.org/show/club-kid/",
+          "format": ""
+        },
+        {
+          "date": "2026-12-03",
+          "time": "8:00pm",
+          "startsAt": "2026-12-04T03:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/club-kid/",
+          "format": ""
         }
       ],
       "start": "2026-11-25",
-      "end": "2026-11-25",
-      "dateLabel": "1 listed days"
+      "end": "2026-12-03",
+      "dateLabel": "8 listed days"
     },
     {
       "id": "roxy:/show/the-nightmare-before-christmas/",
@@ -470,13 +819,6 @@
           "date": "2026-12-03",
           "time": "5:15pm",
           "startsAt": "2026-12-04T00:15:00.000Z",
-          "url": "https://www.theroxytheater.org/show/gremlins/",
-          "format": "Digital"
-        },
-        {
-          "date": "2026-12-03",
-          "time": "7:45pm",
-          "startsAt": "2026-12-04T02:45:00.000Z",
           "url": "https://www.theroxytheater.org/show/gremlins/",
           "format": "Digital"
         }
@@ -1547,7 +1889,7 @@
       "dateLabel": "1 listed days"
     }
   ],
-  "checkedAt": 1795439807315,
+  "checkedAt": 1795487002434,
   "stale": false,
   "sourceURL": "https://www.theroxytheater.org/showtimes/"
 }
