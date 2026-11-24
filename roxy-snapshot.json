@@ -10,26 +10,11 @@
       "url": "https://www.theroxytheater.org/show/fjord/",
       "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/11/fjord-1024x576.jpg",
       "dates": [
-        "2026-11-23",
         "2026-11-24",
         "2026-11-25"
       ],
       "ranges": [],
       "screenings": [
-        {
-          "date": "2026-11-23",
-          "time": "1:45pm",
-          "startsAt": "2026-11-23T20:45:00.000Z",
-          "url": "https://www.theroxytheater.org/show/fjord/",
-          "format": "Open captions"
-        },
-        {
-          "date": "2026-11-23",
-          "time": "4:30pm",
-          "startsAt": "2026-11-23T23:30:00.000Z",
-          "url": "https://www.theroxytheater.org/show/fjord/",
-          "format": "Open captions"
-        },
         {
           "date": "2026-11-24",
           "time": "5:00pm",
@@ -45,43 +30,42 @@
           "format": ""
         }
       ],
-      "start": "2026-11-23",
+      "start": "2026-11-24",
       "end": "2026-11-25",
-      "dateLabel": "3 listed days"
+      "dateLabel": "2 listed days"
     },
     {
-      "id": "roxy:/show/once-upon-a-time-in-harlem/",
-      "title": "Once Upon a Time in Harlem",
+      "id": "roxy:/show/planes-trains-and-automobiles/",
+      "title": "Planes, Trains, and Automobiles",
       "venueId": "roxy",
       "venue": "Roxy Theater",
       "location": "Missoula",
       "source": "Roxy Theater official calendar",
-      "url": "https://www.theroxytheater.org/show/once-upon-a-time-in-harlem/",
-      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/11/once20upon20a20time20in20harlem-1024x576.jpg",
+      "url": "https://www.theroxytheater.org/show/planes-trains-and-automobiles/",
+      "poster": "https://www.theroxytheater.org/wp-content/uploads/2023/10/ptabutnotthatpta-1024x576.jpg",
       "dates": [
-        "2026-11-23",
-        "2026-11-25"
+        "2026-11-24"
       ],
       "ranges": [],
       "screenings": [
         {
-          "date": "2026-11-23",
-          "time": "2:15pm",
-          "startsAt": "2026-11-23T21:15:00.000Z",
-          "url": "https://www.theroxytheater.org/show/once-upon-a-time-in-harlem/",
-          "format": "Open captions"
+          "date": "2026-11-24",
+          "time": "5:15pm",
+          "startsAt": "2026-11-25T00:15:00.000Z",
+          "url": "https://www.theroxytheater.org/show/planes-trains-and-automobiles/",
+          "format": "Digital"
         },
         {
-          "date": "2026-11-25",
-          "time": "3:15pm",
-          "startsAt": "2026-11-25T22:15:00.000Z",
-          "url": "https://www.theroxytheater.org/show/once-upon-a-time-in-harlem/",
-          "format": ""
+          "date": "2026-11-24",
+          "time": "7:30pm",
+          "startsAt": "2026-11-25T02:30:00.000Z",
+          "url": "https://www.theroxytheater.org/show/planes-trains-and-automobiles/",
+          "format": "Digital"
         }
       ],
-      "start": "2026-11-23",
-      "end": "2026-11-25",
-      "dateLabel": "2 listed days"
+      "start": "2026-11-24",
+      "end": "2026-11-24",
+      "dateLabel": "1 listed days"
     },
     {
       "id": "roxy:/show/wild-horse-nine/",
@@ -93,7 +77,6 @@
       "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
       "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/11/wh9-1024x578.jpg",
       "dates": [
-        "2026-11-23",
         "2026-11-24",
         "2026-11-25",
         "2026-11-27",
@@ -106,27 +89,6 @@
       ],
       "ranges": [],
       "screenings": [
-        {
-          "date": "2026-11-23",
-          "time": "3:00pm",
-          "startsAt": "2026-11-23T22:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
-          "format": "Open captions"
-        },
-        {
-          "date": "2026-11-23",
-          "time": "5:30pm",
-          "startsAt": "2026-11-24T00:30:00.000Z",
-          "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-23",
-          "time": "8:00pm",
-          "startsAt": "2026-11-24T03:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
-          "format": "Open captions"
-        },
         {
           "date": "2026-11-24",
           "time": "5:30pm",
@@ -226,9 +188,9 @@
           "format": ""
         }
       ],
-      "start": "2026-11-23",
+      "start": "2026-11-24",
       "end": "2026-12-03",
-      "dateLabel": "10 listed days"
+      "dateLabel": "9 listed days"
     },
     {
       "id": "roxy:/show/you-can-see-everything/",
@@ -240,7 +202,6 @@
       "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
       "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/holmes-1024x575.jpg",
       "dates": [
-        "2026-11-23",
         "2026-11-24",
         "2026-11-27",
         "2026-11-28",
@@ -251,20 +212,6 @@
       ],
       "ranges": [],
       "screenings": [
-        {
-          "date": "2026-11-23",
-          "time": "4:45pm",
-          "startsAt": "2026-11-23T23:45:00.000Z",
-          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-23",
-          "time": "8:15pm",
-          "startsAt": "2026-11-24T03:15:00.000Z",
-          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
-          "format": "Open captions"
-        },
         {
           "date": "2026-11-24",
           "time": "8:00pm",
@@ -315,67 +262,34 @@
           "format": ""
         }
       ],
-      "start": "2026-11-23",
+      "start": "2026-11-24",
       "end": "2026-12-03",
-      "dateLabel": "8 listed days"
+      "dateLabel": "7 listed days"
     },
     {
-      "id": "roxy:/show/certain-women/",
-      "title": "Certain Women",
+      "id": "roxy:/show/once-upon-a-time-in-harlem/",
+      "title": "Once Upon a Time in Harlem",
       "venueId": "roxy",
       "venue": "Roxy Theater",
       "location": "Missoula",
       "source": "Roxy Theater official calendar",
-      "url": "https://www.theroxytheater.org/show/certain-women/",
-      "poster": "https://www.theroxytheater.org/wp-content/uploads/2024/02/certain20women20out-1024x576.jpg",
+      "url": "https://www.theroxytheater.org/show/once-upon-a-time-in-harlem/",
+      "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/11/once20upon20a20time20in20harlem-1024x576.jpg",
       "dates": [
-        "2026-11-23"
+        "2026-11-25"
       ],
       "ranges": [],
       "screenings": [
         {
-          "date": "2026-11-23",
-          "time": "7:30pm",
-          "startsAt": "2026-11-24T02:30:00.000Z",
-          "url": "https://www.theroxytheater.org/show/certain-women/",
+          "date": "2026-11-25",
+          "time": "3:15pm",
+          "startsAt": "2026-11-25T22:15:00.000Z",
+          "url": "https://www.theroxytheater.org/show/once-upon-a-time-in-harlem/",
           "format": ""
         }
       ],
-      "start": "2026-11-23",
-      "end": "2026-11-23",
-      "dateLabel": "1 listed days"
-    },
-    {
-      "id": "roxy:/show/planes-trains-and-automobiles/",
-      "title": "Planes, Trains, and Automobiles",
-      "venueId": "roxy",
-      "venue": "Roxy Theater",
-      "location": "Missoula",
-      "source": "Roxy Theater official calendar",
-      "url": "https://www.theroxytheater.org/show/planes-trains-and-automobiles/",
-      "poster": "https://www.theroxytheater.org/wp-content/uploads/2023/10/ptabutnotthatpta-1024x576.jpg",
-      "dates": [
-        "2026-11-24"
-      ],
-      "ranges": [],
-      "screenings": [
-        {
-          "date": "2026-11-24",
-          "time": "5:15pm",
-          "startsAt": "2026-11-25T00:15:00.000Z",
-          "url": "https://www.theroxytheater.org/show/planes-trains-and-automobiles/",
-          "format": "Digital"
-        },
-        {
-          "date": "2026-11-24",
-          "time": "7:30pm",
-          "startsAt": "2026-11-25T02:30:00.000Z",
-          "url": "https://www.theroxytheater.org/show/planes-trains-and-automobiles/",
-          "format": "Digital"
-        }
-      ],
-      "start": "2026-11-24",
-      "end": "2026-11-24",
+      "start": "2026-11-25",
+      "end": "2026-11-25",
       "dateLabel": "1 listed days"
     },
     {
@@ -1889,7 +1803,7 @@
       "dateLabel": "1 listed days"
     }
   ],
-  "checkedAt": 1795487002434,
+  "checkedAt": 1795528718927,
   "stale": false,
   "sourceURL": "https://www.theroxytheater.org/showtimes/"
 }
