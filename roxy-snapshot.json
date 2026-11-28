@@ -10,7 +10,6 @@
       "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
       "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/10/holmes-1024x575.jpg",
       "dates": [
-        "2026-11-27",
         "2026-11-28",
         "2026-11-29",
         "2026-11-30",
@@ -19,13 +18,6 @@
       ],
       "ranges": [],
       "screenings": [
-        {
-          "date": "2026-11-27",
-          "time": "1:30pm",
-          "startsAt": "2026-11-27T20:30:00.000Z",
-          "url": "https://www.theroxytheater.org/show/you-can-see-everything/",
-          "format": "Open captions"
-        },
         {
           "date": "2026-11-28",
           "time": "1:30pm",
@@ -62,51 +54,9 @@
           "format": ""
         }
       ],
-      "start": "2026-11-27",
+      "start": "2026-11-28",
       "end": "2026-12-03",
-      "dateLabel": "6 listed days"
-    },
-    {
-      "id": "roxy:/show/the-nightmare-before-christmas/",
-      "title": "The Nightmare Before Christmas",
-      "venueId": "roxy",
-      "venue": "Roxy Theater",
-      "location": "Missoula",
-      "source": "Roxy Theater official calendar",
-      "url": "https://www.theroxytheater.org/show/the-nightmare-before-christmas/",
-      "poster": "https://www.theroxytheater.org/wp-content/uploads/2023/11/c8df044a-nightmare_before_christmas_700x400.jpg",
-      "dates": [
-        "2026-11-27",
-        "2026-11-28",
-        "2026-11-29"
-      ],
-      "ranges": [],
-      "screenings": [
-        {
-          "date": "2026-11-27",
-          "time": "3:00pm",
-          "startsAt": "2026-11-27T22:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/the-nightmare-before-christmas/",
-          "format": "Digital"
-        },
-        {
-          "date": "2026-11-28",
-          "time": "3:00pm",
-          "startsAt": "2026-11-28T22:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/the-nightmare-before-christmas/",
-          "format": "Digital"
-        },
-        {
-          "date": "2026-11-29",
-          "time": "3:00pm",
-          "startsAt": "2026-11-29T22:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/the-nightmare-before-christmas/",
-          "format": "Digital"
-        }
-      ],
-      "start": "2026-11-27",
-      "end": "2026-11-29",
-      "dateLabel": "3 listed days"
+      "dateLabel": "5 listed days"
     },
     {
       "id": "roxy:/show/wild-horse-nine/",
@@ -118,7 +68,6 @@
       "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
       "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/11/wh9-1024x578.jpg",
       "dates": [
-        "2026-11-27",
         "2026-11-28",
         "2026-11-29",
         "2026-11-30",
@@ -128,13 +77,6 @@
       ],
       "ranges": [],
       "screenings": [
-        {
-          "date": "2026-11-27",
-          "time": "5:00pm",
-          "startsAt": "2026-11-28T00:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/wild-horse-nine/",
-          "format": ""
-        },
         {
           "date": "2026-11-28",
           "time": "2:45pm",
@@ -199,9 +141,43 @@
           "format": ""
         }
       ],
-      "start": "2026-11-27",
+      "start": "2026-11-28",
       "end": "2026-12-03",
-      "dateLabel": "7 listed days"
+      "dateLabel": "6 listed days"
+    },
+    {
+      "id": "roxy:/show/the-nightmare-before-christmas/",
+      "title": "The Nightmare Before Christmas",
+      "venueId": "roxy",
+      "venue": "Roxy Theater",
+      "location": "Missoula",
+      "source": "Roxy Theater official calendar",
+      "url": "https://www.theroxytheater.org/show/the-nightmare-before-christmas/",
+      "poster": "https://www.theroxytheater.org/wp-content/uploads/2023/11/c8df044a-nightmare_before_christmas_700x400.jpg",
+      "dates": [
+        "2026-11-28",
+        "2026-11-29"
+      ],
+      "ranges": [],
+      "screenings": [
+        {
+          "date": "2026-11-28",
+          "time": "3:00pm",
+          "startsAt": "2026-11-28T22:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/the-nightmare-before-christmas/",
+          "format": "Digital"
+        },
+        {
+          "date": "2026-11-29",
+          "time": "3:00pm",
+          "startsAt": "2026-11-29T22:00:00.000Z",
+          "url": "https://www.theroxytheater.org/show/the-nightmare-before-christmas/",
+          "format": "Digital"
+        }
+      ],
+      "start": "2026-11-28",
+      "end": "2026-11-29",
+      "dateLabel": "2 listed days"
     },
     {
       "id": "roxy:/show/paper-tiger/",
@@ -213,7 +189,6 @@
       "url": "https://www.theroxytheater.org/show/paper-tiger/",
       "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/11/paper-tiger-web-1024x576.jpg",
       "dates": [
-        "2026-11-27",
         "2026-11-28",
         "2026-11-29",
         "2026-11-30",
@@ -223,20 +198,6 @@
       ],
       "ranges": [],
       "screenings": [
-        {
-          "date": "2026-11-27",
-          "time": "5:15pm",
-          "startsAt": "2026-11-28T00:15:00.000Z",
-          "url": "https://www.theroxytheater.org/show/paper-tiger/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-27",
-          "time": "7:45pm",
-          "startsAt": "2026-11-28T02:45:00.000Z",
-          "url": "https://www.theroxytheater.org/show/paper-tiger/",
-          "format": ""
-        },
         {
           "date": "2026-11-28",
           "time": "5:15pm",
@@ -329,9 +290,9 @@
           "format": ""
         }
       ],
-      "start": "2026-11-27",
+      "start": "2026-11-28",
       "end": "2026-12-03",
-      "dateLabel": "7 listed days"
+      "dateLabel": "6 listed days"
     },
     {
       "id": "roxy:/show/club-kid/",
@@ -343,7 +304,6 @@
       "url": "https://www.theroxytheater.org/show/club-kid/",
       "poster": "https://www.theroxytheater.org/wp-content/uploads/2026/11/so20go20back20to20the20cluuuuuuuuuuurb-1024x576.jpg",
       "dates": [
-        "2026-11-27",
         "2026-11-28",
         "2026-11-29",
         "2026-11-30",
@@ -353,20 +313,6 @@
       ],
       "ranges": [],
       "screenings": [
-        {
-          "date": "2026-11-27",
-          "time": "5:30pm",
-          "startsAt": "2026-11-28T00:30:00.000Z",
-          "url": "https://www.theroxytheater.org/show/club-kid/",
-          "format": ""
-        },
-        {
-          "date": "2026-11-27",
-          "time": "8:00pm",
-          "startsAt": "2026-11-28T03:00:00.000Z",
-          "url": "https://www.theroxytheater.org/show/club-kid/",
-          "format": ""
-        },
         {
           "date": "2026-11-28",
           "time": "5:30pm",
@@ -459,9 +405,9 @@
           "format": ""
         }
       ],
-      "start": "2026-11-27",
+      "start": "2026-11-28",
       "end": "2026-12-03",
-      "dateLabel": "7 listed days"
+      "dateLabel": "6 listed days"
     },
     {
       "id": "roxy:/show/the-last-waltz/",
@@ -473,19 +419,11 @@
       "url": "https://www.theroxytheater.org/show/the-last-waltz/",
       "poster": "https://www.theroxytheater.org/wp-content/uploads/2022/10/waltz-1024x576.jpeg",
       "dates": [
-        "2026-11-27",
         "2026-11-28",
         "2026-11-29"
       ],
       "ranges": [],
       "screenings": [
-        {
-          "date": "2026-11-27",
-          "time": "7:30pm",
-          "startsAt": "2026-11-28T02:30:00.000Z",
-          "url": "https://www.theroxytheater.org/show/the-last-waltz/",
-          "format": ""
-        },
         {
           "date": "2026-11-28",
           "time": "7:30pm",
@@ -501,9 +439,9 @@
           "format": ""
         }
       ],
-      "start": "2026-11-27",
+      "start": "2026-11-28",
       "end": "2026-11-29",
-      "dateLabel": "3 listed days"
+      "dateLabel": "2 listed days"
     },
     {
       "id": "roxy:/show/the-water-keepers-with-casey-ryan-and-robert-macdonald/",
@@ -1660,7 +1598,7 @@
       "dateLabel": "1 listed days"
     }
   ],
-  "checkedAt": 1795822506845,
+  "checkedAt": 1795853253288,
   "stale": false,
   "sourceURL": "https://www.theroxytheater.org/showtimes/"
 }
